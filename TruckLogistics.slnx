@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="Truck Logistics Client .NET MAUI/TrucksLogisticsClient.csproj" />
+  <Project Path="Truck Logistics Server ASP.NET/TrucksLogisticsServerAPI.csproj" />
+</Solution>
