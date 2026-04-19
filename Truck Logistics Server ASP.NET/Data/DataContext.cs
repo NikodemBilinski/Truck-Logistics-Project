@@ -11,5 +11,9 @@ namespace TrucksLogisticsServerAPI.Data
         }
 
         public DbSet<Truck> Trucks { get; set; }
+
+        public DbSet<UsersLogin> UsersLogins { get; set; }
+
+
     }
 }
