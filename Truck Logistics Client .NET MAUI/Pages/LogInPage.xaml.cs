@@ -1,4 +1,6 @@
 ﻿using System.Net.Http.Json;
+using TrucksLogisticsClient.Models;
+using TrucksLogisticsClient.Pages;
 
 namespace TrucksLogisticsClient
 {
@@ -42,16 +44,17 @@ namespace TrucksLogisticsClient
 
             if (response.IsSuccessStatusCode)
             {
-                var tokenResponse = await response.Content.ReadAsStringAsync();
-                if (tokenResponse != null)
+                Users user = await response.Content.ReadFromJsonAsync<Users>();
+                if (user != null)
                 {
-                    LoginResultLabel.Text = "Login successful! Token: " + tokenResponse;
-                    await SecureStorage.Default.SetAsync("AuthToken", tokenResponse);
+                    LoginResultLabel.Text = "Successfully logged in!";
+
+                    await Shell.Current.GoToAsync($"{nameof(MainMenuPage)}?UserID={user.ID}");
                 }
             }
             else
             {
-                LoginResultLabel.Text = "Login failed!";
+                LoginResultLabel.Text = await response.Content.ReadAsStringAsync();
             }
         }
     }

@@ -51,7 +51,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         // insert new user username, password and role
 
 
-        [HttpPost("Post_UserLogin")]
+        [HttpPost("Post_User")]
 
         public async Task<ActionResult<Users>> AddUserLogin(Users userslogin)
         {
@@ -81,6 +81,12 @@ namespace TrucksLogisticsServerAPI.Controllers
                     return BadRequest("Error: Username already taken.");
                 }
 
+                foreach (var language in userslogin.Languages)
+                {
+                    // "Attach" mówi EF: "Ten obiekt już jest w bazie, nie próbuj go dodawać ponownie, 
+                    // po prostu użyj jego ID do stworzenia relacji".
+                    _dataContext.Languages.Attach(language);
+                }
 
                 // add new user
                 _dataContext.Users.Add(userslogin);
