@@ -19,7 +19,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             _dataContext = dataContext;
         }
 
-        [HttpGet]
+        [HttpGet("Get_Trucks")]
 
         public async Task <ActionResult<List<Truck>>> GetTrucks()
         {
@@ -28,7 +28,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok(await _dataContext.Trucks.ToListAsync());
         }
 
-        [HttpPost]
+        [HttpPost("Post_Truck")]
         public async Task<ActionResult<Truck>> AddTruck(Truck truck)
         {
             
