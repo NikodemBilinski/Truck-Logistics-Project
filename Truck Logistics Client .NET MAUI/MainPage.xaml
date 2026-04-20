@@ -10,7 +10,18 @@
     
         <Label x:Name="TrucksLabel" 
                Text="Trucks will be displayed here"/>
+        
+        <Entry x:Name="Login_entry"
+               Placeholder="Enter your username"/>
 
+        <Entry x:Name="Password_entry"
+               Placeholder="Enter your password"/>
+        
+        <Label x:Name="LoginResultLabel"
+               Text="Login result will be displayed here"/>
+        
+        <Button Text="Login"
+                Clicked="Login_Clicked"/>
 
     </VerticalStackLayout>
 
