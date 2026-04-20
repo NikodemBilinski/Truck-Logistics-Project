@@ -12,7 +12,8 @@ namespace TrucksLogisticsServerAPI.Controllers
         public IActionResult Login([FromBody] LoginModel model)
         {
             Console.WriteLine("Request to login for user: " + model.Username);
-            // For demonstration purposes, we will use hardcoded credentials.
+
+
             // In a real application, you should validate against a database or an identity provider.
             if (model.Username == "admin" && model.Password == "admin")
             {
