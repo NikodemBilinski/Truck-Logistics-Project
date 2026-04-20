@@ -53,9 +53,9 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         [HttpPost("Post_UserLogin")]
 
-        public async Task<ActionResult<UsersLogin>> AddUserLogin(UsersLogin userslogin)
+        public async Task<ActionResult<Users>> AddUserLogin(Users userslogin)
         {
-            var userslist = await _dataContext.UsersLogins.ToListAsync();
+            var userslist = await _dataContext.Users.ToListAsync();
 
             if(userslogin.Username != null && userslogin.Password != null)
             {
@@ -83,13 +83,13 @@ namespace TrucksLogisticsServerAPI.Controllers
 
 
                 // add new user
-                _dataContext.UsersLogins.Add(userslogin);
+                _dataContext.Users.Add(userslogin);
 
                 await _dataContext.SaveChangesAsync();
 
                 Console.WriteLine("User added: " + userslogin.Username + ", " + userslogin.Password + ", " + userslogin.Role);
 
-                return Ok(await _dataContext.UsersLogins.ToListAsync());
+                return Ok(await _dataContext.Users.ToListAsync());
 
             }
             else
