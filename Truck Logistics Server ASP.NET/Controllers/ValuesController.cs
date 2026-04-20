@@ -19,6 +19,8 @@ namespace TrucksLogisticsServerAPI.Controllers
             _dataContext = dataContext;
         }
 
+        // HTTP GETS 
+
         // get trucks from database
 
         [HttpGet("Get_Trucks")]
@@ -30,6 +32,20 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok(await _dataContext.Trucks.ToListAsync());
         }
 
+        [HttpGet("Get_User_By_ID/{ID}")]
+
+        public async Task<ActionResult<Users>> GetUserByID(int ID)
+        {
+            var user = await _dataContext.Users.FindAsync(ID);
+            if (user == null)
+            {
+                return NotFound("Error: User with the specified ID not found.");
+            }
+            return Ok(user);
+        }
+
+
+        // HTTP POSTS
 
         // insert new truck to table
 
