@@ -74,6 +74,32 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         // insert new user username, password and role
 
+        [HttpPost("Add_User")]
+
+        public async Task<ActionResult<Users>> AddUser(Users UserToAdd)
+        {
+            var userslist = await _dataContext.Users.ToListAsync();
+
+            UserToAdd.Role.ToLower();
+
+            if(UserToAdd.Role == string.Empty || (UserToAdd.Role != "admin" && UserToAdd.Role != "user"))
+            {
+                UserToAdd.Role = "user";
+            }
+
+            // check if the username already exist
+            if (userslist.Any(x => x.Username == UserToAdd.Username))
+            {
+                return BadRequest("Error: Username already taken.");
+            }
+
+            _dataContext.Users.Add(UserToAdd);
+
+            await _dataContext.SaveChangesAsync();
+
+            return Ok("Successfully added new user: " + UserToAdd.Username);
+
+        }
 
         [HttpPost("Post_User_Swagger")]
 

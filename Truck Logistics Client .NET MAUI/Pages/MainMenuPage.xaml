@@ -98,20 +98,23 @@
                             <Label Text="Last Name:"/>
                             <Label Text="Age:"/>
                             <Label Text="Role:"/>
-                            <Label Text="Status (is busy):"/>
                             <Label Text="Username:"/>
                             <Label Text="Password:"/>
                         </VerticalStackLayout>
                         <VerticalStackLayout Grid.Column="1" Spacing="15">
-                            <Entry Text="{Binding FirstName}" Placeholder="First Name" WidthRequest="175" HorizontalOptions="Start"/>
-                            <Entry Text="{Binding LastName}" Placeholder="Last Name" WidthRequest="175" HorizontalOptions="Start"/>
-                            <Entry Text="{Binding Age}" Placeholder="Age" WidthRequest="175" HorizontalOptions="Start"/>
-                            <Entry Text="{Binding Role}" Placeholder="Role" WidthRequest="175" HorizontalOptions="Start"/>
-                            <Entry Text="{Binding isBusy}" Placeholder="Status (is busy)" WidthRequest="175" HorizontalOptions="Start"/>
-                            <Entry Text="{Binding Username}" Placeholder="Username" WidthRequest="175" HorizontalOptions="Start"/>
-                            <Entry Text="{Binding Password}" Placeholder="Password" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Admin_Add_FirstName" Placeholder="First Name" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Admin_Add_LastName" Placeholder="Last Name" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Admin_Add_Age" Placeholder="Age" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Admin_Add_Role" Placeholder="Role" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Admin_Add_Username" Placeholder="Username" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Admin_Add_Password" Placeholder="Password" WidthRequest="175" HorizontalOptions="Start"/>
                         </VerticalStackLayout>
 
+                        <Label x:Name="Add_Error_Label"
+                               Grid.Column="2"
+                               TextColor="Red"
+                               Margin="0,50,0,0"/>
+                        
                         <Button Text="Add User" 
                                 Grid.Column="2" 
                                 HeightRequest="50"

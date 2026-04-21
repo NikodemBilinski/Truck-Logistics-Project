@@ -1,5 +1,6 @@
 namespace TrucksLogisticsClient.Pages;
 
+using Microsoft.Maui.Graphics.Text;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -202,7 +203,57 @@ public partial class MainMenuPage : ContentPage
 
     private async void Admin_Add_User_Clicked(object sender, EventArgs e)
     {
+        if(string.IsNullOrEmpty(Admin_Add_FirstName.Text))
+        {
+            Add_Error_Label.Text = "First Name is empty!";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Add_LastName.Text))
+        {
+            Add_Error_Label.Text = "Last Name is empty!";
+            return;
+        }
+        if (!int.TryParse(Admin_Add_Age.Text, out int age))
+        {
+            Add_Error_Label.Text = "Age is just a number!";
+            return;
+        }
 
+        Admin_Add_Role.Text.ToLower();
+
+        if (Admin_Add_Role.Text != "user" && Admin_Add_Role.Text != "admin")
+        {
+            Add_Error_Label.Text = "Role is not either user or admin";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Add_Username.Text))
+        {
+            Add_Error_Label.Text = "Username is empty!";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Add_Password.Text))
+        {
+            Add_Error_Label.Text = "Password is empty!";
+            return;
+        }
+        var UserToAdd = new Users()
+        {
+            FirstName = Admin_Add_FirstName.Text,
+            LastName = Admin_Add_LastName.Text,
+            Age = int.Parse(Admin_Add_Age.Text),
+            Role = Admin_Add_Role.Text,
+            Username = Admin_Add_Username.Text,
+            Password = Admin_Add_Password.Text
+
+        };
+
+        var result = await client.PostAsJsonAsync(apiUrl + "Add_User", UserToAdd);
+
+        if(result.IsSuccessStatusCode)
+        {
+            Add_Error_Label.Text = await result.Content.ReadAsStringAsync();
+           
+        }
     }
 
     private async void Admin_Open_Add_User_Section(object sender, EventArgs e)
