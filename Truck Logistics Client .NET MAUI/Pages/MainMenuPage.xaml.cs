@@ -91,6 +91,8 @@ public partial class MainMenuPage : ContentPage
 
     private async void Admin_Get_Users_Clicked(object sender, EventArgs e)
     {
+        Users_View.IsVisible = false;
+        Trucks_View.IsVisible = false;
         try
         {
             var response = await client.GetAsync(apiUrl + "Get_All_Users");
@@ -116,5 +118,31 @@ public partial class MainMenuPage : ContentPage
         }
 
         Users_View.IsVisible = true;
+    }
+
+    private async void Admin_Get_Trucks_Clicked(object sender, EventArgs e)
+    {
+        Users_View.IsVisible = false;
+        Trucks_View.IsVisible = false;
+        try
+        {
+            var response = await client.GetAsync(apiUrl + "Get_Trucks");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var truckslist = JsonSerializer.Deserialize<List<Truck>>(json, options);
+                Get_All_Trucks_View.ItemsSource = truckslist;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Error: " + ex.Message);
+            return;
+        }
+        Trucks_View.IsVisible = true;
     }
 }

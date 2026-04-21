@@ -104,7 +104,40 @@
             </Grid>
             
             <!--Trucks-->
-            
+            <Grid x:Name="Trucks_View"
+                  IsVisible="False">
+                <VerticalStackLayout Margin="20" Spacing="0">
+                    <Grid ColumnDefinitions="50,150,150,50,150" 
+                          Margin="0,10,-60,0"
+                          BackgroundColor="Transparent" 
+                          Padding="10"
+                          HorizontalOptions="Center">
+                        <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                        <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
+                        <Label Grid.Column="2" Text="Brand" FontAttributes="Bold"/>
+                        <Label Grid.Column="3" Text="Status" FontAttributes="Bold"/>
+                        <Label Grid.Column="4" Text="Capacity" FontAttributes="Bold"/>
+                    </Grid>
+
+                    <CollectionView x:Name="Get_All_Trucks_View">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Truck">
+                                <Grid ColumnDefinitions="50,150,150,50,150"
+                                      Padding="10"
+                                      HorizontalOptions="Center">
+                                    
+                                    <Label Grid.Column="0" Text="{Binding Id}"/>
+                                    <Label Grid.Column="1" Text="{Binding Name}"/>
+                                    <Label Grid.Column="2" Text="{Binding brand}"/>
+                                    <Label Grid.Column="3" Text="{Binding IsBusy}"/>
+                                    <Label Grid.Column="4" Text="{Binding Capacity}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </VerticalStackLayout>
+            </Grid>
             <!--Jobs-->
         </VerticalStackLayout>
 
@@ -124,6 +157,7 @@
 
                     <Button x:Name="Admin_Get_Trucks"
                             Text="Get All Trucks"
+                            Clicked="Admin_Get_Trucks_Clicked"
                             IsEnabled="False"
                             IsVisible="False"
                             WidthRequest="125"/>

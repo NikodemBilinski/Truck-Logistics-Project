@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using TrucksLogisticsClient.Models;
 
-namespace TrucksLogisticsClient
+namespace TrucksLogisticsClient.Models
 {
     public class Truck
     {
