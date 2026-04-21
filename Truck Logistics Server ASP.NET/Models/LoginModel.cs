@@ -1,5 +1,9 @@
-﻿namespace TrucksLogisticsServerAPI.Models
+﻿using Swashbuckle.AspNetCore.Annotations;
+
+
+namespace TrucksLogisticsServerAPI.Models
 {
+    
     public class LoginModel
     {
         public string Username { get; set; }
