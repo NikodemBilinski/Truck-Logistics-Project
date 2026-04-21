@@ -24,6 +24,8 @@ namespace TrucksLogisticsServerAPI.Data
                 new Language { Id = 2, Name = "English" },
                 new Language { Id = 3, Name = "German" }
                 );
+
+            modelBuilder.Entity<Users>().HasMany(u => u.AssignedTrucks).WithMany(t => t.AssignedUsers).UsingEntity(j => j.ToTable("UserTrucks"));
         }
 
 

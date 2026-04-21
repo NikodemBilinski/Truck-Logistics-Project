@@ -30,7 +30,7 @@ namespace TrucksLogisticsClient
                     TrucksLabel.Text = string.Empty;
                     foreach (var truck in response)
                     {
-                        TrucksLabel.Text += truck.Id + " " + truck.Owner + " " + truck.Capacity + " " + truck.IsBusy + "\n";
+                        TrucksLabel.Text += truck.Id + " " + truck.Name + " " + truck.brand + " " + truck.Capacity + " " + truck.IsBusy + "\n";
                     }
                 }
             }

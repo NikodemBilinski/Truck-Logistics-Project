@@ -112,6 +112,9 @@ public partial class MainMenuPage : ContentPage
         catch(Exception ex)
         {
             Debug.WriteLine("Error: " + ex.Message);
+            return;
         }
+
+        Users_View.IsVisible = true;
     }
 }

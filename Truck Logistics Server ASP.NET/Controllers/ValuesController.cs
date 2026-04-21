@@ -65,7 +65,7 @@ namespace TrucksLogisticsServerAPI.Controllers
 
             await _dataContext.SaveChangesAsync();
 
-            Console.WriteLine("Truck added: " + truck.Id + ", " + truck.Owner + ", " + truck.IsBusy + ", " + truck.Capacity);
+            Console.WriteLine("Truck added: " + truck.Id + ", " + truck.Name + ", " + truck.IsBusy + ", " + truck.Capacity);
 
             return Ok(await _dataContext.Trucks.ToListAsync());
 
