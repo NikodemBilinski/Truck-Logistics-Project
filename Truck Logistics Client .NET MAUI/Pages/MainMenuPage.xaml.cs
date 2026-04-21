@@ -89,10 +89,21 @@ public partial class MainMenuPage : ContentPage
         }
     }
 
-    private async void Admin_Get_Users_Clicked(object sender, EventArgs e)
+    private async Task Hide_Everything()
     {
         Users_View.IsVisible = false;
+        Users_View.IsEnabled = false;
+
         Trucks_View.IsVisible = false;
+        Trucks_View.IsVisible = false;
+
+        Edit_User_Section.IsVisible = false;
+        Edit_User_Section.IsEnabled = false;
+    }
+
+    private async void Admin_Get_Users_Clicked(object sender, EventArgs e)
+    {
+        await Hide_Everything();
         try
         {
             var response = await client.GetAsync(apiUrl + "Get_All_Users");
@@ -116,14 +127,14 @@ public partial class MainMenuPage : ContentPage
             Debug.WriteLine("Error: " + ex.Message);
             return;
         }
-
+        Users_View.IsEnabled = true;
         Users_View.IsVisible = true;
     }
 
     private async void Admin_Get_Trucks_Clicked(object sender, EventArgs e)
     {
-        Users_View.IsVisible = false;
-        Trucks_View.IsVisible = false;
+        await Hide_Everything();
+
         try
         {
             var response = await client.GetAsync(apiUrl + "Get_Trucks");
@@ -143,6 +154,24 @@ public partial class MainMenuPage : ContentPage
             Debug.WriteLine("Error: " + ex.Message);
             return;
         }
+        Trucks_View.IsEnabled = true;
         Trucks_View.IsVisible = true;
+    }
+
+    private async void Users_View_Selected(object sender, SelectionChangedEventArgs e)
+    {
+        await Hide_Everything();
+        var selecteduser = e.CurrentSelection.FirstOrDefault() as Users;
+
+        if(selecteduser != null)
+        {
+            EditUserLabelHeader.Text = "Edit user " + selecteduser.Username;
+            Edit_User_Section.IsEnabled = true;
+            Edit_User_Section.IsVisible = true;
+
+            Edit_User_Section.BindingContext = selecteduser;
+        }
+
+        
     }
 }

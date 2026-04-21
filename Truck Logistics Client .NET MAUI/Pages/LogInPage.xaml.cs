@@ -12,39 +12,6 @@ namespace TrucksLogisticsClient
         {
             InitializeComponent();
         }
-
-
-
-        private async void Get_Trucks(object sender, EventArgs e)
-        {
-            try
-            {
-                HttpClient client = new HttpClient();
-
-                var url = "http://192.168.0.218:5160/api/Values/Get_Trucks";
-
-                var response = await client.GetFromJsonAsync<List<Truck>>(url);
-
-                if (response != null)
-                {
-                    TrucksLabel.Text = string.Empty;
-                    foreach (var truck in response)
-                    {
-                        TrucksLabel.Text += truck.Id + " " + truck.Name + " " + truck.brand + " " + truck.Capacity + " " + truck.IsBusy + "\n";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorLabel.Text = ex.Message;
-                ErrorBorder.IsVisible = true;
-                ErrorButton.IsVisible = true;
-                ErrorButton.IsEnabled = true;
-            }
-            
-
-        }
-
         private async void Login_Clicked(object sender, EventArgs e)
         {
             try

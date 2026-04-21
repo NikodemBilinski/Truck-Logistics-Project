@@ -35,14 +35,6 @@
             </VerticalStackLayout>
         </Border>
         
-        
-        
-        <Button Text="Move to mainmenu (testing)" 
-                Clicked="Move_MainMenu"/>
-    
-        <Label x:Name="TrucksLabel" 
-               Text="Trucks will be displayed here"/>
-        
         <Entry x:Name="Login_entry"
                Placeholder="Enter your username"/>
 
