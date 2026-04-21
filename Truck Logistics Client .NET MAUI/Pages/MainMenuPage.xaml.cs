@@ -2,6 +2,8 @@ namespace TrucksLogisticsClient.Pages;
 
 using System.Diagnostics;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using TrucksLogisticsClient.Models;
 
 [QueryProperty(nameof(UserID), "UserID")]
@@ -87,4 +89,29 @@ public partial class MainMenuPage : ContentPage
         }
     }
 
+    private async void Admin_Get_Users_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            var response = await client.GetAsync(apiUrl + "Get_All_Users");
+
+            if(response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+
+                var userslist = JsonSerializer.Deserialize<List<Users>>(json, options);
+
+                Get_All_Users_View.ItemsSource = userslist;
+            }
+        }
+        catch(Exception ex)
+        {
+            Debug.WriteLine("Error: " + ex.Message);
+        }
+    }
 }

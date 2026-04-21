@@ -53,7 +53,7 @@
             <!--Show Data-->
 
             <VerticalStackLayout Margin="20" Spacing="0">
-                <Grid ColumnDefinitions="50, 150, 150, 100, 100, 80, 100, *" 
+                <Grid ColumnDefinitions="50,150,150,100,100,80,100,*" 
                       BackgroundColor="Transparent" 
                       Padding="10">
                     <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
@@ -68,11 +68,14 @@
 
                 <CollectionView x:Name="Get_All_Users_View">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate
-                        x:DataType="model:Users">
+                        <DataTemplate x:DataType="model:Users">
                             <Grid ColumnDefinitions="50,150,150,100,100,80,100,*" Padding="10">
-                                <Label Grid.Column="0" Text="{Binding FirstName}"/>
-                                <Label Grid.Column="1" Text="{Binding LastName}"/>
+                                <Label Grid.Column="0" Text="{Binding ID}"/>
+                                <HorizontalStackLayout Grid.Column="1" Spacing="2">
+                                    <Label Text="{Binding FirstName}"/>
+                                    <Label Text="{Binding LastName}"/>
+                                </HorizontalStackLayout>
+
                                 <Label Grid.Column="2" Text="{Binding Username}"/>
                                 <Label Grid.Column="3" Text="{Binding Role}"/>
                                 <Label Grid.Column="4" Text="{Binding isBusy}"/>
@@ -109,6 +112,7 @@
 
                     <Button x:Name="Admin_Get_Users"
                             Text="Get All Users"
+                            Clicked="Admin_Get_Users_Clicked"
                             IsEnabled="False"
                             IsVisible="False"
                             WidthRequest="125"/>

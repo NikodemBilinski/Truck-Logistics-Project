@@ -46,7 +46,7 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         [HttpGet("Get_All_Users")]
 
-        public async Task<ActionResult<Users>> GetAllUsers()
+        public async Task<ActionResult<IEnumerable<Users>>> GetAllUsers()
         {
             var allusers = await _dataContext.Users.ToListAsync();
             return Ok(allusers);
