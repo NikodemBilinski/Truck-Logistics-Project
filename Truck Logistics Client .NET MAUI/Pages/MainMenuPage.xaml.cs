@@ -158,7 +158,7 @@ public partial class MainMenuPage : ContentPage
         Trucks_View.IsVisible = true;
     }
 
-    private async void Users_View_Selected(object sender, SelectionChangedEventArgs e)
+    private async void Admin_Users_View_Selected(object sender, SelectionChangedEventArgs e)
     {
         await Hide_Everything();
         var selecteduser = e.CurrentSelection.FirstOrDefault() as Users;
@@ -170,8 +170,33 @@ public partial class MainMenuPage : ContentPage
             Edit_User_Section.IsVisible = true;
 
             Edit_User_Section.BindingContext = selecteduser;
-        }
+        }   
+    }
 
-        
+    private async void Admin_Save_Edit(object sender, EventArgs e)
+    {
+        var selecteduser = Edit_User_Section.BindingContext as Users;
+        if (selecteduser != null)
+        {
+            var result = await client.PutAsJsonAsync(apiUrl + "Update_User/" + selecteduser.ID, selecteduser);
+
+            if(result.IsSuccessStatusCode)
+            {
+                Debug.WriteLine("User updated successfully.");
+            }
+            else
+            {
+                Debug.WriteLine("Failed to update user. Status code: " + result.StatusCode);
+            }
+
+            await Hide_Everything();
+            return;
+        }
+        else
+        {
+            await Hide_Everything();
+            Debug.WriteLine("No user selected for editing.");
+            return;
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         [HttpGet("Get_Trucks")]
 
-        public async Task <ActionResult<List<Truck>>> GetTrucks()
+        public async Task<ActionResult<List<Truck>>> GetTrucks()
         {
             Console.WriteLine("GetTrucks Requested");
 
@@ -60,7 +60,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         [HttpPost("Post_Truck")]
         public async Task<ActionResult<Truck>> AddTruck(Truck truck)
         {
-            
+
             _dataContext.Trucks.Add(truck);
 
             await _dataContext.SaveChangesAsync();
@@ -69,7 +69,7 @@ namespace TrucksLogisticsServerAPI.Controllers
 
             return Ok(await _dataContext.Trucks.ToListAsync());
 
-            
+
         }
 
         // insert new user username, password and role
@@ -81,10 +81,10 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             var userslist = await _dataContext.Users.ToListAsync();
 
-            if(userslogin.Username != null && userslogin.Password != null)
+            if (userslogin.Username != null && userslogin.Password != null)
             {
                 //if role is empty - set it to user
-                if(userslogin.Role == string.Empty)
+                if (userslogin.Role == string.Empty)
                 {
                     userslogin.Role = "user";
                 }
@@ -96,7 +96,7 @@ namespace TrucksLogisticsServerAPI.Controllers
                 if (userslogin.Role != "user" && userslogin.Role != "admin")
                 {
 
-                    return BadRequest("Error: Invalid role for user (use admin or user)."); 
+                    return BadRequest("Error: Invalid role for user (use admin or user).");
                 }
 
                 // check if the username already exist
@@ -126,6 +126,52 @@ namespace TrucksLogisticsServerAPI.Controllers
             {
                 return BadRequest("Error: Username and password cannot be null.");
             }
+        }
+
+
+        // HTTP PUTS
+
+        [HttpPut("Update_User/{id}")]
+
+        public async Task<ActionResult<Users>> UpdateUser(int id, Users updatedUser)
+        {
+            Console.WriteLine("Request to update user with ID: " + id);
+
+            var user = await _dataContext.Users.FindAsync(id);
+            if (user == null)
+            {
+                return NotFound("Error: User with the specified ID not found.");
+            }
+
+
+            // Update user properties
+            user.Username = updatedUser.Username;
+            user.Password = updatedUser.Password;
+            user.Role = updatedUser.Role;
+            user.FirstName = updatedUser.FirstName;
+            user.LastName = updatedUser.LastName;
+            user.Age = updatedUser.Age;
+            user.isBusy = updatedUser.isBusy;
+
+            // Update languages
+            user.Languages.Clear();
+            foreach (var language in updatedUser.Languages)
+            {
+                _dataContext.Languages.Attach(language);
+                user.Languages.Add(language);
+            }
+
+            // Update trucks
+            user.AssignedTrucks.Clear();
+            foreach (var truck in updatedUser.AssignedTrucks)
+            {
+                _dataContext.Trucks.Attach(truck);
+                user.AssignedTrucks.Add(truck);
+            }
+            await _dataContext.SaveChangesAsync();
+
+            Console.WriteLine("User updated");
+            return Ok("User updated successfully.");
         }
     }
 }

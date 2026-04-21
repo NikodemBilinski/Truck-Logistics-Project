@@ -108,7 +108,7 @@
 
                     <CollectionView x:Name="Get_All_Users_View"
                                     SelectionMode="Single"
-                                    SelectionChanged="Users_View_Selected">
+                                    SelectionChanged="Admin_Users_View_Selected">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:Users">
                                 <Grid ColumnDefinitions="50,150,150,100,100,80,100,*" 
@@ -171,7 +171,11 @@
 
                 </VerticalStackLayout>
             </Grid>
+            
+            
             <!--Jobs-->
+            
+            
         </VerticalStackLayout>
 
         <VerticalStackLayout Grid.Column="0" Margin="10">
