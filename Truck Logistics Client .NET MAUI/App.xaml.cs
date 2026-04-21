@@ -11,7 +11,18 @@ namespace TrucksLogisticsClient
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Window(new AppShell());
+            var window = new Window(new AppShell());
+
+            const int width = 1200;
+            const int height = 500;
+
+            window.MinimumWidth = width;
+            window.MinimumHeight = height;
+
+
+            return window;
+
+            //return new Window(new AppShell());
         }
     }
 }
