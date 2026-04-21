@@ -69,7 +69,7 @@ namespace TrucksLogisticsClient
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Users user = await response.Content.ReadFromJsonAsync<Users>();
+                    Users? user = await response.Content.ReadFromJsonAsync<Users>();
                     if (user != null)
                     {
                         LoginResultLabel.Text = "Successfully logged in!";
@@ -98,6 +98,11 @@ namespace TrucksLogisticsClient
             ErrorButton.IsVisible = false;
             ErrorButton.IsEnabled = false;
             ErrorLabel.Text = string.Empty;
+        }
+
+        private async void Move_MainMenu(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync($"{nameof(MainMenuPage)}?UserID=1");
         }
     }
 }

@@ -37,8 +37,8 @@
         
         
         
-        <Button Text="Get Trucks" 
-                Clicked="Get_Trucks"/>
+        <Button Text="Move to mainmenu (testing)" 
+                Clicked="Move_MainMenu"/>
     
         <Label x:Name="TrucksLabel" 
                Text="Trucks will be displayed here"/>

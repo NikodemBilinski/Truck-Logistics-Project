@@ -26,14 +26,12 @@ public partial class MainMenuPage : ContentPage
         base.OnAppearing();
 
         await Get_Current_User();
-        if (isUserDataFetched)
+        if(isUserDataFetched)
         {
+            this.BindingContext = CurrentUser;
             await Generate_Main_Menu();
         }
-        else
-        {
-            WelcomeUserLabel.Text = "Some error, check debug";
-        }
+        
 
     }
 
@@ -42,7 +40,7 @@ public partial class MainMenuPage : ContentPage
 
         try
         {
-            var response = await client.GetAsync(apiUrl + "Get_User_By_ID" + UserID);
+            var response = await client.GetAsync(apiUrl + "Get_User_By_ID/" + UserID);
 
             if (response != null)
             {
@@ -66,6 +64,27 @@ public partial class MainMenuPage : ContentPage
 
     private async Task Generate_Main_Menu()
     {
-        WelcomeUserLabel.Text = CurrentUser.Username;
+        if(CurrentUser.Role == "admin")
+        {
+            User_Get_Trucks.IsEnabled = false;
+            User_Get_Trucks.IsVisible = false;
+
+            Admin_Get_Trucks.IsEnabled = true;
+            Admin_Get_Trucks.IsVisible = true;
+
+            Admin_Get_Users.IsEnabled = true;
+            Admin_Get_Users.IsVisible = true;
+            
+        }
+        if (CurrentUser.Role == "user")
+        {
+            User_Get_Trucks.IsEnabled = true;
+            User_Get_Trucks.IsVisible = true;
+
+            Admin_Get_Trucks.IsEnabled = false;
+            Admin_Get_Trucks.IsVisible = false;
+
+        }
     }
+
 }
