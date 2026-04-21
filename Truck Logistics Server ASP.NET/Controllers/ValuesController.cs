@@ -75,7 +75,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         // insert new user username, password and role
 
 
-        [HttpPost("Post_User")]
+        [HttpPost("Post_User_Swagger")]
 
         public async Task<ActionResult<Users>> AddUserLogin(Users userslogin)
         {

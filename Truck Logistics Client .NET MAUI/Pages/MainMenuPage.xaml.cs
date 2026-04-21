@@ -71,11 +71,8 @@ public partial class MainMenuPage : ContentPage
             User_Get_Trucks.IsEnabled = false;
             User_Get_Trucks.IsVisible = false;
 
-            Admin_Get_Trucks.IsEnabled = true;
-            Admin_Get_Trucks.IsVisible = true;
-
-            Admin_Get_Users.IsEnabled = true;
-            Admin_Get_Users.IsVisible = true;
+            Admin_Data_Panel.IsEnabled = true;
+            Admin_Data_Panel.IsVisible = true;
             
         }
         if (CurrentUser.Role == "user")
@@ -83,8 +80,8 @@ public partial class MainMenuPage : ContentPage
             User_Get_Trucks.IsEnabled = true;
             User_Get_Trucks.IsVisible = true;
 
-            Admin_Get_Trucks.IsEnabled = false;
-            Admin_Get_Trucks.IsVisible = false;
+            Admin_Data_Panel.IsEnabled = false;
+            Admin_Data_Panel.IsVisible = false;
 
         }
     }
@@ -99,6 +96,9 @@ public partial class MainMenuPage : ContentPage
 
         Edit_User_Section.IsVisible = false;
         Edit_User_Section.IsEnabled = false;
+
+        Add_User_Section.IsVisible = false;
+        Add_User_Section.IsEnabled = false;
     }
 
     private async void Admin_Get_Users_Clicked(object sender, EventArgs e)
@@ -198,5 +198,17 @@ public partial class MainMenuPage : ContentPage
             Debug.WriteLine("No user selected for editing.");
             return;
         }
+    }
+
+    private async void Admin_Add_User_Clicked(object sender, EventArgs e)
+    {
+
+    }
+
+    private async void Admin_Open_Add_User_Section(object sender, EventArgs e)
+    {
+        await Hide_Everything();
+        Add_User_Section.IsEnabled = true;
+        Add_User_Section.IsVisible = true;
     }
 }
