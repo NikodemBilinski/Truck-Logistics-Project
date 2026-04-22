@@ -33,6 +33,8 @@ namespace TrucksLogisticsClient
                         return;
                 }
 
+                LoginResultLabel.Text = "Attempting to log in...";
+
                 var response = await client.PostAsJsonAsync(url, new { Username = Login_entry.Text.ToString(), Password = Password_entry.Text.ToString() });
 
                 if (response.IsSuccessStatusCode)
@@ -66,6 +68,8 @@ namespace TrucksLogisticsClient
                 ErrorButton.IsVisible = true;
                 ErrorButton.IsEnabled = true;
             }
+
+            //LoginResultLabel.Text = string.Empty;
 
         }
 

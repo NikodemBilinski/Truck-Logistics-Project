@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using TrucksLogisticsServerAPI.Controllers;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
@@ -27,8 +28,8 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         public async Task<ActionResult<List<Truck>>> GetTrucks()
         {
-            Console.WriteLine("GetTrucks Requested");
-
+            Console.WriteLine("GetTrucks: Requested.");
+            Console.WriteLine("GetTrucks: Returning All Trucks.");
             return Ok(await _dataContext.Trucks.ToListAsync());
         }
 
@@ -36,11 +37,13 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         public async Task<ActionResult<Users>> GetUserByID(int ID)
         {
+            Console.WriteLine("GetUserByID: Requested.");
             var user = await _dataContext.Users.FindAsync(ID);
             if (user == null)
             {
                 return NotFound("Error: User with the specified ID not found.");
             }
+            Console.WriteLine("GetUserByID: Returning User: " + user.Username + ".");
             return Ok(user);
         }
 
@@ -48,6 +51,8 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         public async Task<ActionResult<IEnumerable<Users>>> GetAllUsers()
         {
+            Console.WriteLine("GetAllUsers: Requested.");
+            Console.WriteLine("GetAllUsers: Returning All Users.");
             var allusers = await _dataContext.Users.ToListAsync();
             return Ok(allusers);
         }
@@ -60,12 +65,12 @@ namespace TrucksLogisticsServerAPI.Controllers
         [HttpPost("Post_Truck")]
         public async Task<ActionResult<Truck>> AddTruck(Truck truck)
         {
-
+            Console.WriteLine("AddTruck: Requested To Add Truck.");
             _dataContext.Trucks.Add(truck);
 
             await _dataContext.SaveChangesAsync();
 
-            Console.WriteLine("Truck added: " + truck.Id + ", " + truck.Name + ", " + truck.IsBusy + ", " + truck.Capacity);
+            Console.WriteLine("AddTruck: Added Truck: " + truck.Id + ". " + truck.Name+ ", To Database.");
 
             return Ok(await _dataContext.Trucks.ToListAsync());
 
@@ -78,6 +83,7 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         public async Task<ActionResult<Users>> AddUser(Users UserToAdd)
         {
+            Console.WriteLine("AddUser: Requested To Add User: " + UserToAdd.Username + ".");
             var userslist = await _dataContext.Users.ToListAsync();
 
             UserToAdd.Role.ToLower();
@@ -90,6 +96,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             // check if the username already exist
             if (userslist.Any(x => x.Username == UserToAdd.Username))
             {
+                Console.WriteLine("AddUser: Error, Username Already Taken.");
                 return BadRequest("Error: Username already taken.");
             }
 
@@ -97,6 +104,7 @@ namespace TrucksLogisticsServerAPI.Controllers
 
             await _dataContext.SaveChangesAsync();
 
+            Console.WriteLine("AddUser: Added User: " + UserToAdd.ID + ". " + UserToAdd.Username + ", To Database.");
             return Ok("Successfully added new user: " + UserToAdd.Username);
 
         }
@@ -161,11 +169,12 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         public async Task<ActionResult<Users>> UpdateUser(int id, Users updatedUser)
         {
-            Console.WriteLine("Request to update user with ID: " + id);
+            Console.WriteLine("UpdateUser: Request to update user with ID: " + id);
 
             var user = await _dataContext.Users.FindAsync(id);
             if (user == null)
             {
+                Console.WriteLine("UpdateUser: Error, User with the specified ID not found.");
                 return NotFound("Error: User with the specified ID not found.");
             }
 
@@ -196,7 +205,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             }
             await _dataContext.SaveChangesAsync();
 
-            Console.WriteLine("User updated");
+            Console.WriteLine("UpdateUser: User Updated.");
             return Ok("User updated successfully.");
         }
 
@@ -206,6 +215,7 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         public async Task<ActionResult<Users>> DeleteUser(int ID)
         {
+            Console.WriteLine("DeleteUser: Request To Delete User With ID: " + ID);
             var UserToDelete = await _dataContext.Users.FindAsync(ID);
 
             if(UserToDelete != null)
@@ -215,9 +225,11 @@ namespace TrucksLogisticsServerAPI.Controllers
             }
             else
             {
+                Console.WriteLine("DeleteUser: Error, User Not Found");
                 return BadRequest("Error: User not Found");
             }
 
+            Console.WriteLine("DeleteUser: Deleted User From Database");
             return Ok("Successfully deleted user from database");
         }
     }

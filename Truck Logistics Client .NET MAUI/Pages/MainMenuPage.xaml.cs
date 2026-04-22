@@ -187,7 +187,8 @@ public partial class MainMenuPage : ContentPage
             }
             else
             {
-                Debug.WriteLine("Failed to update user. Status code: " + result.StatusCode);
+                Debug.WriteLine("Failed to update user. Status code: " + result.Content.ReadAsStringAsync());
+                EditUserLabelMain.Text = "await result.Content.ReadAsStringAsync()";
             }
 
             await Hide_Everything();
@@ -253,6 +254,10 @@ public partial class MainMenuPage : ContentPage
         {
             Add_Error_Label.Text = await result.Content.ReadAsStringAsync();
            
+        }
+        else
+        {
+            Add_Error_Label.Text = await result.Content.ReadAsStringAsync();
         }
     }
 

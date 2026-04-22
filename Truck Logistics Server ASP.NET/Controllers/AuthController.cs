@@ -20,24 +20,22 @@ namespace TrucksLogisticsServerAPI.Controllers
         [HttpPost("Login")]
         public IActionResult Login([FromBody] LoginModel model)
         {
-            Console.WriteLine("Request to login for user: " + model.Username);
+            Console.WriteLine("Login: Request To Login For User: " + model.Username + ".");
 
             var userslist = _datacontext.Users.ToList();
             //look for matching username
 
             var user = userslist.FirstOrDefault(u => u.Username == model.Username);
 
-            if (user == null)
+            if ((user == null) || (user.Password != model.Password))
             {
-                return BadRequest("Invalid username or password");
-            }
 
-            if(user.Password != model.Password)
-            {
                 return BadRequest("Invalid username or password");
             }
 
             //var token = "fake-token";
+
+            Console.WriteLine("Login: Successfully Logged in " + model.Username + ".");
 
             return Ok(user);
         }
