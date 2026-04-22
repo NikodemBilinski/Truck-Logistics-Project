@@ -41,7 +41,16 @@ namespace TrucksLogisticsClient
                     {
                         LoginResultLabel.Text = "Successfully logged in!";
 
-                        await Shell.Current.GoToAsync($"{nameof(MainMenuPage)}?UserID={user.ID}");
+                        
+                        if(user.Role == "admin")
+                        {
+                            await Shell.Current.GoToAsync($"{nameof(MainMenuPage)}?UserID={user.ID}");
+                        }
+                        else if(user.Role == "user")
+                        {
+                            await Shell.Current.GoToAsync($"{nameof(UserMainMenuPage)}?UserID={user.ID}");
+                        }
+
                     }
                 }
                 else
@@ -67,9 +76,5 @@ namespace TrucksLogisticsClient
             ErrorLabel.Text = string.Empty;
         }
 
-        private async void Move_MainMenu(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync($"{nameof(MainMenuPage)}?UserID=1");
-        }
     }
 }
