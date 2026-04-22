@@ -58,7 +58,7 @@
             <VerticalStackLayout x:Name="Edit_User_Section" IsVisible="False" x:DataType="model:Users" Spacing="10">
                 <Label x:Name="EditUserLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-                <Grid ColumnDefinitions="150,400,150">
+                <Grid ColumnDefinitions="150,400,200">
                     <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
                         <Label Text="First Name:"/>
                         <Label Text="Last Name:"/>
@@ -78,10 +78,19 @@
                         <Entry Text="{Binding Password}" Placeholder="Password" WidthRequest="175" HorizontalOptions="Start"/>
                     </VerticalStackLayout>
 
-                    <Button Text="Save Changes" 
-                            Grid.Column="2" 
-                            HeightRequest="50"
-                            Clicked="Admin_Save_Edit"/>
+                    <VerticalStackLayout Grid.Column="2" Spacing="15" Padding="15">
+                        <Label x:Name="EditUserLabelMain"
+                               TextColor="Red"
+                               WidthRequest="50"/>
+
+                        <Button Text="Save Changes" 
+                                HeightRequest="20"
+                                Clicked="Admin_Save_Edit"/>
+
+                        <Button Text="Delete User"
+                                HeightRequest="50"
+                                Clicked="Admin_Delete_User"/>
+                    </VerticalStackLayout>
                 </Grid>
 
             </VerticalStackLayout>
@@ -183,8 +192,8 @@
                     <Grid x:Name="Trucks_View"
                           IsVisible="False">
                         <VerticalStackLayout Margin="20">
-                            <Grid ColumnDefinitions="50,150,150,50,150" 
-                                  Margin="0,10,0,0"
+                            <Grid ColumnDefinitions="50,150,150,75,150" 
+                                  Margin="0,10,-15,0"
                                   BackgroundColor="Transparent" 
                                   Padding="10"
                                   HorizontalOptions="Center">
@@ -251,6 +260,7 @@
                     <Button Text="Add New User"
                             Clicked="Admin_Open_Add_User_Section"
                             WidthRequest="125"/>
+                    
                 </VerticalStackLayout>
             </Border>
         </VerticalStackLayout>

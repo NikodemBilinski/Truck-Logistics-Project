@@ -13,7 +13,7 @@ public partial class MainMenuPage : ContentPage
     public int UserID { get; set; }
 
     private bool isUserDataFetched = false;
-    public Users CurrentUser { get; set; }
+    public Users? CurrentUser { get; set; }
 
     private string apiUrl = "http://192.168.0.218:5160/api/Values/";
 
@@ -219,7 +219,7 @@ public partial class MainMenuPage : ContentPage
             return;
         }
 
-        Admin_Add_Role.Text.ToLower();
+        Admin_Add_Role.Text = Admin_Add_Role.Text.ToLower();
 
         if (Admin_Add_Role.Text != "user" && Admin_Add_Role.Text != "admin")
         {
@@ -261,5 +261,32 @@ public partial class MainMenuPage : ContentPage
         await Hide_Everything();
         Add_User_Section.IsEnabled = true;
         Add_User_Section.IsVisible = true;
+    }
+
+    private async void Admin_Delete_User(object sender, EventArgs e)
+    {
+        var selecteduser = Edit_User_Section.BindingContext as Users;
+
+        if(selecteduser != null)
+        {
+            var response = await DisplayAlertAsync("Deleting User", "Are you sure you want to delete " + selecteduser.Username, "Yes", "No");
+
+            if(response)
+            {
+                var request = await client.DeleteAsync(apiUrl + "Delete_User/" + selecteduser.ID);
+
+                if(request.IsSuccessStatusCode)
+                {
+                    //show goooooooooooooooooood
+                    EditUserLabelMain.Text = await request.Content.ReadAsStringAsync();
+                    return;
+                }
+
+                //show error
+                EditUserLabelMain.Text = await request.Content.ReadAsStringAsync();
+
+            }
+            return;
+        }
     }
 }

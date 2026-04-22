@@ -199,5 +199,26 @@ namespace TrucksLogisticsServerAPI.Controllers
             Console.WriteLine("User updated");
             return Ok("User updated successfully.");
         }
+
+        // HTTP DELETES
+
+        [HttpDelete("Delete_User/{ID}")]
+
+        public async Task<ActionResult<Users>> DeleteUser(int ID)
+        {
+            var UserToDelete = await _dataContext.Users.FindAsync(ID);
+
+            if(UserToDelete != null)
+            {
+                _dataContext.Users.Remove(UserToDelete);
+                await _dataContext.SaveChangesAsync();
+            }
+            else
+            {
+                return BadRequest("Error: User not Found");
+            }
+
+            return Ok("Successfully deleted user from database");
+        }
     }
 }
