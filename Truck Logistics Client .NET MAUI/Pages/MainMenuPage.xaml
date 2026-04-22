@@ -81,10 +81,10 @@
                     <VerticalStackLayout Grid.Column="2" Spacing="15" Padding="15">
                         <Label x:Name="EditUserLabelMain"
                                TextColor="Red"
-                               WidthRequest="50"/>
+                               HeightRequest="50"/>
 
                         <Button Text="Save Changes" 
-                                HeightRequest="20"
+                                HeightRequest="50"
                                 Clicked="Admin_Save_Edit"/>
 
                         <Button Text="Delete User"

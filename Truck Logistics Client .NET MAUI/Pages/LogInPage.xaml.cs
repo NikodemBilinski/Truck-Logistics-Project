@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Diagnostics;
+using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
 using TrucksLogisticsClient.Pages;
 
@@ -74,6 +75,11 @@ namespace TrucksLogisticsClient
             ErrorButton.IsVisible = false;
             ErrorButton.IsEnabled = false;
             ErrorLabel.Text = string.Empty;
+        }
+
+        private async void Github_Icon_Clicked(object sender, EventArgs e) 
+        {
+            await Browser.OpenAsync("https://github.com/NikodemBilinski/Truck-Logistics-Project");
         }
 
     }
