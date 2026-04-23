@@ -6,14 +6,13 @@
              NavigationPage.HasNavigationBar="False">
 
     
-    <Grid ColumnDefinitions="200,*"
-          MinimumHeightRequest="1000">
+    <Grid ColumnDefinitions="200,*">
 
-
-        <VerticalStackLayout Grid.Column="1" Margin="10">
+        <Grid Grid.Column="1" RowDefinitions="Auto,auto,*" Margin="30">
 
             <!--UserDataHeader-->
             <Border x:Name="UserDataHeader"
+                    Grid.Row="0"
                     StrokeShape="RoundRectangle 20,20,20,20"
                     WidthRequest="250">
 
@@ -31,7 +30,8 @@
                     StrokeShape="RoundRectangle 20,20,20,20"
                     WidthRequest="500"
                     Margin="20"
-                    Padding="20">
+                    Padding="20"
+                    Grid.Row="1">
                 <VerticalStackLayout>
                     <Label Text="Profile Data:"
                            HorizontalOptions="Center"
@@ -50,79 +50,249 @@
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Border>
+            <ScrollView Grid.Row="2" VerticalOptions="FillAndExpand">
+                <VerticalStackLayout>
+            
+            <!--Edit Data (admin)-->
 
-            <!--Show Data-->
+            <VerticalStackLayout x:Name="Edit_User_Section" IsVisible="False" x:DataType="model:Users" Spacing="10">
+                <Label x:Name="EditUserLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-            <VerticalStackLayout Margin="20" Spacing="0">
-                <Grid ColumnDefinitions="50,150,150,100,100,80,100,*" 
-                      Margin="0,10,-60,0"
-                      BackgroundColor="Transparent" 
-                      Padding="10"
-                      HorizontalOptions="Center">
-                    <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
-                    <Label Grid.Column="1" Text="Full Name" FontAttributes="Bold"/>
-                    <Label Grid.Column="2" Text="Username" FontAttributes="Bold"/>
-                    <Label Grid.Column="3" Text="Role" FontAttributes="Bold"/>
-                    <Label Grid.Column="4" Text="Status" FontAttributes="Bold"/>
-                    <Label Grid.Column="5" Text="Age" FontAttributes="Bold"/>
-                    <Label Grid.Column="6" Text="Trucks" FontAttributes="Bold"/>
-                    <Label Grid.Column="7" Text="Languages" FontAttributes="Bold"/>
+                <Grid ColumnDefinitions="150,400,200">
+                    <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                        <Label Text="First Name:"/>
+                        <Label Text="Last Name:"/>
+                        <Label Text="Age:"/>
+                        <Label Text="Role:"/>
+                        <Label Text="Status (is busy):"/>
+                        <Label Text="Username:"/>
+                        <Label Text="Password:"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="15">
+                        <Entry Text="{Binding FirstName}" Placeholder="First Name" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry Text="{Binding LastName}" Placeholder="Last Name" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry Text="{Binding Age}" Placeholder="Age" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry Text="{Binding Role}" Placeholder="Role" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry Text="{Binding isBusy}" Placeholder="Status (is busy)" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry Text="{Binding Username}" Placeholder="Username" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry Text="{Binding Password}" Placeholder="Password" WidthRequest="175" HorizontalOptions="Start"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="2" Spacing="15" Padding="15">
+                        <Label x:Name="EditUserLabelMain"
+                               TextColor="Red"
+                               HeightRequest="50"/>
+
+                        <Button Text="Save Changes" 
+                                HeightRequest="50"
+                                Clicked="Admin_Save_Edit"/>
+
+                        <Button Text="Delete User"
+                                HeightRequest="50"
+                                Clicked="Admin_Delete_User"/>
+                    </VerticalStackLayout>
                 </Grid>
 
-                <CollectionView x:Name="Get_All_Users_View">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="model:Users">
-                            <Grid ColumnDefinitions="50,150,150,100,100,80,100,*" 
-                                  Padding="10"
-                                  HorizontalOptions="Center">
-                                
-                                <Label Grid.Column="0" Text="{Binding ID}"/>
-                                <HorizontalStackLayout Grid.Column="1" Spacing="2">
-                                    <Label Text="{Binding FirstName}"/>
-                                    <Label Text="{Binding LastName}"/>
-                                </HorizontalStackLayout>
+            </VerticalStackLayout>
 
-                                <Label Grid.Column="2" Text="{Binding Username}"/>
-                                <Label Grid.Column="3" Text="{Binding Role}"/>
-                                <Label Grid.Column="4" Text="{Binding isBusy}"/>
-                                <Label Grid.Column="5" Text="{Binding Age}"/>
-                                <Label Grid.Column="6" Text="{Binding AssignedTrucks.Count}"/>
-                                <Label Grid.Column="7" Text="{Binding Languages.Count}"/>
 
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+            <!--Add New User (admin)-->
+            <VerticalStackLayout x:Name="Add_User_Section" IsVisible="False" x:DataType="model:Users" Spacing="10">
+                <Label Text="Add New User" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                <Grid ColumnDefinitions="150,400,150">
+                    <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                        <Label Text="First Name:"/>
+                        <Label Text="Last Name:"/>
+                        <Label Text="Age:"/>
+                        <Label Text="Role:"/>
+                        <Label Text="Username:"/>
+                        <Label Text="Password:"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="15">
+                        <Entry x:Name="Admin_Add_User_FirstName" Placeholder="First Name" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_User_LastName" Placeholder="Last Name" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_User_Age" Placeholder="Age" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_User_Role" Placeholder="Role" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_User_Username" Placeholder="Username" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_User_Password" Placeholder="Password" WidthRequest="175" HorizontalOptions="Start"/>
+                    </VerticalStackLayout>
+
+                    <Label x:Name="Add_User_Error_Label"
+                               Grid.Column="2"
+                               TextColor="Red"
+                               Margin="0,50,0,0"/>
+
+                    <Button Text="Add User" 
+                                Grid.Column="2" 
+                                HeightRequest="50"
+                                Clicked="Admin_Add_User_Clicked"/>
+                </Grid>
 
             </VerticalStackLayout>
-        </VerticalStackLayout>
+                    
+            <!--Add New Truck-->
+            <VerticalStackLayout x:Name="Add_Truck_Section" IsVisible="False" x:DataType="model:Truck" Spacing="10">
+                <Label Text="Add New Truck" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
+                    <Grid ColumnDefinitions="150,400,150">
+                        <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                            <Label Text="Name:"/>
+                            <Label Text="Brand:"/>
+                            <Label Text="Capacity"/>
+                            </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="15">
+                            <Entry x:Name="Admin_Add_Truck_Name" Placeholder="Name" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Admin_Add_Truck_Brand" Placeholder="Brand" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Admin_Add_Truck_Capacity" Placeholder="Capacity" WidthRequest="175" HorizontalOptions="Start"/>
+                        </VerticalStackLayout>
+
+                            <Label x:Name="Add_Truck_Error_Label"
+                                   Grid.Column="2"
+                                   TextColor="Red"
+                                   Margin="0,0,0,0"/>
+
+                            <Button Text="Add Truck" 
+                                    Grid.Column="2" 
+                                    HeightRequest="50"
+                                    Clicked="Admin_Add_Truck_Clicked"/>
+                        </Grid>
+
+                    </VerticalStackLayout>
+                    <!-- Collection view templates-->
+
+            <!--Users-->
+                    <Grid x:Name="Users_View"
+                          IsVisible="False">
+                        <VerticalStackLayout Margin="20" Spacing="0">
+                            <Grid ColumnDefinitions="50,150,150,100,100,80,100,*" 
+                                  Margin="0,0,-15,0"
+                                  BackgroundColor="Transparent" 
+                                  Padding="10"
+                                  HorizontalOptions="Center">
+                                <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                                <Label Grid.Column="1" Text="Full Name" FontAttributes="Bold"/>
+                                <Label Grid.Column="2" Text="Username" FontAttributes="Bold"/>
+                                <Label Grid.Column="3" Text="Role" FontAttributes="Bold"/>
+                                <Label Grid.Column="4" Text="Status" FontAttributes="Bold"/>
+                                <Label Grid.Column="5" Text="Age" FontAttributes="Bold"/>
+                                <Label Grid.Column="6" Text="Trucks" FontAttributes="Bold"/>
+                                <Label Grid.Column="7" Text="Languages" FontAttributes="Bold"/>
+                            </Grid>
+
+                            <CollectionView x:Name="Get_All_Users_View"
+                                            SelectionMode="Single"
+                                            SelectionChanged="Admin_Users_View_Selected"
+                                            WidthRequest="800">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:Users">
+                                        <Border Stroke="Transparent" Padding="-5">
+                                            <Border Stroke="Transparent" StrokeThickness="3">
+                                                <Grid ColumnDefinitions="50,150,150,100,100,80,100,50" 
+                                                  Padding="10"
+                                                  HorizontalOptions="Center">
+
+                                                    <Label Grid.Column="0" Text="{Binding ID}"/>
+                                                    <HorizontalStackLayout Grid.Column="1" Spacing="2">
+                                                        <Label Text="{Binding FirstName}"/>
+                                                        <Label Text="{Binding LastName}"/>
+                                                    </HorizontalStackLayout>
+
+                                                    <Label Grid.Column="2" Text="{Binding Username}"/>
+                                                    <Label Grid.Column="3" Text="{Binding Role}"/>
+                                                    <Label Grid.Column="4" Text="{Binding isBusy}"/>
+                                                    <Label Grid.Column="5" Text="{Binding Age}"/>
+                                                    <Label Grid.Column="6" Text="{Binding AssignedTrucks.Count}"/>
+                                                    <Label Grid.Column="7" Text="{Binding Languages.Count}"/>
+
+                                                </Grid>
+                                            </Border>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Vertical"/>
+                                </CollectionView.ItemsLayout>
+                            </CollectionView>
+
+                        </VerticalStackLayout>
+                    </Grid>
+                    <!--Trucks-->
+                    <Grid x:Name="Trucks_View"
+                          IsVisible="False">
+                        <VerticalStackLayout Margin="20">
+                            <Grid ColumnDefinitions="50,150,150,75,150" 
+                                  Margin="0,10,-15,0"
+                                  BackgroundColor="Transparent" 
+                                  Padding="10"
+                                  HorizontalOptions="Center">
+                                <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                                <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
+                                <Label Grid.Column="2" Text="Brand" FontAttributes="Bold"/>
+                                <Label Grid.Column="3" Text="Status" FontAttributes="Bold"/>
+                                <Label Grid.Column="4" Text="Capacity" FontAttributes="Bold"/>
+                            </Grid>
+
+                            <CollectionView x:Name="Get_All_Trucks_View"
+                                            SelectionMode="Single"
+                                            WidthRequest="570">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:Truck">
+                                        <Border Stroke="Transparent" Padding="-5">
+                                            <Border Stroke="transparent"  StrokeThickness="3">
+                                                <Grid ColumnDefinitions="50,150,150,75,150"
+                                                  Padding="10"
+                                                  HorizontalOptions="Center">
+
+                                                    <Label Grid.Column="0" Text="{Binding Id}"/>
+                                                    <Label Grid.Column="1" Text="{Binding Name}"/>
+                                                    <Label Grid.Column="2" Text="{Binding brand}"/>
+                                                    <Label Grid.Column="3" Text="{Binding IsBusy}"/>
+                                                    <Label Grid.Column="4" Text="{Binding Capacity}"/>
+                                                </Grid>
+                                            </Border>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+
+                        </VerticalStackLayout>
+                    </Grid>
+
+            <!--Jobs-->
+            </VerticalStackLayout>
+            </ScrollView>
+        </Grid>
         <VerticalStackLayout Grid.Column="0" Margin="10">
 
-            <!--DataPanel-->
-            <Border StrokeThickness="5"
+            <!--Admin DataPanel-->
+            <Border x:Name="Admin_Data_Panel"
+                    StrokeThickness="5"
+                    StrokeShape="RoundRectangle 50"
                     Stroke="Beige"
-                    Padding="50">
+                    Padding="50"
+                    IsVisible="False"
+                    IsEnabled="False">
                 <VerticalStackLayout Spacing="25">
-                   
+
                     <Button x:Name="User_Get_Trucks"
                             Text="Get Your Trucks"
-                            IsEnabled="False"
-                            IsVisible="False"
                             WidthRequest="125"/>
 
-                    <Button x:Name="Admin_Get_Trucks"
-                            Text="Get All Trucks"
-                            IsEnabled="False"
-                            IsVisible="False"
+                    <Button Text="Get All Trucks"
+                            Clicked="Admin_Get_Trucks_Clicked"
                             WidthRequest="125"/>
 
-                    <Button x:Name="Admin_Get_Users"
-                            Text="Get All Users"
+                    <Button Text="Get All Users"
                             Clicked="Admin_Get_Users_Clicked"
-                            IsEnabled="False"
-                            IsVisible="False"
                             WidthRequest="125"/>
+                    <Button Text="Add New User"
+                            Clicked="Admin_Open_Add_User_Section"
+                            WidthRequest="125"/>
+                    <Button Text="Add New Truck"
+                            Clicked="Admin_Open_Add_Truck_Section"
+                            WidthRequest="125"/>
+
                 </VerticalStackLayout>
             </Border>
         </VerticalStackLayout>

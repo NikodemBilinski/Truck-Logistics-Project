@@ -1,5 +1,6 @@
 namespace TrucksLogisticsClient.Pages;
 
+using Microsoft.Maui.Graphics.Text;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -12,7 +13,7 @@ public partial class MainMenuPage : ContentPage
     public int UserID { get; set; }
 
     private bool isUserDataFetched = false;
-    public Users CurrentUser { get; set; }
+    public Users? CurrentUser { get; set; }
 
     private string apiUrl = "http://192.168.0.218:5160/api/Values/";
 
@@ -71,11 +72,8 @@ public partial class MainMenuPage : ContentPage
             User_Get_Trucks.IsEnabled = false;
             User_Get_Trucks.IsVisible = false;
 
-            Admin_Get_Trucks.IsEnabled = true;
-            Admin_Get_Trucks.IsVisible = true;
-
-            Admin_Get_Users.IsEnabled = true;
-            Admin_Get_Users.IsVisible = true;
+            Admin_Data_Panel.IsEnabled = true;
+            Admin_Data_Panel.IsVisible = true;
             
         }
         if (CurrentUser.Role == "user")
@@ -83,14 +81,33 @@ public partial class MainMenuPage : ContentPage
             User_Get_Trucks.IsEnabled = true;
             User_Get_Trucks.IsVisible = true;
 
-            Admin_Get_Trucks.IsEnabled = false;
-            Admin_Get_Trucks.IsVisible = false;
+            Admin_Data_Panel.IsEnabled = false;
+            Admin_Data_Panel.IsVisible = false;
 
         }
     }
 
+    private async Task Hide_Everything()
+    {
+        Users_View.IsVisible = false;
+        Users_View.IsEnabled = false;
+
+        Trucks_View.IsVisible = false;
+        Trucks_View.IsVisible = false;
+
+        Edit_User_Section.IsVisible = false;
+        Edit_User_Section.IsEnabled = false;
+
+        Add_User_Section.IsVisible = false;
+        Add_User_Section.IsEnabled = false;
+
+        Add_Truck_Section.IsVisible = false;
+        Add_Truck_Section.IsEnabled = false;
+    }
+
     private async void Admin_Get_Users_Clicked(object sender, EventArgs e)
     {
+        await Hide_Everything();
         try
         {
             var response = await client.GetAsync(apiUrl + "Get_All_Users");
@@ -112,6 +129,219 @@ public partial class MainMenuPage : ContentPage
         catch(Exception ex)
         {
             Debug.WriteLine("Error: " + ex.Message);
+            return;
         }
+        Users_View.IsEnabled = true;
+        Users_View.IsVisible = true;
+    }
+
+    private async void Admin_Get_Trucks_Clicked(object sender, EventArgs e)
+    {
+        await Hide_Everything();
+
+        try
+        {
+            var response = await client.GetAsync(apiUrl + "Get_Trucks");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+                var truckslist = JsonSerializer.Deserialize<List<Truck>>(json, options);
+                Get_All_Trucks_View.ItemsSource = truckslist;
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Error: " + ex.Message);
+            return;
+        }
+        Trucks_View.IsEnabled = true;
+        Trucks_View.IsVisible = true;
+    }
+
+    private async void Admin_Users_View_Selected(object sender, SelectionChangedEventArgs e)
+    {
+        await Hide_Everything();
+        var selecteduser = e.CurrentSelection.FirstOrDefault() as Users;
+
+        if(selecteduser != null)
+        {
+            EditUserLabelHeader.Text = "Edit user " + selecteduser.Username;
+            Edit_User_Section.IsEnabled = true;
+            Edit_User_Section.IsVisible = true;
+
+            Edit_User_Section.BindingContext = selecteduser;
+        }   
+    }
+
+    private async void Admin_Save_Edit(object sender, EventArgs e)
+    {
+        var selecteduser = Edit_User_Section.BindingContext as Users;
+        if (selecteduser != null)
+        {
+            var result = await client.PutAsJsonAsync(apiUrl + "Update_User/" + selecteduser.ID, selecteduser);
+
+            if(result.IsSuccessStatusCode)
+            {
+                Debug.WriteLine("User updated successfully.");
+            }
+            else
+            {
+                Debug.WriteLine("Failed to update user. Status code: " + result.Content.ReadAsStringAsync());
+                EditUserLabelMain.Text = "await result.Content.ReadAsStringAsync()";
+            }
+
+            await Hide_Everything();
+            return;
+        }
+        else
+        {
+            await Hide_Everything();
+            Debug.WriteLine("No user selected for editing.");
+            return;
+        }
+    }
+
+    private async void Admin_Add_User_Clicked(object sender, EventArgs e)
+    {
+        if(string.IsNullOrEmpty(Admin_Add_User_FirstName.Text))
+        {
+            Add_User_Error_Label.Text = "First Name is empty!";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Add_User_LastName.Text))
+        {
+            Add_User_Error_Label.Text = "Last Name is empty!";
+            return;
+        }
+        if (!int.TryParse(Admin_Add_User_Age.Text, out int age))
+        {
+            Add_User_Error_Label.Text = "Age is just a number!";
+            return;
+        }
+
+        Admin_Add_User_Role.Text = Admin_Add_User_Role.Text.ToLower();
+
+        if (Admin_Add_User_Role.Text != "user" && Admin_Add_User_Role.Text != "admin")
+        {
+            Add_User_Error_Label.Text = "Role is not either user or admin";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Add_User_Username.Text))
+        {
+            Add_User_Error_Label.Text = "Username is empty!";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Add_User_Password.Text))
+        {
+            Add_User_Error_Label.Text = "Password is empty!";
+            return;
+        }
+        var UserToAdd = new Users()
+        {
+            FirstName = Admin_Add_User_FirstName.Text,
+            LastName = Admin_Add_User_LastName.Text,
+            Age = age,
+            Role = Admin_Add_User_Role.Text,
+            Username = Admin_Add_User_Username.Text,
+            Password = Admin_Add_User_Password.Text
+        };
+
+        var result = await client.PostAsJsonAsync(apiUrl + "Add_User", UserToAdd);
+
+        if(result.IsSuccessStatusCode)
+        {
+            Add_User_Error_Label.Text = await result.Content.ReadAsStringAsync();
+           
+        }
+        else
+        {
+            Add_User_Error_Label.Text = await result.Content.ReadAsStringAsync();
+        }
+    }
+
+    private async void Admin_Open_Add_User_Section(object sender, EventArgs e)
+    {
+        await Hide_Everything();
+        Add_User_Section.IsEnabled = true;
+        Add_User_Section.IsVisible = true;
+    }
+
+    private async void Admin_Open_Add_Truck_Section(object sender, EventArgs e)
+    {
+        await Hide_Everything();
+
+        Add_Truck_Section.IsVisible = true;
+        Add_Truck_Section.IsEnabled = true;
+    }
+
+    private async void Admin_Delete_User(object sender, EventArgs e)
+    {
+        var selecteduser = Edit_User_Section.BindingContext as Users;
+
+        if(selecteduser != null)
+        {
+            var response = await DisplayAlertAsync("Deleting User", "Are you sure you want to delete " + selecteduser.Username, "Yes", "No");
+
+            if(response)
+            {
+                var request = await client.DeleteAsync(apiUrl + "Delete_User/" + selecteduser.ID);
+
+                if(request.IsSuccessStatusCode)
+                {
+                    //show goooooooooooooooooood
+                    EditUserLabelMain.Text = await request.Content.ReadAsStringAsync();
+                    return;
+                }
+
+                //show error
+                EditUserLabelMain.Text = await request.Content.ReadAsStringAsync();
+
+            }
+            return;
+        }
+    }
+
+    private async void Admin_Add_Truck_Clicked(object sender, EventArgs e)
+    {
+
+        Truck TruckToAdd = new Truck();
+
+        if(string.IsNullOrEmpty(Admin_Add_Truck_Name.Text))
+        {
+            Add_Truck_Error_Label.Text = "Name is empty!";
+            return;
+        }
+        if(string.IsNullOrEmpty(Admin_Add_Truck_Brand.Text))
+        {
+            Add_Truck_Error_Label.Text = "Brand is empty!";
+            return;
+        }
+        if(!int.TryParse(Admin_Add_Truck_Capacity.Text, out int capacity))
+        {
+            Add_Truck_Error_Label.Text = "Capacity should be a number!";
+            return;
+        }
+
+        TruckToAdd.Name = Admin_Add_Truck_Name.Text;
+        TruckToAdd.brand = Admin_Add_Truck_Brand.Text;
+        TruckToAdd.Capacity = capacity;
+
+        var response = await client.PostAsJsonAsync(apiUrl + "Add_Truck", TruckToAdd);
+
+        if(response.IsSuccessStatusCode)
+        {
+            Add_Truck_Error_Label.Text = await response.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            Add_Truck_Error_Label.Text = await response.Content.ReadAsStringAsync();
+        }
+
+
+        
     }
 }

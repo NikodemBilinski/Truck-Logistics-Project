@@ -8,7 +8,8 @@ namespace TrucksLogisticsClient
         {
             InitializeComponent();
 
-            Routing.RegisterRoute(nameof(MainMenuPage), typeof(MainMenuPage));
+            Routing.RegisterRoute(nameof(Pages.MainMenuPage), typeof(Pages.MainMenuPage));
+            Routing.RegisterRoute(nameof(Pages.UserMainMenuPage), typeof(Pages.UserMainMenuPage));
         }
     }
 }

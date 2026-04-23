@@ -74,10 +74,16 @@
 	  <Compile Update="Pages\LogInPage.xaml.cs">
 	    <DependentUpon>LogInPage.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="Pages\MainMenuPage.xaml.cs">
+	    <DependentUpon>MainMenuPage.xaml</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <MauiXaml Update="Pages\MainMenuPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Pages\UserMainMenuPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

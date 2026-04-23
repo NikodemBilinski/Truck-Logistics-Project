@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Diagnostics;
+using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
 using TrucksLogisticsClient.Pages;
 
@@ -12,39 +13,6 @@ namespace TrucksLogisticsClient
         {
             InitializeComponent();
         }
-
-
-
-        private async void Get_Trucks(object sender, EventArgs e)
-        {
-            try
-            {
-                HttpClient client = new HttpClient();
-
-                var url = "http://192.168.0.218:5160/api/Values/Get_Trucks";
-
-                var response = await client.GetFromJsonAsync<List<Truck>>(url);
-
-                if (response != null)
-                {
-                    TrucksLabel.Text = string.Empty;
-                    foreach (var truck in response)
-                    {
-                        TrucksLabel.Text += truck.Id + " " + truck.Owner + " " + truck.Capacity + " " + truck.IsBusy + "\n";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorLabel.Text = ex.Message;
-                ErrorBorder.IsVisible = true;
-                ErrorButton.IsVisible = true;
-                ErrorButton.IsEnabled = true;
-            }
-            
-
-        }
-
         private async void Login_Clicked(object sender, EventArgs e)
         {
             try
@@ -65,6 +33,8 @@ namespace TrucksLogisticsClient
                         return;
                 }
 
+                LoginResultLabel.Text = "Attempting to log in...";
+
                 var response = await client.PostAsJsonAsync(url, new { Username = Login_entry.Text.ToString(), Password = Password_entry.Text.ToString() });
 
                 if (response.IsSuccessStatusCode)
@@ -74,7 +44,16 @@ namespace TrucksLogisticsClient
                     {
                         LoginResultLabel.Text = "Successfully logged in!";
 
-                        await Shell.Current.GoToAsync($"{nameof(MainMenuPage)}?UserID={user.ID}");
+                        
+                        if(user.Role == "admin")
+                        {
+                            await Shell.Current.GoToAsync($"{nameof(MainMenuPage)}?UserID={user.ID}");
+                        }
+                        else if(user.Role == "user")
+                        {
+                            await Shell.Current.GoToAsync($"{nameof(UserMainMenuPage)}?UserID={user.ID}");
+                        }
+
                     }
                 }
                 else
@@ -90,6 +69,8 @@ namespace TrucksLogisticsClient
                 ErrorButton.IsEnabled = true;
             }
 
+            //LoginResultLabel.Text = string.Empty;
+
         }
 
         private async void Close_Error(object sender, EventArgs e)
@@ -100,9 +81,10 @@ namespace TrucksLogisticsClient
             ErrorLabel.Text = string.Empty;
         }
 
-        private async void Move_MainMenu(object sender, EventArgs e)
+        private async void Github_Icon_Clicked(object sender, EventArgs e) 
         {
-            await Shell.Current.GoToAsync($"{nameof(MainMenuPage)}?UserID=1");
+            await Browser.OpenAsync("https://github.com/NikodemBilinski/Truck-Logistics-Project");
         }
+
     }
 }
