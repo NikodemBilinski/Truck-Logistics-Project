@@ -263,12 +263,33 @@ namespace TrucksLogisticsServerAPI.Controllers
             }
             else
             {
-                Console.WriteLine("DeleteUser: Error, User Not Found");
-                return BadRequest("Error: User not Found");
+                Console.WriteLine("DeleteUser: Error, User Not Found.");
+                return BadRequest("Error: User not Found.");
             }
 
-            Console.WriteLine("DeleteUser: Deleted User From Database");
+            Console.WriteLine("DeleteUser: Deleted User From Database.");
             return Ok("Successfully deleted user from database");
+        }
+
+        [HttpDelete("Delete_Truck/{ID}")]
+        public async Task<ActionResult<Truck>> DeleteTruck(int ID)
+        {
+            Console.WriteLine("DeleteTruck: Request To Delete Truck With ID: " + ID);
+
+            var TruckToDelete = await _dataContext.Trucks.FindAsync(ID);
+
+            if(TruckToDelete != null)
+            {
+                _dataContext.Trucks.Remove(TruckToDelete);
+                await _dataContext.SaveChangesAsync();
+            }
+            else
+            {
+                Console.WriteLine("DeleteTruck: Error, Truck Not Found.");
+                return BadRequest("Error: Truck not Found.");
+            }
+            Console.WriteLine("DeleteTruck: Deleted Truck From Database.");
+            return Ok();
         }
     }
 }
