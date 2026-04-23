@@ -227,6 +227,26 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok("User updated successfully.");
         }
 
+        [HttpPut("Update_Truck/{id}")]
+        public async Task<ActionResult<Truck>> UpdateTruck(int id, Truck updatedTruck)
+        {
+            Console.WriteLine("UpdateTruck: Request to update truck with ID: " + id);
+            var truck = await _dataContext.Trucks.FindAsync(id);
+            if (truck == null)
+            {
+                Console.WriteLine("UpdateTruck: Error, Truck with the specified ID not found.");
+                return NotFound("Error: Truck with the specified ID not found.");
+            }
+            // Update truck properties
+            truck.Name = updatedTruck.Name;
+            truck.brand = updatedTruck.brand;
+            truck.Capacity = updatedTruck.Capacity;
+            truck.IsBusy = false;
+            await _dataContext.SaveChangesAsync();
+            Console.WriteLine("UpdateTruck: Truck Updated.");
+            return Ok("Truck updated successfully.");
+        }
+
         // HTTP DELETES
 
         [HttpDelete("Delete_User/{ID}")]

@@ -85,7 +85,7 @@
 
                         <Button Text="Save Changes" 
                                 HeightRequest="50"
-                                Clicked="Admin_Save_Edit"/>
+                                Clicked="Admin_Save_User_Edit"/>
 
                         <Button Text="Delete User"
                                 HeightRequest="50"
@@ -94,9 +94,42 @@
                 </Grid>
 
             </VerticalStackLayout>
+                    
+            <!--Edit Truck (admin)-->
+            <VerticalStackLayout x:Name="Edit_Truck_Section" IsVisible="False" x:DataType="model:Truck" Spacing="10">
+                        <Label x:Name="EditTruckLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                <Grid ColumnDefinitions="150,400,150">
+                    <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                        <Label Text="Name:"/>
+                        <Label Text="Brand:"/>
+                        <Label Text="Capacity"/>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="15">
+                        <Entry x:Name="Admin_Edit_Truck_Name" Text="{Binding Name}" Placeholder="Name" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Truck_Brand" Text="{Binding brand}"  Placeholder="Brand" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Truck_Capacity" Text="{Binding Capacity}"  Placeholder="Capacity" WidthRequest="175" HorizontalOptions="Start"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="2" Spacing="15">
+                        <Label x:Name="EditTruckLabelMain"
+                               TextColor="Red"
+                               Margin="0,0,0,0"/>
+                    
+                        <Button Text="Save Changes" 
+                                HeightRequest="50"
+                                Clicked="Admin_Save_Truck_Edit"/>
+
+                                <Button Text="Delete Truck"
+                                HeightRequest="50"
+                                Clicked="Admin_Delete_Truck"/>
+                    </VerticalStackLayout>
+                </Grid>
+
+            </VerticalStackLayout>
 
 
-            <!--Add New User (admin)-->
+                    <!--Add New User (admin)-->
             <VerticalStackLayout x:Name="Add_User_Section" IsVisible="False" x:DataType="model:Users" Spacing="10">
                 <Label Text="Add New User" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
@@ -235,6 +268,7 @@
 
                             <CollectionView x:Name="Get_All_Trucks_View"
                                             SelectionMode="Single"
+                                            SelectionChanged="Admin_Trucks_View_Selected"
                                             WidthRequest="570">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="model:Truck">

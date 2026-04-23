@@ -98,6 +98,9 @@ public partial class MainMenuPage : ContentPage
         Edit_User_Section.IsVisible = false;
         Edit_User_Section.IsEnabled = false;
 
+        Edit_Truck_Section.IsVisible = false;
+        Edit_Truck_Section.IsEnabled = false;
+
         Add_User_Section.IsVisible = false;
         Add_User_Section.IsEnabled = false;
 
@@ -177,7 +180,23 @@ public partial class MainMenuPage : ContentPage
         }   
     }
 
-    private async void Admin_Save_Edit(object sender, EventArgs e)
+    private async void Admin_Trucks_View_Selected(object sender, SelectionChangedEventArgs e)
+    {
+        await Hide_Everything();
+
+        var selectedTruck = e.CurrentSelection.FirstOrDefault() as Truck;
+
+        if(selectedTruck != null)
+        {
+            EditTruckLabelHeader.Text = "Edit truck " + selectedTruck.Name;
+            Edit_Truck_Section.IsEnabled = true;
+            Edit_Truck_Section.IsVisible = true;
+
+            Edit_Truck_Section.BindingContext = selectedTruck;
+        }
+    }
+
+    private async void Admin_Save_User_Edit(object sender, EventArgs e)
     {
         var selecteduser = Edit_User_Section.BindingContext as Users;
         if (selecteduser != null)
@@ -191,7 +210,7 @@ public partial class MainMenuPage : ContentPage
             else
             {
                 Debug.WriteLine("Failed to update user. Status code: " + result.Content.ReadAsStringAsync());
-                EditUserLabelMain.Text = "await result.Content.ReadAsStringAsync()";
+                EditUserLabelMain.Text = await result.Content.ReadAsStringAsync();
             }
 
             await Hide_Everything();
@@ -201,6 +220,32 @@ public partial class MainMenuPage : ContentPage
         {
             await Hide_Everything();
             Debug.WriteLine("No user selected for editing.");
+            return;
+        }
+    }
+    
+    private async void Admin_Save_Truck_Edit(object sender, EventArgs e)
+    {
+        var selectedtruck = Edit_Truck_Section.BindingContext as Truck;
+        if (selectedtruck != null)
+        {
+            var result = await client.PutAsJsonAsync(apiUrl + "Update_Truck/" + selectedtruck.Id, selectedtruck);
+            if (result.IsSuccessStatusCode)
+            {
+                Debug.WriteLine("Truck updated successfully.");
+            }
+            else
+            {
+                Debug.WriteLine("Failed to update truck. Status code: " + result.Content.ReadAsStringAsync());
+                EditTruckLabelMain.Text = await result.Content.ReadAsStringAsync();
+            }
+            await Hide_Everything();
+            return;
+        }
+        else
+        {
+            await Hide_Everything();
+            Debug.WriteLine("No truck selected for editing.");
             return;
         }
     }
@@ -305,6 +350,10 @@ public partial class MainMenuPage : ContentPage
         }
     }
 
+    private async void Admin_Delete_Truck(object sender, EventArgs e)
+    {
+        
+    }
     private async void Admin_Add_Truck_Clicked(object sender, EventArgs e)
     {
 
