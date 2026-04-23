@@ -15,6 +15,8 @@ public partial class MainMenuPage : ContentPage
     private bool isUserDataFetched = false;
     public Users? CurrentUser { get; set; }
 
+    private List<Language> Languages { get; set; } = new();
+
     private string apiUrl = "http://192.168.0.218:5160/api/Values/";
 
     private HttpClient client = new HttpClient();
@@ -38,7 +40,7 @@ public partial class MainMenuPage : ContentPage
 
     }
 
-    //GET CURRENT USER, HIDE EVERYTHING
+    //GET CURRENT USER, HIDE EVERYTHING, GET LANGUAGES
 
     private async Task Get_Current_User()
     {
@@ -109,6 +111,35 @@ public partial class MainMenuPage : ContentPage
         Add_Truck_Section.IsVisible = false;
         Add_Truck_Section.IsEnabled = false;
     }
+
+    private async Task<List<Language>> Get_Languages()
+    {
+        try
+        {
+            var response = await client.GetAsync(apiUrl + "Get_Languages");
+    
+            if(response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+    
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                };
+    
+                var Languages = JsonSerializer.Deserialize<List<Language>>(json, options);
+
+                return Languages;
+        }
+        }
+        catch(Exception ex)
+        {
+            Debug.WriteLine("Error: " + ex.Message);
+            return new List<Language>();
+        }
+        return new List<Language>();
+    }
+
 
     //GET USERS, TRUCKS, JOBS
 
@@ -191,7 +222,14 @@ public partial class MainMenuPage : ContentPage
         await Hide_Everything();
         var selecteduser = e.CurrentSelection.FirstOrDefault() as Users;
 
-        if(selecteduser != null)
+        var allLanguages = await Get_Languages();
+
+        if (allLanguages != null)
+        {
+            All_Languages_View.ItemsSource = allLanguages;
+        }
+
+        if (selecteduser != null)
         {
             EditUserLabelHeader.Text = "Edit user " + selecteduser.Username;
             Edit_User_Section.IsEnabled = true;
@@ -322,6 +360,7 @@ public partial class MainMenuPage : ContentPage
 
     }
 
+
     //SAVE EDIT TO DATABASE
 
     private async void Admin_Save_User_Edit(object sender, EventArgs e)
@@ -433,6 +472,11 @@ public partial class MainMenuPage : ContentPage
             }
             return;
         }
+    }
+
+    private async void On_Language_Tapped(object sender, EventArgs e)
+    {
+
     }
     
 }

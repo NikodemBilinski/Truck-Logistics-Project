@@ -53,7 +53,7 @@
             <ScrollView Grid.Row="2" VerticalOptions="FillAndExpand">
                 <VerticalStackLayout>
             
-            <!--Edit Data (admin)-->
+            <!--Edit User Data (admin)-->
 
             <VerticalStackLayout x:Name="Edit_User_Section" IsVisible="False" x:DataType="model:Users" Spacing="10">
                 <Label x:Name="EditUserLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
@@ -76,6 +76,7 @@
                         <Entry Text="{Binding isBusy}" Placeholder="Status (is busy)" WidthRequest="175" HorizontalOptions="Start"/>
                         <Entry Text="{Binding Username}" Placeholder="Username" WidthRequest="175" HorizontalOptions="Start"/>
                         <Entry Text="{Binding Password}" Placeholder="Password" WidthRequest="175" HorizontalOptions="Start"/>
+                        
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Grid.Column="2" Spacing="15" Padding="15">
@@ -90,6 +91,23 @@
                         <Button Text="Delete User"
                                 HeightRequest="50"
                                 Clicked="Admin_Delete_User"/>
+
+                        <Label Text="Manage Languages (Select all matching)"/>
+
+                                <CollectionView x:Name="All_Languages_View"
+                                                HeightRequest="200">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:Language">
+                                            <Border Margin="2" Padding="10">
+                                                <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="On_Language_Tapped"/>
+                                                </Border.GestureRecognizers>
+                                            </Border>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                    
+                                </CollectionView>
                     </VerticalStackLayout>
                 </Grid>
 

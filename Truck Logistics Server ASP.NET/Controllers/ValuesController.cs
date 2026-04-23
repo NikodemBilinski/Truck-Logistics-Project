@@ -53,10 +53,24 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             Console.WriteLine("GetAllUsers: Requested.");
             Console.WriteLine("GetAllUsers: Returning All Users.");
-            var allusers = await _dataContext.Users.ToListAsync();
+            var allusers = await _dataContext.Users.Include(u => u.AssignedTrucks).Include(u => u.Languages).ToListAsync();
+
+            //await _dataContext.Users.Include(u => u.AssignedTrucks).Include(u => u.Languages).ToListAsync();
             return Ok(allusers);
         }
 
+        [HttpGet("Get_Languages")]
+
+        public async Task<ActionResult<List<Language>>> GetLanguages()
+        {
+            var languages = await _dataContext.Languages.ToListAsync();
+
+            if (languages != null)
+            {
+                return Ok(languages);
+            }
+            return BadRequest("Error: No languages found in database.");
+        }
 
         // HTTP POSTS
 
