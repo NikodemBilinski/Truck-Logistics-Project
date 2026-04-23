@@ -110,15 +110,15 @@
                         <Label Text="Password:"/>
                     </VerticalStackLayout>
                     <VerticalStackLayout Grid.Column="1" Spacing="15">
-                        <Entry x:Name="Admin_Add_FirstName" Placeholder="First Name" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Add_LastName" Placeholder="Last Name" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Add_Age" Placeholder="Age" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Add_Role" Placeholder="Role" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Add_Username" Placeholder="Username" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Add_Password" Placeholder="Password" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_User_FirstName" Placeholder="First Name" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_User_LastName" Placeholder="Last Name" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_User_Age" Placeholder="Age" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_User_Role" Placeholder="Role" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_User_Username" Placeholder="Username" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_User_Password" Placeholder="Password" WidthRequest="175" HorizontalOptions="Start"/>
                     </VerticalStackLayout>
 
-                    <Label x:Name="Add_Error_Label"
+                    <Label x:Name="Add_User_Error_Label"
                                Grid.Column="2"
                                TextColor="Red"
                                Margin="0,50,0,0"/>
@@ -130,7 +130,36 @@
                 </Grid>
 
             </VerticalStackLayout>
-            <!-- Collection view templates-->
+                    
+            <!--Add New Truck-->
+            <VerticalStackLayout x:Name="Add_Truck_Section" IsVisible="False" x:DataType="model:Truck" Spacing="10">
+                <Label Text="Add New Truck" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                    <Grid ColumnDefinitions="150,400,150">
+                        <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                            <Label Text="Name:"/>
+                            <Label Text="Brand:"/>
+                            <Label Text="Capacity"/>
+                            </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" Spacing="15">
+                            <Entry x:Name="Admin_Add_Truck_Name" Placeholder="Name" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Admin_Add_Truck_Brand" Placeholder="Brand" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Admin_Add_Truck_Capacity" Placeholder="Capacity" WidthRequest="175" HorizontalOptions="Start"/>
+                        </VerticalStackLayout>
+
+                            <Label x:Name="Add_Truck_Error_Label"
+                                   Grid.Column="2"
+                                   TextColor="Red"
+                                   Margin="0,0,0,0"/>
+
+                            <Button Text="Add Truck" 
+                                    Grid.Column="2" 
+                                    HeightRequest="50"
+                                    Clicked="Admin_Add_Truck_Clicked"/>
+                        </Grid>
+
+                    </VerticalStackLayout>
+                    <!-- Collection view templates-->
 
             <!--Users-->
                     <Grid x:Name="Users_View"
@@ -260,7 +289,10 @@
                     <Button Text="Add New User"
                             Clicked="Admin_Open_Add_User_Section"
                             WidthRequest="125"/>
-                    
+                    <Button Text="Add New Truck"
+                            Clicked="Admin_Open_Add_Truck_Section"
+                            WidthRequest="125"/>
+
                 </VerticalStackLayout>
             </Border>
         </VerticalStackLayout>

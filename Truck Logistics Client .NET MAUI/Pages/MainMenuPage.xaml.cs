@@ -100,6 +100,9 @@ public partial class MainMenuPage : ContentPage
 
         Add_User_Section.IsVisible = false;
         Add_User_Section.IsEnabled = false;
+
+        Add_Truck_Section.IsVisible = false;
+        Add_Truck_Section.IsEnabled = false;
     }
 
     private async void Admin_Get_Users_Clicked(object sender, EventArgs e)
@@ -204,60 +207,59 @@ public partial class MainMenuPage : ContentPage
 
     private async void Admin_Add_User_Clicked(object sender, EventArgs e)
     {
-        if(string.IsNullOrEmpty(Admin_Add_FirstName.Text))
+        if(string.IsNullOrEmpty(Admin_Add_User_FirstName.Text))
         {
-            Add_Error_Label.Text = "First Name is empty!";
+            Add_User_Error_Label.Text = "First Name is empty!";
             return;
         }
-        if (string.IsNullOrEmpty(Admin_Add_LastName.Text))
+        if (string.IsNullOrEmpty(Admin_Add_User_LastName.Text))
         {
-            Add_Error_Label.Text = "Last Name is empty!";
+            Add_User_Error_Label.Text = "Last Name is empty!";
             return;
         }
-        if (!int.TryParse(Admin_Add_Age.Text, out int age))
+        if (!int.TryParse(Admin_Add_User_Age.Text, out int age))
         {
-            Add_Error_Label.Text = "Age is just a number!";
+            Add_User_Error_Label.Text = "Age is just a number!";
             return;
         }
 
-        Admin_Add_Role.Text = Admin_Add_Role.Text.ToLower();
+        Admin_Add_User_Role.Text = Admin_Add_User_Role.Text.ToLower();
 
-        if (Admin_Add_Role.Text != "user" && Admin_Add_Role.Text != "admin")
+        if (Admin_Add_User_Role.Text != "user" && Admin_Add_User_Role.Text != "admin")
         {
-            Add_Error_Label.Text = "Role is not either user or admin";
+            Add_User_Error_Label.Text = "Role is not either user or admin";
             return;
         }
-        if (string.IsNullOrEmpty(Admin_Add_Username.Text))
+        if (string.IsNullOrEmpty(Admin_Add_User_Username.Text))
         {
-            Add_Error_Label.Text = "Username is empty!";
+            Add_User_Error_Label.Text = "Username is empty!";
             return;
         }
-        if (string.IsNullOrEmpty(Admin_Add_Password.Text))
+        if (string.IsNullOrEmpty(Admin_Add_User_Password.Text))
         {
-            Add_Error_Label.Text = "Password is empty!";
+            Add_User_Error_Label.Text = "Password is empty!";
             return;
         }
         var UserToAdd = new Users()
         {
-            FirstName = Admin_Add_FirstName.Text,
-            LastName = Admin_Add_LastName.Text,
-            Age = int.Parse(Admin_Add_Age.Text),
-            Role = Admin_Add_Role.Text,
-            Username = Admin_Add_Username.Text,
-            Password = Admin_Add_Password.Text
-
+            FirstName = Admin_Add_User_FirstName.Text,
+            LastName = Admin_Add_User_LastName.Text,
+            Age = age,
+            Role = Admin_Add_User_Role.Text,
+            Username = Admin_Add_User_Username.Text,
+            Password = Admin_Add_User_Password.Text
         };
 
         var result = await client.PostAsJsonAsync(apiUrl + "Add_User", UserToAdd);
 
         if(result.IsSuccessStatusCode)
         {
-            Add_Error_Label.Text = await result.Content.ReadAsStringAsync();
+            Add_User_Error_Label.Text = await result.Content.ReadAsStringAsync();
            
         }
         else
         {
-            Add_Error_Label.Text = await result.Content.ReadAsStringAsync();
+            Add_User_Error_Label.Text = await result.Content.ReadAsStringAsync();
         }
     }
 
@@ -266,6 +268,14 @@ public partial class MainMenuPage : ContentPage
         await Hide_Everything();
         Add_User_Section.IsEnabled = true;
         Add_User_Section.IsVisible = true;
+    }
+
+    private async void Admin_Open_Add_Truck_Section(object sender, EventArgs e)
+    {
+        await Hide_Everything();
+
+        Add_Truck_Section.IsVisible = true;
+        Add_Truck_Section.IsEnabled = true;
     }
 
     private async void Admin_Delete_User(object sender, EventArgs e)
@@ -293,5 +303,45 @@ public partial class MainMenuPage : ContentPage
             }
             return;
         }
+    }
+
+    private async void Admin_Add_Truck_Clicked(object sender, EventArgs e)
+    {
+
+        Truck TruckToAdd = new Truck();
+
+        if(string.IsNullOrEmpty(Admin_Add_Truck_Name.Text))
+        {
+            Add_Truck_Error_Label.Text = "Name is empty!";
+            return;
+        }
+        if(string.IsNullOrEmpty(Admin_Add_Truck_Brand.Text))
+        {
+            Add_Truck_Error_Label.Text = "Brand is empty!";
+            return;
+        }
+        if(!int.TryParse(Admin_Add_Truck_Capacity.Text, out int capacity))
+        {
+            Add_Truck_Error_Label.Text = "Capacity should be a number!";
+            return;
+        }
+
+        TruckToAdd.Name = Admin_Add_Truck_Name.Text;
+        TruckToAdd.brand = Admin_Add_Truck_Brand.Text;
+        TruckToAdd.Capacity = capacity;
+
+        var response = await client.PostAsJsonAsync(apiUrl + "Add_Truck", TruckToAdd);
+
+        if(response.IsSuccessStatusCode)
+        {
+            Add_Truck_Error_Label.Text = await response.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            Add_Truck_Error_Label.Text = await response.Content.ReadAsStringAsync();
+        }
+
+
+        
     }
 }

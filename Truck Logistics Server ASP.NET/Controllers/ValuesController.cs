@@ -62,17 +62,35 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         // insert new truck to table
 
-        [HttpPost("Post_Truck")]
-        public async Task<ActionResult<Truck>> AddTruck(Truck truck)
+        [HttpPost("Add_Truck")]
+        public async Task<ActionResult<Truck>> AddTruck(Truck TruckToAdd)
         {
             Console.WriteLine("AddTruck: Requested To Add Truck.");
-            _dataContext.Trucks.Add(truck);
 
-            await _dataContext.SaveChangesAsync();
+            var trucklist = await _dataContext.Trucks.ToListAsync();
 
-            Console.WriteLine("AddTruck: Added Truck: " + truck.Id + ". " + truck.Name+ ", To Database.");
+            if(TruckToAdd != null)
+            {
+                if(!trucklist.Any(x => x.Name == TruckToAdd.Name))
+                {
+                    _dataContext.Trucks.Add(TruckToAdd);
 
-            return Ok(await _dataContext.Trucks.ToListAsync());
+                    await _dataContext.SaveChangesAsync();
+
+                    Console.WriteLine("AddTruck: Added Truck: " + TruckToAdd.Id + ". " + TruckToAdd.Name + ", To Database.");
+
+                    return Ok("Successfully added truck.");
+                }
+                else
+                {
+                    return BadRequest("Error: Name already taken.");
+                }
+                
+            }
+            else
+            {
+                return BadRequest("Error: Truck cannot be null.");
+            }
 
 
         }
