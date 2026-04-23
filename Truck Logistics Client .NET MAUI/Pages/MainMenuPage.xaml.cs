@@ -98,6 +98,9 @@ public partial class MainMenuPage : ContentPage
         Edit_User_Section.IsVisible = false;
         Edit_User_Section.IsEnabled = false;
 
+        Edit_Truck_Section.IsVisible = false;
+        Edit_Truck_Section.IsEnabled = false;
+
         Add_User_Section.IsVisible = false;
         Add_User_Section.IsEnabled = false;
 
@@ -175,6 +178,22 @@ public partial class MainMenuPage : ContentPage
 
             Edit_User_Section.BindingContext = selecteduser;
         }   
+    }
+
+    private async void Admin_Trucks_View_Selected(object sender, SelectionChangedEventArgs e)
+    {
+        await Hide_Everything();
+
+        var selectedTruck = e.CurrentSelection.FirstOrDefault() as Truck;
+
+        if(selectedTruck != null)
+        {
+            EditTruckLabelHeader.Text = "Edit truck " + selectedTruck.Name;
+            Edit_Truck_Section.IsEnabled = true;
+            Edit_Truck_Section.IsVisible = true;
+
+            Edit_Truck_Section.BindingContext = selectedTruck;
+        }
     }
 
     private async void Admin_Save_User_Edit(object sender, EventArgs e)
