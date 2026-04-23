@@ -95,10 +95,11 @@
                         <Label Text="Manage Languages (Select all matching)"/>
 
                                 <CollectionView x:Name="All_Languages_View"
+                                                SelectionMode="None"
                                                 HeightRequest="200">
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate x:DataType="model:Language">
-                                            <Border Margin="2" Padding="10">
+                                            <Border Margin="2" Padding="10" BackgroundColor="{Binding SelectionColor}">
                                                 <Label Text="{Binding Name}" VerticalOptions="Center"/>
                                                 <Border.GestureRecognizers>
                                                     <TapGestureRecognizer Tapped="On_Language_Tapped"/>

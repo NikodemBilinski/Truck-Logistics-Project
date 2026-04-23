@@ -3,6 +3,7 @@ namespace TrucksLogisticsClient.Pages;
 using Microsoft.Maui.Graphics.Text;
 using System.Diagnostics;
 using System.Net.Http.Json;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using TrucksLogisticsClient.Models;
@@ -15,7 +16,7 @@ public partial class MainMenuPage : ContentPage
     private bool isUserDataFetched = false;
     public Users? CurrentUser { get; set; }
 
-    private List<Language> Languages { get; set; } = new();
+    private List<Language> SelectedLanguages = new List<Language>();
 
     private string apiUrl = "http://192.168.0.218:5160/api/Values/";
 
@@ -220,12 +221,26 @@ public partial class MainMenuPage : ContentPage
     private async void Admin_Users_View_Selected(object sender, SelectionChangedEventArgs e)
     {
         await Hide_Everything();
+        
+
         var selecteduser = e.CurrentSelection.FirstOrDefault() as Users;
 
         var allLanguages = await Get_Languages();
 
         if (allLanguages != null)
         {
+            foreach(var lang in allLanguages)
+            {
+                if(selecteduser.Languages.Any(x => x.Id == lang.Id))
+                {
+                    lang.SelectionColor = Colors.LightBlue;
+                    SelectedLanguages.Add(lang);
+                }
+                else
+                {
+                    lang.SelectionColor = Colors.Transparent;
+                }
+            }
             All_Languages_View.ItemsSource = allLanguages;
         }
 
@@ -476,6 +491,19 @@ public partial class MainMenuPage : ContentPage
 
     private async void On_Language_Tapped(object sender, EventArgs e)
     {
+        var border = (Border)sender;
+        var tappedLanguage = (Language)border.BindingContext;
+
+        if (SelectedLanguages.Contains(tappedLanguage))
+        {
+            SelectedLanguages.Remove(tappedLanguage);
+            border.BackgroundColor = Colors.Transparent;
+        }
+        else
+        {
+            SelectedLanguages.Add(tappedLanguage);
+            border.BackgroundColor = Colors.LightBlue;
+        }
 
     }
     
