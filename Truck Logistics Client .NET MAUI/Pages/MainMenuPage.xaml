@@ -57,60 +57,79 @@
 
             <VerticalStackLayout x:Name="Edit_User_Section" IsVisible="False" x:DataType="model:Users" Spacing="10">
                 <Label x:Name="EditUserLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+                <!--USER DATA-->
+                        <Grid ColumnDefinitions="100,200,*">
+                            <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                                <Label Text="First Name:"/>
+                                <Label Text="Last Name:"/>
+                                <Label Text="Age:"/>
+                                <Label Text="Role:"/>
+                                <Label Text="Status (is busy):"/>
+                                <Label Text="Username:"/>
+                                <Label Text="Password:"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" Spacing="15">
+                                <Entry Text="{Binding FirstName}" Placeholder="First Name" WidthRequest="175" HorizontalOptions="Start"/>
+                                <Entry Text="{Binding LastName}" Placeholder="Last Name" WidthRequest="175" HorizontalOptions="Start"/>
+                                <Entry Text="{Binding Age}" Placeholder="Age" WidthRequest="175" HorizontalOptions="Start"/>
+                                <Entry Text="{Binding Role}" Placeholder="Role" WidthRequest="175" HorizontalOptions="Start"/>
+                                <Entry Text="{Binding isBusy}" Placeholder="Status (is busy)" WidthRequest="175" HorizontalOptions="Start"/>
+                                <Entry Text="{Binding Username}" Placeholder="Username" WidthRequest="175" HorizontalOptions="Start"/>
+                                <Entry Text="{Binding Password}" Placeholder="Password" WidthRequest="175" HorizontalOptions="Start"/>
 
-                <Grid ColumnDefinitions="150,400,200">
-                    <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
-                        <Label Text="First Name:"/>
-                        <Label Text="Last Name:"/>
-                        <Label Text="Age:"/>
-                        <Label Text="Role:"/>
-                        <Label Text="Status (is busy):"/>
-                        <Label Text="Username:"/>
-                        <Label Text="Password:"/>
-                    </VerticalStackLayout>
-                    <VerticalStackLayout Grid.Column="1" Spacing="15">
-                        <Entry Text="{Binding FirstName}" Placeholder="First Name" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry Text="{Binding LastName}" Placeholder="Last Name" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry Text="{Binding Age}" Placeholder="Age" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry Text="{Binding Role}" Placeholder="Role" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry Text="{Binding isBusy}" Placeholder="Status (is busy)" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry Text="{Binding Username}" Placeholder="Username" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry Text="{Binding Password}" Placeholder="Password" WidthRequest="175" HorizontalOptions="Start"/>
-                        
-                    </VerticalStackLayout>
+                            </VerticalStackLayout>
 
-                    <VerticalStackLayout Grid.Column="2" Spacing="15" Padding="15">
-                        <Label x:Name="EditUserLabelMain"
-                               TextColor="Red"
-                               HeightRequest="50"/>
-
-                        <Button Text="Save Changes" 
+                            <!--SAVE, DELETE BUTTONS-->
+                            <Grid RowDefinitions="50,50,100,200" Grid.Column="2">
+                                <Label x:Name="EditUserLabelMain"
+                                       TextColor="Red"
+                                       HeightRequest="50"
+                                       Grid.Row="0"/>
+                                <HorizontalStackLayout Grid.Row="1">
+                                    
+                                
+                                <Button Text="Save Changes" 
                                 HeightRequest="50"
                                 Clicked="Admin_Save_User_Edit"/>
 
-                        <Button Text="Delete User"
+                                <Button Text="Delete User"
                                 HeightRequest="50"
                                 Clicked="Admin_Delete_User"/>
+                                </HorizontalStackLayout>
 
-                        <Label Text="Manage Languages (Select all matching)"/>
 
-                                <CollectionView x:Name="All_Languages_View"
+                                <Grid Grid.Row="2" 
+                                      ColumnDefinitions="*,*">
+                                    <!--MANAGE LANGUAGES-->
+
+                                <ScrollView Grid.Row="2" WidthRequest="300">
+                                    <VerticalStackLayout>
+                                        <Label Text="Manage Languages (Select all matching)" 
+                                               FontAttributes="Bold"
+                                               Grid.Row="2"/>
+                                        <CollectionView x:Name="All_Languages_View"
                                                 SelectionMode="None"
                                                 HeightRequest="200">
-                                    <CollectionView.ItemTemplate>
-                                        <DataTemplate x:DataType="model:Language">
-                                            <Border Margin="2" Padding="10" BackgroundColor="{Binding SelectionColor}">
-                                                <Label Text="{Binding Name}" VerticalOptions="Center"/>
-                                                <Border.GestureRecognizers>
-                                                    <TapGestureRecognizer Tapped="On_Language_Tapped"/>
-                                                </Border.GestureRecognizers>
-                                            </Border>
-                                        </DataTemplate>
-                                    </CollectionView.ItemTemplate>
-                                    
-                                </CollectionView>
+                                            <CollectionView.ItemTemplate>
+                                                <DataTemplate x:DataType="model:Language">
+                                                    <Border Margin="2" Padding="10" BackgroundColor="{Binding SelectionColor}">
+                                                        <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                                                        <Border.GestureRecognizers>
+                                                            <TapGestureRecognizer Tapped="On_Language_Tapped"/>
+                                                        </Border.GestureRecognizers>
+                                                    </Border>
+                                                </DataTemplate>
+                                            </CollectionView.ItemTemplate>
 
-                        <Label Text="Manage Trucks (Select all matching)"/>
+                                        </CollectionView>
+                                    </VerticalStackLayout>
+                                </ScrollView>
+                                <!--MANAGE TRUCKS-->
+                                <ScrollView Grid.Row="3">
+                                <VerticalStackLayout>
+                                    
+                               
+                                <Label Text="Manage Trucks (Select all matching)"/>
 
                                 <CollectionView x:Name="All_Trucks_View"
                                         SelectionMode="None"
@@ -123,13 +142,16 @@
                                                     <TapGestureRecognizer Tapped="On_Truck_Tapped"/>
                                                 </Border.GestureRecognizers>
                                             </Border>
-                                        </DataTemplate>            
+                                        </DataTemplate>
                                     </CollectionView.ItemTemplate>
                                 </CollectionView>
-                    </VerticalStackLayout>
-                </Grid>
+                                </VerticalStackLayout>
+                                </ScrollView>
+                                </Grid>
+                            </Grid>
+                        </Grid>
 
-            </VerticalStackLayout>
+                    </VerticalStackLayout>
                     
             <!--Edit Truck (admin)-->
             <VerticalStackLayout x:Name="Edit_Truck_Section" IsVisible="False" x:DataType="model:Truck" Spacing="10">
