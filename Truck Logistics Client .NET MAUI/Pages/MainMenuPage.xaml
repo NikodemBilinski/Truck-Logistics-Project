@@ -270,7 +270,7 @@
                     </VerticalStackLayout>
             <!-- Collection view templates-->
 
-            <!--Users-->
+            <!--Users View-->
                     <Grid x:Name="Users_View"
                           IsVisible="False">
                         <VerticalStackLayout Margin="20" Spacing="0">
@@ -343,7 +343,7 @@
 
                         </VerticalStackLayout>
                     </Grid>
-            <!--Trucks-->
+            <!--Trucks View-->
                     <Grid x:Name="Trucks_View"
                           IsVisible="False">
                         <Grid RowDefinitions="*,*">
@@ -414,23 +414,22 @@
                     IsVisible="False"
                     IsEnabled="False">
                 <VerticalStackLayout Spacing="25">
-
-                    <Button x:Name="User_Get_Trucks"
-                            Text="Get Your Trucks"
+                    
+                    <Button Text="Get All Users"
+                            Clicked="Admin_Get_Users_Clicked"
                             WidthRequest="125"/>
-
                     <Button Text="Get All Trucks"
                             Clicked="Admin_Get_Trucks_Clicked"
                             WidthRequest="125"/>
-
-                    <Button Text="Get All Users"
-                            Clicked="Admin_Get_Users_Clicked"
+                    <Button Text="Get All Jobs"
                             WidthRequest="125"/>
                     <Button Text="Add New User"
                             Clicked="Admin_Open_Add_User_Section"
                             WidthRequest="125"/>
                     <Button Text="Add New Truck"
                             Clicked="Admin_Open_Add_Truck_Section"
+                            WidthRequest="125"/>
+                    <Button Text="Add New Job"
                             WidthRequest="125"/>
 
                 </VerticalStackLayout>

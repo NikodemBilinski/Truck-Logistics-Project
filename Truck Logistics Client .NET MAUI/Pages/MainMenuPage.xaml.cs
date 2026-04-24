@@ -34,13 +34,6 @@ public partial class MainMenuPage : ContentPage
         base.OnAppearing();
 
         await Get_Current_User();
-        if(isUserDataFetched)
-        {
-            this.BindingContext = CurrentUser;
-            await Generate_Main_Menu();
-        }
-        
-
     }
 
     //GET CURRENT USER, HIDE EVERYTHING, GET LANGUAGES
@@ -67,31 +60,10 @@ public partial class MainMenuPage : ContentPage
         catch (Exception ex)
         {
             Debug.WriteLine("Error fetching user data: " + ex.Message);
+            Welcome_User_Label.Text = "Error fetching user data: " + ex.Message;
         }
         
 
-    }
-
-    private async Task Generate_Main_Menu()
-    {
-        if(CurrentUser.Role == "admin")
-        {
-            User_Get_Trucks.IsEnabled = false;
-            User_Get_Trucks.IsVisible = false;
-
-            Admin_Data_Panel.IsEnabled = true;
-            Admin_Data_Panel.IsVisible = true;
-            
-        }
-        if (CurrentUser.Role == "user")
-        {
-            User_Get_Trucks.IsEnabled = true;
-            User_Get_Trucks.IsVisible = true;
-
-            Admin_Data_Panel.IsEnabled = false;
-            Admin_Data_Panel.IsVisible = false;
-
-        }
     }
 
     private async Task Hide_Everything()
@@ -123,17 +95,17 @@ public partial class MainMenuPage : ContentPage
     
             if(response.IsSuccessStatusCode)
             {
-                var json = await response.Content.ReadAsStringAsync();
-    
-                var options = new JsonSerializerOptions
+                var Languages = await response.Content.ReadFromJsonAsync<List<Language>>();
+                
+                if(Languages != null)
                 {
-                    PropertyNameCaseInsensitive = true
-                };
-    
-                var Languages = JsonSerializer.Deserialize<List<Language>>(json, options);
-
-                return Languages;
-        }
+                    return Languages;
+                }  
+                else
+                {
+                    return new List<Language>();
+                }
+            }
         }
         catch(Exception ex)
         {
@@ -180,12 +152,8 @@ public partial class MainMenuPage : ContentPage
             var response = await client.GetAsync(apiUrl + "Get_Trucks");
             if (response.IsSuccessStatusCode)
             {
-                var json = await response.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-                var truckslist = JsonSerializer.Deserialize<List<Truck>>(json, options);
+                var truckslist = await response.Content.ReadFromJsonAsync<List<Truck>>();
+
                 Get_All_Trucks_View.ItemsSource = truckslist;
             }
         }
