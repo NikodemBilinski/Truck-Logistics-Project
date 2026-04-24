@@ -52,9 +52,9 @@ namespace TrucksLogisticsServerAPI.Controllers
         public async Task<ActionResult<IEnumerable<Users>>> GetAllUsers()
         {
             Console.WriteLine("GetAllUsers: Requested.");
-            Console.WriteLine("GetAllUsers: Returning All Users.");
+            
             var allusers = await _dataContext.Users.Include(u => u.AssignedTrucks).Include(u => u.Languages).ToListAsync();
-
+            Console.WriteLine("GetAllUsers: Returning All Users.");
             //await _dataContext.Users.Include(u => u.AssignedTrucks).Include(u => u.Languages).ToListAsync();
             return Ok(allusers);
         }
@@ -318,7 +318,7 @@ namespace TrucksLogisticsServerAPI.Controllers
 
             await _dataContext.SaveChangesAsync();
 
-            Console.WriteLine("UpdateUserLanguages: User Trucks Updated.");
+            Console.WriteLine("UpdateUserTrucks: User Trucks Updated.");
             return Ok("User trucks updated successfully.");
         }
 

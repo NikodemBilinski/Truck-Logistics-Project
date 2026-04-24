@@ -16,6 +16,8 @@ namespace TrucksLogisticsClient.Models
         public bool IsBusy { get; set; }
 
         public int Capacity { get; set; }
+
+        [JsonIgnore]
         public List<Users> AssignedUsers { get; set; } = new();
 
         [JsonIgnore]

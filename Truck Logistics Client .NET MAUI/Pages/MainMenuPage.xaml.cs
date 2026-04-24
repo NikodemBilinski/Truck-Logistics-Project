@@ -155,16 +155,11 @@ public partial class MainMenuPage : ContentPage
 
             if(response.IsSuccessStatusCode)
             {
-                var json = await response.Content.ReadAsStringAsync();
-
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-
-                var userslist = JsonSerializer.Deserialize<List<Users>>(json, options);
+                var userslist = await response.Content.ReadFromJsonAsync<List<Users>>();
 
                 Get_All_Users_View.ItemsSource = userslist;
+
+                
             }
         }
         catch(Exception ex)
@@ -421,7 +416,9 @@ public partial class MainMenuPage : ContentPage
 
             //http put update languages
             var result2 = await client.PutAsJsonAsync(apiUrl + "Update_User_Languages/" + selecteduser.ID, selectedlanguages);
-            if (result.IsSuccessStatusCode && result2.IsSuccessStatusCode)
+
+            var result3 = await client.PutAsJsonAsync(apiUrl + "Update_User_Trucks/" + selecteduser.ID, SelectedTrucks);
+            if (result.IsSuccessStatusCode && result2.IsSuccessStatusCode && result3.IsSuccessStatusCode)
             {
                 Debug.WriteLine("User updated successfully.");
             }
@@ -429,7 +426,9 @@ public partial class MainMenuPage : ContentPage
             {
                 Debug.WriteLine("Failed to update user. Status code: " + result.Content.ReadAsStringAsync());
                 Debug.WriteLine("Failed to update user. Status code: " + result2.Content.ReadAsStringAsync());
-                EditUserLabelMain.Text = await result.Content.ReadAsStringAsync() + "\n" + await result2.Content.ReadAsStringAsync();
+                Debug.WriteLine("Failed to update user. Status code: " + result3.Content.ReadAsStringAsync());
+                EditUserLabelMain.Text = await result.Content.ReadAsStringAsync() + "\n" + await result2.Content.ReadAsStringAsync() 
+                    + "\n" + await result3.Content.ReadAsStringAsync();
             }
 
             await Hide_Everything();
