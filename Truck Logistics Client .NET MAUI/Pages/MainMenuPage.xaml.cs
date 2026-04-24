@@ -547,6 +547,22 @@ public partial class MainMenuPage : ContentPage
 
     private async void On_Truck_Tapped(object sender, EventArgs e)
     {
+        var border = (Border)sender;
+
+        var tappedtruck = (Truck)border.BindingContext;
+
+        if (SelectedTrucks.Contains(tappedtruck))
+        {
+            SelectedTrucks.Remove(tappedtruck);
+            border.BackgroundColor = Colors.Transparent;
+        }
+        else
+        {
+            SelectedTrucks.Add(tappedtruck);
+            border.BackgroundColor = Colors.LightBlue;
+        }
+
+            
         
     }
     
