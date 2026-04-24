@@ -64,7 +64,7 @@
                                 <Label Text="Last Name:"/>
                                 <Label Text="Age:"/>
                                 <Label Text="Role:"/>
-                                <Label Text="Status (is busy):"/>
+                                <Label Text="Status,             (Is Busy?):"/>
                                 <Label Text="Username:"/>
                                 <Label Text="Password:"/>
                             </VerticalStackLayout>
@@ -73,7 +73,7 @@
                                 <Entry Text="{Binding LastName}" Placeholder="Last Name" WidthRequest="175" HorizontalOptions="Start"/>
                                 <Entry Text="{Binding Age}" Placeholder="Age" WidthRequest="175" HorizontalOptions="Start"/>
                                 <Entry Text="{Binding Role}" Placeholder="Role" WidthRequest="175" HorizontalOptions="Start"/>
-                                <Entry Text="{Binding isBusy}" Placeholder="Status (is busy)" WidthRequest="175" HorizontalOptions="Start"/>
+                                <CheckBox IsChecked="{Binding isBusy}"/>
                                 <Entry Text="{Binding Username}" Placeholder="Username" WidthRequest="175" HorizontalOptions="Start"/>
                                 <Entry Text="{Binding Password}" Placeholder="Password" WidthRequest="175" HorizontalOptions="Start"/>
 
@@ -205,7 +205,7 @@
             </VerticalStackLayout>
 
 
-                    <!--Add New User (admin)-->
+            <!--Add New User (admin)-->
             <VerticalStackLayout x:Name="Add_User_Section" IsVisible="False" x:DataType="model:Users" Spacing="10">
                 <Label Text="Add New User" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
@@ -268,7 +268,7 @@
                         </Grid>
 
                     </VerticalStackLayout>
-                    <!-- Collection view templates-->
+            <!-- Collection view templates-->
 
             <!--Users-->
                     <Grid x:Name="Users_View"
@@ -308,8 +308,25 @@
                                                     </HorizontalStackLayout>
 
                                                     <Label Grid.Column="2" Text="{Binding Username}"/>
-                                                    <Label Grid.Column="3" Text="{Binding Role}"/>
-                                                    <Label Grid.Column="4" Text="{Binding isBusy}"/>
+                                                    <Label Grid.Column="3" Text="{Binding Role}">
+                                                        <Label.Triggers>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding Role}" Value="admin">
+                                                                <Setter Property="FontAttributes" Value="Bold"/>
+                                                            </DataTrigger>
+                                                        </Label.Triggers>
+                                                    </Label>
+                                                    <Label Grid.Column="4" Text="{Binding isBusy}">
+                                                        <Label.Triggers>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding isBusy}" Value="True">
+                                                                <Setter Property="Text" Value="Busy"/>
+                                                                <Setter Property="TextColor" Value="Red"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding isBusy}" Value="False">
+                                                                <Setter Property="Text" Value="Available"/>
+                                                                <Setter Property="TextColor" Value="Green"/>
+                                                            </DataTrigger>
+                                                        </Label.Triggers>
+                                                    </Label>
                                                     <Label Grid.Column="5" Text="{Binding Age}"/>
                                                     <Label Grid.Column="6" Text="{Binding AssignedTrucks.Count}"/>
                                                     <Label Grid.Column="7" Text="{Binding Languages.Count}"/>
@@ -326,15 +343,16 @@
 
                         </VerticalStackLayout>
                     </Grid>
-                    <!--Trucks-->
+            <!--Trucks-->
                     <Grid x:Name="Trucks_View"
                           IsVisible="False">
-                        <VerticalStackLayout Margin="20">
-                            <Grid ColumnDefinitions="50,150,150,75,150" 
-                                  Margin="0,10,-15,0"
+                        <Grid RowDefinitions="*,*">
+                            <Grid ColumnDefinitions="50,100,100,75,75" 
+                                  Margin="0,10,5,0"
                                   BackgroundColor="Transparent" 
                                   Padding="10"
-                                  HorizontalOptions="Center">
+                                  HorizontalOptions="Center"
+                                  Grid.Row="0">
                                 <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
                                 <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
                                 <Label Grid.Column="2" Text="Brand" FontAttributes="Bold"/>
@@ -345,20 +363,32 @@
                             <CollectionView x:Name="Get_All_Trucks_View"
                                             SelectionMode="Single"
                                             SelectionChanged="Admin_Trucks_View_Selected"
-                                            WidthRequest="570">
+                                            WidthRequest="450"
+                                            Grid.Row="1">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="model:Truck">
                                         <Border Stroke="Transparent" Padding="-5">
                                             <Border Stroke="transparent"  StrokeThickness="3">
-                                                <Grid ColumnDefinitions="50,150,150,75,150"
-                                                  Padding="10"
-                                                  HorizontalOptions="Center">
+                                                <Grid ColumnDefinitions="50,100,100,75,75"
+                                                      Padding="10"
+                                                      HorizontalOptions="Center">
 
                                                     <Label Grid.Column="0" Text="{Binding Id}"/>
                                                     <Label Grid.Column="1" Text="{Binding Name}"/>
                                                     <Label Grid.Column="2" Text="{Binding brand}"/>
-                                                    <Label Grid.Column="3" Text="{Binding IsBusy}"/>
-                                                    <Label Grid.Column="4" Text="{Binding Capacity}"/>
+                                                    <Label Grid.Column="3" Text="{Binding IsBusy}">
+                                                        <Label.Triggers>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding IsBusy}" Value="True">
+                                                                <Setter Property="Text" Value="Busy"/>
+                                                                <Setter Property="TextColor" Value="Red"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding IsBusy}" Value="False">
+                                                                <Setter Property="Text" Value="Available"/>
+                                                                <Setter Property="TextColor" Value="Green"/>
+                                                            </DataTrigger>
+                                                        </Label.Triggers>
+                                                    </Label>
+                                                    <Label Grid.Column="4" Text="{Binding Capacity}" HorizontalOptions="Center"/>
                                                 </Grid>
                                             </Border>
                                         </Border>
@@ -366,7 +396,7 @@
                                 </CollectionView.ItemTemplate>
                             </CollectionView>
 
-                        </VerticalStackLayout>
+                        </Grid>
                     </Grid>
 
             <!--Jobs-->
