@@ -225,7 +225,11 @@ public partial class MainMenuPage : ContentPage
 
         var selecteduser = e.CurrentSelection.FirstOrDefault() as Users;
 
+        // get all languages
         var allLanguages = await Get_Languages();
+
+        // clear selected languages list
+        SelectedLanguages.Clear();
 
         if (allLanguages != null)
         {
@@ -381,11 +385,12 @@ public partial class MainMenuPage : ContentPage
     private async void Admin_Save_User_Edit(object sender, EventArgs e)
     {
         var selecteduser = Edit_User_Section.BindingContext as Users;
+        var selectedlanguages = SelectedLanguages;
         if (selecteduser != null)
         {
             var result = await client.PutAsJsonAsync(apiUrl + "Update_User/" + selecteduser.ID, selecteduser);
-
-            if(result.IsSuccessStatusCode)
+            var result2 = await client.PutAsJsonAsync(apiUrl + "Update_User_Languages/" + selecteduser.ID, selectedlanguages);
+            if (result.IsSuccessStatusCode)
             {
                 Debug.WriteLine("User updated successfully.");
             }

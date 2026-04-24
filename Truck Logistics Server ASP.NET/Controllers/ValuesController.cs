@@ -221,12 +221,12 @@ namespace TrucksLogisticsServerAPI.Controllers
             user.isBusy = updatedUser.isBusy;
 
             // Update languages
-            user.Languages.Clear();
-            foreach (var language in updatedUser.Languages)
-            {
-                _dataContext.Languages.Attach(language);
-                user.Languages.Add(language);
-            }
+            //user.Languages.Clear();
+            //foreach (var language in updatedUser.Languages)
+            //{
+            //    _dataContext.Languages.Attach(language);
+            //    user.Languages.Add(language);
+            //}
 
             // Update trucks
             user.AssignedTrucks.Clear();
@@ -259,6 +259,39 @@ namespace TrucksLogisticsServerAPI.Controllers
             await _dataContext.SaveChangesAsync();
             Console.WriteLine("UpdateTruck: Truck Updated.");
             return Ok("Truck updated successfully.");
+        }
+
+        [HttpPut("Update_User_Languages/{id}")]
+
+        public async Task<ActionResult<Language>> UpdateUserLanguages(int id, List<Language> updatedLanguages)
+        {
+            Console.WriteLine("UpdateUserLanguages: Request to update languages for user with ID: " + id);
+
+            // load relation (users.languages with Languages table in database)
+            var user = await _dataContext.Users.Include(x => x.Languages).FirstOrDefaultAsync(x => x.ID == id);
+
+            if (user == null)
+            {
+                Console.WriteLine("UpdateUserLanguages: Error, User with the specified ID not found.");
+                return NotFound("Error: User with the specified ID not found.");
+            }
+
+            // get only selectedlanguages ids from updatedlanguages list from client
+            var selectedLanguageIds = updatedLanguages.Select(l => l.Id).ToList();
+
+            //get all matching languages ids from database and store them in order to add them to user.languages
+            var languagesfromdb = await _dataContext.Languages.Where(l => selectedLanguageIds.Contains(l.Id)).ToListAsync();
+
+            
+            // Update languages
+            user.Languages.Clear();
+            foreach (var language in languagesfromdb)
+            {
+                user.Languages.Add(language);
+            }
+            await _dataContext.SaveChangesAsync();
+            Console.WriteLine("UpdateUserLanguages: User Languages Updated.");
+            return Ok("User languages updated successfully.");
         }
 
         // HTTP DELETES
