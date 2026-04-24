@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using TrucksLogisticsClient.Models;
 
 namespace TrucksLogisticsClient.Models
@@ -16,6 +17,9 @@ namespace TrucksLogisticsClient.Models
 
         public int Capacity { get; set; }
         public List<Users> AssignedUsers { get; set; } = new();
+
+        [JsonIgnore]
+        public Color? SelectionColor { get; set; }
 
 
     }

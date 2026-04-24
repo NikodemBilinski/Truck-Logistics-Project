@@ -109,6 +109,23 @@
                                     </CollectionView.ItemTemplate>
                                     
                                 </CollectionView>
+
+                        <Label Text="Manage Trucks (Select all matching)"/>
+
+                                <CollectionView x:Name="All_Trucks_View"
+                                        SelectionMode="None"
+                                        HeightRequest="200">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:Truck">
+                                            <Border Margin="2" Padding="10" BackgroundColor="{Binding SelectionColor}">
+                                                <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="On_Truck_Tapped"/>
+                                                </Border.GestureRecognizers>
+                                            </Border>
+                                        </DataTemplate>            
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
                     </VerticalStackLayout>
                 </Grid>
 

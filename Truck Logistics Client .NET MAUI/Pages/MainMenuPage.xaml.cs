@@ -18,6 +18,8 @@ public partial class MainMenuPage : ContentPage
 
     private List<Language> SelectedLanguages = new List<Language>();
 
+    private List<Truck> SelectedTrucks = new List<Truck>();
+
     private string apiUrl = "http://192.168.0.218:5160/api/Values/";
 
     private HttpClient client = new HttpClient();
@@ -228,10 +230,35 @@ public partial class MainMenuPage : ContentPage
         // get all languages
         var allLanguages = await Get_Languages();
 
-        // clear selected languages list if it was used before
-        SelectedLanguages.Clear();
+        var allTrucks = await client.GetFromJsonAsync<List<Truck>>(apiUrl + "Get_Trucks");
 
-        if (allLanguages != null)
+        //clear selected languages and trucks lists if it was used before
+        SelectedTrucks.Clear();
+        SelectedLanguages.Clear();
+        // truck section
+        if (allTrucks != null)
+        {
+            foreach (var truck in allTrucks)
+            {
+                if (selecteduser.AssignedTrucks.Any(x => x.Id == truck.Id))
+                {
+                    truck.SelectionColor = Colors.LightBlue;
+                    SelectedTrucks.Add(truck);
+                }
+                else
+                {
+                    truck.SelectionColor = Colors.Transparent;
+                }
+            }
+
+            All_Trucks_View.ItemsSource = allTrucks;
+        }
+
+
+
+
+                // language section
+                if (allLanguages != null)
         {
             foreach(var lang in allLanguages)
             {
@@ -516,6 +543,11 @@ public partial class MainMenuPage : ContentPage
             border.BackgroundColor = Colors.LightBlue;
         }
 
+    }
+
+    private async void On_Truck_Tapped(object sender, EventArgs e)
+    {
+        
     }
     
 }
