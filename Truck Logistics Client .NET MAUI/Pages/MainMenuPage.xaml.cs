@@ -228,7 +228,7 @@ public partial class MainMenuPage : ContentPage
         // get all languages
         var allLanguages = await Get_Languages();
 
-        // clear selected languages list
+        // clear selected languages list if it was used before
         SelectedLanguages.Clear();
 
         if (allLanguages != null)
@@ -385,19 +385,24 @@ public partial class MainMenuPage : ContentPage
     private async void Admin_Save_User_Edit(object sender, EventArgs e)
     {
         var selecteduser = Edit_User_Section.BindingContext as Users;
+
+        //get selected languages
         var selectedlanguages = SelectedLanguages;
         if (selecteduser != null)
         {
             var result = await client.PutAsJsonAsync(apiUrl + "Update_User/" + selecteduser.ID, selecteduser);
+
+            //http put update languages
             var result2 = await client.PutAsJsonAsync(apiUrl + "Update_User_Languages/" + selecteduser.ID, selectedlanguages);
-            if (result.IsSuccessStatusCode)
+            if (result.IsSuccessStatusCode && result2.IsSuccessStatusCode)
             {
                 Debug.WriteLine("User updated successfully.");
             }
             else
             {
                 Debug.WriteLine("Failed to update user. Status code: " + result.Content.ReadAsStringAsync());
-                EditUserLabelMain.Text = await result.Content.ReadAsStringAsync();
+                Debug.WriteLine("Failed to update user. Status code: " + result2.Content.ReadAsStringAsync());
+                EditUserLabelMain.Text = await result.Content.ReadAsStringAsync() + "\n" + await result2.Content.ReadAsStringAsync();
             }
 
             await Hide_Everything();
@@ -499,6 +504,7 @@ public partial class MainMenuPage : ContentPage
         var border = (Border)sender;
         var tappedLanguage = (Language)border.BindingContext;
 
+        // if language is selected, deselect it, else select it
         if (SelectedLanguages.Contains(tappedLanguage))
         {
             SelectedLanguages.Remove(tappedLanguage);
