@@ -19,6 +19,8 @@ namespace TrucksLogisticsClient
             window.MinimumWidth = width;
             window.MinimumHeight = height;
 
+            window.Height = 800;
+
 
             return window;
 

@@ -59,7 +59,7 @@
                 <Label x:Name="EditUserLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
                 <!--USER DATA-->
                         <Grid ColumnDefinitions="100,200,*">
-                            <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                            <VerticalStackLayout Grid.Column="0" Spacing="37" VerticalOptions="Center">
                                 <Label Text="First Name:"/>
                                 <Label Text="Last Name:"/>
                                 <Label Text="Age:"/>
@@ -80,12 +80,14 @@
                             </VerticalStackLayout>
 
                             <!--SAVE, DELETE BUTTONS-->
-                            <Grid RowDefinitions="50,50,100,200" Grid.Column="2">
+                            <Grid RowDefinitions="50,50,*" Grid.Column="2">
                                 <Label x:Name="EditUserLabelMain"
                                        TextColor="Red"
                                        HeightRequest="50"
                                        Grid.Row="0"/>
-                                <HorizontalStackLayout Grid.Row="1">
+                                <HorizontalStackLayout Grid.Row="1"
+                                                       HorizontalOptions="Center"
+                                                       Spacing="25">
                                     
                                 
                                 <Button Text="Save Changes" 
@@ -95,58 +97,74 @@
                                 <Button Text="Delete User"
                                 HeightRequest="50"
                                 Clicked="Admin_Delete_User"/>
+                                    
                                 </HorizontalStackLayout>
 
 
                                 <Grid Grid.Row="2" 
-                                      ColumnDefinitions="*,*">
-                                    <!--MANAGE LANGUAGES-->
-
-                                <ScrollView Grid.Row="2" WidthRequest="300">
-                                    <VerticalStackLayout>
-                                        <Label Text="Manage Languages (Select all matching)" 
-                                               FontAttributes="Bold"
-                                               Grid.Row="2"/>
-                                        <CollectionView x:Name="All_Languages_View"
-                                                SelectionMode="None"
-                                                HeightRequest="200">
-                                            <CollectionView.ItemTemplate>
-                                                <DataTemplate x:DataType="model:Language">
-                                                    <Border Margin="2" Padding="10" BackgroundColor="{Binding SelectionColor}">
-                                                        <Label Text="{Binding Name}" VerticalOptions="Center"/>
-                                                        <Border.GestureRecognizers>
-                                                            <TapGestureRecognizer Tapped="On_Language_Tapped"/>
-                                                        </Border.GestureRecognizers>
-                                                    </Border>
-                                                </DataTemplate>
-                                            </CollectionView.ItemTemplate>
-
-                                        </CollectionView>
-                                    </VerticalStackLayout>
-                                </ScrollView>
-                                <!--MANAGE TRUCKS-->
-                                <ScrollView Grid.Row="3">
-                                <VerticalStackLayout>
+                                          ColumnDefinitions="*,*"
+                                          HorizontalOptions="Center"
+                                          VerticalOptions="Center"
+                                          ColumnSpacing="100"
+                                          Margin="20">
                                     
-                               
-                                <Label Text="Manage Trucks (Select all matching)"/>
+                                        <!--MANAGE LANGUAGES-->
+                                    <ScrollView Grid.Column="0" WidthRequest="200">
+                                        <VerticalStackLayout Spacing="10">
+                                            <Label Text="Manage Languages" 
+                                                   FontAttributes="Bold"/>
+                                            <Label Text=" (Select all matching)"/>
+                                            <CollectionView x:Name="All_Languages_View"
+                                                    SelectionMode="None"
+                                                    HeightRequest="200">
+                                                <CollectionView.ItemsLayout>
+                                                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
+                                                </CollectionView.ItemsLayout>
+                                                <CollectionView.ItemTemplate>
+                                                    <DataTemplate x:DataType="model:Language">
+                                                        <Border Padding="10" BackgroundColor="{Binding SelectionColor}">
+                                                            <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                                                            <Border.GestureRecognizers>
+                                                                <TapGestureRecognizer Tapped="On_Language_Tapped"/>
+                                                            </Border.GestureRecognizers>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </CollectionView.ItemTemplate>
+                                                
 
-                                <CollectionView x:Name="All_Trucks_View"
-                                        SelectionMode="None"
-                                        HeightRequest="200">
-                                    <CollectionView.ItemTemplate>
-                                        <DataTemplate x:DataType="model:Truck">
-                                            <Border Margin="2" Padding="10" BackgroundColor="{Binding SelectionColor}">
-                                                <Label Text="{Binding Name}" VerticalOptions="Center"/>
-                                                <Border.GestureRecognizers>
-                                                    <TapGestureRecognizer Tapped="On_Truck_Tapped"/>
-                                                </Border.GestureRecognizers>
-                                            </Border>
-                                        </DataTemplate>
-                                    </CollectionView.ItemTemplate>
-                                </CollectionView>
-                                </VerticalStackLayout>
-                                </ScrollView>
+                                            </CollectionView>
+                                        </VerticalStackLayout>
+                                    </ScrollView>
+                                    
+                                    
+                                    <!--MANAGE TRUCKS-->
+                                    <ScrollView Grid.Column="1" WidthRequest="200">
+                                        <VerticalStackLayout Spacing="10">
+
+
+                                            <Label Text="Manage Trucks"
+                                           FontAttributes="Bold"/>
+                                            <Label Text="(Select all matching)"/>
+
+                                            <CollectionView x:Name="All_Trucks_View"
+                                                            SelectionMode="None"
+                                                            HeightRequest="200">
+                                                <CollectionView.ItemsLayout>
+                                                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
+                                                </CollectionView.ItemsLayout>
+                                                <CollectionView.ItemTemplate>
+                                                    <DataTemplate x:DataType="model:Truck">
+                                                        <Border Padding="10" BackgroundColor="{Binding SelectionColor}">
+                                                            <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                                                            <Border.GestureRecognizers>
+                                                                <TapGestureRecognizer Tapped="On_Truck_Tapped"/>
+                                                            </Border.GestureRecognizers>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </CollectionView.ItemTemplate>
+                                            </CollectionView>
+                                        </VerticalStackLayout>
+                                    </ScrollView>
                                 </Grid>
                             </Grid>
                         </Grid>
