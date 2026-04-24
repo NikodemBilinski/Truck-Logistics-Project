@@ -294,6 +294,34 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok("User languages updated successfully.");
         }
 
+        [HttpPut("Update_User_Trucks/{id}")]
+        public async Task<ActionResult<Truck>> UpdateUserTrucks(int id, List<Truck> updatedTrucks)
+        {
+            var user = _dataContext.Users.Include(x => x.AssignedTrucks).FirstOrDefault(x => x.ID == id);
+
+            if(user == null)
+            {
+                Console.WriteLine("UpdateUserTrucks: Error, User with the specified ID not found.");
+                return NotFound("Error: User with the specified ID not found.");
+            }
+
+            //get ids from updatedtrucks
+            var selectedtrucksids = updatedTrucks.Select(x => x.Id).ToList();
+            //match ids from updatedtrucks with trucks in database
+            //list of them 
+            var trucksfromdb = await _dataContext.Trucks.Where(x => selectedtrucksids.Contains(x.Id)).ToListAsync();
+
+            foreach(var truck in trucksfromdb)
+            {
+                user.AssignedTrucks.Add(truck);
+            }
+
+            await _dataContext.SaveChangesAsync();
+
+            Console.WriteLine("UpdateUserLanguages: User Trucks Updated.");
+            return Ok("User trucks updated successfully.");
+        }
+
         // HTTP DELETES
 
         [HttpDelete("Delete_User/{ID}")]
