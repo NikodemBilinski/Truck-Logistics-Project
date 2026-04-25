@@ -3,6 +3,7 @@ namespace TrucksLogisticsClient.Pages;
 using Microsoft.Maui.Graphics.Text;
 using System.Diagnostics;
 using System.Net.Http.Json;
+using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using TrucksLogisticsClient.Models;
@@ -14,6 +15,10 @@ public partial class MainMenuPage : ContentPage
 
     private bool isUserDataFetched = false;
     public Users? CurrentUser { get; set; }
+
+    private List<Language> SelectedLanguages = new List<Language>();
+
+    private List<Truck> SelectedTrucks = new List<Truck>();
 
     private string apiUrl = "http://192.168.0.218:5160/api/Values/";
 
@@ -29,14 +34,9 @@ public partial class MainMenuPage : ContentPage
         base.OnAppearing();
 
         await Get_Current_User();
-        if(isUserDataFetched)
-        {
-            this.BindingContext = CurrentUser;
-            await Generate_Main_Menu();
-        }
-        
-
     }
+
+    //GET CURRENT USER, HIDE EVERYTHING, GET LANGUAGES
 
     private async Task Get_Current_User()
     {
@@ -60,31 +60,10 @@ public partial class MainMenuPage : ContentPage
         catch (Exception ex)
         {
             Debug.WriteLine("Error fetching user data: " + ex.Message);
+            Welcome_User_Label.Text = "Error fetching user data: " + ex.Message;
         }
         
 
-    }
-
-    private async Task Generate_Main_Menu()
-    {
-        if(CurrentUser.Role == "admin")
-        {
-            User_Get_Trucks.IsEnabled = false;
-            User_Get_Trucks.IsVisible = false;
-
-            Admin_Data_Panel.IsEnabled = true;
-            Admin_Data_Panel.IsVisible = true;
-            
-        }
-        if (CurrentUser.Role == "user")
-        {
-            User_Get_Trucks.IsEnabled = true;
-            User_Get_Trucks.IsVisible = true;
-
-            Admin_Data_Panel.IsEnabled = false;
-            Admin_Data_Panel.IsVisible = false;
-
-        }
     }
 
     private async Task Hide_Everything()
@@ -108,6 +87,37 @@ public partial class MainMenuPage : ContentPage
         Add_Truck_Section.IsEnabled = false;
     }
 
+    private async Task<List<Language>> Get_Languages()
+    {
+        try
+        {
+            var response = await client.GetAsync(apiUrl + "Get_Languages");
+    
+            if(response.IsSuccessStatusCode)
+            {
+                var Languages = await response.Content.ReadFromJsonAsync<List<Language>>();
+                
+                if(Languages != null)
+                {
+                    return Languages;
+                }  
+                else
+                {
+                    return new List<Language>();
+                }
+            }
+        }
+        catch(Exception ex)
+        {
+            Debug.WriteLine("Error: " + ex.Message);
+            return new List<Language>();
+        }
+        return new List<Language>();
+    }
+
+
+    //GET USERS, TRUCKS, JOBS
+
     private async void Admin_Get_Users_Clicked(object sender, EventArgs e)
     {
         await Hide_Everything();
@@ -117,16 +127,11 @@ public partial class MainMenuPage : ContentPage
 
             if(response.IsSuccessStatusCode)
             {
-                var json = await response.Content.ReadAsStringAsync();
-
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-
-                var userslist = JsonSerializer.Deserialize<List<Users>>(json, options);
+                var userslist = await response.Content.ReadFromJsonAsync<List<Users>>();
 
                 Get_All_Users_View.ItemsSource = userslist;
+
+                
             }
         }
         catch(Exception ex)
@@ -147,12 +152,8 @@ public partial class MainMenuPage : ContentPage
             var response = await client.GetAsync(apiUrl + "Get_Trucks");
             if (response.IsSuccessStatusCode)
             {
-                var json = await response.Content.ReadAsStringAsync();
-                var options = new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                };
-                var truckslist = JsonSerializer.Deserialize<List<Truck>>(json, options);
+                var truckslist = await response.Content.ReadFromJsonAsync<List<Truck>>();
+
                 Get_All_Trucks_View.ItemsSource = truckslist;
             }
         }
@@ -165,12 +166,79 @@ public partial class MainMenuPage : ContentPage
         Trucks_View.IsVisible = true;
     }
 
+    //OPEN CERTAIN SECTIONS IN MAIN MENU
+
+    private async void Admin_Open_Add_User_Section(object sender, EventArgs e)
+    {
+        await Hide_Everything();
+        Add_User_Section.IsEnabled = true;
+        Add_User_Section.IsVisible = true;
+    }
+
+    private async void Admin_Open_Add_Truck_Section(object sender, EventArgs e)
+    {
+        await Hide_Everything();
+
+        Add_Truck_Section.IsVisible = true;
+        Add_Truck_Section.IsEnabled = true;
+    }
+
     private async void Admin_Users_View_Selected(object sender, SelectionChangedEventArgs e)
     {
         await Hide_Everything();
+        
+
         var selecteduser = e.CurrentSelection.FirstOrDefault() as Users;
 
-        if(selecteduser != null)
+        // get all languages
+        var allLanguages = await Get_Languages();
+
+        var allTrucks = await client.GetFromJsonAsync<List<Truck>>(apiUrl + "Get_Trucks");
+
+        //clear selected languages and trucks lists if it was used before
+        SelectedTrucks.Clear();
+        SelectedLanguages.Clear();
+        // truck section
+        if (allTrucks != null)
+        {
+            foreach (var truck in allTrucks)
+            {
+                if (selecteduser.AssignedTrucks.Any(x => x.Id == truck.Id))
+                {
+                    truck.SelectionColor = Colors.LightBlue;
+                    SelectedTrucks.Add(truck);
+                }
+                else
+                {
+                    truck.SelectionColor = Colors.Transparent;
+                }
+            }
+
+            All_Trucks_View.ItemsSource = allTrucks;
+        }
+
+
+
+
+                // language section
+                if (allLanguages != null)
+        {
+            foreach(var lang in allLanguages)
+            {
+                if(selecteduser.Languages.Any(x => x.Id == lang.Id))
+                {
+                    lang.SelectionColor = Colors.LightBlue;
+                    SelectedLanguages.Add(lang);
+                }
+                else
+                {
+                    lang.SelectionColor = Colors.Transparent;
+                }
+            }
+            All_Languages_View.ItemsSource = allLanguages;
+        }
+
+        if (selecteduser != null)
         {
             EditUserLabelHeader.Text = "Edit user " + selecteduser.Username;
             Edit_User_Section.IsEnabled = true;
@@ -196,63 +264,11 @@ public partial class MainMenuPage : ContentPage
         }
     }
 
-    private async void Admin_Save_User_Edit(object sender, EventArgs e)
-    {
-        var selecteduser = Edit_User_Section.BindingContext as Users;
-        if (selecteduser != null)
-        {
-            var result = await client.PutAsJsonAsync(apiUrl + "Update_User/" + selecteduser.ID, selecteduser);
-
-            if(result.IsSuccessStatusCode)
-            {
-                Debug.WriteLine("User updated successfully.");
-            }
-            else
-            {
-                Debug.WriteLine("Failed to update user. Status code: " + result.Content.ReadAsStringAsync());
-                EditUserLabelMain.Text = await result.Content.ReadAsStringAsync();
-            }
-
-            await Hide_Everything();
-            return;
-        }
-        else
-        {
-            await Hide_Everything();
-            Debug.WriteLine("No user selected for editing.");
-            return;
-        }
-    }
-    
-    private async void Admin_Save_Truck_Edit(object sender, EventArgs e)
-    {
-        var selectedtruck = Edit_Truck_Section.BindingContext as Truck;
-        if (selectedtruck != null)
-        {
-            var result = await client.PutAsJsonAsync(apiUrl + "Update_Truck/" + selectedtruck.Id, selectedtruck);
-            if (result.IsSuccessStatusCode)
-            {
-                Debug.WriteLine("Truck updated successfully.");
-            }
-            else
-            {
-                Debug.WriteLine("Failed to update truck. Status code: " + result.Content.ReadAsStringAsync());
-                EditTruckLabelMain.Text = await result.Content.ReadAsStringAsync();
-            }
-            await Hide_Everything();
-            return;
-        }
-        else
-        {
-            await Hide_Everything();
-            Debug.WriteLine("No truck selected for editing.");
-            return;
-        }
-    }
+    //ADD TO DATABASE
 
     private async void Admin_Add_User_Clicked(object sender, EventArgs e)
     {
-        if(string.IsNullOrEmpty(Admin_Add_User_FirstName.Text))
+        if (string.IsNullOrEmpty(Admin_Add_User_FirstName.Text))
         {
             Add_User_Error_Label.Text = "First Name is empty!";
             return;
@@ -297,10 +313,10 @@ public partial class MainMenuPage : ContentPage
 
         var result = await client.PostAsJsonAsync(apiUrl + "Add_User", UserToAdd);
 
-        if(result.IsSuccessStatusCode)
+        if (result.IsSuccessStatusCode)
         {
             Add_User_Error_Label.Text = await result.Content.ReadAsStringAsync();
-           
+
         }
         else
         {
@@ -308,20 +324,120 @@ public partial class MainMenuPage : ContentPage
         }
     }
 
-    private async void Admin_Open_Add_User_Section(object sender, EventArgs e)
+    private async void Admin_Add_Truck_Clicked(object sender, EventArgs e)
     {
-        await Hide_Everything();
-        Add_User_Section.IsEnabled = true;
-        Add_User_Section.IsVisible = true;
+
+        Truck TruckToAdd = new Truck();
+
+        if (string.IsNullOrEmpty(Admin_Add_Truck_Name.Text))
+        {
+            Add_Truck_Error_Label.Text = "Name is empty!";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Add_Truck_Brand.Text))
+        {
+            Add_Truck_Error_Label.Text = "Brand is empty!";
+            return;
+        }
+        if (!int.TryParse(Admin_Add_Truck_Capacity.Text, out int capacity))
+        {
+            Add_Truck_Error_Label.Text = "Capacity should be a number!";
+            return;
+        }
+
+        TruckToAdd.Name = Admin_Add_Truck_Name.Text;
+        TruckToAdd.brand = Admin_Add_Truck_Brand.Text;
+        TruckToAdd.Capacity = capacity;
+
+        var response = await client.PostAsJsonAsync(apiUrl + "Add_Truck", TruckToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Add_Truck_Error_Label.Text = await response.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            Add_Truck_Error_Label.Text = await response.Content.ReadAsStringAsync();
+        }
+
+
+
     }
 
-    private async void Admin_Open_Add_Truck_Section(object sender, EventArgs e)
+    private async void Admin_Add_Job_Clicked(object sender, EventArgs e)
     {
-        await Hide_Everything();
 
-        Add_Truck_Section.IsVisible = true;
-        Add_Truck_Section.IsEnabled = true;
     }
+
+
+    //SAVE EDIT TO DATABASE
+
+    private async void Admin_Save_User_Edit(object sender, EventArgs e)
+    {
+        var selecteduser = Edit_User_Section.BindingContext as Users;
+
+        //get selected languages
+        var selectedlanguages = SelectedLanguages;
+        if (selecteduser != null)
+        {
+            var result = await client.PutAsJsonAsync(apiUrl + "Update_User/" + selecteduser.ID, selecteduser);
+
+            //http put update languages
+            var result2 = await client.PutAsJsonAsync(apiUrl + "Update_User_Languages/" + selecteduser.ID, selectedlanguages);
+
+            var result3 = await client.PutAsJsonAsync(apiUrl + "Update_User_Trucks/" + selecteduser.ID, SelectedTrucks);
+            if (result.IsSuccessStatusCode && result2.IsSuccessStatusCode && result3.IsSuccessStatusCode)
+            {
+                Debug.WriteLine("User updated successfully.");
+            }
+            else
+            {
+                Debug.WriteLine("Failed to update user. Status code: " + result.Content.ReadAsStringAsync());
+                Debug.WriteLine("Failed to update user. Status code: " + result2.Content.ReadAsStringAsync());
+                Debug.WriteLine("Failed to update user. Status code: " + result3.Content.ReadAsStringAsync());
+                EditUserLabelMain.Text = await result.Content.ReadAsStringAsync() + "\n" + await result2.Content.ReadAsStringAsync() 
+                    + "\n" + await result3.Content.ReadAsStringAsync();
+            }
+
+            await Hide_Everything();
+            return;
+        }
+        else
+        {
+            await Hide_Everything();
+            Debug.WriteLine("No user selected for editing.");
+            return;
+        }
+    }
+    
+    private async void Admin_Save_Truck_Edit(object sender, EventArgs e)
+    {
+        var selectedtruck = Edit_Truck_Section.BindingContext as Truck;
+        if (selectedtruck != null)
+        {
+            var result = await client.PutAsJsonAsync(apiUrl + "Update_Truck/" + selectedtruck.Id, selectedtruck);
+            if (result.IsSuccessStatusCode)
+            {
+                EditTruckLabelMain.Text = await result.Content.ReadAsStringAsync();
+                Debug.WriteLine("Truck updated successfully.");
+            }
+            else
+            {
+                EditTruckLabelMain.Text = await result.Content.ReadAsStringAsync();
+                Debug.WriteLine("Failed to update truck. Status code: " + result.Content.ReadAsStringAsync());
+            }
+            return;
+        }
+        else
+        {
+            //szczerze nie wiem co trzeba by bylo zrobic w tym programie aby osiagnac ten komunikat, ale niech bedzie
+            EditTruckLabelMain.Text = "No truck selected for editing.";
+            Debug.WriteLine("No truck selected for editing.");
+            return;
+        }
+    }
+
+    //DELETE FROM DATABASE
 
     private async void Admin_Delete_User(object sender, EventArgs e)
     {
@@ -352,45 +468,69 @@ public partial class MainMenuPage : ContentPage
 
     private async void Admin_Delete_Truck(object sender, EventArgs e)
     {
-        
+        var selectedtruck = Edit_Truck_Section.BindingContext as Truck;
+
+        if(selectedtruck != null)
+        {
+            var response = await DisplayAlertAsync("Deleting Truck", "Are you sure you want to delete " + selectedtruck.Name, "Yes", "No");
+
+            if(response)
+            {
+                var request = await client.DeleteAsync(apiUrl + "Delete_Truck/" + selectedtruck.Id);
+
+                if(request.IsSuccessStatusCode)
+                {
+                    //gut
+                    EditTruckLabelMain.Text = await request.Content.ReadAsStringAsync();
+                    await Hide_Everything();
+                    return;
+                }
+
+                //error
+                EditTruckLabelMain.Text = await request.Content.ReadAsStringAsync();
+            }
+            return;
+        }
     }
-    private async void Admin_Add_Truck_Clicked(object sender, EventArgs e)
+
+    private async void On_Language_Tapped(object sender, EventArgs e)
     {
+        var border = (Border)sender;
+        var tappedLanguage = (Language)border.BindingContext;
 
-        Truck TruckToAdd = new Truck();
-
-        if(string.IsNullOrEmpty(Admin_Add_Truck_Name.Text))
+        // if language is selected, deselect it, else select it
+        if (SelectedLanguages.Contains(tappedLanguage))
         {
-            Add_Truck_Error_Label.Text = "Name is empty!";
-            return;
-        }
-        if(string.IsNullOrEmpty(Admin_Add_Truck_Brand.Text))
-        {
-            Add_Truck_Error_Label.Text = "Brand is empty!";
-            return;
-        }
-        if(!int.TryParse(Admin_Add_Truck_Capacity.Text, out int capacity))
-        {
-            Add_Truck_Error_Label.Text = "Capacity should be a number!";
-            return;
-        }
-
-        TruckToAdd.Name = Admin_Add_Truck_Name.Text;
-        TruckToAdd.brand = Admin_Add_Truck_Brand.Text;
-        TruckToAdd.Capacity = capacity;
-
-        var response = await client.PostAsJsonAsync(apiUrl + "Add_Truck", TruckToAdd);
-
-        if(response.IsSuccessStatusCode)
-        {
-            Add_Truck_Error_Label.Text = await response.Content.ReadAsStringAsync();
+            SelectedLanguages.Remove(tappedLanguage);
+            border.BackgroundColor = Colors.Transparent;
         }
         else
         {
-            Add_Truck_Error_Label.Text = await response.Content.ReadAsStringAsync();
+            SelectedLanguages.Add(tappedLanguage);
+            border.BackgroundColor = Colors.LightBlue;
         }
 
+    }
 
+    private async void On_Truck_Tapped(object sender, EventArgs e)
+    {
+        var border = (Border)sender;
+
+        var tappedtruck = (Truck)border.BindingContext;
+
+        if (SelectedTrucks.Contains(tappedtruck))
+        {
+            SelectedTrucks.Remove(tappedtruck);
+            border.BackgroundColor = Colors.Transparent;
+        }
+        else
+        {
+            SelectedTrucks.Add(tappedtruck);
+            border.BackgroundColor = Colors.LightBlue;
+        }
+
+            
         
     }
+    
 }

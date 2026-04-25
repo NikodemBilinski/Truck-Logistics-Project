@@ -1,4 +1,5 @@
-﻿namespace TrucksLogisticsServerAPI.Models
+﻿using System.Text.Json.Serialization;
+namespace TrucksLogisticsServerAPI.Models
 {
     public class Truck
     {
@@ -10,6 +11,8 @@
         public bool IsBusy { get; set; }
 
         public int Capacity { get; set; }
+
+        [JsonIgnore]
         public List<Users> AssignedUsers { get; set; } = new();
 
     }

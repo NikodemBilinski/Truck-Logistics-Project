@@ -13,5 +13,9 @@ namespace TrucksLogisticsClient.Models
 
         [JsonIgnore]
         public List<Users> Users { get; set; } = new();
+
+        [JsonIgnore]
+        public Color? SelectionColor { get; set; }
+
     }
 }
