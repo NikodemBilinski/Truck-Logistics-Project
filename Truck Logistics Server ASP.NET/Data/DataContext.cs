@@ -15,6 +15,8 @@ namespace TrucksLogisticsServerAPI.Data
 
         public DbSet<Users> Users { get; set; }
 
+        public DbSet<Job> Jobs { get; set; }
+
         public DbSet<Language> Languages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
