@@ -24,9 +24,10 @@
             </Border>
 
 
-            <!--UserDataMain-->
+            <!--UserDataMain (zastanowic sie czy w ogole to umieszczac-->
             <Border x:Name="UserDataMain"
                     x:DataType="model:Users"
+                    IsVisible="False"
                     StrokeShape="RoundRectangle 20,20,20,20"
                     WidthRequest="500"
                     Margin="20"
@@ -50,6 +51,7 @@
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Border>
+            
             <ScrollView Grid.Row="2" VerticalOptions="FillAndExpand">
                 <VerticalStackLayout>
             
@@ -268,7 +270,57 @@
                         </Grid>
 
                     </VerticalStackLayout>
-            <!-- Collection view templates-->
+                
+            <!--Add New Job-->
+            <VerticalStackLayout x:Name="Add_Job_Section" IsVisible="False" x:DataType="model:Job" Spacing="10">
+                    <Label Text="Add New Job" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                        <Grid ColumnDefinitions="200,200,500,150">
+                            <VerticalStackLayout Grid.Column="0" Spacing="35" VerticalOptions="Center">
+                                <Label Text="Name:"/>
+                                <Label Text="Date Created:"/>
+                                <Label Text="Deadline:"/>
+                                <Label Text="Location From:"/>
+                                <Label Text="Location To:"/>
+                                <Label Text="(Open, Assigned, Delivered):"/>
+                                <Label Text="Required Languages:"/>
+                                <Label Text="Minimum Capacity:"/>
+                                <Label Text="Required Truck Brand:"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" Spacing="10">
+                                <Entry x:Name="Admin_Add_Job_Name" Placeholder="Name" WidthRequest="200" HorizontalOptions="Start"/>
+                                <DatePicker x:Name="Admin_Add_Job_Created" WidthRequest="200" HorizontalOptions="Start"/>
+                                <DatePicker x:Name="Admin_Add_Job_DeadLine" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Job_LocationFrom" Placeholder="Location From" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Job_LocationTo" Placeholder="Location To" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Job_Status" Placeholder="Status" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Job_RequiredLanguages" Placeholder="Required Languages" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Job_RequiredMinimumCapacity" Placeholder="Required Minimum Capacity" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Job_RequiredTruckBrand" Placeholder="Required Truck Brand" WidthRequest="200" HorizontalOptions="Start"/>
+
+                            </VerticalStackLayout>
+
+                            <Editor x:Name="Admin_Add_Job_Description" 
+                                    Grid.Column="2"
+                                    Placeholder="Description" 
+                                    WidthRequest="400" 
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Start"
+                                    HeightRequest="300"/>
+
+                            <Label x:Name="Add_Job_Error_Label"
+                                   Grid.Column="3"
+                                   TextColor="Red"
+                                   Margin="0,0,0,0"/>
+
+                            <Button Text="Add Job" 
+                                    Grid.Column="3" 
+                                    HeightRequest="50"
+                                    Clicked="Admin_Add_Job_Clicked"/>
+                        </Grid>
+
+                    </VerticalStackLayout>
+                    <!-- Collection view templates-->
 
             <!--Users View-->
                     <Grid x:Name="Users_View"
@@ -474,7 +526,7 @@
                             WidthRequest="125"/>
                     <Button Text="Add New Job"
                             WidthRequest="125"
-                            Clicked="Admin_Add_Job_Clicked"/>
+                            Clicked="Admin_Open_Add_Job_Section"/>
 
                 </VerticalStackLayout>
             </Border>

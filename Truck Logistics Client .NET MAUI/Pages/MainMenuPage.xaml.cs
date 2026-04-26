@@ -93,7 +93,10 @@ public partial class MainMenuPage : ContentPage
         Add_Truck_Section.IsVisible = false;
         Add_Truck_Section.IsEnabled = false;
 
-        
+        Add_Job_Section.IsVisible = false;
+        Add_Job_Section.IsEnabled = false;
+
+
     }
 
     private async Task<List<Language>> Get_Languages()
@@ -223,8 +226,8 @@ public partial class MainMenuPage : ContentPage
     private async void Admin_Open_Add_Job_Section(object sender, EventArgs e)
     {
         await Hide_Everything();
-        //Add_Job_Section.IsVisible = true;
-        //Add_Job_Section.IsEnabled = true;
+        Add_Job_Section.IsVisible = true;
+        Add_Job_Section.IsEnabled = true;
     }
 
     private async void Admin_Users_View_Selected(object sender, SelectionChangedEventArgs e)
