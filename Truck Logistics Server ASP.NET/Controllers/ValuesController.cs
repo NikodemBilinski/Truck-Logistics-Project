@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using TrucksLogisticsServerAPI.Controllers;
 using TrucksLogisticsServerAPI.Data;
+using TrucksLogisticsServerAPI.Migrations;
 using TrucksLogisticsServerAPI.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -55,8 +56,23 @@ namespace TrucksLogisticsServerAPI.Controllers
             
             var allusers = await _dataContext.Users.Include(u => u.AssignedTrucks).Include(u => u.Languages).ToListAsync();
             Console.WriteLine("GetAllUsers: Returning All Users.");
-            //await _dataContext.Users.Include(u => u.AssignedTrucks).Include(u => u.Languages).ToListAsync();
             return Ok(allusers);
+        }
+
+        [HttpGet("Get_All_Jobs")]
+        
+        public async Task<ActionResult<List<Job>>> GetAllJobs()
+        {
+
+            Console.WriteLine("GetAllJobs: Requested.");
+            var alljobs = await _dataContext.Jobs.ToListAsync();
+
+            if(alljobs != null)
+            {
+                Console.WriteLine("GetAllJobs: Returning All Jobs.");
+                return Ok(alljobs);
+            }
+            return BadRequest("Error: No Jobs Found");
         }
 
         [HttpGet("Get_Languages")]

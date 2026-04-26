@@ -186,7 +186,7 @@ public partial class MainMenuPage : ContentPage
 
         try
         {
-            var response = await client.GetAsync(apiUrl + "Get_Jobs");
+            var response = await client.GetAsync(apiUrl + "Get_All_Jobs");
             if (response.IsSuccessStatusCode)
             {
                 var jobslist = await response.Content.ReadFromJsonAsync<List<Job>>();
