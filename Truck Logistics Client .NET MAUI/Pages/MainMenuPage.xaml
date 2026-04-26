@@ -281,18 +281,14 @@
                                 <Label Text="Deadline:"/>
                                 <Label Text="Location From:"/>
                                 <Label Text="Location To:"/>
-                                <Label Text="(Open, Assigned, Delivered):"/>
-                                <Label Text="Required Languages:"/>
                                 <Label Text="Minimum Capacity:"/>
                                 <Label Text="Required Truck Brand:"/>
                             </VerticalStackLayout>
-                            <VerticalStackLayout Grid.Column="1" Spacing="10">
+                            <VerticalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
                                 <Entry x:Name="Admin_Add_Job_Name" Placeholder="Name" WidthRequest="200" HorizontalOptions="Start"/>
                                 <DatePicker x:Name="Admin_Add_Job_DeadLine" WidthRequest="200" HorizontalOptions="Start"/>
                                 <Entry x:Name="Admin_Add_Job_LocationFrom" Placeholder="Location From" WidthRequest="200" HorizontalOptions="Start"/>
                                 <Entry x:Name="Admin_Add_Job_LocationTo" Placeholder="Location To" WidthRequest="200" HorizontalOptions="Start"/>
-                                <Entry x:Name="Admin_Add_Job_Status" Placeholder="Status" WidthRequest="200" HorizontalOptions="Start"/>
-                                <Entry x:Name="Admin_Add_Job_RequiredLanguages" Placeholder="Required Languages" WidthRequest="200" HorizontalOptions="Start"/>
                                 <Entry x:Name="Admin_Add_Job_RequiredMinimumCapacity" Placeholder="Required Minimum Capacity" WidthRequest="200" HorizontalOptions="Start"/>
                                 <Entry x:Name="Admin_Add_Job_RequiredTruckBrand" Placeholder="Required Truck Brand" WidthRequest="200" HorizontalOptions="Start"/>
 
@@ -472,9 +468,10 @@
                     <Grid x:Name="Jobs_View"
                           IsVisible="False">
                         <Grid RowDefinitions="*,*">
-                            <Grid ColumnDefinitions="50,100,75,75,75" 
-                                  Margin="0,10,5,0"
+                            <Grid ColumnDefinitions="50,100,100,75,75" 
+                                  Margin="0,10,20,0"
                                   BackgroundColor="Transparent" 
+                                  ColumnSpacing="20"
                                   Padding="10"
                                   HorizontalOptions="Center"
                                   Grid.Row="0">
@@ -488,21 +485,34 @@
                             <CollectionView x:Name="Get_All_Jobs_View"
                                             SelectionMode="Single"
                                             SelectionChanged="Admin_Jobs_View_Selected"
-                                            WidthRequest="450"
-                                            Grid.Row="1">
+                                            WidthRequest="500"
+                                            Grid.Row="1"
+                                            HorizontalOptions="Center">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="model:Job">
                                         <Border Stroke="Transparent" Padding="-5">
                                             <Border Stroke="transparent"  StrokeThickness="3">
                                                 <Grid ColumnDefinitions="50,100,100,75,75"
-                                                      Padding="10"
-                                                      HorizontalOptions="Center">
+                                                      ColumnSpacing="20"
+                                                      Padding="5">
 
                                                     <Label Grid.Column="0" Text="{Binding ID}"/>
                                                     <Label Grid.Column="1" Text="{Binding Name}"/>
                                                     <Label Grid.Column="2" Text="{Binding Created}"/>
                                                     <Label Grid.Column="3" Text="{Binding DeadLine}"/>
-                                                    <Label Grid.Column="4" Text="{Binding Status}" HorizontalOptions="Center"/>
+                                                    <Label Grid.Column="4" Text="{Binding Status}">
+                                                        <Label.Triggers>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="open">
+                                                                <Setter Property="TextColor" Value="Green"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="assigned">
+                                                                <Setter Property="TextColor" Value="Orange"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="delivered">
+                                                                <Setter Property="TextColor" Value="Red"/>
+                                                            </DataTrigger>
+                                                        </Label.Triggers>
+                                                    </Label>
                                                 </Grid>
                                             </Border>
                                         </Border>

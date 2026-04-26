@@ -681,10 +681,5 @@ public partial class MainMenuPage : ContentPage
         
     }
 
-    private async void On_Job_Tapped(object sender, EventArgs e)
-    {
-
-    }
-
     #endregion
 }
