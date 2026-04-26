@@ -56,6 +56,10 @@ public partial class MainMenuPage : ContentPage
                     isUserDataFetched = true;
                 }
             }
+            this.BindingContext = CurrentUser;
+
+            Admin_Data_Panel.IsEnabled = true;
+            Admin_Data_Panel.IsVisible = true;
         }
         catch (Exception ex)
         {

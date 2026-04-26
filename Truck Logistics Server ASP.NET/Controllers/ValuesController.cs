@@ -220,21 +220,6 @@ namespace TrucksLogisticsServerAPI.Controllers
             user.Age = updatedUser.Age;
             user.isBusy = updatedUser.isBusy;
 
-            // Update languages
-            //user.Languages.Clear();
-            //foreach (var language in updatedUser.Languages)
-            //{
-            //    _dataContext.Languages.Attach(language);
-            //    user.Languages.Add(language);
-            //}
-
-            // Update trucks
-            user.AssignedTrucks.Clear();
-            foreach (var truck in updatedUser.AssignedTrucks)
-            {
-                _dataContext.Trucks.Attach(truck);
-                user.AssignedTrucks.Add(truck);
-            }
             await _dataContext.SaveChangesAsync();
 
             Console.WriteLine("UpdateUser: User Updated.");
@@ -262,7 +247,6 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpPut("Update_User_Languages/{id}")]
-
         public async Task<ActionResult<Language>> UpdateUserLanguages(int id, List<Language> updatedLanguages)
         {
             Console.WriteLine("UpdateUserLanguages: Request to update languages for user with ID: " + id);
@@ -311,6 +295,8 @@ namespace TrucksLogisticsServerAPI.Controllers
             //list of them 
             var trucksfromdb = await _dataContext.Trucks.Where(x => selectedtrucksids.Contains(x.Id)).ToListAsync();
 
+
+            user.AssignedTrucks.Clear();
             foreach(var truck in trucksfromdb)
             {
                 user.AssignedTrucks.Add(truck);
