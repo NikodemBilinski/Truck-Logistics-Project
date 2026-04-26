@@ -399,8 +399,50 @@
                         </Grid>
                     </Grid>
 
-            <!--Jobs-->
-            </VerticalStackLayout>
+            <!--Jobs View-->
+                    <Grid x:Name="Jobs_View"
+                          IsVisible="False">
+                        <Grid RowDefinitions="*,*">
+                            <Grid ColumnDefinitions="50,100,75,75,75" 
+                                  Margin="0,10,5,0"
+                                  BackgroundColor="Transparent" 
+                                  Padding="10"
+                                  HorizontalOptions="Center"
+                                  Grid.Row="0">
+                                <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                                <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
+                                <Label Grid.Column="2" Text="Created" FontAttributes="Bold"/>
+                                <Label Grid.Column="3" Text="DeadLine" FontAttributes="Bold"/>
+                                <Label Grid.Column="4" Text="Status" FontAttributes="Bold"/>
+                            </Grid>
+
+                            <CollectionView x:Name="Get_All_Jobs_View"
+                                            SelectionMode="Single"
+                                            SelectionChanged="Admin_Jobs_View_Selected"
+                                            WidthRequest="450"
+                                            Grid.Row="1">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:Job">
+                                        <Border Stroke="Transparent" Padding="-5">
+                                            <Border Stroke="transparent"  StrokeThickness="3">
+                                                <Grid ColumnDefinitions="50,100,100,75,75"
+                                                      Padding="10"
+                                                      HorizontalOptions="Center">
+
+                                                    <Label Grid.Column="0" Text="{Binding ID}"/>
+                                                    <Label Grid.Column="1" Text="{Binding Name}"/>
+                                                    <Label Grid.Column="2" Text="{Binding Created}"/>
+                                                    <Label Grid.Column="3" Text="{Binding DeadLine}"/>
+                                                    <Label Grid.Column="4" Text="{Binding Status}" HorizontalOptions="Center"/>
+                                                </Grid>
+                                            </Border>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </Grid>
+                    </Grid>
+                </VerticalStackLayout>
             </ScrollView>
         </Grid>
         <VerticalStackLayout Grid.Column="0" Margin="10">
@@ -422,7 +464,8 @@
                             Clicked="Admin_Get_Trucks_Clicked"
                             WidthRequest="125"/>
                     <Button Text="Get All Jobs"
-                            WidthRequest="125"/>
+                            WidthRequest="125"
+                            Clicked="Admin_Get_Jobs_Clicked"/>
                     <Button Text="Add New User"
                             Clicked="Admin_Open_Add_User_Section"
                             WidthRequest="125"/>
@@ -430,7 +473,8 @@
                             Clicked="Admin_Open_Add_Truck_Section"
                             WidthRequest="125"/>
                     <Button Text="Add New Job"
-                            WidthRequest="125"/>
+                            WidthRequest="125"
+                            Clicked="Admin_Add_Job_Clicked"/>
 
                 </VerticalStackLayout>
             </Border>
