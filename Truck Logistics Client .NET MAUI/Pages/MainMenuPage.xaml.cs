@@ -228,6 +228,12 @@ public partial class MainMenuPage : ContentPage
         await Hide_Everything();
         Add_Job_Section.IsVisible = true;
         Add_Job_Section.IsEnabled = true;
+
+        SelectedLanguages.Clear();
+
+        var languagesfromdb = await Get_Languages();
+
+        Admin_Add_Job_RequiredLanguages_View.ItemsSource = languagesfromdb;
     }
 
     private async void Admin_Users_View_Selected(object sender, SelectionChangedEventArgs e)
@@ -424,7 +430,67 @@ public partial class MainMenuPage : ContentPage
 
     private async void Admin_Add_Job_Clicked(object sender, EventArgs e)
     {
+        Job JobToAdd = new Job();
 
+        if (string.IsNullOrEmpty(Admin_Add_Job_Name.Text))
+        {
+            Add_Job_Error_Label.Text = "Job Name is empty!";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Add_Job_Description.Text))
+        {
+            Add_Job_Error_Label.Text = "Job Description is empty!";
+            return;
+        }
+        if (!int.TryParse(Admin_Add_Job_RequiredMinimumCapacity.Text, out int minimumCapacity))
+        {
+            Add_Job_Error_Label.Text = "Minimum Capacity should be a number!";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Add_Job_LocationFrom.Text) || string.IsNullOrEmpty(Admin_Add_Job_LocationTo.Text))
+        {
+            Add_Job_Error_Label.Text = "Location From and Location To cannot be empty!";
+            return;
+        }
+        if (Admin_Add_Job_RequiredTruckBrand.Text == null)
+        {
+            JobToAdd.RequiredTruckBrand = "all";
+        }
+        else
+        {
+            JobToAdd.RequiredTruckBrand = Admin_Add_Job_RequiredTruckBrand.Text;
+        }
+        if (SelectedLanguages.Count == 0)
+        {
+            Add_Job_Error_Label.Text = "Select at least one required language!";
+            return;
+        }
+        // get selected languages and convert to string separated by comma
+
+        var selectedlanguagesstring = string.Join(",", SelectedLanguages.Select(x => x.Name));
+
+
+        JobToAdd.Name = Admin_Add_Job_Name.Text;
+        JobToAdd.Created = DateTime.Now;
+        JobToAdd.DeadLine = (DateTime)Admin_Add_Job_DeadLine.Date;
+        JobToAdd.LocationFrom = Admin_Add_Job_LocationFrom.Text;
+        JobToAdd.LocationTo = Admin_Add_Job_LocationTo.Text;
+        JobToAdd.Status = "open";
+        JobToAdd.Description = Admin_Add_Job_Description.Text;
+        
+        JobToAdd.RequiredLanguages = selectedlanguagesstring;
+        JobToAdd.RequiredMinimumCapacity = minimumCapacity;
+
+        var response = await client.PostAsJsonAsync(apiUrl + "Add_Job", JobToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Add_Job_Error_Label.Text = await response.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            Add_Job_Error_Label.Text = await response.Content.ReadAsStringAsync();
+        }
     }
     #endregion
 

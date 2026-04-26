@@ -300,14 +300,33 @@
 
                             </VerticalStackLayout>
 
-                            <Editor x:Name="Admin_Add_Job_Description" 
-                                    Grid.Column="2"
-                                    Placeholder="Description" 
-                                    WidthRequest="400" 
-                                    HorizontalOptions="Center"
-                                    VerticalOptions="Start"
-                                    HeightRequest="300"/>
+                            <VerticalStackLayout Grid.Column="2" Spacing="20">
+                                <Editor x:Name="Admin_Add_Job_Description" 
+                                        Placeholder="Description" 
+                                        WidthRequest="400" 
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"
+                                        HeightRequest="300"/>
 
+                                <CollectionView x:Name="Admin_Add_Job_RequiredLanguages_View"
+                                                SelectionMode="None"
+                                                WidthRequest="200"
+                                                HeightRequest="200">
+                                    <CollectionView.ItemsLayout>
+                                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:Language">
+                                            <Border Padding="10" BackgroundColor="{Binding SelectionColor}">
+                                                <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="On_Language_Tapped"/>
+                                                </Border.GestureRecognizers>
+                                            </Border>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </VerticalStackLayout>
                             <Label x:Name="Add_Job_Error_Label"
                                    Grid.Column="3"
                                    TextColor="Red"
