@@ -221,11 +221,7 @@ public partial class MainMenuPage : ContentPage
             All_Trucks_View.ItemsSource = allTrucks;
         }
 
-
-
-
-                // language section
-                if (allLanguages != null)
+        if (allLanguages != null)
         {
             foreach(var lang in allLanguages)
             {
@@ -404,6 +400,10 @@ public partial class MainMenuPage : ContentPage
             }
 
             await Hide_Everything();
+
+            Users_View.IsEnabled = true;
+            Users_View.IsVisible = true;
+
             return;
         }
         else
@@ -430,6 +430,12 @@ public partial class MainMenuPage : ContentPage
                 EditTruckLabelMain.Text = await result.Content.ReadAsStringAsync();
                 Debug.WriteLine("Failed to update truck. Status code: " + result.Content.ReadAsStringAsync());
             }
+
+            await Hide_Everything();
+
+            Trucks_View.IsEnabled = true;
+            Trucks_View.IsVisible = true;
+
             return;
         }
         else
