@@ -278,7 +278,6 @@
                         <Grid ColumnDefinitions="200,200,500,150">
                             <VerticalStackLayout Grid.Column="0" Spacing="35" VerticalOptions="Center">
                                 <Label Text="Name:"/>
-                                <Label Text="Date Created:"/>
                                 <Label Text="Deadline:"/>
                                 <Label Text="Location From:"/>
                                 <Label Text="Location To:"/>
@@ -289,7 +288,6 @@
                             </VerticalStackLayout>
                             <VerticalStackLayout Grid.Column="1" Spacing="10">
                                 <Entry x:Name="Admin_Add_Job_Name" Placeholder="Name" WidthRequest="200" HorizontalOptions="Start"/>
-                                <DatePicker x:Name="Admin_Add_Job_Created" WidthRequest="200" HorizontalOptions="Start"/>
                                 <DatePicker x:Name="Admin_Add_Job_DeadLine" WidthRequest="200" HorizontalOptions="Start"/>
                                 <Entry x:Name="Admin_Add_Job_LocationFrom" Placeholder="Location From" WidthRequest="200" HorizontalOptions="Start"/>
                                 <Entry x:Name="Admin_Add_Job_LocationTo" Placeholder="Location To" WidthRequest="200" HorizontalOptions="Start"/>

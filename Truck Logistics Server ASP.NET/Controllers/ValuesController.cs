@@ -157,6 +157,25 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         }
 
+        [HttpPost("Add_Job")]
+
+        public async Task<ActionResult<Job>> AddJob(Job JobToAdd)
+        {
+            Console.WriteLine("AddJob: Requested To Add Job: " + JobToAdd.Name + ".");
+            if(JobToAdd != null)
+            {
+                _dataContext.Jobs.Add(JobToAdd);
+                await _dataContext.SaveChangesAsync();
+                Console.WriteLine("AddJob: Added Job: " + JobToAdd.ID + ". " + JobToAdd.Name + ", To Database.");
+                return Ok("Successfully added new job: " + JobToAdd.Name);
+            }
+            else
+            {
+                Console.WriteLine("AddJob: Error, Job Cannot Be Null.");
+                return BadRequest("Error: Job cannot be null.");
+            }
+        }
+
         [HttpPost("Post_User_Swagger")]
 
         public async Task<ActionResult<Users>> AddUserLogin(Users userslogin)
