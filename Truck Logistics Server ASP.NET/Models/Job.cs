@@ -2,12 +2,16 @@
 {
     public class Job
     {
-        public int Id { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
 
-        public DateTime Created { get; set; } = DateTime.Now;
+        public DateTime Created { get; set; }
 
         public DateTime DeadLine { get; set; }
+
+        public string LocationFrom { get; set; }
+
+        public string LocationTo { get; set; }
 
         public string Status { get; set; }
 
@@ -19,9 +23,6 @@
 
         public int RequiredMinimumCapacity { get; set; }
 
-        public string RequiredTruckBrand { get; set; } = "All";
-
-
-
+        public string RequiredTruckBrand { get; set; } = string.Empty;
     }
 }
