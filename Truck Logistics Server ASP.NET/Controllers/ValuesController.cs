@@ -362,10 +362,17 @@ namespace TrucksLogisticsServerAPI.Controllers
             job.DeadLine = updatedJob.DeadLine;
             job.LocationFrom = updatedJob.LocationFrom;
             job.LocationTo = updatedJob.LocationTo;
-            job.Status = updatedJob.Status;
-            job.Description = updatedJob.Description;
             job.AssignedUserId = updatedJob.AssignedUserId;
+            job.Description = updatedJob.Description;
 
+            if (job.AssignedUserId != null)
+            {
+                job.Status = "assigned";
+            }
+            else
+            {
+                job.Status = "open";
+            }
             job.RequiredLanguages = updatedJob.RequiredLanguages;
             job.RequiredMinimumCapacity = updatedJob.RequiredMinimumCapacity;
             job.RequiredTruckBrand = updatedJob.RequiredTruckBrand;

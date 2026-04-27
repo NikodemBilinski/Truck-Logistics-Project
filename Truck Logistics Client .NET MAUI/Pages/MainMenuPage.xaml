@@ -247,10 +247,10 @@
                                         VerticalOptions="Center"
                                         HeightRequest="300"/>
                                 <!--Users-->
-                                <HorizontalStackLayout>
+                                <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
                                     <CollectionView x:Name="Admin_Edit_Job_Users_View"
                                                     SelectionMode="Single"
-                                                    WidthRequest="200"
+                                                    WidthRequest="190"
                                                     HeightRequest="200">
                                         <CollectionView.ItemsLayout>
                                             <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
@@ -263,10 +263,10 @@
                                             </DataTemplate>
                                         </CollectionView.ItemTemplate>
                                     </CollectionView>
-                                    <!--Languages-->
+                                <!--Languages-->
                                     <CollectionView x:Name="Admin_Edit_Job_RequiredLanguages_View"
                                                     SelectionMode="None"
-                                                    WidthRequest="200"
+                                                    WidthRequest="190"
                                                     HeightRequest="200">
                                         <CollectionView.ItemsLayout>
                                             <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
