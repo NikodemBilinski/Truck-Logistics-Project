@@ -87,6 +87,9 @@ public partial class MainMenuPage : ContentPage
         Edit_Truck_Section.IsVisible = false;
         Edit_Truck_Section.IsEnabled = false;
 
+        Edit_Job_Section.IsVisible = false;
+        Edit_Job_Section.IsEnabled = false;
+
         Add_User_Section.IsVisible = false;
         Add_User_Section.IsEnabled = false;
 
@@ -319,10 +322,10 @@ public partial class MainMenuPage : ContentPage
         var selectedJob = e.CurrentSelection.FirstOrDefault() as Job;
         if(selectedJob != null)
         {
-            //EditJobLabelHeader.Text = "Edit job " + selectedJob.Name;
-            //Edit_Job_Section.IsEnabled = true;
-            //Edit_Job_Section.IsVisible = true;
-            //Edit_Job_Section.BindingContext = selectedJob;
+            Edit_Job_Section_Header.Text = "Edit job " + selectedJob.Name;
+            Edit_Job_Section.IsEnabled = true;
+            Edit_Job_Section.IsVisible = true;
+            Edit_Job_Section.BindingContext = selectedJob;
         }
     }
 
@@ -638,7 +641,7 @@ public partial class MainMenuPage : ContentPage
 
     private async void Admin_Delete_Job(object sender, EventArgs e)
     {
-
+        //var JobToDelete = 
     }
 
     private async void On_Language_Tapped(object sender, EventArgs e)

@@ -206,8 +206,71 @@
 
             </VerticalStackLayout>
 
+            <!--Edit Job (admin)-->
+            <VerticalStackLayout x:Name="Edit_Job_Section" IsVisible="False" x:DataType="model:Job" Spacing="10">
+                    <Label x:Name="Edit_Job_Section_Header" Text="Edit Job" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-            <!--Add New User (admin)-->
+                        <Grid ColumnDefinitions="200,200,500,150">
+                            <VerticalStackLayout Grid.Column="0" Spacing="35" VerticalOptions="Center">
+                                <Label Text="Name:"/>
+                                <Label Text="Deadline:"/>
+                                <Label Text="Location From:"/>
+                                <Label Text="Location To:"/>
+                                <Label Text="Minimum Capacity:"/>
+                                <Label Text="Required Truck Brand:"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
+                                <Entry x:Name="Admin_Edit_Job_Name" Placeholder="Name" WidthRequest="200" HorizontalOptions="Start"/>
+                                <DatePicker x:Name="Admin_Edit_Job_DeadLine" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_LocationFrom" Placeholder="Location From" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_LocationTo" Placeholder="Location To" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_RequiredMinimumCapacity" Placeholder="Required Minimum Capacity" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_RequiredTruckBrand" Placeholder="Required Truck Brand" WidthRequest="200" HorizontalOptions="Start"/>
+
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="2" Spacing="20">
+                                <Editor x:Name="Admin_Edit_Job_Description" 
+                                        Placeholder="Description" 
+                                        WidthRequest="400" 
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"
+                                        HeightRequest="300"/>
+
+                                <CollectionView x:Name="Admin_Edit_Job_RequiredLanguages_View"
+                                                SelectionMode="None"
+                                                WidthRequest="200"
+                                                HeightRequest="200">
+                                    <CollectionView.ItemsLayout>
+                                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:Language">
+                                            <Border Padding="10" BackgroundColor="{Binding SelectionColor}">
+                                                <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="On_Language_Tapped"/>
+                                                </Border.GestureRecognizers>
+                                            </Border>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </VerticalStackLayout>
+                            <Label x:Name="Edit_Job_Error_Label"
+                                   Grid.Column="3"
+                                   TextColor="Red"
+                                   Margin="0,0,0,0"/>
+
+                            <Button Text="Add Job" 
+                                    Grid.Column="3" 
+                                    HeightRequest="50"
+                                    Clicked="Admin_Add_Job_Clicked"/>
+                        </Grid>
+
+                    </VerticalStackLayout>
+
+
+                    <!--Add New User (admin)-->
             <VerticalStackLayout x:Name="Add_User_Section" IsVisible="False" x:DataType="model:Users" Spacing="10">
                 <Label Text="Add New User" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
