@@ -596,7 +596,30 @@ public partial class MainMenuPage : ContentPage
 
     private async void Admin_Save_Job_Edit(object sender, EventArgs e)
     {
+        var selectedjob = Edit_Job_Section.BindingContext as Job;
+        var response = await client.PutAsJsonAsync(apiUrl + "Update_Job/" + selectedjob.ID, selectedjob);
 
+        if(selectedjob != null)
+        {
+            if (response.IsSuccessStatusCode)
+            {
+                Edit_Job_Error_Label.Text = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine("Truck updated successfully.");
+            }
+            else
+            {
+                Edit_Job_Error_Label.Text = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine("Failed to update Job, status code: " + response.Content.ReadAsStringAsync());
+            }
+
+            await Hide_Everything();
+
+            Jobs_View.IsVisible = true;
+            Jobs_View.IsEnabled = true;
+            return;
+        }
+        
+        
     }
 
     #endregion
