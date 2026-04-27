@@ -356,6 +356,8 @@ namespace TrucksLogisticsServerAPI.Controllers
                 return BadRequest("Job with the specified ID not found.");
             }
             job.Name = updatedJob.Name;
+            job.CompanyName = updatedJob.CompanyName;
+            job.ClientContactNumber = updatedJob.ClientContactNumber;
             job.Created = updatedJob.Created;
             job.DeadLine = updatedJob.DeadLine;
             job.LocationFrom = updatedJob.LocationFrom;

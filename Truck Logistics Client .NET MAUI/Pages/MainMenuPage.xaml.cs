@@ -488,18 +488,31 @@ public partial class MainMenuPage : ContentPage
             Add_Job_Error_Label.Text = "Select at least one required language!";
             return;
         }
+        if (Admin_Add_Job_ClientContact.Text == null)
+        {
+            Add_Job_Error_Label.Text = "Add Client contact number!";
+            return;
+        }
+        if (Admin_Add_Job_CompanyName.Text == null)
+        {
+            Add_Job_Error_Label.Text = "Add Client Company Name!";
+            return;
+        }
         // get selected languages and convert to string separated by comma
 
         var selectedlanguagesstring = string.Join(",", SelectedLanguages.Select(x => x.Name));
 
 
         JobToAdd.Name = Admin_Add_Job_Name.Text;
+        JobToAdd.CompanyName = Admin_Add_Job_CompanyName.Text;
+        JobToAdd.ClientContactNumber = Admin_Add_Job_ClientContact.Text;
         JobToAdd.Created = DateTime.Now;
         JobToAdd.DeadLine = (DateTime)Admin_Add_Job_DeadLine.Date;
         JobToAdd.LocationFrom = Admin_Add_Job_LocationFrom.Text;
         JobToAdd.LocationTo = Admin_Add_Job_LocationTo.Text;
         JobToAdd.Status = "open";
         JobToAdd.Description = Admin_Add_Job_Description.Text;
+        
         
         JobToAdd.RequiredLanguages = selectedlanguagesstring;
         JobToAdd.RequiredMinimumCapacity = minimumCapacity;

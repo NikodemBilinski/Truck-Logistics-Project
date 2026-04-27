@@ -213,6 +213,8 @@
                         <Grid ColumnDefinitions="200,200,500,150">
                             <VerticalStackLayout Grid.Column="0" Spacing="35" VerticalOptions="Center">
                                 <Label Text="Name:"/>
+                                <Label Text="Company Name:"/>
+                                <Label Text="Client Contact:"/>
                                 <Label Text="Created:"/>
                                 <Label Text="Deadline:"/>
                                 <Label Text="Location From:"/>
@@ -223,6 +225,8 @@
                             </VerticalStackLayout>
                             <VerticalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
                                 <Entry x:Name="Admin_Edit_Job_Name" Text="{Binding Name}" Placeholder="Name" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_CompanyName" Text="{Binding CompanyName}" Placeholder="Company Name" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_ClientContact" Text="{Binding ClientContactNumber}" Placeholder="Client Contact" WidthRequest="200" HorizontalOptions="Start"/>
                                 <DatePicker x:Name="Admin_Edit_Job_Created" WidthRequest="200" HorizontalOptions="Start"/>
                                 <DatePicker x:Name="Admin_Edit_Job_DeadLine" Date="{Binding DeadLine}" WidthRequest="200" HorizontalOptions="Start"/>
                                 <Entry x:Name="Admin_Edit_Job_LocationFrom" Text="{Binding LocationFrom}" Placeholder="Location From" WidthRequest="200" HorizontalOptions="Start"/>
@@ -351,6 +355,8 @@
                         <Grid ColumnDefinitions="200,200,500,150">
                             <VerticalStackLayout Grid.Column="0" Spacing="35" VerticalOptions="Center">
                                 <Label Text="Name:"/>
+                                <Label Text="Company Name:"/>
+                                <Label Text="Client Contact:"/>
                                 <Label Text="Deadline:"/>
                                 <Label Text="Location From:"/>
                                 <Label Text="Location To:"/>
@@ -359,6 +365,8 @@
                             </VerticalStackLayout>
                             <VerticalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
                                 <Entry x:Name="Admin_Add_Job_Name" Placeholder="Name" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Job_CompanyName" Placeholder="Company Name" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Job_ClientContact" Placeholder="Client Contact" WidthRequest="200" HorizontalOptions="Start"/>
                                 <DatePicker x:Name="Admin_Add_Job_DeadLine" WidthRequest="200" HorizontalOptions="Start"/>
                                 <Entry x:Name="Admin_Add_Job_LocationFrom" Placeholder="Location From" WidthRequest="200" HorizontalOptions="Start"/>
                                 <Entry x:Name="Admin_Add_Job_LocationTo" Placeholder="Location To" WidthRequest="200" HorizontalOptions="Start"/>
