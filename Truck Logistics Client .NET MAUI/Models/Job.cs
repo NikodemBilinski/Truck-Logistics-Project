@@ -6,6 +6,8 @@ namespace TrucksLogisticsClient.Models
 {
     public class Job
     {
+
+        // na pewno dodac firma zleceniowa, kontakt do klienta (numer), assigned user 
         public int ID { get; set; }
         public string Name { get; set; }
 

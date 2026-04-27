@@ -327,6 +327,26 @@ public partial class MainMenuPage : ContentPage
             Edit_Job_Section.IsVisible = true;
             Edit_Job_Section.BindingContext = selectedJob;
         }
+
+        SelectedLanguages.Clear();
+        var alllanguages = await Get_Languages();
+
+        var selectedlanguagesstring = selectedJob.RequiredLanguages.Split(",");
+
+        foreach(var lang in alllanguages)
+        {
+            if (selectedlanguagesstring.Contains(lang.Name))
+            {
+                lang.SelectionColor = Colors.LightBlue;
+                SelectedLanguages.Add(lang);
+            }
+            else
+            {
+                lang.SelectionColor = Colors.Transparent;
+            }
+        }
+
+        Admin_Edit_Job_RequiredLanguages_View.ItemsSource = alllanguages;
     }
 
     #endregion

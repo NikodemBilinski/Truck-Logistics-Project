@@ -213,24 +213,30 @@
                         <Grid ColumnDefinitions="200,200,500,150">
                             <VerticalStackLayout Grid.Column="0" Spacing="35" VerticalOptions="Center">
                                 <Label Text="Name:"/>
+                                <Label Text="Created:"/>
                                 <Label Text="Deadline:"/>
                                 <Label Text="Location From:"/>
                                 <Label Text="Location To:"/>
+                                <Label Text="Status (Open, Assigned, Delivered):"/>
                                 <Label Text="Minimum Capacity:"/>
                                 <Label Text="Required Truck Brand:"/>
                             </VerticalStackLayout>
                             <VerticalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
-                                <Entry x:Name="Admin_Edit_Job_Name" Placeholder="Name" WidthRequest="200" HorizontalOptions="Start"/>
-                                <DatePicker x:Name="Admin_Edit_Job_DeadLine" WidthRequest="200" HorizontalOptions="Start"/>
-                                <Entry x:Name="Admin_Edit_Job_LocationFrom" Placeholder="Location From" WidthRequest="200" HorizontalOptions="Start"/>
-                                <Entry x:Name="Admin_Edit_Job_LocationTo" Placeholder="Location To" WidthRequest="200" HorizontalOptions="Start"/>
-                                <Entry x:Name="Admin_Edit_Job_RequiredMinimumCapacity" Placeholder="Required Minimum Capacity" WidthRequest="200" HorizontalOptions="Start"/>
-                                <Entry x:Name="Admin_Edit_Job_RequiredTruckBrand" Placeholder="Required Truck Brand" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_Name" Text="{Binding Name}" Placeholder="Name" WidthRequest="200" HorizontalOptions="Start"/>
+                                <DatePicker x:Name="Admin_Edit_Job_Created" WidthRequest="200" HorizontalOptions="Start"/>
+                                <DatePicker x:Name="Admin_Edit_Job_DeadLine" Date="{Binding DeadLine}" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_LocationFrom" Text="{Binding LocationFrom}" Placeholder="Location From" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_LocationTo" Text="{Binding LocationTo}" Placeholder="Location To" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_Status" Text="{Binding Status}" Placeholder="Status" WidthRequest="200" HorizontalOptions="Center"/>
+                                <Entry x:Name="Admin_Edit_Job_RequiredMinimumCapacity" Text="{Binding RequiredMinimumCapacity}" Placeholder="Required Minimum Capacity" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_RequiredTruckBrand" Text="{Binding RequiredTruckBrand}"  Placeholder="Required Truck Brand" WidthRequest="200" HorizontalOptions="Start"/>
+                                
 
                             </VerticalStackLayout>
 
                             <VerticalStackLayout Grid.Column="2" Spacing="20">
-                                <Editor x:Name="Admin_Edit_Job_Description" 
+                                <Editor x:Name="Admin_Edit_Job_Description"
+                                        Text="{Binding Description}"
                                         Placeholder="Description" 
                                         WidthRequest="400" 
                                         HorizontalOptions="Center"
@@ -270,7 +276,7 @@
                     </VerticalStackLayout>
 
 
-                    <!--Add New User (admin)-->
+            <!--Add New User (admin)-->
             <VerticalStackLayout x:Name="Add_User_Section" IsVisible="False" x:DataType="model:Users" Spacing="10">
                 <Label Text="Add New User" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
