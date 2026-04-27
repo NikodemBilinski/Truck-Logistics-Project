@@ -269,7 +269,7 @@
 
                             <Button Text="Save Job"  
                                     HeightRequest="50"
-                                    Clicked="Admin_Add_Job_Clicked"/>
+                                    Clicked="Admin_Save_Job_Edit"/>
 
                             <Button Text="Delete Job"
                                     HeightRequest="50"

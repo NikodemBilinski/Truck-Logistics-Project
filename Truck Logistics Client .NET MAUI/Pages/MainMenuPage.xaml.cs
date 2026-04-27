@@ -618,10 +618,6 @@ public partial class MainMenuPage : ContentPage
                 Debug.WriteLine("Failed to update Job, status code: " + response.Content.ReadAsStringAsync());
             }
 
-            await Hide_Everything();
-
-            Jobs_View.IsVisible = true;
-            Jobs_View.IsEnabled = true;
             return;
         }
         else

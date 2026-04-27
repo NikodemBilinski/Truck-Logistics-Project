@@ -349,7 +349,27 @@ namespace TrucksLogisticsServerAPI.Controllers
         public async Task<ActionResult<Job>> UpdateJob(int id, Job updatedJob)
         {
             var job = await _dataContext.Jobs.FindAsync(id);
-            return Ok();
+
+            if(job == null)
+            {
+                Console.WriteLine("UpdateJob: Error, Job with the specified ID not found.");
+                return BadRequest("Job with the specified ID not found.");
+            }
+            job.Name = updatedJob.Name;
+            job.Created = updatedJob.Created;
+            job.DeadLine = updatedJob.DeadLine;
+            job.LocationFrom = updatedJob.LocationFrom;
+            job.LocationTo = updatedJob.LocationTo;
+            job.Status = updatedJob.Status;
+            job.Description = updatedJob.Description;
+
+            job.RequiredLanguages = updatedJob.RequiredLanguages;
+            job.RequiredMinimumCapacity = updatedJob.RequiredMinimumCapacity;
+            job.RequiredTruckBrand = updatedJob.RequiredTruckBrand;
+
+            await _dataContext.SaveChangesAsync();
+            Console.WriteLine("UpdateJob: Job Updated.");
+            return Ok("Job Updated Successfullyyyyyyyyyyyyy.");
         }
 
         #endregion
