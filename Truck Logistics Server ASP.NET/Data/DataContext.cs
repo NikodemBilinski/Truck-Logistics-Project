@@ -28,6 +28,10 @@ namespace TrucksLogisticsServerAPI.Data
                 );
 
             modelBuilder.Entity<Users>().HasMany(u => u.AssignedTrucks).WithMany(t => t.AssignedUsers).UsingEntity(j => j.ToTable("UserTrucks"));
+
+
+            //relacja jeden do wielu, klucz obcy assigneduserid, gdy usunie sie usera ustaw go na null
+            modelBuilder.Entity<Job>().HasOne<Users>().WithMany(x => x.AssignedJobs).HasForeignKey(x => x.AssignedUserId).OnDelete(DeleteBehavior.SetNull);
         }
 
 
