@@ -418,6 +418,24 @@ namespace TrucksLogisticsServerAPI.Controllers
             Console.WriteLine("DeleteTruck: Deleted Truck From Database.");
             return Ok();
         }
+
+        [HttpDelete("Delete_Job/{ID}")]
+        public async Task<ActionResult<Job>> DeleteJob(int ID)
+        {
+            Console.WriteLine("DeleteJob: Request To Delete Job With ID: " + ID);
+
+            var JobToDelete = await _dataContext.Jobs.FindAsync(ID);
+
+            if(JobToDelete != null)
+            {
+                _dataContext.Jobs.Remove(JobToDelete);
+                await _dataContext.SaveChangesAsync();
+                Console.WriteLine("DeleteJob: Job Successfully deleted.");
+                return Ok("Job Deleted Successfully");
+            }
+            Console.WriteLine("DeleteJob: Error, Job not found.");
+            return NotFound("Error: Job not Found.");
+        }
         #endregion
     }
 }
