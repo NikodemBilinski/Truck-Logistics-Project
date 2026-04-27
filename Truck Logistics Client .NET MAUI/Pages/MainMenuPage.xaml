@@ -262,15 +262,19 @@
                                     </CollectionView.ItemTemplate>
                                 </CollectionView>
                             </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="3" Spacing="20">
                             <Label x:Name="Edit_Job_Error_Label"
-                                   Grid.Column="3"
                                    TextColor="Red"
                                    Margin="0,0,0,0"/>
 
-                            <Button Text="Add Job" 
-                                    Grid.Column="3" 
+                            <Button Text="Save Job"  
                                     HeightRequest="50"
                                     Clicked="Admin_Add_Job_Clicked"/>
+
+                            <Button Text="Delete Job"
+                                    HeightRequest="50"
+                                    Clicked="Admin_Delete_Job"/>
+                            </VerticalStackLayout>
                         </Grid>
 
                     </VerticalStackLayout>

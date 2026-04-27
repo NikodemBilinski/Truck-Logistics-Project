@@ -22,6 +22,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         // HTTP GETS 
+        #region gets
 
         // get trucks from database
 
@@ -88,9 +89,10 @@ namespace TrucksLogisticsServerAPI.Controllers
             return BadRequest("Error: No languages found in database.");
         }
 
-        // HTTP POSTS
+        #endregion
 
-        // insert new truck to table
+        // HTTP POSTS  
+        #region posts
 
         [HttpPost("Add_Truck")]
         public async Task<ActionResult<Truck>> AddTruck(Truck TruckToAdd)
@@ -125,7 +127,6 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         }
 
-        // insert new user username, password and role
 
         [HttpPost("Add_User")]
 
@@ -228,9 +229,10 @@ namespace TrucksLogisticsServerAPI.Controllers
                 return BadRequest("Error: Username and password cannot be null.");
             }
         }
-
+        #endregion
 
         // HTTP PUTS
+        #region puts
 
         [HttpPut("Update_User/{id}")]
 
@@ -343,7 +345,16 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok("User trucks updated successfully.");
         }
 
+        [HttpPut("Update_Job/{ID}")]
+        public async Task<ActionResult<Job>> UpdateJob(int id, Job updatedJob)
+        {
+            var job = await _dataContext.Jobs.FindAsync(id);
+            return Ok();
+        }
+
+        #endregion
         // HTTP DELETES
+        #region deletes
 
         [HttpDelete("Delete_User/{ID}")]
 
@@ -387,5 +398,6 @@ namespace TrucksLogisticsServerAPI.Controllers
             Console.WriteLine("DeleteTruck: Deleted Truck From Database.");
             return Ok();
         }
+        #endregion
     }
 }

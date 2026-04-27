@@ -597,10 +597,16 @@ public partial class MainMenuPage : ContentPage
     private async void Admin_Save_Job_Edit(object sender, EventArgs e)
     {
         var selectedjob = Edit_Job_Section.BindingContext as Job;
-        var response = await client.PutAsJsonAsync(apiUrl + "Update_Job/" + selectedjob.ID, selectedjob);
 
-        if(selectedjob != null)
+        if (selectedjob != null)
         {
+            var selectedlanguagesstring = string.Join(",", SelectedLanguages.Select(x => x.Name));
+
+            selectedjob.RequiredLanguages = selectedlanguagesstring;
+
+            var response = await client.PutAsJsonAsync(apiUrl + "Update_Job/" + selectedjob.ID, selectedjob);
+
+        
             if (response.IsSuccessStatusCode)
             {
                 Edit_Job_Error_Label.Text = await response.Content.ReadAsStringAsync();
@@ -618,7 +624,13 @@ public partial class MainMenuPage : ContentPage
             Jobs_View.IsEnabled = true;
             return;
         }
-        
+        else
+        {
+            //dalej nie wiem co trzeba zrobic aby to osiagnac
+            Edit_Job_Error_Label.Text = "No truck selected for editing.";
+            Debug.WriteLine("No job selected for editing.");
+            return;
+        }
         
     }
 
