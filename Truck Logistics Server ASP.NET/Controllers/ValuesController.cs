@@ -364,6 +364,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             job.LocationTo = updatedJob.LocationTo;
             job.Status = updatedJob.Status;
             job.Description = updatedJob.Description;
+            job.AssignedUserId = updatedJob.AssignedUserId;
 
             job.RequiredLanguages = updatedJob.RequiredLanguages;
             job.RequiredMinimumCapacity = updatedJob.RequiredMinimumCapacity;

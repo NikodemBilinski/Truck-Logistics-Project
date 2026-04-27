@@ -346,6 +346,35 @@ public partial class MainMenuPage : ContentPage
             }
         }
 
+        try
+        {
+            var response = await client.GetAsync(apiUrl + "Get_All_Users");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var userslist = await response.Content.ReadFromJsonAsync<List<Users>>();
+
+                Admin_Edit_Job_Users_View.ItemsSource = userslist;
+
+                var assigneduser = userslist.FirstOrDefault(x => x.ID == selectedJob.AssignedUserId);
+
+                if (assigneduser != null)
+                {
+                    Admin_Edit_Job_Users_View.SelectedItem = assigneduser;
+                }
+                else
+                {
+                    Admin_Edit_Job_Users_View.SelectedItem = null;
+                }
+                
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Error: " + ex.Message);
+            return;
+        }
+
         Admin_Edit_Job_RequiredLanguages_View.ItemsSource = alllanguages;
     }
 
@@ -613,9 +642,17 @@ public partial class MainMenuPage : ContentPage
 
         if (selectedjob != null)
         {
+            
             var selectedlanguagesstring = string.Join(",", SelectedLanguages.Select(x => x.Name));
 
             selectedjob.RequiredLanguages = selectedlanguagesstring;
+
+            var selecteduser = Admin_Edit_Job_Users_View.SelectedItem as Users;
+            if (selecteduser != null)
+            {
+                selectedjob.AssignedUserId = selecteduser.ID;
+            }
+            
 
             var response = await client.PutAsJsonAsync(apiUrl + "Update_Job/" + selectedjob.ID, selectedjob);
 

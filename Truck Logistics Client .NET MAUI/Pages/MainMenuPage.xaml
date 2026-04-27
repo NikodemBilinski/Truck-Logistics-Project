@@ -246,25 +246,43 @@
                                         HorizontalOptions="Center"
                                         VerticalOptions="Center"
                                         HeightRequest="300"/>
-
-                                <CollectionView x:Name="Admin_Edit_Job_RequiredLanguages_View"
-                                                SelectionMode="None"
-                                                WidthRequest="200"
-                                                HeightRequest="200">
-                                    <CollectionView.ItemsLayout>
-                                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
-                                    </CollectionView.ItemsLayout>
-                                    <CollectionView.ItemTemplate>
-                                        <DataTemplate x:DataType="model:Language">
-                                            <Border Padding="10" BackgroundColor="{Binding SelectionColor}">
-                                                <Label Text="{Binding Name}" VerticalOptions="Center"/>
-                                                <Border.GestureRecognizers>
-                                                    <TapGestureRecognizer Tapped="On_Language_Tapped"/>
-                                                </Border.GestureRecognizers>
-                                            </Border>
-                                        </DataTemplate>
-                                    </CollectionView.ItemTemplate>
-                                </CollectionView>
+                                <!--Users-->
+                                <HorizontalStackLayout>
+                                    <CollectionView x:Name="Admin_Edit_Job_Users_View"
+                                                    SelectionMode="Single"
+                                                    WidthRequest="200"
+                                                    HeightRequest="200">
+                                        <CollectionView.ItemsLayout>
+                                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="model:Users">
+                                                <Border Padding="10" BackgroundColor="{Binding SelectionColor}">
+                                                    <Label Text="{Binding Username}" VerticalOptions="Center"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                    <!--Languages-->
+                                    <CollectionView x:Name="Admin_Edit_Job_RequiredLanguages_View"
+                                                    SelectionMode="None"
+                                                    WidthRequest="200"
+                                                    HeightRequest="200">
+                                        <CollectionView.ItemsLayout>
+                                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="model:Language">
+                                                <Border Padding="10" BackgroundColor="{Binding SelectionColor}">
+                                                    <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                                                    <Border.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="On_Language_Tapped"/>
+                                                    </Border.GestureRecognizers>
+                                                </Border>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </HorizontalStackLayout>
                             </VerticalStackLayout>
                             <VerticalStackLayout Grid.Column="3" Spacing="20">
                             <Label x:Name="Edit_Job_Error_Label"
