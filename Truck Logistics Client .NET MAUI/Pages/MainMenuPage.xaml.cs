@@ -692,7 +692,29 @@ public partial class MainMenuPage : ContentPage
 
     private async void Admin_Delete_Job(object sender, EventArgs e)
     {
-        //var JobToDelete = 
+        var JobToDelete = Edit_Job_Section.BindingContext as Job;
+
+        if(JobToDelete != null)
+        {
+            var response = await DisplayAlertAsync("Deleting Job", "Are you sure you want to delete Job: " + JobToDelete.Name + "?","Yes","No");
+
+            if(response)
+            {
+                var request = await client.DeleteAsync(apiUrl + "Delete_Job/" + JobToDelete.ID);
+                if(request.IsSuccessStatusCode)
+                {
+                    Debug.WriteLine("Deleted Job from Database.");
+                    Edit_Job_Error_Label.Text = await request.Content.ReadAsStringAsync();
+                    await Hide_Everything();
+                    return;
+                }
+
+                Edit_Job_Error_Label.Text = await request.Content.ReadAsStringAsync();
+            }
+            
+            return;
+
+        }
     }
 
     private async void On_Language_Tapped(object sender, EventArgs e)
