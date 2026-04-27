@@ -11,6 +11,10 @@ namespace TrucksLogisticsClient.Models
         public int ID { get; set; }
         public string Name { get; set; }
 
+        public string CompanyName { get; set; }
+
+        public string ClientContactNumber { get; set; }
+
         public DateTime Created { get; set; }
 
         public DateTime DeadLine { get; set; }
@@ -30,5 +34,10 @@ namespace TrucksLogisticsClient.Models
         public int RequiredMinimumCapacity { get; set; }
 
         public string RequiredTruckBrand { get; set; } = string.Empty;
+
+        // assigned user
+
+        public int? AssignedUserId { get; set; }
+       
     }
 }

@@ -22,6 +22,8 @@
 
         public List<Truck> AssignedTrucks { get; set; } = new();
 
+        public List<Job> AssignedJobs { get; set; } = new();
+
         public bool isBusy { get; set; } = false;
 
         public List<Language> Languages { get; set; } = new();
