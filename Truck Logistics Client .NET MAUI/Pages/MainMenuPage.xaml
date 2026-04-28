@@ -296,6 +296,9 @@
                             <Button Text="Delete Job"
                                     HeightRequest="50"
                                     Clicked="Admin_Delete_Job"/>
+                                <Button Text="Clear Assign"
+                                        HeightRequest="50"
+                                        Clicked="Admin_Clear_Assign_Clicked"/>
                             </VerticalStackLayout>
                         </Grid>
 

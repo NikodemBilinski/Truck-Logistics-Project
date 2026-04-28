@@ -652,6 +652,10 @@ public partial class MainMenuPage : ContentPage
             {
                 selectedjob.AssignedUserId = selecteduser.ID;
             }
+            else
+            {
+                selectedjob.AssignedUserId = null;
+            }
             
 
             var response = await client.PutAsJsonAsync(apiUrl + "Update_Job/" + selectedjob.ID, selectedjob);
@@ -766,7 +770,9 @@ public partial class MainMenuPage : ContentPage
 
         }
     }
+    #endregion
 
+    // other stuff
     private async void On_Language_Tapped(object sender, EventArgs e)
     {
         var border = (Border)sender;
@@ -807,5 +813,11 @@ public partial class MainMenuPage : ContentPage
         
     }
 
-    #endregion
+    private async void Admin_Clear_Assign_Clicked(object sender, EventArgs e)
+    {
+        Admin_Edit_Job_Users_View.SelectedItem = null;
+    }
+
+
+
 }
