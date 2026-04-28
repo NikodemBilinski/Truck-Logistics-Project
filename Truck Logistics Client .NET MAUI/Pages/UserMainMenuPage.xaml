@@ -6,18 +6,43 @@
              x:DataType="model:Users"
              Shell.NavBarIsVisible="False">
     
-    <VerticalStackLayout>
-
-        <Label Text="{Binding Username, StringFormat='Welcome, {0}!'}"
-               FontSize="40"
-               HorizontalOptions="Center"
-               Margin="20"/>
-
-
-        <Label x:Name="User_Error_Label_Main"
-               TextColor="Red"/>
+    
+    <Grid ColumnDefinitions="200, *">
         
+    
+        <VerticalStackLayout Grid.Column="1">
+
+            <Label Text="{Binding Username, StringFormat='Welcome, {0}!'}"
+                   FontSize="40"
+                   HorizontalOptions="Center"
+                   Margin="20"/>
+
+
+            <Label x:Name="User_Error_Label_Main"
+                   TextColor="Red"/>
         
-        
-    </VerticalStackLayout>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Column="0" Margin="10" VerticalOptions="Center">
+            <Border StrokeThickness="5"
+                    StrokeShape="RoundRectangle 50"
+                    Stroke="Beige"
+                    Padding="50">
+                <VerticalStackLayout Spacing="25">
+                <Button Text="TESTTEST"
+                        WidthRequest="125"/>
+                <Button Text="TESTTEST"
+                        WidthRequest="125"/>
+                <Button Text="TESTTEST"
+                        WidthRequest="125"/>
+                <Button Text="TESTTEST"
+                        WidthRequest="125"/>
+                <Button Text="TESTTEST"
+                        WidthRequest="125"/>
+                <Button Text="TESTTEST"
+                        WidthRequest="125"/>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </Grid>
 </ContentPage>
