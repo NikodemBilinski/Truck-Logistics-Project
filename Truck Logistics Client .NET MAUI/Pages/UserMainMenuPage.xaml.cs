@@ -24,8 +24,11 @@ public partial class UserMainMenuPage : ContentPage
 		User_Show_Data_View.IsVisible = false;
 		User_Show_Data_View.IsEnabled = false;
 
-        test.IsEnabled = false;
-        test.IsVisible = false;
+        User_Show_Trucks_View.IsVisible = false;
+        User_Show_Trucks_View.IsEnabled = false;
+        
+        User_Show_Job_View.IsVisible = false;
+        User_Show_Job_View.IsEnabled = false;
     }
 	public async Task<bool> GetUser()
 	{
@@ -65,17 +68,40 @@ public partial class UserMainMenuPage : ContentPage
 		User_Show_Data_View.IsEnabled = true;
     }
 
-	private async void Tescik(object sender, EventArgs e)
+	private async void User_Show_Trucks(object sender, EventArgs e)
 	{
 		await HideEverything();
 
-		test.IsEnabled = true;
-		test.IsVisible = true;
+		User_Show_Trucks_View.IsEnabled = true;
+        User_Show_Trucks_View.IsVisible = true;
 
 		if (CurrentUser != null)
 		{
-            kolekcja.ItemsSource = null;
-            kolekcja.ItemsSource = CurrentUser.AssignedTrucks;
+            User_Show_Trucks_View_Collection.ItemsSource = null;
+            User_Show_Trucks_View_Collection.ItemsSource = CurrentUser.AssignedTrucks;
 		}
+	}
+
+	private async void User_Show_Assigned_Jobs(object sender, EventArgs e)
+	{
+		await HideEverything();
+
+		User_Show_Job_View.IsVisible = true;
+		User_Show_Job_View.IsEnabled = true;
+
+		if (CurrentUser != null)
+		{
+			User_Show_Job_View_Collection.ItemsSource = CurrentUser.AssignedJobs;
+		}
+	}
+
+	private async void User_Show_Available_Jobs(object sender, EventArgs e)
+	{
+		
+	}
+
+	private async void User_Jobs_View_Selected(object sender, EventArgs e)
+	{
+
 	}
 }

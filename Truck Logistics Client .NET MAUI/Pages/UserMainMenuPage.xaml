@@ -75,24 +75,38 @@
                 </CollectionView>
             </VerticalStackLayout>
             
-            <!--Job Show Data-->
+            <!--Job Show Data Collection View-->
             <VerticalStackLayout x:Name="User_Show_Job_View" IsEnabled="False" IsVisible="False" Spacing="20">
-                <CollectionView x:Name="User_Show_Job_View_Collection" WidthRequest="300" HeightRequest="300">
+                <CollectionView x:Name="User_Show_Job_View_Collection" WidthRequest="800">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Job">
                             <VerticalStackLayout>
-                                <Label Text="{Binding Name}"/>
-                                <Label Text="{Binding CompanyName}"/>
-                                <Label Text="{Binding ClientContactNumber}"/>
-                                <Label Text="{Binding Created}"/>
-                                <Label Text="{Binding DeadLine}"/>
-                                <Label Text="{Binding LocationFrom}"/>
-                                <Label Text="{Binding LocationTo}"/>
-                                <Label Text="{Binding Status}"/>
-                                <Label Text="{Binding Description}"/>
-                                <Label Text="{Binding RequiredLanguages}"/>
-                                <Label Text="{Binding RequiredMinimumCapacity}"/>
-                                <Label Text="{Binding RequiredTruckBrand}"/>
+                                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Label Text="Job Name: " FontSize="35"/>
+                                    <Label Text="{Binding Name}" FontSize="35"/>
+                                </HorizontalStackLayout>
+                                <Grid ColumnDefinitions="*,*">
+
+                                    <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="10">
+                                        <Label Text="{Binding CompanyName}"/>
+                                        <Label Text="{Binding ClientContactNumber}"/>
+                                        <Label Text="{Binding RequiredLanguages}"/>
+                                        <Label Text="{Binding RequiredMinimumCapacity}"/>
+                                        <Label Text="{Binding RequiredTruckBrand}"/>
+                                    </VerticalStackLayout>
+                                    <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="10">
+                                        <Label Text="{Binding Created}"/>
+                                        <Label Text="{Binding DeadLine}"/>
+                                        <Label Text="{Binding LocationFrom}"/>
+                                        <Label Text="{Binding LocationTo}"/>
+                                        <Label Text="{Binding Status}"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <Editor Text="{Binding Description}" 
+                                        IsReadOnly="True" 
+                                        WidthRequest="500"
+                                        HeightRequest="200"
+                                        Margin="50"/>
                             </VerticalStackLayout>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
@@ -113,11 +127,15 @@
                         Clicked="User_Show_Data"/>
                 <Button Text="Show Trucks"
                         WidthRequest="125"
-                        Clicked="Tescik"/>
-                <Button Text="Show Jobs"
-                    WidthRequest="125"/>
+                        Clicked="User_Show_Trucks"/>
+                <Button Text="Assigned Jobs"
+                        WidthRequest="125"
+                        Clicked="User_Show_Assigned_Jobs"/>
+                <Button Text="Available Jobs"
+                        WidthRequest="125"
+                        Clicked="User_Show_Available_Jobs"/>
                 <Button Text="Edit Data"
-                    WidthRequest="125"/>
+                        WidthRequest="125"/>
                 </VerticalStackLayout>
             </Border>
         </VerticalStackLayout>
