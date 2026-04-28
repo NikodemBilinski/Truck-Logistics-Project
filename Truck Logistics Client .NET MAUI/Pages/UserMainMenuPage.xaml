@@ -61,8 +61,8 @@
                 
             
             <!--Truck Show Data-->
-            <VerticalStackLayout x:Name="test" IsEnabled="False" IsVisible="False" Spacing="20">
-                <CollectionView x:Name="kolekcja" WidthRequest="300" HeightRequest="300">
+            <VerticalStackLayout x:Name="User_Show_Trucks_View" IsEnabled="False" IsVisible="False" Spacing="20">
+                <CollectionView x:Name="User_Show_Trucks_View_Collection" WidthRequest="300" HeightRequest="300">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Truck">
                             <VerticalStackLayout>
@@ -76,6 +76,28 @@
             </VerticalStackLayout>
             
             <!--Job Show Data-->
+            <VerticalStackLayout x:Name="User_Show_Job_View" IsEnabled="False" IsVisible="False" Spacing="20">
+                <CollectionView x:Name="User_Show_Job_View_Collection" WidthRequest="300" HeightRequest="300">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Job">
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Name}"/>
+                                <Label Text="{Binding CompanyName}"/>
+                                <Label Text="{Binding ClientContactNumber}"/>
+                                <Label Text="{Binding Created}"/>
+                                <Label Text="{Binding DeadLine}"/>
+                                <Label Text="{Binding LocationFrom}"/>
+                                <Label Text="{Binding LocationTo}"/>
+                                <Label Text="{Binding Status}"/>
+                                <Label Text="{Binding Description}"/>
+                                <Label Text="{Binding RequiredLanguages}"/>
+                                <Label Text="{Binding RequiredMinimumCapacity}"/>
+                                <Label Text="{Binding RequiredTruckBrand}"/>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
         </VerticalStackLayout>
         
         
