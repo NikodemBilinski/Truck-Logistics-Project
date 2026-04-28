@@ -23,7 +23,10 @@ public partial class UserMainMenuPage : ContentPage
 	{
 		User_Show_Data_View.IsVisible = false;
 		User_Show_Data_View.IsEnabled = false;
-	}
+
+        test.IsEnabled = false;
+        test.IsVisible = false;
+    }
 	public async Task<bool> GetUser()
 	{
 		var response = await client.GetAsync(apiUrl + "Get_User_By_ID/" + UserID);
@@ -61,4 +64,18 @@ public partial class UserMainMenuPage : ContentPage
 		User_Show_Data_View.IsVisible = true;
 		User_Show_Data_View.IsEnabled = true;
     }
+
+	private async void Tescik(object sender, EventArgs e)
+	{
+		await HideEverything();
+
+		test.IsEnabled = true;
+		test.IsVisible = true;
+
+		if (CurrentUser != null)
+		{
+            kolekcja.ItemsSource = null;
+            kolekcja.ItemsSource = CurrentUser.AssignedTrucks;
+		}
+	}
 }

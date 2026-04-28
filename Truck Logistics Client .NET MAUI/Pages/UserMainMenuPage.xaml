@@ -22,7 +22,8 @@
                        TextColor="Red"/>
         
             </VerticalStackLayout>
-
+            
+            <!--User Show Data-->
             <VerticalStackLayout x:Name="User_Show_Data_View" IsVisible="False" IsEnabled="False" HorizontalOptions="Center">
                 <Label Text="ferfaefra"/>
                 <Label Text="{Binding FirstName}"/>
@@ -45,7 +46,25 @@
                     </Label.Triggers>
                 </Label>
             </VerticalStackLayout>
+
+            <VerticalStackLayout x:Name="test" IsEnabled="False" IsVisible="False">
+                <CollectionView x:Name="kolekcja" WidthRequest="300" HeightRequest="300">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Truck">
+                            <VerticalStackLayout>
+                                <Label Text="fwerfgearfgeragergerg"/>
+                                <Label Text="{Binding Name}"/>
+                                <Label Text="{Binding brand}"/>
+                                <Label Text="{Binding Capacity}"/>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
         </VerticalStackLayout>
+        
+        
+        
         <VerticalStackLayout Grid.Column="0" Margin="10" VerticalOptions="Center">
             <Border StrokeThickness="5"
                     StrokeShape="RoundRectangle 50"
@@ -56,7 +75,8 @@
                         WidthRequest="125"
                         Clicked="User_Show_Data"/>
                 <Button Text="Show Trucks"
-                        WidthRequest="125"/>
+                        WidthRequest="125"
+                        Clicked="Tescik"/>
                 <Button Text="Show Jobs"
                     WidthRequest="125"/>
                 <Button Text="Edit Data"
