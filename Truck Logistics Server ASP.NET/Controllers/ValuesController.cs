@@ -40,7 +40,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         public async Task<ActionResult<Users>> GetUserByID(int ID)
         {
             Console.WriteLine("GetUserByID: Requested.");
-            var user = await _dataContext.Users.FindAsync(ID);
+            var user = await _dataContext.Users.Include(x => x.AssignedTrucks).Include(x => x.AssignedJobs).Include(x => x.Languages).FirstAsync(x => x.ID == ID);
             if (user == null)
             {
                 return NotFound("Error: User with the specified ID not found.");

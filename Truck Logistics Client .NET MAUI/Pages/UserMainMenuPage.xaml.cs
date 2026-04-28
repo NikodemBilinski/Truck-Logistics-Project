@@ -19,7 +19,11 @@ public partial class UserMainMenuPage : ContentPage
 		
 	}
 
-
+	public async Task HideEverything()
+	{
+		User_Show_Data_View.IsVisible = false;
+		User_Show_Data_View.IsEnabled = false;
+	}
 	public async Task<bool> GetUser()
 	{
 		var response = await client.GetAsync(apiUrl + "Get_User_By_ID/" + UserID);
@@ -49,5 +53,12 @@ public partial class UserMainMenuPage : ContentPage
 			this.BindingContext = CurrentUser;
 		}
         
+    }
+
+    private async void User_Show_Data(object sender, EventArgs e)
+    {
+		await HideEverything();
+		User_Show_Data_View.IsVisible = true;
+		User_Show_Data_View.IsEnabled = true;
     }
 }
