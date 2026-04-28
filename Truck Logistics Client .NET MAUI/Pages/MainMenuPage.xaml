@@ -8,7 +8,7 @@
     
     <Grid ColumnDefinitions="200,*">
 
-        <Grid Grid.Column="1" RowDefinitions="Auto,auto,*" Margin="30">
+        <Grid Grid.Column="1" RowDefinitions="Auto,Auto,*" Margin="30">
 
             <!--UserDataHeader-->
             <Border x:Name="UserDataHeader"
@@ -24,9 +24,10 @@
             </Border>
 
 
-            <!--UserDataMain-->
+            <!--UserDataMain (zastanowic sie czy w ogole to umieszczac-->
             <Border x:Name="UserDataMain"
                     x:DataType="model:Users"
+                    IsVisible="False"
                     StrokeShape="RoundRectangle 20,20,20,20"
                     WidthRequest="500"
                     Margin="20"
@@ -50,6 +51,7 @@
                     </HorizontalStackLayout>
                 </VerticalStackLayout>
             </Border>
+            
             <ScrollView Grid.Row="2" VerticalOptions="FillAndExpand">
                 <VerticalStackLayout>
             
@@ -204,6 +206,104 @@
 
             </VerticalStackLayout>
 
+            <!--Edit Job (admin)-->
+            <VerticalStackLayout x:Name="Edit_Job_Section" IsVisible="False" x:DataType="model:Job" Spacing="10">
+                    <Label x:Name="Edit_Job_Section_Header" Text="Edit Job" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                        <Grid ColumnDefinitions="200,200,500,150">
+                            <VerticalStackLayout Grid.Column="0" Spacing="35" VerticalOptions="Center">
+                                <Label Text="Name:"/>
+                                <Label Text="Company Name:"/>
+                                <Label Text="Client Contact:"/>
+                                <Label Text="Created:"/>
+                                <Label Text="Deadline:"/>
+                                <Label Text="Location From:"/>
+                                <Label Text="Location To:"/>
+                                <Label Text="Status (Open, Assigned, Delivered):"/>
+                                <Label Text="Minimum Capacity:"/>
+                                <Label Text="Required Truck Brand:"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
+                                <Entry x:Name="Admin_Edit_Job_Name" Text="{Binding Name}" Placeholder="Name" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_CompanyName" Text="{Binding CompanyName}" Placeholder="Company Name" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_ClientContact" Text="{Binding ClientContactNumber}" Placeholder="Client Contact" WidthRequest="200" HorizontalOptions="Start"/>
+                                <DatePicker x:Name="Admin_Edit_Job_Created" WidthRequest="200" HorizontalOptions="Start"/>
+                                <DatePicker x:Name="Admin_Edit_Job_DeadLine" Date="{Binding DeadLine}" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_LocationFrom" Text="{Binding LocationFrom}" Placeholder="Location From" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_LocationTo" Text="{Binding LocationTo}" Placeholder="Location To" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_Status" Text="{Binding Status}" Placeholder="Status" WidthRequest="200" HorizontalOptions="Center"/>
+                                <Entry x:Name="Admin_Edit_Job_RequiredMinimumCapacity" Text="{Binding RequiredMinimumCapacity}" Placeholder="Required Minimum Capacity" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Edit_Job_RequiredTruckBrand" Text="{Binding RequiredTruckBrand}"  Placeholder="Required Truck Brand" WidthRequest="200" HorizontalOptions="Start"/>
+                                
+
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="2" Spacing="20">
+                                <Editor x:Name="Admin_Edit_Job_Description"
+                                        Text="{Binding Description}"
+                                        Placeholder="Description" 
+                                        WidthRequest="400" 
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"
+                                        HeightRequest="300"/>
+                                <!--Users-->
+                                <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
+                                    <CollectionView x:Name="Admin_Edit_Job_Users_View"
+                                                    SelectionMode="Single"
+                                                    WidthRequest="190"
+                                                    HeightRequest="200">
+                                        <CollectionView.ItemsLayout>
+                                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="model:Users">
+                                                <Border Padding="10">
+                                                    <Label Text="{Binding Username}" VerticalOptions="Center"/>
+                                                </Border>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                <!--Languages-->
+                                    <CollectionView x:Name="Admin_Edit_Job_RequiredLanguages_View"
+                                                    SelectionMode="None"
+                                                    WidthRequest="190"
+                                                    HeightRequest="200">
+                                        <CollectionView.ItemsLayout>
+                                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
+                                        </CollectionView.ItemsLayout>
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="model:Language">
+                                                <Border Padding="10" BackgroundColor="{Binding SelectionColor}">
+                                                    <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                                                    <Border.GestureRecognizers>
+                                                        <TapGestureRecognizer Tapped="On_Language_Tapped"/>
+                                                    </Border.GestureRecognizers>
+                                                </Border>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="3" Spacing="20">
+                            <Label x:Name="Edit_Job_Error_Label"
+                                   TextColor="Red"
+                                   Margin="0,0,0,0"/>
+
+                            <Button Text="Save Job"  
+                                    HeightRequest="50"
+                                    Clicked="Admin_Save_Job_Edit"/>
+
+                            <Button Text="Delete Job"
+                                    HeightRequest="50"
+                                    Clicked="Admin_Delete_Job"/>
+                                <Button Text="Clear Assign"
+                                        HeightRequest="50"
+                                        Clicked="Clear_Assign_Clicked"/>
+                            </VerticalStackLayout>
+                        </Grid>
+
+                    </VerticalStackLayout>
+
 
             <!--Add New User (admin)-->
             <VerticalStackLayout x:Name="Add_User_Section" IsVisible="False" x:DataType="model:Users" Spacing="10">
@@ -268,7 +368,74 @@
                         </Grid>
 
                     </VerticalStackLayout>
-            <!-- Collection view templates-->
+                
+            <!--Add New Job-->
+            <VerticalStackLayout x:Name="Add_Job_Section" IsVisible="False" x:DataType="model:Job" Spacing="10">
+                    <Label Text="Add New Job" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                        <Grid ColumnDefinitions="200,200,500,150">
+                            <VerticalStackLayout Grid.Column="0" Spacing="35" VerticalOptions="Center">
+                                <Label Text="Name:"/>
+                                <Label Text="Company Name:"/>
+                                <Label Text="Client Contact:"/>
+                                <Label Text="Deadline:"/>
+                                <Label Text="Location From:"/>
+                                <Label Text="Location To:"/>
+                                <Label Text="Minimum Capacity:"/>
+                                <Label Text="Required Truck Brand:"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" Spacing="10" VerticalOptions="Center">
+                                <Entry x:Name="Admin_Add_Job_Name" Placeholder="Name" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Job_CompanyName" Placeholder="Company Name" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Job_ClientContact" Placeholder="Client Contact" WidthRequest="200" HorizontalOptions="Start"/>
+                                <DatePicker x:Name="Admin_Add_Job_DeadLine" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Job_LocationFrom" Placeholder="Location From" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Job_LocationTo" Placeholder="Location To" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Job_RequiredMinimumCapacity" Placeholder="Required Minimum Capacity" WidthRequest="200" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Job_RequiredTruckBrand" Placeholder="Required Truck Brand" WidthRequest="200" HorizontalOptions="Start"/>
+
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="2" Spacing="20">
+                                <Editor x:Name="Admin_Add_Job_Description" 
+                                        Placeholder="Description" 
+                                        WidthRequest="400" 
+                                        HorizontalOptions="Center"
+                                        VerticalOptions="Center"
+                                        HeightRequest="300"/>
+
+                                <CollectionView x:Name="Admin_Add_Job_RequiredLanguages_View"
+                                                SelectionMode="None"
+                                                WidthRequest="200"
+                                                HeightRequest="200">
+                                    <CollectionView.ItemsLayout>
+                                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:Language">
+                                            <Border Padding="10" BackgroundColor="{Binding SelectionColor}">
+                                                <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                                                <Border.GestureRecognizers>
+                                                    <TapGestureRecognizer Tapped="On_Language_Tapped"/>
+                                                </Border.GestureRecognizers>
+                                            </Border>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+                            </VerticalStackLayout>
+                            <Label x:Name="Add_Job_Error_Label"
+                                   Grid.Column="3"
+                                   TextColor="Red"
+                                   Margin="0,0,0,0"/>
+
+                            <Button Text="Add Job" 
+                                    Grid.Column="3" 
+                                    HeightRequest="50"
+                                    Clicked="Admin_Add_Job_Clicked"/>
+                        </Grid>
+
+                    </VerticalStackLayout>
+                    <!-- Collection view templates-->
 
             <!--Users View-->
                     <Grid x:Name="Users_View"
@@ -399,8 +566,63 @@
                         </Grid>
                     </Grid>
 
-            <!--Jobs-->
-            </VerticalStackLayout>
+            <!--Jobs View-->
+                    <Grid x:Name="Jobs_View"
+                          IsVisible="False">
+                        <Grid RowDefinitions="*,*">
+                            <Grid ColumnDefinitions="50,200,100,75,75" 
+                                  BackgroundColor="Transparent" 
+                                  ColumnSpacing="20"
+                                  Padding="10"
+                                  HorizontalOptions="Center"
+                                  Grid.Row="0">
+                                <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                                <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
+                                <Label Grid.Column="2" Text="Created" FontAttributes="Bold"/>
+                                <Label Grid.Column="3" Text="DeadLine" FontAttributes="Bold"/>
+                                <Label Grid.Column="4" Text="Status" FontAttributes="Bold"/>
+                            </Grid>
+
+                            <CollectionView x:Name="Get_All_Jobs_View"
+                                            SelectionMode="Single"
+                                            SelectionChanged="Admin_Jobs_View_Selected"
+                                            Grid.Row="1"
+                                            WidthRequest="600"
+                                            HorizontalOptions="Center">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:Job">
+                                        <Border Stroke="Transparent" Padding="5,0,0,0">
+                                            <Border Stroke="transparent"  StrokeThickness="3">
+                                                <Grid ColumnDefinitions="50,200,100,75,75"
+                                                      ColumnSpacing="20"
+                                                      Padding="5">
+
+                                                    <Label Grid.Column="0" Text="{Binding ID}"/>
+                                                    <Label Grid.Column="1" Text="{Binding Name}"/>
+                                                    <Label Grid.Column="2" Text="{Binding Created, StringFormat='{0:d}'}"/>
+                                                    <Label Grid.Column="3" Text="{Binding DeadLine, StringFormat='{0:d}'}"/>
+                                                    <Label Grid.Column="4" Text="{Binding Status}">
+                                                        <Label.Triggers>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="open">
+                                                                <Setter Property="TextColor" Value="Green"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="assigned">
+                                                                <Setter Property="TextColor" Value="Orange"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="delivered">
+                                                                <Setter Property="TextColor" Value="Red"/>
+                                                            </DataTrigger>
+                                                        </Label.Triggers>
+                                                    </Label>
+                                                </Grid>
+                                            </Border>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </Grid>
+                    </Grid>
+                </VerticalStackLayout>
             </ScrollView>
         </Grid>
         <VerticalStackLayout Grid.Column="0" Margin="10">
@@ -422,7 +644,8 @@
                             Clicked="Admin_Get_Trucks_Clicked"
                             WidthRequest="125"/>
                     <Button Text="Get All Jobs"
-                            WidthRequest="125"/>
+                            WidthRequest="125"
+                            Clicked="Admin_Get_Jobs_Clicked"/>
                     <Button Text="Add New User"
                             Clicked="Admin_Open_Add_User_Section"
                             WidthRequest="125"/>
@@ -430,7 +653,8 @@
                             Clicked="Admin_Open_Add_Truck_Section"
                             WidthRequest="125"/>
                     <Button Text="Add New Job"
-                            WidthRequest="125"/>
+                            WidthRequest="125"
+                            Clicked="Admin_Open_Add_Job_Section"/>
 
                 </VerticalStackLayout>
             </Border>

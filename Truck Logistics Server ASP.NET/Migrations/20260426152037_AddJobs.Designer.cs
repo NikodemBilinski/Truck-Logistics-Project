@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrucksLogisticsServerAPI.Data;
 
@@ -11,9 +12,11 @@ using TrucksLogisticsServerAPI.Data;
 namespace TrucksLogisticsServerAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20260426152037_AddJobs")]
+    partial class AddJobs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,17 +63,6 @@ namespace TrucksLogisticsServerAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
-                    b.Property<int?>("AssignedUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ClientContactNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CompanyName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -109,8 +101,6 @@ namespace TrucksLogisticsServerAPI.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("AssignedUserId");
 
                     b.ToTable("Jobs");
                 });
@@ -243,19 +233,6 @@ namespace TrucksLogisticsServerAPI.Migrations
                         .HasForeignKey("AssignedUsersID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("TrucksLogisticsServerAPI.Models.Job", b =>
-                {
-                    b.HasOne("TrucksLogisticsServerAPI.Models.Users", null)
-                        .WithMany("AssignedJobs")
-                        .HasForeignKey("AssignedUserId")
-                        .OnDelete(DeleteBehavior.SetNull);
-                });
-
-            modelBuilder.Entity("TrucksLogisticsServerAPI.Models.Users", b =>
-                {
-                    b.Navigation("AssignedJobs");
                 });
 #pragma warning restore 612, 618
         }
