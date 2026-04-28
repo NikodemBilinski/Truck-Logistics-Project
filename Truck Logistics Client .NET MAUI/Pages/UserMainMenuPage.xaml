@@ -25,34 +25,47 @@
             
             <!--User Show Data-->
             <VerticalStackLayout x:Name="User_Show_Data_View" IsVisible="False" IsEnabled="False" HorizontalOptions="Center">
-                <Label Text="ferfaefra"/>
-                <Label Text="{Binding FirstName}"/>
-                <Label Text="{Binding LastName}"/>
-                <Label Text="{Binding Age}"/>
-                <Label Text="{Binding Username}"/>
-                <Label Text="{Binding Role}"/>
-                <Label Text="{Binding AssignedTrucks.Count, StringFormat='Assigned Trucks: {0}'}"/>
-                <Label Text="{Binding AssignedJobs.Count, StringFormat='Assigned Jobs: {0}'}"/>
-                <Label Text="{Binding isBusy}">
-                    <Label.Triggers>
-                        <DataTrigger TargetType="Label" Binding="{Binding isBusy}" Value="True">
-                            <Setter Property="Text" Value="Avaiable"/>
-                            <Setter Property="TextColor" Value="Green"/>
-                        </DataTrigger>
-                        <DataTrigger TargetType="Label" Binding="{Binding isBusy}" Value="False">
-                            <Setter Property="Text" Value="Busy"/>
-                            <Setter Property="TextColor" Value="Red"/>
-                        </DataTrigger>
-                    </Label.Triggers>
-                </Label>
-            </VerticalStackLayout>
 
-            <VerticalStackLayout x:Name="test" IsEnabled="False" IsVisible="False">
+                <Grid ColumnDefinitions="*,300">
+                    <VerticalStackLayout Spacing="25">
+                    <HorizontalStackLayout Spacing="15" Grid.Column="0" HorizontalOptions="Center">
+                        <Label Text="{Binding FirstName}" FontSize="20"/>
+                        <Label Text="{Binding LastName}" FontSize="20"/>
+                        <Label Text="{Binding Age}" FontSize="20"/>
+                    </HorizontalStackLayout>
+                        <VerticalStackLayout>
+                            <Label Text="{Binding AssignedTrucks.Count, StringFormat='Assigned Trucks: {0}'}" FontSize="20"/>
+                            <Label Text="{Binding AssignedJobs.Count, StringFormat='Assigned Jobs: {0}'}" FontSize="20"/>
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Spacing="40" Grid.Column="1" HorizontalOptions="Center">
+                        <Label Text="{Binding Role, StringFormat='Account Role: {0}'}" FontSize="20" TextColor="Gold"/>
+                        <HorizontalStackLayout Spacing="15">
+                            <Label Text="Current Status: " FontSize="20"/>
+                            <Label Text="{Binding isBusy}" FontSize="20">
+                                <Label.Triggers>
+                                    <DataTrigger TargetType="Label" Binding="{Binding isBusy}" Value="True">
+                                        <Setter Property="Text" Value="Avaiable"/>
+                                        <Setter Property="TextColor" Value="Green"/>
+                                    </DataTrigger>
+                                    <DataTrigger TargetType="Label" Binding="{Binding isBusy}" Value="False">
+                                        <Setter Property="Text" Value="Busy"/>
+                                        <Setter Property="TextColor" Value="Red"/>
+                                    </DataTrigger>
+                                </Label.Triggers>
+                            </Label>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Grid>
+            </VerticalStackLayout>
+                
+            
+            <!--Truck Show Data-->
+            <VerticalStackLayout x:Name="test" IsEnabled="False" IsVisible="False" Spacing="20">
                 <CollectionView x:Name="kolekcja" WidthRequest="300" HeightRequest="300">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Truck">
                             <VerticalStackLayout>
-                                <Label Text="fwerfgearfgeragergerg"/>
                                 <Label Text="{Binding Name}"/>
                                 <Label Text="{Binding brand}"/>
                                 <Label Text="{Binding Capacity}"/>
@@ -61,6 +74,8 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </VerticalStackLayout>
+            
+            <!--Job Show Data-->
         </VerticalStackLayout>
         
         
