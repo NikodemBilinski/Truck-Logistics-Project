@@ -813,7 +813,7 @@ public partial class MainMenuPage : ContentPage
         
     }
 
-    private async void Admin_Clear_Assign_Clicked(object sender, EventArgs e)
+    private async void Clear_Assign_Clicked(object sender, EventArgs e)
     {
         Admin_Edit_Job_Users_View.SelectedItem = null;
     }

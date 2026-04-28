@@ -257,7 +257,7 @@
                                         </CollectionView.ItemsLayout>
                                         <CollectionView.ItemTemplate>
                                             <DataTemplate x:DataType="model:Users">
-                                                <Border Padding="10" BackgroundColor="{Binding SelectionColor}">
+                                                <Border Padding="10">
                                                     <Label Text="{Binding Username}" VerticalOptions="Center"/>
                                                 </Border>
                                             </DataTemplate>
@@ -298,7 +298,7 @@
                                     Clicked="Admin_Delete_Job"/>
                                 <Button Text="Clear Assign"
                                         HeightRequest="50"
-                                        Clicked="Admin_Clear_Assign_Clicked"/>
+                                        Clicked="Clear_Assign_Clicked"/>
                             </VerticalStackLayout>
                         </Grid>
 

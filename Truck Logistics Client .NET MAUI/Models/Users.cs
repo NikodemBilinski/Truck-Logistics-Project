@@ -34,9 +34,5 @@ namespace TrucksLogisticsClient.Models
 
         public List<Language> Languages { get; set; } = new();
 
-        [JsonIgnore]
-        public Color? SelectionColor { get; set; }
-
-
     }
 }
