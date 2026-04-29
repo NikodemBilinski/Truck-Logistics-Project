@@ -136,25 +136,25 @@
             <!--Show Chosen Job-->
             <VerticalStackLayout x:Name="User_Show_Chosen_Job" x:DataType="model:Job" IsEnabled="False" IsVisible="False" Spacing="20">
                 <VerticalStackLayout HorizontalOptions="Center">
-                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
-                        <Label Text="Job Name: " FontSize="35"/>
-                        <Label Text="{Binding Name}" FontSize="35"/>
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" VerticalOptions="Center" Margin="0,0,0,40">
+                        <Label Text="Job Name: " FontSize="35" TextColor="Gold"/>
+                        <Label Text="{Binding Name}" FontSize="35" TextColor="Gold"/>
                     </HorizontalStackLayout>
-                    <Grid ColumnDefinitions="*,*">
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="100">
 
                         <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="10">
-                            <Label Text="{Binding CompanyName}"/>
-                            <Label Text="{Binding ClientContactNumber}"/>
-                            <Label Text="{Binding RequiredLanguages}"/>
-                            <Label Text="{Binding RequiredMinimumCapacity}"/>
-                            <Label Text="{Binding RequiredTruckBrand}"/>
+                            <Label Text="{Binding CompanyName, StringFormat='Company: {0}'}" FontSize="15" HorizontalOptions="Fill" HorizontalTextAlignment="Start"/>
+                            <Label Text="{Binding ClientContactNumber, StringFormat='Client Number: {0}'}" FontSize="15" HorizontalOptions="Fill" HorizontalTextAlignment="Start"/>
+                            <Label Text="{Binding RequiredLanguages, StringFormat='Required Languages: {0}'}" FontSize="15" HorizontalOptions="Fill" HorizontalTextAlignment="Start"/>
+                            <Label Text="{Binding RequiredMinimumCapacity, StringFormat='Required Capacity: {0}'}" FontSize="15" HorizontalOptions="Fill" HorizontalTextAlignment="Start"/>
+                            <Label Text="{Binding RequiredTruckBrand, StringFormat='Required Truck Brand: {0}'}" FontSize="15" HorizontalOptions="Fill" HorizontalTextAlignment="Start"/>
                         </VerticalStackLayout>
                         <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="10">
-                            <Label Text="{Binding Created}"/>
-                            <Label Text="{Binding DeadLine}"/>
-                            <Label Text="{Binding LocationFrom}"/>
-                            <Label Text="{Binding LocationTo}"/>
-                            <Label Text="{Binding Status}"/>
+                            <Label Text="{Binding Created, StringFormat='Creation Date: {0}'}" FontSize="15" HorizontalOptions="Fill" HorizontalTextAlignment="Start"/>
+                            <Label Text="{Binding DeadLine, StringFormat='Deadline Date: {0}'}" FontSize="15" HorizontalOptions="Fill" HorizontalTextAlignment="Start"/>
+                            <Label Text="{Binding LocationFrom, StringFormat='Location To: {0}'}" FontSize="15" HorizontalOptions="Fill" HorizontalTextAlignment="Start"/>
+                            <Label Text="{Binding LocationTo, StringFormat='Location From: {0}'}" FontSize="15" HorizontalOptions="Fill" HorizontalTextAlignment="Start"/>
+                            <Label Text="{Binding Status, StringFormat='Status: {0}'}" FontSize="15" HorizontalOptions="Fill" HorizontalTextAlignment="Start"/>
                         </VerticalStackLayout>
                     </Grid>
                     <Editor Text="{Binding Description}" 
