@@ -76,6 +76,23 @@ namespace TrucksLogisticsServerAPI.Controllers
             return BadRequest("Error: No Jobs Found");
         }
 
+        [HttpGet("Get_Open_Jobs")]
+        public async Task<ActionResult<List<Job>>> GetOpenJobs()
+        {
+            Console.WriteLine("GetOpenJobs: Requested.");
+
+            var openjobs = await _dataContext.Jobs.Where(x => x.Status == "open").ToListAsync();
+
+            if(openjobs != null)
+            {
+                Console.WriteLine("GetOpenJobs: Returning All Open Jobs.");
+                return Ok(openjobs);
+            }
+
+            Console.WriteLine("GetOpenJobs: No Open Jobs Found.");
+            return BadRequest("No open jobs found.");
+        }
+
         [HttpGet("Get_Languages")]
 
         public async Task<ActionResult<List<Language>>> GetLanguages()

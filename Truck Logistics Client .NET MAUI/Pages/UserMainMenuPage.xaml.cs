@@ -12,6 +12,7 @@ public partial class UserMainMenuPage : ContentPage
 
     private string apiUrl = "http://192.168.0.218:5160/api/Values/";
 
+    //Get_Open_Jobs
     public Users? CurrentUser { get; set; }
     public UserMainMenuPage()
 	{
