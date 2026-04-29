@@ -26,9 +26,12 @@ public partial class UserMainMenuPage : ContentPage
 
         User_Show_Trucks_View.IsVisible = false;
         User_Show_Trucks_View.IsEnabled = false;
-        
-        User_Show_Job_View.IsVisible = false;
-        User_Show_Job_View.IsEnabled = false;
+
+        Jobs_View.IsVisible = false;
+        Jobs_View.IsEnabled = false;
+
+        User_Show_Chosen_Job.IsVisible = false;
+		User_Show_Chosen_Job.IsEnabled = false;
     }
 	public async Task<bool> GetUser()
 	{
@@ -86,12 +89,12 @@ public partial class UserMainMenuPage : ContentPage
 	{
 		await HideEverything();
 
-		User_Show_Job_View.IsVisible = true;
-		User_Show_Job_View.IsEnabled = true;
+		Jobs_View.IsVisible = true;
+		Jobs_View.IsEnabled = true;
 
 		if (CurrentUser != null)
 		{
-			User_Show_Job_View_Collection.ItemsSource = CurrentUser.AssignedJobs;
+			Jobs_View_Collection.ItemsSource = CurrentUser.AssignedJobs;
 		}
 	}
 
@@ -100,8 +103,11 @@ public partial class UserMainMenuPage : ContentPage
 		
 	}
 
-	private async void User_Jobs_View_Selected(object sender, EventArgs e)
+	private async void User_Jobs_View_Selected(object sender, SelectionChangedEventArgs e)
 	{
+		await HideEverything();
+		var selectedjob = e.CurrentSelection as Job;
 
+		// tu skonczylem ostatnio :)
 	}
 }

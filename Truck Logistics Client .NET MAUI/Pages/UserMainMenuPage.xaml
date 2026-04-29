@@ -60,7 +60,7 @@
             </VerticalStackLayout>
                 
             
-            <!--Truck Show Data-->
+            <!--Truck Show Data Collection View-->
             <VerticalStackLayout x:Name="User_Show_Trucks_View" IsEnabled="False" IsVisible="False" Spacing="20">
                 <CollectionView x:Name="User_Show_Trucks_View_Collection" WidthRequest="300" HeightRequest="300">
                     <CollectionView.ItemTemplate>
@@ -76,8 +76,66 @@
             </VerticalStackLayout>
             
             <!--Job Show Data Collection View-->
-            <VerticalStackLayout x:Name="User_Show_Job_View" IsEnabled="False" IsVisible="False" Spacing="20">
-                <CollectionView x:Name="User_Show_Job_View_Collection" WidthRequest="800">
+
+            <Grid x:Name="Jobs_View"
+                  IsVisible="False">
+                <Grid RowDefinitions="*,*">
+                    <Grid ColumnDefinitions="50,200,100,75,75" 
+                          BackgroundColor="Transparent" 
+                          ColumnSpacing="20"
+                          Padding="10"
+                          HorizontalOptions="Center"
+                          Grid.Row="0">
+                        <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                        <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
+                        <Label Grid.Column="2" Text="Created" FontAttributes="Bold"/>
+                        <Label Grid.Column="3" Text="DeadLine" FontAttributes="Bold"/>
+                        <Label Grid.Column="4" Text="Status" FontAttributes="Bold"/>
+                    </Grid>
+
+                    <CollectionView x:Name="Jobs_View_Collection"
+                                    SelectionMode="Single"
+                                    SelectionChanged="User_Jobs_View_Selected"
+                                    Grid.Row="1"
+                                    WidthRequest="600"
+                                    HorizontalOptions="Center">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Job">
+                                <Border Stroke="Transparent" Padding="5,0,0,0">
+                                    <Border Stroke="transparent"  StrokeThickness="3">
+                                        <Grid ColumnDefinitions="50,200,100,75,75"
+                                              ColumnSpacing="20"
+                                              Padding="5">
+
+                                            <Label Grid.Column="0" Text="{Binding ID}"/>
+                                            <Label Grid.Column="1" Text="{Binding Name}"/>
+                                            <Label Grid.Column="2" Text="{Binding Created, StringFormat='{0:d}'}"/>
+                                            <Label Grid.Column="3" Text="{Binding DeadLine, StringFormat='{0:d}'}"/>
+                                            <Label Grid.Column="4" Text="{Binding Status}">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="open">
+                                                        <Setter Property="TextColor" Value="Green"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="assigned">
+                                                        <Setter Property="TextColor" Value="Orange"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="delivered">
+                                                        <Setter Property="TextColor" Value="Red"/>
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
+                                        </Grid>
+                                    </Border>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </Grid>
+            </Grid>
+
+            <!--Show Chosen Job-->
+            <VerticalStackLayout x:Name="User_Show_Chosen_Job" IsEnabled="False" IsVisible="False" Spacing="20">
+                <CollectionView x:Name="User_Show_Chosen_Job_Collection" WidthRequest="800">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="model:Job">
                             <VerticalStackLayout>
