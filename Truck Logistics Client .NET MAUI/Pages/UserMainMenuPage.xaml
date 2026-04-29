@@ -134,41 +134,35 @@
             </Grid>
 
             <!--Show Chosen Job-->
-            <VerticalStackLayout x:Name="User_Show_Chosen_Job" IsEnabled="False" IsVisible="False" Spacing="20">
-                <CollectionView x:Name="User_Show_Chosen_Job_Collection" WidthRequest="800">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="model:Job">
-                            <VerticalStackLayout>
-                                <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
-                                    <Label Text="Job Name: " FontSize="35"/>
-                                    <Label Text="{Binding Name}" FontSize="35"/>
-                                </HorizontalStackLayout>
-                                <Grid ColumnDefinitions="*,*">
+            <VerticalStackLayout x:Name="User_Show_Chosen_Job" x:DataType="model:Job" IsEnabled="False" IsVisible="False" Spacing="20">
+                <VerticalStackLayout HorizontalOptions="Center">
+                    <HorizontalStackLayout Spacing="10" HorizontalOptions="Center" VerticalOptions="Center">
+                        <Label Text="Job Name: " FontSize="35"/>
+                        <Label Text="{Binding Name}" FontSize="35"/>
+                    </HorizontalStackLayout>
+                    <Grid ColumnDefinitions="*,*">
 
-                                    <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="10">
-                                        <Label Text="{Binding CompanyName}"/>
-                                        <Label Text="{Binding ClientContactNumber}"/>
-                                        <Label Text="{Binding RequiredLanguages}"/>
-                                        <Label Text="{Binding RequiredMinimumCapacity}"/>
-                                        <Label Text="{Binding RequiredTruckBrand}"/>
-                                    </VerticalStackLayout>
-                                    <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="10">
-                                        <Label Text="{Binding Created}"/>
-                                        <Label Text="{Binding DeadLine}"/>
-                                        <Label Text="{Binding LocationFrom}"/>
-                                        <Label Text="{Binding LocationTo}"/>
-                                        <Label Text="{Binding Status}"/>
-                                    </VerticalStackLayout>
-                                </Grid>
-                                <Editor Text="{Binding Description}" 
-                                        IsReadOnly="True" 
-                                        WidthRequest="500"
-                                        HeightRequest="200"
-                                        Margin="50"/>
-                            </VerticalStackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                        <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="10">
+                            <Label Text="{Binding CompanyName}"/>
+                            <Label Text="{Binding ClientContactNumber}"/>
+                            <Label Text="{Binding RequiredLanguages}"/>
+                            <Label Text="{Binding RequiredMinimumCapacity}"/>
+                            <Label Text="{Binding RequiredTruckBrand}"/>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout Grid.Column="1" HorizontalOptions="Center" Spacing="10">
+                            <Label Text="{Binding Created}"/>
+                            <Label Text="{Binding DeadLine}"/>
+                            <Label Text="{Binding LocationFrom}"/>
+                            <Label Text="{Binding LocationTo}"/>
+                            <Label Text="{Binding Status}"/>
+                        </VerticalStackLayout>
+                    </Grid>
+                    <Editor Text="{Binding Description}" 
+                            IsReadOnly="True" 
+                            WidthRequest="500"
+                            HeightRequest="200"
+                            Margin="50"/>
+                </VerticalStackLayout>
             </VerticalStackLayout>
         </VerticalStackLayout>
         

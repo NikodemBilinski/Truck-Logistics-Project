@@ -95,7 +95,8 @@ public partial class UserMainMenuPage : ContentPage
 		if (CurrentUser != null)
 		{
 			Jobs_View_Collection.ItemsSource = CurrentUser.AssignedJobs;
-		}
+            Jobs_View_Collection.SelectedItem = null;
+        }
 	}
 
 	private async void User_Show_Available_Jobs(object sender, EventArgs e)
@@ -106,8 +107,18 @@ public partial class UserMainMenuPage : ContentPage
 	private async void User_Jobs_View_Selected(object sender, SelectionChangedEventArgs e)
 	{
 		await HideEverything();
-		var selectedjob = e.CurrentSelection as Job;
+		var selectedjob = e.CurrentSelection.FirstOrDefault() as Job;
 
-		// tu skonczylem ostatnio :)
-	}
+		User_Show_Chosen_Job.IsVisible = true;
+        User_Show_Chosen_Job.IsEnabled = true;
+
+		if (selectedjob != null)
+		{
+            User_Show_Chosen_Job.BindingContext = selectedjob;
+        }
+		
+
+
+        // tu skonczylem ostatnio :)
+    }
 }
