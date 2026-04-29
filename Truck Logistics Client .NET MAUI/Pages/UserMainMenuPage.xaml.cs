@@ -13,6 +13,8 @@ public partial class UserMainMenuPage : ContentPage
 
     private string apiUrl = "http://192.168.0.218:5160/api/Values/";
 
+	private List<Language> SelectedLanguages = new List<Language>();
+
     public Users? CurrentUser { get; set; }
     public UserMainMenuPage()
 	{
@@ -33,6 +35,9 @@ public partial class UserMainMenuPage : ContentPage
 
         User_Show_Chosen_Job.IsVisible = false;
 		User_Show_Chosen_Job.IsEnabled = false;
+
+		Edit_User_Section.IsVisible = false;
+        Edit_User_Section.IsEnabled = false;
     }
 	public async Task<bool> GetUser()
 	{
@@ -141,4 +146,74 @@ public partial class UserMainMenuPage : ContentPage
         }
 
     }
+
+	private async void Show_User_Edit(object sender, EventArgs e)
+	{
+		await HideEverything();
+
+
+
+        if (CurrentUser == null)
+		{
+			return;
+		}
+
+		var response = await client.GetAsync(apiUrl + "Get_Languages");
+
+		if(response.IsSuccessStatusCode)
+		{
+			var AllLanguages = await response.Content.ReadFromJsonAsync<List<Language>>();
+
+            SelectedLanguages.Clear();
+            foreach (var lang in AllLanguages)
+            {
+				if(CurrentUser.Languages.Any(x=> x.Id == lang.Id))
+				{
+                    lang.SelectionColor = Colors.LightBlue;
+                    SelectedLanguages.Add(lang);
+                }
+				else
+				{
+					lang.SelectionColor = Colors.Transparent;
+				}
+                
+            }
+			All_Languages_View.ItemsSource = null;
+            All_Languages_View.ItemsSource = AllLanguages;
+        }
+
+        Edit_User_Section.BindingContext = CurrentUser;
+
+		Edit_User_Section.IsVisible = true;
+		Edit_User_Section.IsEnabled = true;
+	}
+
+	private async void Save_User_Edit(object sender, EventArgs e)
+	{
+		var selecteduser = Edit_User_Section.BindingContext as Users;
+
+		//reset selectedlanguages
+		
+	}
+
+	private async void On_Language_Tapped(object sender, EventArgs e)
+	{
+		var border = (Border)sender;
+
+		var language = (Language)sender as Language;
+
+		if (language != null)
+		{
+			if(SelectedLanguages.Contains(language))
+			{
+				language.SelectionColor = Colors.Transparent;
+				SelectedLanguages.Remove(language);
+			}
+            else if(!SelectedLanguages.Contains(language))
+            {
+                language.SelectionColor= Colors.LightBlue;
+				SelectedLanguages.Add(language);
+            }
+        }
+	}
 }
