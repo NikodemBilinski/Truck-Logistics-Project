@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
 
@@ -12,7 +13,6 @@ public partial class UserMainMenuPage : ContentPage
 
     private string apiUrl = "http://192.168.0.218:5160/api/Values/";
 
-    //Get_Open_Jobs
     public Users? CurrentUser { get; set; }
     public UserMainMenuPage()
 	{
@@ -88,38 +88,57 @@ public partial class UserMainMenuPage : ContentPage
 
 	private async void User_Show_Assigned_Jobs(object sender, EventArgs e)
 	{
-		await HideEverything();
+        await HideEverything();
 
-		Jobs_View.IsVisible = true;
+        Jobs_View.IsVisible = true;
 		Jobs_View.IsEnabled = true;
 
 		if (CurrentUser != null)
 		{
 			Jobs_View_Collection.ItemsSource = CurrentUser.AssignedJobs;
             Jobs_View_Collection.SelectedItem = null;
+
         }
-	}
+
+    }
 
 	private async void User_Show_Available_Jobs(object sender, EventArgs e)
 	{
-		
-	}
+		await HideEverything();
+
+        Jobs_View.IsVisible = true;
+        Jobs_View.IsEnabled = true;
+
+		var response = await client.GetAsync(apiUrl + "Get_Open_Jobs");
+
+		if(response.IsSuccessStatusCode)
+		{
+			var allopenjobs = await response.Content.ReadFromJsonAsync<List<Job>>();
+
+            if (allopenjobs != null)
+            {
+				Jobs_View_Collection.ItemsSource = allopenjobs;
+                Jobs_View_Collection.SelectedItem = null;
+            }
+        }
+    }
 
 	private async void User_Jobs_View_Selected(object sender, SelectionChangedEventArgs e)
 	{
-		await HideEverything();
+		
 		var selectedjob = e.CurrentSelection.FirstOrDefault() as Job;
 
-		User_Show_Chosen_Job.IsVisible = true;
-        User_Show_Chosen_Job.IsEnabled = true;
-
+		if(selectedjob == null)
+		{
+			return;
+		}
 		if (selectedjob != null)
 		{
+            await HideEverything();
+            User_Show_Chosen_Job.IsVisible = true;
+            User_Show_Chosen_Job.IsEnabled = true;
             User_Show_Chosen_Job.BindingContext = selectedjob;
         }
-		
 
-
-        // tu skonczylem ostatnio :)
     }
 }
