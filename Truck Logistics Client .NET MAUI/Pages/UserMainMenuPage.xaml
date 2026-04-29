@@ -61,9 +61,8 @@
                 
             <!--User Edit Data-->
             <VerticalStackLayout x:Name="Edit_User_Section" IsVisible="False" x:DataType="model:Users" Spacing="10">
-                <Label x:Name="EditUserLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
                 <!--USER DATA-->
-                <Grid ColumnDefinitions="100,200,*">
+                <Grid ColumnDefinitions="100,200,*" Margin="150,0,0,0">
                     <VerticalStackLayout Grid.Column="0" Spacing="37" VerticalOptions="Center">
                         <Label Text="First Name:"/>
                         <Label Text="Last Name:"/>

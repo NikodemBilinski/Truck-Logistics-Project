@@ -178,7 +178,6 @@ public partial class UserMainMenuPage : ContentPage
 				}
                 
             }
-			All_Languages_View.ItemsSource = null;
             All_Languages_View.ItemsSource = AllLanguages;
         }
 
@@ -200,19 +199,21 @@ public partial class UserMainMenuPage : ContentPage
 	{
 		var border = (Border)sender;
 
-		var language = (Language)sender as Language;
+		var language = (Language)border.BindingContext; 
 
 		if (language != null)
 		{
 			if(SelectedLanguages.Contains(language))
 			{
-				language.SelectionColor = Colors.Transparent;
-				SelectedLanguages.Remove(language);
+                SelectedLanguages.Remove(language);
+                language.SelectionColor = Colors.Transparent;
+				
 			}
             else if(!SelectedLanguages.Contains(language))
             {
-                language.SelectionColor= Colors.LightBlue;
-				SelectedLanguages.Add(language);
+                SelectedLanguages.Add(language);
+                language.SelectionColor = Colors.LightBlue;
+				
             }
         }
 	}
