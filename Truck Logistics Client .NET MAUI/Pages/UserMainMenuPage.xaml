@@ -67,7 +67,6 @@
                         <Label Text="First Name:"/>
                         <Label Text="Last Name:"/>
                         <Label Text="Age:"/>
-                        <Label Text="Role:"/>
                         <Label Text="Status,             (Is Busy?):"/>
                         <Label Text="Username:"/>
                         <Label Text="Password:"/>
@@ -76,7 +75,6 @@
                         <Entry Text="{Binding FirstName}" Placeholder="First Name" WidthRequest="175" HorizontalOptions="Start"/>
                         <Entry Text="{Binding LastName}" Placeholder="Last Name" WidthRequest="175" HorizontalOptions="Start"/>
                         <Entry Text="{Binding Age}" Placeholder="Age" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry Text="{Binding Role}" Placeholder="Role" WidthRequest="175" HorizontalOptions="Start"/>
                         <CheckBox IsChecked="{Binding isBusy}"/>
                         <Entry Text="{Binding Username}" Placeholder="Username" WidthRequest="175" HorizontalOptions="Start"/>
                         <Entry Text="{Binding Password}" Placeholder="Password" WidthRequest="175" HorizontalOptions="Start"/>
@@ -96,7 +94,7 @@
                             <Label Text=" (Select all matching)"/>
                             <CollectionView x:Name="All_Languages_View"
                                             SelectionMode="None"
-                                            HeightRequest="200">
+                                            HeightRequest="150">
                                 <CollectionView.ItemsLayout>
                                     <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
                                 </CollectionView.ItemsLayout>

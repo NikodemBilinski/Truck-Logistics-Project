@@ -263,7 +263,15 @@ namespace TrucksLogisticsServerAPI.Controllers
                 Console.WriteLine("UpdateUser: Error, User with the specified ID not found.");
                 return NotFound("Error: User with the specified ID not found.");
             }
+            
+            //skidibi toilet lepszy sposub
+            bool ismatching = await _dataContext.Users.AnyAsync(x => x.Username == updatedUser.Username && x.ID != updatedUser.ID);
 
+            if(ismatching)
+            {
+                Console.WriteLine("UpdateUser: Error, There is already user with that Username.");
+                return BadRequest("Error: There is already user with that Username.");
+            }
 
             // Update user properties
             user.Username = updatedUser.Username;

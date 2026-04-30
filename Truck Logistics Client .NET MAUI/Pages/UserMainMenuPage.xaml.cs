@@ -19,6 +19,11 @@ public partial class UserMainMenuPage : ContentPage
     public UserMainMenuPage()
 	{
 		InitializeComponent();
+
+		//failsafe to edit user
+		// check if edit user data is ok
+		// jobs - requierments
+		//chyba jak na razie tyle
 		
 	}
 
@@ -195,6 +200,31 @@ public partial class UserMainMenuPage : ContentPage
 
         #region usercheck
 
+		if(string.IsNullOrEmpty(selecteduser.FirstName))
+		{
+			EditUserLabelMain.Text = "FirstName cannot be null.";
+			return;
+		}
+        if (string.IsNullOrEmpty(selecteduser.LastName))
+        {
+            EditUserLabelMain.Text = "LastName cannot be null.";
+            return;
+        }
+        if (!int.TryParse(selecteduser.Age.ToString(), out int age))
+        {
+            EditUserLabelMain.Text = "Age has to be a number.";
+            return;
+        }
+        if (string.IsNullOrEmpty(selecteduser.Username))
+        {
+            EditUserLabelMain.Text = "Username cannot be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(selecteduser.Password))
+        {
+            EditUserLabelMain.Text = "Password cannot be null.";
+            return;
+        }
 
         #endregion
 
