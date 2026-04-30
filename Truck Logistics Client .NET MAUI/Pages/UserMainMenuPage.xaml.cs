@@ -191,7 +191,28 @@ public partial class UserMainMenuPage : ContentPage
 	{
 		var selecteduser = Edit_User_Section.BindingContext as Users;
 
-		//reset selectedlanguages
+		var Languages = SelectedLanguages;
+
+        #region usercheck
+
+
+        #endregion
+
+        if (selecteduser != null && Languages != null)
+		{
+			var response = await client.PutAsJsonAsync(apiUrl + "Update_User/" + selecteduser.ID, selecteduser);
+
+			var response2 = await client.PutAsJsonAsync(apiUrl + "Update_User_Languages/" + selecteduser.ID, Languages);
+
+			if(response.IsSuccessStatusCode && response2.IsSuccessStatusCode)
+			{
+				EditUserLabelMain.Text = await response.Content.ReadAsStringAsync() + "\n" + await response2.Content.ReadAsStringAsync();
+			}
+			else
+			{
+				EditUserLabelMain.Text = await response.Content.ReadAsStringAsync() + "\n" + await response2.Content.ReadAsStringAsync();
+            }
+		}
 		
 	}
 

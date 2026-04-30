@@ -39,7 +39,7 @@ namespace TrucksLogisticsClient.Models
         }
 
 
-       public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyname = null)
         {
