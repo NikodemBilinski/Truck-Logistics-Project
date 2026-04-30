@@ -142,13 +142,35 @@ public partial class UserMainMenuPage : ContentPage
 		{
 			return;
 		}
-		if (selectedjob != null)
+
+        await HideEverything();
+        User_Show_Chosen_Job.IsVisible = true;
+        User_Show_Chosen_Job.IsEnabled = true;
+        User_Show_Chosen_Job.BindingContext = selectedjob;
+
+		//check if met requierments for job
+		if (selectedjob.Status == "open" && CurrentUser != null)
 		{
-            await HideEverything();
-            User_Show_Chosen_Job.IsVisible = true;
-            User_Show_Chosen_Job.IsEnabled = true;
-            User_Show_Chosen_Job.BindingContext = selectedjob;
-        }
+			var usertrucks = CurrentUser.AssignedTrucks.ToList();
+			var UserLanguagesNames = CurrentUser.Languages.Select(x => x.Name).ToList();
+			var requiredlanguages = selectedjob.RequiredLanguages.Split(",").ToList();
+
+			bool MetTruckRequierments = usertrucks.Any(x => x.Capacity >= selectedjob.RequiredMinimumCapacity &&
+			(x.brand == selectedjob.RequiredTruckBrand || selectedjob.RequiredTruckBrand == "all"));
+
+			bool MetLanguageRequierments = UserLanguagesNames.All(x => UserLanguagesNames.Contains(x));
+
+			if(MetLanguageRequierments && MetTruckRequierments)
+			{
+				Debug.WriteLine("Met requierments");
+				
+			}
+			else
+			{
+				Debug.WriteLine("Didnt met requierments");
+			}
+
+		}
 
     }
 
