@@ -297,4 +297,30 @@ public partial class UserMainMenuPage : ContentPage
             }
         }
 	}
+
+	private async void Apply_For_Job(object sender, EventArgs e)
+	{
+		var chosenjob = User_Show_Chosen_Job.BindingContext as Job;
+
+		if(chosenjob != null && CurrentUser != null)
+		{
+			chosenjob.Status = "assigned";
+			chosenjob.AssignedUserId = CurrentUser.ID;
+
+			var response = await client.PutAsJsonAsync(apiUrl + "Update_Job/" + chosenjob.ID, chosenjob);
+
+			if(response.IsSuccessStatusCode)
+			{
+				ApplyForJobLabel.Text = "Successfully applied for job\n\n" + await response.Content.ReadAsStringAsync();
+				ApplyForJobButton.IsEnabled = false;
+
+				//reset current user for new job
+				await GetUser();
+			}
+			else
+			{
+				ApplyForJobLabel.Text = await response.Content.ReadAsStringAsync();
+			}
+		}
+	}
 }

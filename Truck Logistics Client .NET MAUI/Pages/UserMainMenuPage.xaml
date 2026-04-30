@@ -250,11 +250,13 @@
                         <VerticalStackLayout VerticalOptions="Center" Spacing="25">
                             <Label x:Name="ApplyForJobLabel"
                                    IsVisible="False"/>
+                            
                             <Button x:Name="ApplyForJobButton"
                                     Text="Apply for job"
                                     IsVisible="False"
                                     IsEnabled="False"
-                                    WidthRequest="125"/>
+                                    WidthRequest="125"
+                                    Clicked="Apply_For_Job"/>
                         </VerticalStackLayout>
                         
                     </HorizontalStackLayout>
