@@ -23,6 +23,7 @@ public partial class UserMainMenuPage : ContentPage
 		//failsafe to edit user
 		// check if edit user data is ok
 		// jobs - requierments
+		// cos sie dzeije jak met i nie met requirements
 		//chyba jak na razie tyle
 		
 	}
@@ -151,6 +152,9 @@ public partial class UserMainMenuPage : ContentPage
 		//check if met requierments for job
 		if (selectedjob.Status == "open" && CurrentUser != null)
 		{
+			ApplyForJobLabel.IsVisible = true;
+			ApplyForJobButton.IsVisible = true;
+
 			var usertrucks = CurrentUser.AssignedTrucks.ToList();
 			var UserLanguagesNames = CurrentUser.Languages.Select(x => x.Name).ToList();
 			var requiredlanguages = selectedjob.RequiredLanguages.Split(",").ToList();
@@ -162,12 +166,15 @@ public partial class UserMainMenuPage : ContentPage
 
 			if(MetLanguageRequierments && MetTruckRequierments)
 			{
-				Debug.WriteLine("Met requierments");
-				
+				ApplyForJobLabel.Text = "You met all requierments of this job,\nclick to apply.";
+				ApplyForJobButton.IsEnabled = true;
+				Debug.WriteLine("Met all requierments.");
 			}
 			else
 			{
-				Debug.WriteLine("Didnt met requierments");
+                ApplyForJobLabel.Text = "You don't meet the requierments of this job,\nyou can't apply.";
+				ApplyForJobButton.IsEnabled = false;
+                Debug.WriteLine("Didnt met requierments.");
 			}
 
 		}

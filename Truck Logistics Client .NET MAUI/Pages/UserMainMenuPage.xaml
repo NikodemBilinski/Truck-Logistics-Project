@@ -222,7 +222,7 @@
                         <Label Text="Job Name: " FontSize="35" TextColor="Gold"/>
                         <Label Text="{Binding Name}" FontSize="35" TextColor="Gold"/>
                     </HorizontalStackLayout>
-                    <Grid ColumnDefinitions="*,*" ColumnSpacing="100">
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="175">
 
                         <VerticalStackLayout Grid.Column="0" HorizontalOptions="Center" Spacing="10">
                             <Label Text="{Binding CompanyName, StringFormat='Company: {0}'}" FontSize="15" HorizontalOptions="Fill" HorizontalTextAlignment="Start"/>
@@ -239,11 +239,25 @@
                             <Label Text="{Binding Status, StringFormat='Status: {0}'}" FontSize="15" HorizontalOptions="Fill" HorizontalTextAlignment="Start"/>
                         </VerticalStackLayout>
                     </Grid>
+                    <HorizontalStackLayout>
+                      
                     <Editor Text="{Binding Description}" 
                             IsReadOnly="True" 
                             WidthRequest="500"
                             HeightRequest="200"
                             Margin="50"/>
+
+                        <VerticalStackLayout VerticalOptions="Center" Spacing="25">
+                            <Label x:Name="ApplyForJobLabel"
+                                   IsVisible="False"/>
+                            <Button x:Name="ApplyForJobButton"
+                                    Text="Apply for job"
+                                    IsVisible="False"
+                                    IsEnabled="False"
+                                    WidthRequest="125"/>
+                        </VerticalStackLayout>
+                        
+                    </HorizontalStackLayout>
                 </VerticalStackLayout>
             </VerticalStackLayout>
         </VerticalStackLayout>
