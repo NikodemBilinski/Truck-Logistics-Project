@@ -40,7 +40,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         public async Task<ActionResult<Users>> GetUserByID(int ID)
         {
             Console.WriteLine("GetUserByID: Requested.");
-            var user = await _dataContext.Users.FindAsync(ID);
+            var user = await _dataContext.Users.Include(x => x.AssignedTrucks).Include(x => x.AssignedJobs).Include(x => x.Languages).FirstOrDefaultAsync(x => x.ID == ID);
             if (user == null)
             {
                 return NotFound("Error: User with the specified ID not found.");
@@ -55,7 +55,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             Console.WriteLine("GetAllUsers: Requested.");
             
-            var allusers = await _dataContext.Users.Include(u => u.AssignedTrucks).Include(u => u.Languages).ToListAsync();
+            var allusers = await _dataContext.Users.Include(u => u.AssignedTrucks).Include(x => x.AssignedJobs).Include(u => u.Languages).ToListAsync();
             Console.WriteLine("GetAllUsers: Returning All Users.");
             return Ok(allusers);
         }
@@ -74,6 +74,23 @@ namespace TrucksLogisticsServerAPI.Controllers
                 return Ok(alljobs);
             }
             return BadRequest("Error: No Jobs Found");
+        }
+
+        [HttpGet("Get_Open_Jobs")]
+        public async Task<ActionResult<List<Job>>> GetOpenJobs()
+        {
+            Console.WriteLine("GetOpenJobs: Requested.");
+
+            var openjobs = await _dataContext.Jobs.Where(x => x.Status == "open").ToListAsync();
+
+            if(openjobs != null)
+            {
+                Console.WriteLine("GetOpenJobs: Returning All Open Jobs.");
+                return Ok(openjobs);
+            }
+
+            Console.WriteLine("GetOpenJobs: No Open Jobs Found.");
+            return BadRequest("No open jobs found.");
         }
 
         [HttpGet("Get_Languages")]
@@ -246,7 +263,15 @@ namespace TrucksLogisticsServerAPI.Controllers
                 Console.WriteLine("UpdateUser: Error, User with the specified ID not found.");
                 return NotFound("Error: User with the specified ID not found.");
             }
+            
+            //skidibi toilet lepszy sposub
+            bool ismatching = await _dataContext.Users.AnyAsync(x => x.Username == updatedUser.Username && x.ID != updatedUser.ID);
 
+            if(ismatching)
+            {
+                Console.WriteLine("UpdateUser: Error, There is already user with that Username.");
+                return BadRequest("Error: There is already user with that Username.");
+            }
 
             // Update user properties
             user.Username = updatedUser.Username;

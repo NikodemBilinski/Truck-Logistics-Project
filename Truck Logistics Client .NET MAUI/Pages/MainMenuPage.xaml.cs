@@ -396,7 +396,7 @@ public partial class MainMenuPage : ContentPage
         }
         if (!int.TryParse(Admin_Add_User_Age.Text, out int age))
         {
-            Add_User_Error_Label.Text = "Age is just a number!";
+            Add_User_Error_Label.Text = "Age should be a number!";
             return;
         }
 
