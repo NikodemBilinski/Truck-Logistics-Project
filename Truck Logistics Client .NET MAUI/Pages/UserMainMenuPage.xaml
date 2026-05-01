@@ -246,15 +246,20 @@
                             WidthRequest="500"
                             HeightRequest="200"
                             Margin="50"/>
+                        
+                        <VerticalStackLayout x:Name="CancelJobSection" IsVisible="False" VerticalOptions="Center" Spacing="25">
+                            <Label x:Name="CancelJobLabel"/>
 
-                        <VerticalStackLayout VerticalOptions="Center" Spacing="25">
-                            <Label x:Name="ApplyForJobLabel"
-                                   IsVisible="False"/>
+                            <Button x:Name="CancelJobButton"
+                                    Text="Cancel job"
+                                    WidthRequest="125"
+                                    Clicked="Cancel_Job"/>
+                        </VerticalStackLayout>
+                        <VerticalStackLayout x:Name="ApplyForJobSection" IsVisible="False" VerticalOptions="Center" Spacing="25">
+                            <Label x:Name="ApplyForJobLabel"/>
                             
                             <Button x:Name="ApplyForJobButton"
                                     Text="Apply for job"
-                                    IsVisible="False"
-                                    IsEnabled="False"
                                     WidthRequest="125"
                                     Clicked="Apply_For_Job"/>
                         </VerticalStackLayout>

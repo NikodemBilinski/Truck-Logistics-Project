@@ -152,10 +152,12 @@ public partial class UserMainMenuPage : ContentPage
 		//check if met requierments for job
 		if (selectedjob.Status == "open" && CurrentUser != null)
 		{
-			ApplyForJobLabel.IsVisible = true;
-			ApplyForJobButton.IsVisible = true;
+            ApplyForJobSection.IsVisible = true;
+            ApplyForJobSection.IsEnabled = true;
+            CancelJobSection.IsVisible = false;
+            CancelJobSection.IsEnabled = false;
 
-			var usertrucks = CurrentUser.AssignedTrucks.ToList();
+            var usertrucks = CurrentUser.AssignedTrucks.ToList();
 			var UserLanguagesNames = CurrentUser.Languages.Select(x => x.Name).ToList();
 			var requiredlanguages = selectedjob.RequiredLanguages.Split(",").ToList();
 
@@ -177,6 +179,15 @@ public partial class UserMainMenuPage : ContentPage
                 Debug.WriteLine("Didnt met requierments.");
 			}
 
+		}
+		if (selectedjob.Status == "assigned" && CurrentUser != null)
+		{
+			ApplyForJobSection.IsVisible = false;
+			ApplyForJobSection.IsEnabled = false;
+			CancelJobSection.IsVisible = true;
+			CancelJobSection.IsEnabled = true;
+
+			CancelJobLabel.Text = "Click to cancel assigment for this job.";
 		}
 
     }
@@ -323,4 +334,10 @@ public partial class UserMainMenuPage : ContentPage
 			}
 		}
 	}
+
+	private async void Cancel_Job(object sender, EventArgs e)
+	{
+
+	}
+	
 }
