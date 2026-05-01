@@ -23,6 +23,6 @@
 
         //relacje 
         public List<Invoice> Invoices { get; set; } = new List<Invoice>();
-        public List<Job> Job { get; set; } = new List<Job>();
+        public List<Job> Jobs { get; set; } = new List<Job>();
     }
 }
