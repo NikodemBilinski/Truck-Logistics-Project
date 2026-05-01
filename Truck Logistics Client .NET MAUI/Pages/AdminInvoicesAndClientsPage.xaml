@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TrucksLogisticsClient.Pages.AdminInvoicesAndClientsPage"
+             Shell.NavBarIsVisible="False">
+    
+    
+    <Grid ColumnDefinitions="200,*">
+        <VerticalStackLayout Grid.Column="1">
+             <Label Text="Admin Clients and Invoices Panel"
+                    VerticalOptions="Start" 
+                    HorizontalOptions="Center" />
+
+            <Label x:Name="Welcome_User_Label"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"/>
+        </VerticalStackLayout>
+
+        <VerticalStackLayout Grid.Column="0" Margin="10">
+
+            <!--Admin DataPanel-->
+            <Border x:Name="Admin_Data_Panel"
+                    StrokeThickness="5"
+                    StrokeShape="RoundRectangle 50"
+                    Stroke="Beige"
+                    Padding="50"
+                    IsVisible="False"
+                    IsEnabled="False">
+                <VerticalStackLayout Spacing="25">
+
+                    <Button Text="Get All Users"
+                            WidthRequest="125"/>
+                    <Button Text="Get All Users"
+        WidthRequest="125"/>
+                    <Button Text="Get All Users"
+        WidthRequest="125"/>
+                    
+
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+
+
+    </Grid>
+</ContentPage>

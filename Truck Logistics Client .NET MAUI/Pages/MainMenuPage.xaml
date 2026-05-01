@@ -655,6 +655,9 @@
                     <Button Text="Add New Job"
                             WidthRequest="125"
                             Clicked="Admin_Open_Add_Job_Section"/>
+                    <Button Text="Manage Invoices And Clients"
+                            WidthRequest="125"
+                            Clicked="Admin_MoveTo_InvoicesAndClients"/>
 
                 </VerticalStackLayout>
             </Border>

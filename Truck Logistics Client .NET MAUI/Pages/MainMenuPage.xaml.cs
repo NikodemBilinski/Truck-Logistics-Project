@@ -818,6 +818,11 @@ public partial class MainMenuPage : ContentPage
         Admin_Edit_Job_Users_View.SelectedItem = null;
     }
 
+    private async void Admin_MoveTo_InvoicesAndClients(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"{nameof(AdminInvoicesAndClientsPage)}?UserID={UserID}");
+    }
+
 
 
 }

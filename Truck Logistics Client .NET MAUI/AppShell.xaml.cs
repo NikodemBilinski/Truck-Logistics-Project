@@ -10,6 +10,7 @@ namespace TrucksLogisticsClient
 
             Routing.RegisterRoute(nameof(Pages.MainMenuPage), typeof(Pages.MainMenuPage));
             Routing.RegisterRoute(nameof(Pages.UserMainMenuPage), typeof(Pages.UserMainMenuPage));
+            Routing.RegisterRoute(nameof(Pages.AdminInvoicesAndClientsPage), typeof(Pages.AdminInvoicesAndClientsPage));
         }
     }
 }
