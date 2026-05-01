@@ -199,8 +199,9 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             if(ClientToAdd != null)
             {
-
+                return Ok();
             }
+            return Ok();
         }
 
         [HttpPost("Post_User_Swagger")]

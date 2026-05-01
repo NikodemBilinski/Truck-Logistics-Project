@@ -83,6 +83,74 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     // add to database 
     private async void Admin_Add_Client_Clicked(object sender, EventArgs e)
     {
+        var ClientToAdd = Add_Client_Section.BindingContext as Client;
+
+        #region check if ok section
+
+        if(string.IsNullOrEmpty(ClientToAdd.Name))
+        {
+            Add_Client_Error_Label.Text = "Client Name cant be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(ClientToAdd.NIP))
+        {
+            Add_Client_Error_Label.Text = "Client NIP cant be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(ClientToAdd.Country))
+        {
+            Add_Client_Error_Label.Text = "Client Country cant be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(ClientToAdd.City))
+        {
+            Add_Client_Error_Label.Text = "Client City cant be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(ClientToAdd.Address))
+        {
+            Add_Client_Error_Label.Text = "Client Address cant be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(ClientToAdd.PostalCode))
+        {
+            Add_Client_Error_Label.Text = "Client PostalCode cant be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(ClientToAdd.Phone))
+        {
+            Add_Client_Error_Label.Text = "Client Phone cant be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(ClientToAdd.Email))
+        {
+            Add_Client_Error_Label.Text = "Client Email cant be null.";
+            return;
+        }
+        #endregion
+
+        var response = await client.PostAsJsonAsync(apiUrl + "Add_Client", ClientToAdd);
+
+        ClientToAdd.Name = Admin_Add_Client_Name.Text;
+        ClientToAdd.NIP = Admin_Add_Client_NIP.Text;
+        ClientToAdd.Country = Admin_Add_Client_Country.Text;
+        ClientToAdd.City = Admin_Add_Client_City.Text;
+        ClientToAdd.Address = Admin_Add_Client_Address.Text;
+        ClientToAdd.PostalCode = Admin_Add_Client_PostalCode.Text;
+        ClientToAdd.Phone = Admin_Add_Client_Phone.Text;
+        ClientToAdd.Email = Admin_Add_Client_Email.Text;
+
+
+        if (response.IsSuccessStatusCode)
+        {
+            Add_Client_Error_Label.Text = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine("Successfully added client.");
+        }
+        else
+        {
+            Add_Client_Error_Label.Text = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine("Error Adding client.");
+        }
 
     }
     private async void Admin_Go_Back(object sender, EventArgs e)
