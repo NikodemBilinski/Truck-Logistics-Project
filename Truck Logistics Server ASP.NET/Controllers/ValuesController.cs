@@ -194,6 +194,15 @@ namespace TrucksLogisticsServerAPI.Controllers
             }
         }
 
+        [HttpPost("Add_Client")]
+        public async Task<ActionResult<Client>> AddClient(Client ClientToAdd)
+        {
+            if(ClientToAdd != null)
+            {
+
+            }
+        }
+
         [HttpPost("Post_User_Swagger")]
 
         public async Task<ActionResult<Users>> AddUserLogin(Users userslogin)

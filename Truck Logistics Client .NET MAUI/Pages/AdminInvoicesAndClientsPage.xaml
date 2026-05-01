@@ -1,20 +1,62 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:TrucksLogisticsClient.Models"
              x:Class="TrucksLogisticsClient.Pages.AdminInvoicesAndClientsPage"
              Shell.NavBarIsVisible="False">
     
     
     <Grid ColumnDefinitions="200,*">
         <VerticalStackLayout Grid.Column="1">
-             <Label Text="Admin Clients and Invoices Panel"
+            <Label Text="Admin Clients and Invoices Panel"
                     VerticalOptions="Start" 
                     HorizontalOptions="Center" />
 
             <Label x:Name="Welcome_User_Label"
                    VerticalOptions="Center"
                    HorizontalOptions="Center"/>
+
+            <!--Admin Add new Client-->
+            <VerticalStackLayout x:Name="Add_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">
+                <Label Text="Add New Client" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                <Grid ColumnDefinitions="150,400,150">
+                    <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                        <Label Text="Company Name:"/>
+                        <Label Text="NIP:"/>
+                        <Label Text="Country:"/>
+                        <Label Text="City:"/>
+                        <Label Text="Address:"/>
+                        <Label Text="PostalCode:"/>
+                        <Label Text="Phone:"/>
+                        <Label Text="Email:"/>
+                        
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="15">
+                        <Entry x:Name="Admin_Add_Client_Name" Placeholder="Name" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Client_NIP" Placeholder="NIP" WidthRequest="200" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Client_Country" Placeholder="Country" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Client_City" Placeholder="City" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Client_Address" Placeholder="Address" WidthRequest="350" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Client_PostalCode" Placeholder="PostalCode" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Client_Phone" Placeholder="Phone" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Client_Email" Placeholder="Email" WidthRequest="350" HorizontalOptions="Start"/>
+                    </VerticalStackLayout>
+
+                    <Label x:Name="Add_Client_Error_Label"
+                           Grid.Column="2"
+                           TextColor="Red"
+                           Margin="0,50,0,0"/>
+
+                    <Button Text="Add Client" 
+                    Grid.Column="2" 
+                    HeightRequest="50"
+                    Clicked="Admin_Add_Client_Clicked"/>
+                </Grid>
+
+            </VerticalStackLayout>
         </VerticalStackLayout>
+
 
         <VerticalStackLayout Grid.Column="0" Margin="10">
 
@@ -28,13 +70,21 @@
                     IsEnabled="False">
                 <VerticalStackLayout Spacing="25">
 
-                    <Button Text="Get All Users"
+                    <Button Text="Show all Clients"
                             WidthRequest="125"/>
-                    <Button Text="Get All Users"
-        WidthRequest="125"/>
-                    <Button Text="Get All Users"
-        WidthRequest="125"/>
+                    <Button Text="Show all Invoices"
+                            WidthRequest="125"/>
                     
+                    <Button Text="Add new Client"
+                            WidthRequest="125"
+                            Clicked="Admin_Open_Add_Client_Section"/>
+                    <Button Text="Add new Invoice"
+                            WidthRequest="125"
+                            Clicked="Admin_Open_Add_Invoice_Section"/>
+                    <Button Text="Go Back"
+                            WidthRequest="125"
+                            Clicked="Admin_Go_Back"/>
+
 
                 </VerticalStackLayout>
             </Border>

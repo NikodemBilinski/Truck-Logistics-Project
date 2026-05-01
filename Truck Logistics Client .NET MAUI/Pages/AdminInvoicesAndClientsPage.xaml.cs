@@ -61,4 +61,33 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
 
     }
+
+    private async Task HideEverything()
+    {
+        Add_Client_Section.IsVisible = false;
+        Add_Client_Section.IsEnabled = false;
+    }
+    // open sections
+    private async void Admin_Open_Add_Client_Section(object sender, EventArgs e)
+    {
+        await HideEverything();
+
+        Add_Client_Section.IsVisible = true;
+        Add_Client_Section.IsEnabled = true;
+    }
+    private async void Admin_Open_Add_Invoice_Section(object sender, EventArgs e)
+    {
+
+    }
+
+    // add to database 
+    private async void Admin_Add_Client_Clicked(object sender, EventArgs e)
+    {
+
+    }
+    private async void Admin_Go_Back(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("..");
+    }
+
 }
