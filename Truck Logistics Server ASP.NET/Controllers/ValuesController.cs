@@ -199,9 +199,17 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             if(ClientToAdd != null)
             {
-                return Ok();
+                _dataContext.Clients.Add(ClientToAdd);
+                await _dataContext.SaveChangesAsync();
+                Console.WriteLine("AddClient: Added Client: " + ClientToAdd.ID + ". " + ClientToAdd.Name + ", To Database.");
+                return Ok("Successfully added new client: "+ ClientToAdd.Name);
             }
-            return Ok();
+            else
+            {
+                Console.WriteLine("AddClient: Error Adding Client.");
+                return BadRequest("Error: Client cannot be null");
+            }
+            
         }
 
         [HttpPost("Post_User_Swagger")]

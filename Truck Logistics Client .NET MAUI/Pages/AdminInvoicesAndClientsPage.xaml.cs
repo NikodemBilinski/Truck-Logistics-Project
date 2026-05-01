@@ -83,53 +83,53 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     // add to database 
     private async void Admin_Add_Client_Clicked(object sender, EventArgs e)
     {
-        var ClientToAdd = Add_Client_Section.BindingContext as Client;
+        Client ClientToAdd = new Client();
 
         #region check if ok section
 
-        if(string.IsNullOrEmpty(ClientToAdd.Name))
+        if(string.IsNullOrEmpty(Admin_Add_Client_Name.Text))
         {
             Add_Client_Error_Label.Text = "Client Name cant be null.";
             return;
         }
-        if (string.IsNullOrEmpty(ClientToAdd.NIP))
+        if (string.IsNullOrEmpty(Admin_Add_Client_NIP.Text))
         {
             Add_Client_Error_Label.Text = "Client NIP cant be null.";
             return;
         }
-        if (string.IsNullOrEmpty(ClientToAdd.Country))
+        if (string.IsNullOrEmpty(Admin_Add_Client_Country.Text))
         {
             Add_Client_Error_Label.Text = "Client Country cant be null.";
             return;
         }
-        if (string.IsNullOrEmpty(ClientToAdd.City))
+        if (string.IsNullOrEmpty(Admin_Add_Client_City.Text))
         {
             Add_Client_Error_Label.Text = "Client City cant be null.";
             return;
         }
-        if (string.IsNullOrEmpty(ClientToAdd.Address))
+        if (string.IsNullOrEmpty(Admin_Add_Client_Address.Text))
         {
             Add_Client_Error_Label.Text = "Client Address cant be null.";
             return;
         }
-        if (string.IsNullOrEmpty(ClientToAdd.PostalCode))
+        if (string.IsNullOrEmpty(Admin_Add_Client_PostalCode.Text))
         {
             Add_Client_Error_Label.Text = "Client PostalCode cant be null.";
             return;
         }
-        if (string.IsNullOrEmpty(ClientToAdd.Phone))
+        if (string.IsNullOrEmpty(Admin_Add_Client_Phone.Text))
         {
             Add_Client_Error_Label.Text = "Client Phone cant be null.";
             return;
         }
-        if (string.IsNullOrEmpty(ClientToAdd.Email))
+        if (string.IsNullOrEmpty(Admin_Add_Client_Email.Text))
         {
             Add_Client_Error_Label.Text = "Client Email cant be null.";
             return;
         }
         #endregion
 
-        var response = await client.PostAsJsonAsync(apiUrl + "Add_Client", ClientToAdd);
+
 
         ClientToAdd.Name = Admin_Add_Client_Name.Text;
         ClientToAdd.NIP = Admin_Add_Client_NIP.Text;
@@ -140,6 +140,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         ClientToAdd.Phone = Admin_Add_Client_Phone.Text;
         ClientToAdd.Email = Admin_Add_Client_Email.Text;
 
+        var response = await client.PostAsJsonAsync(apiUrl + "Add_Client", ClientToAdd);
 
         if (response.IsSuccessStatusCode)
         {

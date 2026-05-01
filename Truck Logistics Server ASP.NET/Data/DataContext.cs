@@ -19,6 +19,10 @@ namespace TrucksLogisticsServerAPI.Data
 
         public DbSet<Language> Languages { get; set; }
 
+        public DbSet<Client> Clients { get; set; }
+
+        public DbSet<Invoice> Invoices { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Language>().HasData(
