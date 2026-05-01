@@ -337,7 +337,29 @@ public partial class UserMainMenuPage : ContentPage
 
 	private async void Cancel_Job(object sender, EventArgs e)
 	{
+		var chosenjob = User_Show_Chosen_Job.BindingContext as Job;
 
+		if (chosenjob != null && CurrentUser != null)
+		{
+			chosenjob.AssignedUserId = null;
+
+			chosenjob.Status = "open";
+
+			var response = await client.PutAsJsonAsync(apiUrl + "Update_Job/" + chosenjob.ID, chosenjob);
+
+			if(response.IsSuccessStatusCode)
+			{
+				CancelJobLabel.Text = "Successfully canceled assignment for this job. \n\n" + await response.Content.ReadAsStringAsync();
+				CancelJobButton.IsEnabled = false;
+
+				//reset userdata
+				await GetUser();
+			}
+			else
+			{
+				CancelJobLabel.Text = await response.Content.ReadAsStringAsync();
+            }
+		}
 	}
 	
 }
