@@ -118,6 +118,18 @@ namespace TrucksLogisticsServerAPI.Controllers
             return BadRequest("Error: No clients found in database.");
         }
 
+        [HttpGet("Get_Client_By_ID/{ID}")]
+        public async Task<ActionResult<Client>> GetClientByID(int id)
+        {
+            var client = await _dataContext.Clients.FirstOrDefaultAsync(x => x.ID == id);
+
+            if(client != null)
+            {
+                return Ok(client);
+            }
+            return BadRequest("Error: No client with that id was found");
+        }
+
         #endregion
 
         // HTTP POSTS  
