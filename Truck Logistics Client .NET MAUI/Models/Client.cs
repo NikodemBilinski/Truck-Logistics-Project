@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace TrucksLogisticsClient.Models
 {
@@ -28,5 +29,6 @@ namespace TrucksLogisticsClient.Models
         //relacje 
         public List<Invoice> Invoices { get; set; } = new List<Invoice>();
         public List<Job> Jobs { get; set; } = new List<Job>();
+
     }
 }

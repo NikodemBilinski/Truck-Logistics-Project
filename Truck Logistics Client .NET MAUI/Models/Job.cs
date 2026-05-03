@@ -43,7 +43,7 @@ namespace TrucksLogisticsClient.Models
 
         public int ClientID { get; set; }
 
-        public Client Client { get; set; }
+        public Client? Client { get; set; }
 
     }
 }

@@ -130,6 +130,34 @@ public partial class MainMenuPage : ContentPage
         return new List<Language>();
     }
 
+    private async Task<List<Client>> Get_Clients()
+    {
+        try
+        {
+            var response = await client.GetAsync(apiUrl + "Get_Clients");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var Clients = await response.Content.ReadFromJsonAsync<List<Client>>();
+
+                if (Clients != null)
+                {
+                    return Clients;
+                }
+                else
+                {
+                    return new List<Client>();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Error: " + ex.Message);
+            return new List<Client>();
+        }
+        return new List<Client>();
+    }
+
     #endregion
 
 
@@ -237,6 +265,10 @@ public partial class MainMenuPage : ContentPage
         var languagesfromdb = await Get_Languages();
 
         Admin_Add_Job_RequiredLanguages_View.ItemsSource = languagesfromdb;
+
+        var allclients = await Get_Clients();
+
+        Admin_Add_Job_Clients_View.ItemsSource = allclients;
     }
 
     private async void Admin_Users_View_Selected(object sender, SelectionChangedEventArgs e)
@@ -345,6 +377,8 @@ public partial class MainMenuPage : ContentPage
                 lang.SelectionColor = Colors.Transparent;
             }
         }
+
+        
 
         try
         {
@@ -527,6 +561,11 @@ public partial class MainMenuPage : ContentPage
             Add_Job_Error_Label.Text = "Add Client Company Name!";
             return;
         }
+        if(Admin_Add_Job_Clients_View.SelectedItem == null)
+        {
+            Add_Job_Error_Label.Text = "Choose client.";
+            return;
+        }
         // get selected languages and convert to string separated by comma
 
         var selectedlanguagesstring = string.Join(",", SelectedLanguages.Select(x => x.Name));
@@ -546,15 +585,21 @@ public partial class MainMenuPage : ContentPage
         JobToAdd.RequiredLanguages = selectedlanguagesstring;
         JobToAdd.RequiredMinimumCapacity = minimumCapacity;
 
+        Client ClientToAdd = (Client)Admin_Add_Job_Clients_View.SelectedItem;
+
+        JobToAdd.ClientID = ClientToAdd.ID;
+
         var response = await client.PostAsJsonAsync(apiUrl + "Add_Job", JobToAdd);
 
         if (response.IsSuccessStatusCode)
         {
             Add_Job_Error_Label.Text = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine(await response.Content.ReadAsStringAsync());
         }
         else
         {
             Add_Job_Error_Label.Text = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine(await response.Content.ReadAsStringAsync());
         }
     }
     #endregion

@@ -106,6 +106,18 @@ namespace TrucksLogisticsServerAPI.Controllers
             return BadRequest("Error: No languages found in database.");
         }
 
+        [HttpGet("Get_Clients")]
+        public async Task<ActionResult<List<Client>>> GetClients()
+        {
+            var clients = await _dataContext.Clients.ToListAsync();
+
+            if(clients != null)
+            {
+                return Ok(clients);
+            }
+            return BadRequest("Error: No clients found in database.");
+        }
+
         #endregion
 
         // HTTP POSTS  

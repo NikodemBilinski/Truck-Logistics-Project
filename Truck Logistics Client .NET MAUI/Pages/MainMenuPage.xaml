@@ -403,7 +403,7 @@
                                         HorizontalOptions="Center"
                                         VerticalOptions="Center"
                                         HeightRequest="300"/>
-
+                                <HorizontalStackLayout HorizontalOptions="Center" Spacing="5">
                                 <CollectionView x:Name="Admin_Add_Job_RequiredLanguages_View"
                                                 SelectionMode="None"
                                                 WidthRequest="200"
@@ -421,7 +421,28 @@
                                             </Border>
                                         </DataTemplate>
                                     </CollectionView.ItemTemplate>
+                                    
+                                    
                                 </CollectionView>
+
+                                <CollectionView x:Name="Admin_Add_Job_Clients_View"
+                                                SelectionMode="Single"
+                                                WidthRequest="200"
+                                                HeightRequest="200">
+                                    <CollectionView.ItemsLayout>
+                                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="2"/>
+                                    </CollectionView.ItemsLayout>
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:Client">
+                                            <Border Padding="10">
+                                                    <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                                            </Border>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+
+
+                                </CollectionView>
+                                </HorizontalStackLayout>
                             </VerticalStackLayout>
                             <Label x:Name="Add_Job_Error_Label"
                                    Grid.Column="3"
