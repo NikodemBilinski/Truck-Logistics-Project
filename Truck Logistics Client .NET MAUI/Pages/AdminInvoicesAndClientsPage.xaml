@@ -60,6 +60,50 @@
 
                 </Grid>
             </Grid>
+            
+            <!--Client Edit Section-->
+            <VerticalStackLayout x:Name="Edit_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">
+                <Label x:Name="EditClientLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                <Grid ColumnDefinitions="150,400,150">
+                    <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                        <Label Text="Company Name:"/>
+                        <Label Text="NIP:"/>
+                        <Label Text="Country:"/>
+                        <Label Text="City:"/>
+                        <Label Text="Address:"/>
+                        <Label Text="PostalCode:"/>
+                        <Label Text="Phone:"/>
+                        <Label Text="Email:"/>
+
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="15">
+                        <Entry x:Name="Admin_Edit_Client_Name" Text="{Binding Name}" Placeholder="Name" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Client_NIP" Text="{Binding NIP}" Placeholder="NIP" WidthRequest="200" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Client_Country" Text="{Binding Country}" Placeholder="Country" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Client_City" Text="{Binding City}" Placeholder="City" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Client_Address" Text="{Binding Address}" Placeholder="Address" WidthRequest="350" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Client_PostalCode" Text="{Binding PostalCode}" Placeholder="PostalCode" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Client_Phone" Text="{Binding Phone}" Placeholder="Phone" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Client_Email" Text="{Binding Email}" Placeholder="Email" WidthRequest="350" HorizontalOptions="Start"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="2" Spacing="15">
+                        <Label x:Name="EditClientLabelMain"
+                               TextColor="Red"
+                               Margin="0,0,0,0"/>
+
+                        <Button Text="Save Changes" 
+                                HeightRequest="50"
+                                Clicked="Admin_Save_Client_Edit"/>
+
+                        <Button Text="Delete Truck"
+                                HeightRequest="50"
+                                Clicked="Admin_Delete_Client"/>
+                    </VerticalStackLayout>
+                </Grid>
+
+            </VerticalStackLayout>
 
             <!--Admin Add new Client-->
             <VerticalStackLayout x:Name="Add_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">
