@@ -73,7 +73,14 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     // open sections
     private async void Admin_Show_Clients_View(object sender, EventArgs e)
     {
+        await HideEverything();
+
+        Client_View.IsVisible = true;
+        Client_View.IsEnabled = true;
+        
         var clients = await client.GetFromJsonAsync<List<Client>>(apiUrl + "Get_Clients");
+
+        All_Clients_View.ItemsSource = clients;
 
         Console.WriteLine(clients);
     }
