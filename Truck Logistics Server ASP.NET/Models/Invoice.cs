@@ -13,10 +13,10 @@
         public decimal GrossAmount { get; set; }
 
         public int ClientID { get; set; }
-        public Client Client { get; set; }
+        public Client? Client { get; set; }
 
-        public int? JobID { get; set; }
-        public Job Job { get; set; }
+        public int JobID { get; set; }
+        public Job? Job { get; set; }
         public string Status { get; set; } = "unpaid";
     }
 }
