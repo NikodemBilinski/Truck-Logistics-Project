@@ -71,7 +71,14 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Client_View.IsEnabled = false;
     }
     // open sections
-    private async void Admin_Client_View_Selected(object sender, SelectedItemChangedEventArgs e)
+    private async void Admin_Show_Clients_View(object sender, EventArgs e)
+    {
+        var clients = await client.GetFromJsonAsync<List<Client>>(apiUrl + "Get_Clients");
+
+        Console.WriteLine(clients);
+    }
+
+    private async void Admin_Client_View_Selected(object sender, SelectionChangedEventArgs e)
     {
 
     }

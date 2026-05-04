@@ -20,7 +20,7 @@
             <Grid x:Name="Client_View"
                   IsVisible="False">
                 <Grid RowDefinitions="*,*">
-                    <Grid ColumnDefinitions="50,100,100,75,75" 
+                    <Grid ColumnDefinitions="50,100,100,100,100" 
                            Margin="0,10,5,0"
                            BackgroundColor="Transparent" 
                            Padding="10"
@@ -28,26 +28,29 @@
                            Grid.Row="0">
                         <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
                         <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
-                        <Label Grid.Column="2" Text="Brand" FontAttributes="Bold"/>
-                        <Label Grid.Column="3" Text="Status" FontAttributes="Bold"/>
-                        <Label Grid.Column="4" Text="Capacity" FontAttributes="Bold"/>
+                        <Label Grid.Column="2" Text="NIP" FontAttributes="Bold"/>
+                        <Label Grid.Column="3" Text="City" FontAttributes="Bold"/>
+                        <Label Grid.Column="4" Text="Country" FontAttributes="Bold"/>
                     </Grid>
 
                     <CollectionView x:Name="Get_All_Clients_View"
-                         SelectionMode="Single"
-                         SelectionChanged="Admin_Client_View_Selected"
-                         WidthRequest="450"
-                         Grid.Row="1">
+                                     SelectionMode="Single"
+                                     SelectionChanged="Admin_Client_View_Selected"
+                                     WidthRequest="450"
+                                     Grid.Row="1">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:Client">
                                 <Border Stroke="Transparent" Padding="-5">
                                     <Border Stroke="transparent"  StrokeThickness="3">
-                                        <Grid ColumnDefinitions="50,100,100,75,75"
+                                        <Grid ColumnDefinitions="50,100,100,100,100"
                                               Padding="10"
                                               HorizontalOptions="Center">
 
                                             <Label Grid.Column="0" Text="{Binding ID}"/>
-                                            
+                                            <Label Grid.Column="1" Text="{Binding Name}"/>
+                                            <Label Grid.Column="2" Text="{Binding NIP}"/>
+                                            <Label Grid.Column="3" Text="{Binding City}"/>
+                                            <Label Grid.Column="4" Text="{Binding Country}"/>
                                         </Grid>
                                     </Border>
                                 </Border>
@@ -113,7 +116,8 @@
                 <VerticalStackLayout Spacing="25">
 
                     <Button Text="Show all Clients"
-                            WidthRequest="125"/>
+                            WidthRequest="125"
+                            Clicked="Admin_Show_Clients_View"/>
                     <Button Text="Show all Invoices"
                             WidthRequest="125"/>
                     
