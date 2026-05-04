@@ -66,8 +66,16 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     {
         Add_Client_Section.IsVisible = false;
         Add_Client_Section.IsEnabled = false;
+
+        Client_View.IsVisible = false;
+        Client_View.IsEnabled = false;
     }
     // open sections
+    private async void Admin_Client_View_Selected(object sender, SelectedItemChangedEventArgs e)
+    {
+
+    }
+
     private async void Admin_Open_Add_Client_Section(object sender, EventArgs e)
     {
         await HideEverything();
@@ -159,4 +167,5 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         await Shell.Current.GoToAsync("..");
     }
 
+    
 }
