@@ -13,7 +13,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     public Users? CurrentUser { get; set; }
 
-    private string apiUrl = "http://192.168.0.218:5160/api/Values/";
+    private string apiUrl = "http://192.168.0.218:5160/api/";
 
     private HttpClient client = new HttpClient();
 
@@ -33,7 +33,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         try
         {
-            var response = await client.GetAsync(apiUrl + "Get_User_By_ID/" + UserID);
+            var response = await client.GetAsync(apiUrl + "Users/Get_User_By_ID/" + UserID);
 
             if (response != null)
             {
@@ -81,7 +81,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Client_View.IsVisible = true;
         Client_View.IsEnabled = true;
         
-        var clients = await client.GetFromJsonAsync<List<Client>>(apiUrl + "Get_Clients");
+        var clients = await client.GetFromJsonAsync<List<Client>>(apiUrl + "Clients/Get_Clients");
 
         All_Clients_View.ItemsSource = clients;
 
@@ -229,7 +229,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         ClientToAdd.Phone = Admin_Add_Client_Phone.Text;
         ClientToAdd.Email = Admin_Add_Client_Email.Text;
 
-        var response = await client.PostAsJsonAsync(apiUrl + "Add_Client", ClientToAdd);
+        var response = await client.PostAsJsonAsync(apiUrl + "Clients/Add_Client", ClientToAdd);
 
         if (response.IsSuccessStatusCode)
         {

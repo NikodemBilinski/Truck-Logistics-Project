@@ -20,7 +20,7 @@ public partial class MainMenuPage : ContentPage
 
     private List<Truck> SelectedTrucks = new List<Truck>();
 
-    private string apiUrl = "http://192.168.0.218:5160/api/Values/";
+    private string apiUrl = "http://192.168.0.218:5160/api/";
 
     private HttpClient client = new HttpClient();
 
@@ -43,7 +43,7 @@ public partial class MainMenuPage : ContentPage
 
         try
         {
-            var response = await client.GetAsync(apiUrl + "Get_User_By_ID/" + UserID);
+            var response = await client.GetAsync(apiUrl + "Users/Get_User_By_ID/" + UserID);
 
             if (response != null)
             {
@@ -106,7 +106,7 @@ public partial class MainMenuPage : ContentPage
     {
         try
         {
-            var response = await client.GetAsync(apiUrl + "Get_Languages");
+            var response = await client.GetAsync(apiUrl + "Values/Get_Languages");
     
             if(response.IsSuccessStatusCode)
             {
@@ -168,7 +168,7 @@ public partial class MainMenuPage : ContentPage
         await Hide_Everything();
         try
         {
-            var response = await client.GetAsync(apiUrl + "Get_All_Users");
+            var response = await client.GetAsync(apiUrl + "Users/Get_All_Users");
 
             if(response.IsSuccessStatusCode)
             {
@@ -194,7 +194,7 @@ public partial class MainMenuPage : ContentPage
 
         try
         {
-            var response = await client.GetAsync(apiUrl + "Get_Trucks");
+            var response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks");
             if (response.IsSuccessStatusCode)
             {
                 var truckslist = await response.Content.ReadFromJsonAsync<List<Truck>>();
@@ -220,7 +220,7 @@ public partial class MainMenuPage : ContentPage
 
         try
         {
-            var response = await client.GetAsync(apiUrl + "Get_All_Jobs");
+            var response = await client.GetAsync(apiUrl + "Jobs/Get_All_Jobs");
             if (response.IsSuccessStatusCode)
             {
                 var jobslist = await response.Content.ReadFromJsonAsync<List<Job>>();
@@ -281,7 +281,7 @@ public partial class MainMenuPage : ContentPage
         // get all languages
         var allLanguages = await Get_Languages();
 
-        var allTrucks = await client.GetFromJsonAsync<List<Truck>>(apiUrl + "Get_Trucks");
+        var allTrucks = await client.GetFromJsonAsync<List<Truck>>(apiUrl + "Trucks/Get_Trucks");
 
         //clear selected languages and trucks lists if it was used before
         SelectedTrucks.Clear();
@@ -382,7 +382,7 @@ public partial class MainMenuPage : ContentPage
 
         try
         {
-            var response = await client.GetAsync(apiUrl + "Get_All_Users");
+            var response = await client.GetAsync(apiUrl + "Users/Get_All_Users");
 
             if (response.IsSuccessStatusCode)
             {
@@ -461,7 +461,7 @@ public partial class MainMenuPage : ContentPage
             Password = Admin_Add_User_Password.Text
         };
 
-        var result = await client.PostAsJsonAsync(apiUrl + "Add_User", UserToAdd);
+        var result = await client.PostAsJsonAsync(apiUrl + "Users/Add_User", UserToAdd);
 
         if (result.IsSuccessStatusCode)
         {
@@ -499,7 +499,7 @@ public partial class MainMenuPage : ContentPage
         TruckToAdd.brand = Admin_Add_Truck_Brand.Text;
         TruckToAdd.Capacity = capacity;
 
-        var response = await client.PostAsJsonAsync(apiUrl + "Add_Truck", TruckToAdd);
+        var response = await client.PostAsJsonAsync(apiUrl + "Trucks/Add_Truck", TruckToAdd);
 
         if (response.IsSuccessStatusCode)
         {
@@ -589,7 +589,7 @@ public partial class MainMenuPage : ContentPage
 
         JobToAdd.ClientID = ClientToAdd.ID;
 
-        var response = await client.PostAsJsonAsync(apiUrl + "Add_Job", JobToAdd);
+        var response = await client.PostAsJsonAsync(apiUrl + "Jobs/Add_Job", JobToAdd);
 
         if (response.IsSuccessStatusCode)
         {
@@ -614,12 +614,12 @@ public partial class MainMenuPage : ContentPage
         var selectedlanguages = SelectedLanguages;
         if (selecteduser != null)
         {
-            var result = await client.PutAsJsonAsync(apiUrl + "Update_User/" + selecteduser.ID, selecteduser);
+            var result = await client.PutAsJsonAsync(apiUrl + "Users/Update_User/" + selecteduser.ID, selecteduser);
 
             //http put update languages
-            var result2 = await client.PutAsJsonAsync(apiUrl + "Update_User_Languages/" + selecteduser.ID, selectedlanguages);
+            var result2 = await client.PutAsJsonAsync(apiUrl + "Users/Update_User_Languages/" + selecteduser.ID, selectedlanguages);
 
-            var result3 = await client.PutAsJsonAsync(apiUrl + "Update_User_Trucks/" + selecteduser.ID, SelectedTrucks);
+            var result3 = await client.PutAsJsonAsync(apiUrl + "Users/Update_User_Trucks/" + selecteduser.ID, SelectedTrucks);
             if (result.IsSuccessStatusCode && result2.IsSuccessStatusCode && result3.IsSuccessStatusCode)
             {
                 Debug.WriteLine("User updated successfully.");
@@ -653,7 +653,7 @@ public partial class MainMenuPage : ContentPage
         var selectedtruck = Edit_Truck_Section.BindingContext as Truck;
         if (selectedtruck != null)
         {
-            var result = await client.PutAsJsonAsync(apiUrl + "Update_Truck/" + selectedtruck.Id, selectedtruck);
+            var result = await client.PutAsJsonAsync(apiUrl + "Trucks/Update_Truck/" + selectedtruck.Id, selectedtruck);
             if (result.IsSuccessStatusCode)
             {
                 EditTruckLabelMain.Text = await result.Content.ReadAsStringAsync();
@@ -703,7 +703,7 @@ public partial class MainMenuPage : ContentPage
             }
             
 
-            var response = await client.PutAsJsonAsync(apiUrl + "Update_Job/" + selectedjob.ID, selectedjob);
+            var response = await client.PutAsJsonAsync(apiUrl + "Jobs/Update_Job/" + selectedjob.ID, selectedjob);
 
         
             if (response.IsSuccessStatusCode)
@@ -745,7 +745,7 @@ public partial class MainMenuPage : ContentPage
 
             if(response)
             {
-                var request = await client.DeleteAsync(apiUrl + "Delete_User/" + selecteduser.ID);
+                var request = await client.DeleteAsync(apiUrl + "Users/Delete_User/" + selecteduser.ID);
 
                 if(request.IsSuccessStatusCode)
                 {
@@ -772,7 +772,7 @@ public partial class MainMenuPage : ContentPage
 
             if(response)
             {
-                var request = await client.DeleteAsync(apiUrl + "Delete_Truck/" + selectedtruck.Id);
+                var request = await client.DeleteAsync(apiUrl + "Trucks/Delete_Truck/" + selectedtruck.Id);
 
                 if(request.IsSuccessStatusCode)
                 {
@@ -799,7 +799,7 @@ public partial class MainMenuPage : ContentPage
 
             if(response)
             {
-                var request = await client.DeleteAsync(apiUrl + "Delete_Job/" + JobToDelete.ID);
+                var request = await client.DeleteAsync(apiUrl + "Jobs/Delete_Job/" + JobToDelete.ID);
                 if(request.IsSuccessStatusCode)
                 {
                     Debug.WriteLine("Deleted Job from Database.");
