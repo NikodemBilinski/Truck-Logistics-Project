@@ -189,17 +189,23 @@
                                     Grid.Column="3"
                                     SelectionMode="Single"
                                     IsVisible="False">
-
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Job">
+                                <Border HeightRequest="30">
+                                    <Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
                     </CollectionView>
 
                     <Label x:Name="Add_Invoice_Error_Label"
-                           Grid.Column="3"
+                           Grid.Column="4"
                            Grid.Row="0"
                            TextColor="Red"
                            Margin="0,50,0,0"/>
 
                     <Button Text="Add Client" 
-                            Grid.Column="3" 
+                            Grid.Column="4" 
                             Grid.Row="0"
                             HeightRequest="50"
                             Clicked="Admin_Add_Invoice_Clicked"/>

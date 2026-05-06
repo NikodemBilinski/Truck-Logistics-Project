@@ -40,11 +40,11 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             var jobs = await _dataContext.Jobs.ToListAsync();
 
-            var ClientJobs = jobs.All(x => x.ClientID == id);
+            var ClientJobs = jobs.FindAll(x => x.ClientID == id);
 
             Console.WriteLine(ClientJobs);
 
-            return Ok();
+            return Ok(ClientJobs);
         }
 
         //HTTP POSTS
