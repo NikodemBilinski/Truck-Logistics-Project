@@ -156,7 +156,23 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         var ClientToChange = Edit_Client_Section.BindingContext as Client;
 
-        Console.WriteLine(ClientToChange);
+        if (ClientToChange == null)
+        {
+            return;
+        }
+
+        var response = await client.PutAsJsonAsync(apiUrl + "Clients/Edit_Client/" + ClientToChange.ID, ClientToChange);
+
+        if(response.IsSuccessStatusCode)
+        {
+            Add_Client_Error_Label.Text = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine("Successfully edited client.");
+        }
+        else
+        {
+            Add_Client_Error_Label.Text = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine("Error editing client.");
+        }
 
 
     }
