@@ -209,6 +209,15 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         Add_Invoice_Section.IsVisible = true;
         Add_Invoice_Section.IsEnabled = true;
+
+
+        var clients = await client.GetFromJsonAsync<List<Client>>(apiUrl + "Clients/Get_Clients");
+
+        if(clients != null)
+        {
+            Add_Invoice_ClientsView.ItemsSource = clients;
+        }
+
     }
 
     // add to database 
@@ -290,6 +299,8 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     {
 
     }
+
+    //other functions
     private async void Admin_Go_Back(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("..");
@@ -317,5 +328,26 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         }
     }
 
-    
+    private async void Add_Invoice_OnClientSelected(object sender, SelectionChangedEventArgs e)
+    {
+        var SelectedClient = e.CurrentSelection.FirstOrDefault() as Client;
+
+        Add_Invoice_JobsView.IsVisible = true;
+        if (SelectedClient != null)
+        {
+            var response = await client.GetAsync(apiUrl + "Jobs/Get_Jobs_By_Client_ID/" + SelectedClient.ID);
+
+            if(response.IsSuccessStatusCode)
+            {
+                var ClientJobs = await response.Content.ReadFromJsonAsync<List<Job>>();
+
+                Add_Invoice_JobsView.ItemsSource = ClientJobs;
+            }
+        }
+        
+
+    }
+
+
+
 }

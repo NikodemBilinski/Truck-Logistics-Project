@@ -150,7 +150,7 @@
             <VerticalStackLayout x:Name="Add_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10" Margin="20">
                 <Label Text="Add New Invoice" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-                <Grid ColumnDefinitions="150,200,600,150">
+                <Grid ColumnDefinitions="150,200,300,300,150">
                     <VerticalStackLayout Grid.Column="0" Grid.Row="0" Spacing="40" VerticalOptions="Center">
 
                         <Label Text="Issue Date:"/>
@@ -168,6 +168,29 @@
                         <Label x:Name="Admin_Add_Invoice_GrossAmount" WidthRequest="150" HorizontalOptions="Start"/>    
 
                     </VerticalStackLayout>
+                    <!--Clients View-->
+                    <CollectionView x:Name="Add_Invoice_ClientsView"
+                                    Grid.Column="2"
+                                    SelectionMode="Single"
+                                    SelectionChanged="Add_Invoice_OnClientSelected"
+                                    WidthRequest="200">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Client">
+                                <Border HeightRequest="30">
+                                    <Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        
+                        
+                    </CollectionView>
+                    <!--Jobs View-->
+                    <CollectionView x:Name="Add_Invoice_JobsView"
+                                    Grid.Column="3"
+                                    SelectionMode="Single"
+                                    IsVisible="False">
+
+                    </CollectionView>
 
                     <Label x:Name="Add_Invoice_Error_Label"
                            Grid.Column="3"

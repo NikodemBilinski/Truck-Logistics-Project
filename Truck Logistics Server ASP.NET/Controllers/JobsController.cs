@@ -34,6 +34,19 @@ namespace TrucksLogisticsServerAPI.Controllers
             return BadRequest("Error: No Jobs Found");
         }
 
+        [HttpGet("Get_Jobs_By_Client_ID/{id}")]
+
+        public async Task<ActionResult<List<Job>>> GetJobsByClientID(int id)
+        {
+            var jobs = await _dataContext.Jobs.ToListAsync();
+
+            var ClientJobs = jobs.All(x => x.ClientID == id);
+
+            Console.WriteLine(ClientJobs);
+
+            return Ok();
+        }
+
         //HTTP POSTS
         public async Task<ActionResult<Job>> AddJob(Job JobToAdd)
         {
