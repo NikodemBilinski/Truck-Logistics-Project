@@ -11,7 +11,7 @@ public partial class UserMainMenuPage : ContentPage
 
 	public HttpClient client = new HttpClient();
 
-    private string apiUrl = "http://192.168.0.218:5160/api/Values/";
+    private string apiUrl = "http://192.168.0.218:5160/api/";
 
 	private List<Language> SelectedLanguages = new List<Language>();
 
@@ -47,7 +47,7 @@ public partial class UserMainMenuPage : ContentPage
     }
 	public async Task<bool> GetUser()
 	{
-		var response = await client.GetAsync(apiUrl + "Get_User_By_ID/" + UserID);
+		var response = await client.GetAsync(apiUrl + "Users/Get_User_By_ID/" + UserID);
 
 		if (response.IsSuccessStatusCode)
 		{
@@ -120,7 +120,7 @@ public partial class UserMainMenuPage : ContentPage
         Jobs_View.IsVisible = true;
         Jobs_View.IsEnabled = true;
 
-		var response = await client.GetAsync(apiUrl + "Get_Open_Jobs");
+		var response = await client.GetAsync(apiUrl + "Jobs/Get_Open_Jobs");
 
 		if(response.IsSuccessStatusCode)
 		{
@@ -203,7 +203,7 @@ public partial class UserMainMenuPage : ContentPage
 			return;
 		}
 
-		var response = await client.GetAsync(apiUrl + "Get_Languages");
+		var response = await client.GetAsync(apiUrl + "Users/Get_Languages");
 
 		if(response.IsSuccessStatusCode)
 		{
@@ -270,9 +270,9 @@ public partial class UserMainMenuPage : ContentPage
 
         if (selecteduser != null && Languages != null)
 		{
-			var response = await client.PutAsJsonAsync(apiUrl + "Update_User/" + selecteduser.ID, selecteduser);
+			var response = await client.PutAsJsonAsync(apiUrl + "Users/Update_User/" + selecteduser.ID, selecteduser);
 
-			var response2 = await client.PutAsJsonAsync(apiUrl + "Update_User_Languages/" + selecteduser.ID, Languages);
+			var response2 = await client.PutAsJsonAsync(apiUrl + "Users/Update_User_Languages/" + selecteduser.ID, Languages);
 
 			if(response.IsSuccessStatusCode && response2.IsSuccessStatusCode)
 			{
@@ -318,7 +318,7 @@ public partial class UserMainMenuPage : ContentPage
 			chosenjob.Status = "assigned";
 			chosenjob.AssignedUserId = CurrentUser.ID;
 
-			var response = await client.PutAsJsonAsync(apiUrl + "Update_Job/" + chosenjob.ID, chosenjob);
+			var response = await client.PutAsJsonAsync(apiUrl + "Users/Update_Job/" + chosenjob.ID, chosenjob);
 
 			if(response.IsSuccessStatusCode)
 			{
@@ -345,7 +345,7 @@ public partial class UserMainMenuPage : ContentPage
 
 			chosenjob.Status = "open";
 
-			var response = await client.PutAsJsonAsync(apiUrl + "Update_Job/" + chosenjob.ID, chosenjob);
+			var response = await client.PutAsJsonAsync(apiUrl + "Users/Update_Job/" + chosenjob.ID, chosenjob);
 
 			if(response.IsSuccessStatusCode)
 			{
