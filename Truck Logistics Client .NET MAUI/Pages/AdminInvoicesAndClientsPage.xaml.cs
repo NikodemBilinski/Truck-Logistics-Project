@@ -11,6 +11,8 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private bool isUserDataFetched;
 
+    private bool isVatOK = false;
+
     public Users? CurrentUser { get; set; }
 
     private string apiUrl = "http://192.168.0.218:5160/api/";
@@ -72,6 +74,9 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         Edit_Client_Section.IsVisible = false;
         Edit_Client_Section.IsEnabled = false;
+
+        Add_Invoice_Section.IsVisible = false;
+        Add_Invoice_Section.IsEnabled = false;
     }
     // open sections
     private async void Admin_Show_Clients_View(object sender, EventArgs e)
@@ -200,7 +205,10 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     }
     private async void Admin_Open_Add_Invoice_Section(object sender, EventArgs e)
     {
+        await HideEverything();
 
+        Add_Invoice_Section.IsVisible = true;
+        Add_Invoice_Section.IsEnabled = true;
     }
 
     // add to database 
@@ -277,9 +285,36 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         }
 
     }
+
+    private async void Admin_Add_Invoice_Clicked(object sender, EventArgs e)
+    {
+
+    }
     private async void Admin_Go_Back(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("..");
+    }
+
+    private async void Vat_Rate_Changed(object sender, EventArgs e)
+    {
+        if(string.IsNullOrEmpty(Admin_Add_Invoice_VatRate.Text) || string.IsNullOrEmpty(Admin_Add_Invoice_NetAmount.Text))
+        {
+            isVatOK = false;
+            return;
+        }
+
+        if(decimal.TryParse(Admin_Add_Invoice_NetAmount.Text, out decimal NetAmount) && int.TryParse(Admin_Add_Invoice_VatRate.Text, out int VatRate))
+        {
+            decimal GrossAmount = NetAmount + (NetAmount * VatRate / 100);
+            Admin_Add_Invoice_GrossAmount.Text = GrossAmount.ToString("C");
+            //Admin_Add_Invoice_NetAmount.Text = NetAmount.ToString();
+            isVatOK = true;
+        }
+        else
+        {
+            Admin_Add_Invoice_GrossAmount.Text = "Invalid input";
+            isVatOK = false;
+        }
     }
 
     

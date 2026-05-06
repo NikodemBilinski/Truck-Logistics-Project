@@ -144,6 +144,45 @@
                 </Grid>
 
             </VerticalStackLayout>
+            
+            <!--Admin Add new Invoice-->
+
+            <VerticalStackLayout x:Name="Add_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10" Margin="20">
+                <Label Text="Add New Invoice" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                <Grid ColumnDefinitions="150,200,600,150">
+                    <VerticalStackLayout Grid.Column="0" Grid.Row="0" Spacing="40" VerticalOptions="Center">
+
+                        <Label Text="Issue Date:"/>
+                        <Label Text="Due Date:"/>
+                        <Label Text="Net Amount:"/>
+                        <Label Text="Vat Rate (in percent):"/>
+                        <Label Text="Gross Amount: "/>
+                        
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Grid.Row="0" Spacing="15">
+                        <DatePicker x:Name="Admin_Add_Invoice_IssueDate" HorizontalOptions="Start"/>
+                        <DatePicker x:Name="Admin_Add_Invoice_DueDate" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Invoice_NetAmount" Placeholder="Net Amount" WidthRequest="150" HorizontalOptions="Start" TextChanged="Vat_Rate_Changed"/>
+                        <Entry x:Name="Admin_Add_Invoice_VatRate" Placeholder="Vat Rate" WidthRequest="150" HorizontalOptions="Start" TextChanged="Vat_Rate_Changed"/>
+                        <Label x:Name="Admin_Add_Invoice_GrossAmount" WidthRequest="150" HorizontalOptions="Start"/>    
+
+                    </VerticalStackLayout>
+
+                    <Label x:Name="Add_Invoice_Error_Label"
+                           Grid.Column="3"
+                           Grid.Row="0"
+                           TextColor="Red"
+                           Margin="0,50,0,0"/>
+
+                    <Button Text="Add Client" 
+                            Grid.Column="3" 
+                            Grid.Row="0"
+                            HeightRequest="50"
+                            Clicked="Admin_Add_Invoice_Clicked"/>
+                </Grid>
+
+            </VerticalStackLayout>
         </VerticalStackLayout>
 
 
