@@ -157,6 +157,8 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         var ClientToChange = Edit_Client_Section.BindingContext as Client;
 
         Console.WriteLine(ClientToChange);
+
+
     }
     private async void Admin_Delete_Client(object sender, EventArgs e)
     {
