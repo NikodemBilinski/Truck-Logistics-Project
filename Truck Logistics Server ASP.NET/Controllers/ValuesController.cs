@@ -449,6 +449,36 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok("Job Updated Successfullyyyyyyyyyyyyy.");
         }
 
+        public async Task <ActionResult<Job>> UpdateClient(int id, Client updatedClient)
+        {
+            if(updatedClient == null) 
+            { 
+                Console.WriteLine("UpdateClient: Error, Updated Client is null."); 
+                return BadRequest("Error: Updated Client is null."); 
+            }
+
+            var client = await _dataContext.Clients.FirstAsync(x=> x.ID == id);
+
+            if (client == null)
+            {
+                Console.WriteLine("UpdateClient: Error, Client with the specified ID not found.");
+                return NotFound("Error: Client with the specified ID not found.");
+            }
+
+            client.Name = updatedClient.Name;
+            client.NIP = updatedClient.NIP;
+            client.Address = updatedClient.Address;
+            client.City = updatedClient.City;
+            client.PostalCode = updatedClient.PostalCode;
+            client.Country = updatedClient.Country;
+            client.Phone = updatedClient.Phone;
+            client.Email = updatedClient.Email;
+
+            await _dataContext.SaveChangesAsync();
+            Console.WriteLine("UpdateClient: Client Updated.");
+            return Ok("Client Updated Successfully.");
+        }
+
         #endregion
         // HTTP DELETES
         #region deletes

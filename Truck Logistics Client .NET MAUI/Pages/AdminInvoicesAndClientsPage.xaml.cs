@@ -110,7 +110,53 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async void Admin_Save_Client_Edit(object sender, EventArgs e)
     {
+        #region check if ok section
 
+        if (string.IsNullOrEmpty(Admin_Edit_Client_Name.Text))
+        {
+            Add_Client_Error_Label.Text = "Client Name cant be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Edit_Client_NIP.Text))
+        {
+            Add_Client_Error_Label.Text = "Client NIP cant be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Edit_Client_Country.Text))
+        {
+            Add_Client_Error_Label.Text = "Client Country cant be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Edit_Client_City.Text))
+        {
+            Add_Client_Error_Label.Text = "Client City cant be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Edit_Client_Address.Text))
+        {
+            Add_Client_Error_Label.Text = "Client Address cant be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Edit_Client_PostalCode.Text))
+        {
+            Add_Client_Error_Label.Text = "Client PostalCode cant be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Edit_Client_Phone.Text))
+        {
+            Add_Client_Error_Label.Text = "Client Phone cant be null.";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Edit_Client_Email.Text))
+        {
+            Add_Client_Error_Label.Text = "Client Email cant be null.";
+            return;
+        }
+        #endregion
+
+        var ClientToChange = Edit_Client_Section.BindingContext as Client;
+
+        Console.WriteLine(ClientToChange);
     }
     private async void Admin_Delete_Client(object sender, EventArgs e)
     {
