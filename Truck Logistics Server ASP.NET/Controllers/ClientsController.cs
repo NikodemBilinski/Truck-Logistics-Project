@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TrucksLogisticsServerAPI.Controllers
 {
@@ -98,6 +99,24 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         //HTTP DELETES
 
+        [HttpDelete("Delete_Client/{ID}")]
+
+        public async Task<ActionResult<Client>> DeleteClient(int id)
+        {
+            var ClientToDelete = await _dataContext.Clients.FindAsync(id);
+
+            if(ClientToDelete == null)
+            {
+                Console.WriteLine("DeleteClient: Error, Client to delete is null.");
+                return NotFound("Error, Client to delete is null.");
+            }
+
+            _dataContext.Clients.Remove(ClientToDelete);
+
+            await _dataContext.SaveChangesAsync();
+
+            return Ok("Successfully deleted user.");
+        }
 
     }
 }

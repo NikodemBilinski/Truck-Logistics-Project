@@ -162,7 +162,25 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     }
     private async void Admin_Delete_Client(object sender, EventArgs e)
     {
+        var ClientToDelete = Edit_Client_Section.BindingContext as Client;
 
+        if (ClientToDelete == null)
+        {
+            return;
+        }
+
+        var response = await client.DeleteAsync(apiUrl + "Clients/Delete_Client/" + ClientToDelete.ID);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Add_Client_Error_Label.Text = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine("Successfully deleted client.");
+        }
+        else
+        {
+            Add_Client_Error_Label.Text = await response.Content.ReadAsStringAsync();
+            Debug.WriteLine("Error deleting client.");
+        }
     }
     private async void Admin_Open_Add_Invoice_Section(object sender, EventArgs e)
     {

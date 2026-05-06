@@ -97,7 +97,7 @@
                                 HeightRequest="50"
                                 Clicked="Admin_Save_Client_Edit"/>
 
-                        <Button Text="Delete Truck"
+                        <Button Text="Delete Invoice"
                                 HeightRequest="50"
                                 Clicked="Admin_Delete_Client"/>
                     </VerticalStackLayout>
