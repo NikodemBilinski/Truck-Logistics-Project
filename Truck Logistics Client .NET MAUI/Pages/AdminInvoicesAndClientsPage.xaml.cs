@@ -1,4 +1,3 @@
-using Android.Text.Style;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
@@ -381,7 +380,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         if(decimal.TryParse(Admin_Add_Invoice_NetAmount.Text, out decimal NetAmount) && int.TryParse(Admin_Add_Invoice_VatRate.Text, out int VatRate))
         {
             decimal GrossAmount = NetAmount + (NetAmount * VatRate / 100);
-            Admin_Add_Invoice_GrossAmount.Text = GrossAmount.ToString("C");
+            Admin_Add_Invoice_GrossAmount.Text = GrossAmount.ToString("F2");
             isVatOK = true;
         }
         else
