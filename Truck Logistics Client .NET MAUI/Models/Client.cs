@@ -27,7 +27,9 @@ namespace TrucksLogisticsClient.Models
 
 
         //relacje 
+        [JsonIgnore]
         public List<Invoice> Invoices { get; set; } = new List<Invoice>();
+        [JsonIgnore]
         public List<Job> Jobs { get; set; } = new List<Job>();
 
     }

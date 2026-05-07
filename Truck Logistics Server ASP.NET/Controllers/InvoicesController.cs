@@ -19,7 +19,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         [HttpGet("Get_All_Invoices")]
         public async Task<ActionResult<List<Invoice>>> Get_All_Invoices()
         {
-            var allInvoices = await _datacontext.Invoices.ToListAsync();
+            var allInvoices = await _datacontext.Invoices.Include(i => i.Client).Include(x=> x.Job).ToListAsync();
             if(allInvoices != null)
             {
                 return Ok(allInvoices);
