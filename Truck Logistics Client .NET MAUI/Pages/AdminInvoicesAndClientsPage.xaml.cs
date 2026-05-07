@@ -72,6 +72,9 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Client_View.IsVisible = false;
         Client_View.IsEnabled = false;
 
+        Invoice_View.IsVisible = false;
+        Invoice_View.IsEnabled = false;
+
         Edit_Client_Section.IsVisible = false;
         Edit_Client_Section.IsEnabled = false;
 
@@ -88,9 +91,34 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         
         var clients = await client.GetFromJsonAsync<List<Client>>(apiUrl + "Clients/Get_Clients");
 
-        All_Clients_View.ItemsSource = clients;
+        if (clients != null)
+        {
+            All_Clients_View.ItemsSource = clients;
+        }
+        else
+        {
+            Debug.WriteLine("Error fetching clients.");
+            return;
+        }
+    }
 
-        Console.WriteLine(clients);
+    private async void Admin_Show_Invoices_View(object sender, EventArgs e)
+    {
+        await HideEverything();
+        Invoice_View.IsVisible = true;
+        Invoice_View.IsEnabled = true;
+
+        var invoices = await client.GetFromJsonAsync<List<Invoice>>(apiUrl + "Invoices/Get_All_Invoices");
+
+        if(invoices != null)
+        {
+            All_Invoices_View.ItemsSource = invoices;
+        }
+        else
+        {
+            Debug.WriteLine("Error fetching invoices.");
+            return;
+        }
     }
 
     private async void Admin_Client_View_Selected(object sender, SelectionChangedEventArgs e)
@@ -105,6 +133,11 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Edit_Client_Section.BindingContext = SelectedClient;
     }
 
+    private async void Admin_Invoice_View_Selected(object sender, SelectionChangedEventArgs e)
+    {
+        // not implemented yet
+    }
+
     private async void Admin_Open_Add_Client_Section(object sender, EventArgs e)
     {
         await HideEverything();
@@ -112,6 +145,23 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Add_Client_Section.IsVisible = true;
         Add_Client_Section.IsEnabled = true;
     }
+    private async void Admin_Open_Add_Invoice_Section(object sender, EventArgs e)
+    {
+        await HideEverything();
+
+        Add_Invoice_Section.IsVisible = true;
+        Add_Invoice_Section.IsEnabled = true;
+
+
+        var clients = await client.GetFromJsonAsync<List<Client>>(apiUrl + "Clients/Get_Clients");
+
+        if (clients != null)
+        {
+            Add_Invoice_ClientsView.ItemsSource = clients;
+        }
+
+    }
+
 
     private async void Admin_Save_Client_Edit(object sender, EventArgs e)
     {
@@ -203,22 +253,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             Debug.WriteLine("Error deleting client.");
         }
     }
-    private async void Admin_Open_Add_Invoice_Section(object sender, EventArgs e)
-    {
-        await HideEverything();
-
-        Add_Invoice_Section.IsVisible = true;
-        Add_Invoice_Section.IsEnabled = true;
-
-
-        var clients = await client.GetFromJsonAsync<List<Client>>(apiUrl + "Clients/Get_Clients");
-
-        if(clients != null)
-        {
-            Add_Invoice_ClientsView.ItemsSource = clients;
-        }
-
-    }
+    
 
     // add to database 
     private async void Admin_Add_Client_Clicked(object sender, EventArgs e)

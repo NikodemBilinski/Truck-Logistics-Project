@@ -44,5 +44,8 @@ namespace TrucksLogisticsServerAPI.Controllers
                 return BadRequest("Invoice to add is null.");
             }
         }
+
+        
+
     }
 }
