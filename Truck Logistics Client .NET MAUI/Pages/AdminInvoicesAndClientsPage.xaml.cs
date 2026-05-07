@@ -1,3 +1,4 @@
+using Android.Text.Style;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
@@ -306,10 +307,14 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         var SelectedJob = Add_Invoice_JobsView.SelectedItem as Job;
 
-        Invoice InvoiceToAdd;
+        Invoice InvoiceToAdd = new Invoice();
 
         #region check if ok section
 
+        if (SelectedClient == null || SelectedJob == null)
+        {
+            return;
+        }
         if(Admin_Add_Invoice_IssueDate.Date == null)
         {
             Add_Invoice_Error_Label.Text = "Issue Date cant be null.";
@@ -336,6 +341,27 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             return;
         }
 
+        #endregion
+
+        InvoiceToAdd.IssueDate = (DateTime)Admin_Add_Invoice_IssueDate.Date;
+        InvoiceToAdd.DueDate = (DateTime)Admin_Add_Invoice_DueDate.Date;
+        InvoiceToAdd.NetAmount = decimal.Parse(Admin_Add_Invoice_NetAmount.Text);
+        InvoiceToAdd.VatRate = int.Parse(Admin_Add_Invoice_VatRate.Text);
+        InvoiceToAdd.GrossAmount = decimal.Parse(Admin_Add_Invoice_GrossAmount.Text);
+        InvoiceToAdd.ClientID = SelectedClient.ID;
+        InvoiceToAdd.JobID = SelectedJob.ID;
+        InvoiceToAdd.Status = "unpaid";
+
+        var response = await client.PostAsJsonAsync(apiUrl + "Invoices/Add_Invoice", InvoiceToAdd);
+
+        if(response.IsSuccessStatusCode)
+        {
+            Add_Invoice_Error_Label.Text = await response.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            Add_Invoice_Error_Label.Text = await response.Content.ReadAsStringAsync();
+        }
     }
 
     //other functions
