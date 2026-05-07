@@ -19,6 +19,10 @@ namespace TrucksLogisticsServerAPI.Data
 
         public DbSet<Language> Languages { get; set; }
 
+        public DbSet<Client> Clients { get; set; }
+
+        public DbSet<Invoice> Invoices { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Language>().HasData(
@@ -32,6 +36,20 @@ namespace TrucksLogisticsServerAPI.Data
 
             //relacja jeden do wielu, klucz obcy assigneduserid, gdy usunie sie usera ustaw go na null
             modelBuilder.Entity<Job>().HasOne<Users>().WithMany(x => x.AssignedJobs).HasForeignKey(x => x.AssignedUserId).OnDelete(DeleteBehavior.SetNull);
+
+            // kazda faktura ma jednego klienta, kazdy ten klient moze miec wiele faktur, kazda faktura ma klucz obcy client.id
+            modelBuilder.Entity<Invoice>().HasOne(x => x.Client).WithMany(x => x.Invoices).HasForeignKey(x => x.ClientID).OnDelete(DeleteBehavior.Restrict);
+
+            // kazda faktura ma jedno zlecenie, kazde zlecenie moze miec wiele faktur, kazda faktura ma klucz obcy jobID, na usuniecie joba jobid = null
+            modelBuilder.Entity<Invoice>().HasOne(x => x.Job).WithMany().HasForeignKey( x=> x.JobID).OnDelete(DeleteBehavior.SetNull);
+
+            // kazde zlecenie ma jednego klienta, kazdy klient moze miec wiele zlecen, kazde zlecenie ma klucz obcy client.ID
+            modelBuilder.Entity<Job>().HasOne(x => x.Client).WithMany(x=> x.Jobs).HasForeignKey(x=> x.ClientID).OnDelete(DeleteBehavior.Restrict);
+
+            // ile liczb po przecinku w kwotach
+            modelBuilder.Entity<Invoice>().Property(x => x.GrossAmount).HasPrecision(18, 2);
+
+            modelBuilder.Entity<Invoice>().Property(x => x.NetAmount).HasPrecision(18, 2);
         }
 
 

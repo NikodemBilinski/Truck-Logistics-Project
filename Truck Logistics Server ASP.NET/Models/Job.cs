@@ -33,5 +33,11 @@
         // assigned user
 
         public int? AssignedUserId { get; set; }
+
+        // assigned client 
+
+        public int ClientID { get; set; }
+
+        public Client? Client { get; set; }
     }
 }

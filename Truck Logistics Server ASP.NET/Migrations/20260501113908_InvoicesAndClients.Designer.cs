@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrucksLogisticsServerAPI.Data;
 
@@ -11,9 +12,11 @@ using TrucksLogisticsServerAPI.Data;
 namespace TrucksLogisticsServerAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20260501113908_InvoicesAndClients")]
+    partial class InvoicesAndClients
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -94,7 +97,7 @@ namespace TrucksLogisticsServerAPI.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Clients");
+                    b.ToTable("Client");
                 });
 
             modelBuilder.Entity("TrucksLogisticsServerAPI.Models.Invoice", b =>
@@ -138,7 +141,7 @@ namespace TrucksLogisticsServerAPI.Migrations
 
                     b.HasIndex("JobID");
 
-                    b.ToTable("Invoices");
+                    b.ToTable("Invoice");
                 });
 
             modelBuilder.Entity("TrucksLogisticsServerAPI.Models.Job", b =>

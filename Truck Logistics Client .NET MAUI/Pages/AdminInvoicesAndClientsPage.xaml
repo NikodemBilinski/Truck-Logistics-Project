@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:TrucksLogisticsClient.Models"
+             x:Class="TrucksLogisticsClient.Pages.AdminInvoicesAndClientsPage"
+             Shell.NavBarIsVisible="False">
+    
+    
+    <Grid ColumnDefinitions="200,*">
+        <VerticalStackLayout Grid.Column="1">
+            <Label Text="Admin Clients and Invoices Panel"
+                    VerticalOptions="Start" 
+                    HorizontalOptions="Center" />
+
+            <Label x:Name="Welcome_User_Label"
+                   VerticalOptions="Center"
+                   HorizontalOptions="Center"/>
+            
+            <!--Client View-->
+            <Grid x:Name="Client_View"
+                  IsVisible="False">
+                <Grid RowDefinitions="*,*">
+                    <Grid ColumnDefinitions="50,150,150,150,150" 
+                           Margin="0,10,0,0"
+                           BackgroundColor="Transparent" 
+                           Padding="10"
+                           HorizontalOptions="Center"
+                           Grid.Row="0">
+                        <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                        <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
+                        <Label Grid.Column="2" Text="NIP" FontAttributes="Bold"/>
+                        <Label Grid.Column="3" Text="City" FontAttributes="Bold"/>
+                        <Label Grid.Column="4" Text="Country" FontAttributes="Bold"/>
+                    </Grid>
+
+                    <CollectionView x:Name="All_Clients_View"
+                                     SelectionMode="Single"
+                                     WidthRequest="660"
+                                     SelectionChanged="Admin_Client_View_Selected"
+                                     Grid.Row="1">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Client">
+                                <Border Stroke="Transparent" Padding="-5">
+                                    <Border Stroke="transparent"  StrokeThickness="3">
+                                        <Grid ColumnDefinitions="50,150,150,150,150"
+                                              Padding="10"
+                                              HorizontalOptions="Center">
+
+                                            <Label Grid.Column="0" Text="{Binding ID}"/>
+                                            <Label Grid.Column="1" Text="{Binding Name}"/>
+                                            <Label Grid.Column="2" Text="{Binding NIP}"/>
+                                            <Label Grid.Column="3" Text="{Binding City}"/>
+                                            <Label Grid.Column="4" Text="{Binding Country}"/>
+                                        </Grid>
+                                    </Border>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </Grid>
+            </Grid>
+            
+            <!--Client Edit Section-->
+            <VerticalStackLayout x:Name="Edit_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">
+                <Label x:Name="EditClientLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                <Grid ColumnDefinitions="150,400,150">
+                    <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                        <Label Text="Company Name:"/>
+                        <Label Text="NIP:"/>
+                        <Label Text="Country:"/>
+                        <Label Text="City:"/>
+                        <Label Text="Address:"/>
+                        <Label Text="PostalCode:"/>
+                        <Label Text="Phone:"/>
+                        <Label Text="Email:"/>
+
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="15">
+                        <Entry x:Name="Admin_Edit_Client_Name" Text="{Binding Name}" Placeholder="Name" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Client_NIP" Text="{Binding NIP}" Placeholder="NIP" WidthRequest="200" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Client_Country" Text="{Binding Country}" Placeholder="Country" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Client_City" Text="{Binding City}" Placeholder="City" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Client_Address" Text="{Binding Address}" Placeholder="Address" WidthRequest="350" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Client_PostalCode" Text="{Binding PostalCode}" Placeholder="PostalCode" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Client_Phone" Text="{Binding Phone}" Placeholder="Phone" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Edit_Client_Email" Text="{Binding Email}" Placeholder="Email" WidthRequest="350" HorizontalOptions="Start"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="2" Spacing="15">
+                        <Label x:Name="EditClientLabelMain"
+                               TextColor="Red"
+                               Margin="0,0,0,0"/>
+
+                        <Button Text="Save Changes" 
+                                HeightRequest="50"
+                                Clicked="Admin_Save_Client_Edit"/>
+
+                        <Button Text="Delete Invoice"
+                                HeightRequest="50"
+                                Clicked="Admin_Delete_Client"/>
+                    </VerticalStackLayout>
+                </Grid>
+
+            </VerticalStackLayout>
+
+            <!--Admin Add new Client-->
+            <VerticalStackLayout x:Name="Add_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">
+                <Label Text="Add New Client" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                <Grid ColumnDefinitions="150,400,150">
+                    <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                        <Label Text="Company Name:"/>
+                        <Label Text="NIP:"/>
+                        <Label Text="Country:"/>
+                        <Label Text="City:"/>
+                        <Label Text="Address:"/>
+                        <Label Text="PostalCode:"/>
+                        <Label Text="Phone:"/>
+                        <Label Text="Email:"/>
+                        
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="15">
+                        <Entry x:Name="Admin_Add_Client_Name" Placeholder="Name" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Client_NIP" Placeholder="NIP" WidthRequest="200" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Client_Country" Placeholder="Country" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Client_City" Placeholder="City" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Client_Address" Placeholder="Address" WidthRequest="350" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Client_PostalCode" Placeholder="PostalCode" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Client_Phone" Placeholder="Phone" WidthRequest="175" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Client_Email" Placeholder="Email" WidthRequest="350" HorizontalOptions="Start"/>
+                    </VerticalStackLayout>
+
+                    <Label x:Name="Add_Client_Error_Label"
+                           Grid.Column="2"
+                           TextColor="Red"
+                           Margin="0,50,0,0"/>
+
+                    <Button Text="Add Client" 
+                            Grid.Column="2" 
+                            HeightRequest="50"
+                            Clicked="Admin_Add_Client_Clicked"/>
+                </Grid>
+
+            </VerticalStackLayout>
+            
+            <!--Admin Add new Invoice-->
+
+            <VerticalStackLayout x:Name="Add_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10" Margin="20">
+                <Label Text="Add New Invoice" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                <Grid ColumnDefinitions="150,200,300,300,150">
+                    <VerticalStackLayout Grid.Column="0" Grid.Row="0" Spacing="40" VerticalOptions="Center">
+
+                        <Label Text="Issue Date:"/>
+                        <Label Text="Due Date:"/>
+                        <Label Text="Net Amount:"/>
+                        <Label Text="Vat Rate (in percent):"/>
+                        <Label Text="Gross Amount: "/>
+                        
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Grid.Row="0" Spacing="15">
+                        <DatePicker x:Name="Admin_Add_Invoice_IssueDate" HorizontalOptions="Start"/>
+                        <DatePicker x:Name="Admin_Add_Invoice_DueDate" HorizontalOptions="Start"/>
+                        <Entry x:Name="Admin_Add_Invoice_NetAmount" Placeholder="Net Amount" WidthRequest="150" HorizontalOptions="Start" TextChanged="Vat_Rate_Changed"/>
+                        <Entry x:Name="Admin_Add_Invoice_VatRate" Placeholder="Vat Rate" WidthRequest="150" HorizontalOptions="Start" TextChanged="Vat_Rate_Changed"/>
+                        <Label x:Name="Admin_Add_Invoice_GrossAmount" WidthRequest="150" HorizontalOptions="Start"/>    
+
+                    </VerticalStackLayout>
+                    <!--Clients View-->
+                    <CollectionView x:Name="Add_Invoice_ClientsView"
+                                    Grid.Column="2"
+                                    SelectionMode="Single"
+                                    SelectionChanged="Add_Invoice_OnClientSelected"
+                                    WidthRequest="200">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Client">
+                                <Border HeightRequest="30">
+                                    <Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        
+                        
+                    </CollectionView>
+                    <!--Jobs View-->
+                    <CollectionView x:Name="Add_Invoice_JobsView"
+                                    Grid.Column="3"
+                                    SelectionMode="Single"
+                                    IsVisible="False">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Job">
+                                <Border HeightRequest="30">
+                                    <Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                    <Label x:Name="Add_Invoice_Error_Label"
+                           Grid.Column="4"
+                           Grid.Row="0"
+                           TextColor="Red"
+                           Margin="0,50,0,0"/>
+
+                    <Button Text="Add Client" 
+                            Grid.Column="4" 
+                            Grid.Row="0"
+                            HeightRequest="50"
+                            Clicked="Admin_Add_Invoice_Clicked"/>
+                </Grid>
+
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+
+
+        <VerticalStackLayout Grid.Column="0" Margin="10">
+
+            <!--Admin DataPanel-->
+            <Border x:Name="Admin_Data_Panel"
+                    StrokeThickness="5"
+                    StrokeShape="RoundRectangle 50"
+                    Stroke="Beige"
+                    Padding="50"
+                    IsVisible="False"
+                    IsEnabled="False">
+                <VerticalStackLayout Spacing="25">
+
+                    <Button Text="Show all Clients"
+                            WidthRequest="125"
+                            Clicked="Admin_Show_Clients_View"/>
+                    <Button Text="Show all Invoices"
+                            WidthRequest="125"/>
+                    
+                    <Button Text="Add new Client"
+                            WidthRequest="125"
+                            Clicked="Admin_Open_Add_Client_Section"/>
+                    <Button Text="Add new Invoice"
+                            WidthRequest="125"
+                            Clicked="Admin_Open_Add_Invoice_Section"/>
+                    <Button Text="Go Back"
+                            WidthRequest="125"
+                            Clicked="Admin_Go_Back"/>
+
+
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+
+
+    </Grid>
+</ContentPage>
