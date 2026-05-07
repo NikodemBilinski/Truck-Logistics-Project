@@ -150,8 +150,8 @@
             <VerticalStackLayout x:Name="Add_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10" Margin="20">
                 <Label Text="Add New Invoice" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-                <Grid ColumnDefinitions="150,200,300,300,150">
-                    <VerticalStackLayout Grid.Column="0" Grid.Row="0" Spacing="40" VerticalOptions="Center">
+                <Grid ColumnDefinitions="150,200,250,250,150">
+                    <VerticalStackLayout Grid.Column="0" Grid.Row="0" Spacing="40" VerticalOptions="Start" Margin="0,10,0,0">
 
                         <Label Text="Issue Date:"/>
                         <Label Text="Due Date:"/>
@@ -160,7 +160,7 @@
                         <Label Text="Gross Amount: "/>
                         
                     </VerticalStackLayout>
-                    <VerticalStackLayout Grid.Column="1" Grid.Row="0" Spacing="15">
+                    <VerticalStackLayout Grid.Column="1" Grid.Row="0" Spacing="15" VerticalOptions="Start"> 
                         <DatePicker x:Name="Admin_Add_Invoice_IssueDate" HorizontalOptions="Start"/>
                         <DatePicker x:Name="Admin_Add_Invoice_DueDate" HorizontalOptions="Start"/>
                         <Entry x:Name="Admin_Add_Invoice_NetAmount" Placeholder="Net Amount" WidthRequest="150" HorizontalOptions="Start" TextChanged="Vat_Rate_Changed"/>
@@ -173,10 +173,13 @@
                                     Grid.Column="2"
                                     SelectionMode="Single"
                                     SelectionChanged="Add_Invoice_OnClientSelected"
-                                    WidthRequest="200">
+                                    Margin="5">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
+                        </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:Client">
-                                <Border HeightRequest="30">
+                                <Border HeightRequest="50">
                                     <Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="Center"/>
                                 </Border>
                             </DataTemplate>
@@ -188,10 +191,14 @@
                     <CollectionView x:Name="Add_Invoice_JobsView"
                                     Grid.Column="3"
                                     SelectionMode="Single"
-                                    IsVisible="False">
+                                    IsVisible="False"
+                                    Margin="5">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
+                        </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:Job">
-                                <Border HeightRequest="30">
+                                <Border HeightRequest="50">
                                     <Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="Center"/>
                                 </Border>
                             </DataTemplate>
@@ -202,12 +209,15 @@
                            Grid.Column="4"
                            Grid.Row="0"
                            TextColor="Red"
-                           Margin="0,50,0,0"/>
+                           Margin="0,50,0,0"
+                           HorizontalOptions="Center"/>
 
                     <Button Text="Add Client" 
                             Grid.Column="4" 
                             Grid.Row="0"
                             HeightRequest="50"
+                            WidthRequest="150"
+                            HorizontalOptions="Center"
                             Clicked="Admin_Add_Invoice_Clicked"/>
                 </Grid>
 
