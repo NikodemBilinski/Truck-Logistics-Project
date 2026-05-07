@@ -297,6 +297,44 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async void Admin_Add_Invoice_Clicked(object sender, EventArgs e)
     {
+        if(Add_Invoice_ClientsView.SelectedItem == null || Add_Invoice_JobsView.SelectedItem == null)
+        {
+            Add_Invoice_Error_Label.Text = "Choose Client and job.";
+        }
+
+        var SelectedClient = Add_Invoice_ClientsView.SelectedItem as Client;
+
+        var SelectedJob = Add_Invoice_JobsView.SelectedItem as Job;
+
+        Invoice InvoiceToAdd;
+
+        #region check if ok section
+
+        if(Admin_Add_Invoice_IssueDate.Date == null)
+        {
+            Add_Invoice_Error_Label.Text = "Issue Date cant be null.";
+            return;
+        }
+        if(Admin_Add_Invoice_DueDate.Date < Admin_Add_Invoice_IssueDate.Date || Admin_Add_Invoice_DueDate.Date == null)
+        {
+            Add_Invoice_Error_Label.Text = "Due Date cant be null or earlier than Issue Date.";
+            return;
+        }
+        if(Admin_Add_Invoice_NetAmount.Text == null || !decimal.TryParse(Admin_Add_Invoice_NetAmount.Text, out var amount))
+        {
+            Add_Invoice_Error_Label.Text = "Net Amount cant be null and must be a number.";
+            return;
+        }
+        if(Admin_Add_Invoice_VatRate.Text == null || !int.TryParse(Admin_Add_Invoice_VatRate.Text, out var vatRate))
+        {
+            Add_Invoice_Error_Label.Text = "VAT Rate cant be null and must be a number.";
+            return;
+        }
+        if(!isVatOK)
+        {
+            Add_Invoice_Error_Label.Text = "Check VAT Rate and Net Amount.";
+            return;
+        }
 
     }
 
@@ -318,7 +356,6 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         {
             decimal GrossAmount = NetAmount + (NetAmount * VatRate / 100);
             Admin_Add_Invoice_GrossAmount.Text = GrossAmount.ToString("C");
-            //Admin_Add_Invoice_NetAmount.Text = NetAmount.ToString();
             isVatOK = true;
         }
         else
@@ -330,6 +367,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async void Add_Invoice_OnClientSelected(object sender, SelectionChangedEventArgs e)
     {
+        Add_Invoice_JobsView.SelectedItem = null;
         var SelectedClient = e.CurrentSelection.FirstOrDefault() as Client;
 
         Add_Invoice_JobsView.IsVisible = true;
