@@ -97,7 +97,7 @@
                                             <Label Grid.Column="2" Text="{Binding Job.Name}"/>
                                             <Label Grid.Column="3" Text="{Binding IssueDate, StringFormat='{0:d}'}"/>
                                             <Label Grid.Column="4" Text="{Binding DueDate, StringFormat='{0:d}'}"/>
-                                            <Label Grid.Column="5" Text="{Binding GrossAmount}"/>
+                                            <Label Grid.Column="5" Text="{Binding GrossAmount, StringFormat='{0} zł'}"/>
 
                                         </Grid>
                                     </Border>
