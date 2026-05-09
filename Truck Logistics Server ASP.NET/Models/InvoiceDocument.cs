@@ -28,29 +28,38 @@ namespace TrucksLogisticsServerAPI.Models
                 page.Margin(40);
                 page.DefaultTextStyle(x => x.FontSize(11));
 
+                var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", "tes-skyrim-icon-16.png");
+                page.Background().AlignBottom().Image(imagePath, ImageScaling.FitArea);
+
                 page.Header().Column(col =>
-                {
-                    col.Item().Row(row =>
                     {
-                        row.RelativeItem().Column(c =>
+                        col.Item().Row(row =>
                         {
-                            c.Item().Text($"Invoice {_invoice.ID}/{_invoice.IssueDate.Year}").Bold().FontSize(20);
-                            c.Item().PaddingTop(4).Text($"Status: {_invoice.Status.ToUpper()}");
+                            row.RelativeItem().Column(c =>
+                            {
+                                c.Item().Text($"Invoice {_invoice.ID}/{_invoice.IssueDate.Year}").Bold().FontSize(20);
+                                c.Item().PaddingTop(4).Text($"Status: {_invoice.Status.ToUpper()}");
+                            });
+
+                            row.RelativeItem().AlignRight().Column(c =>
+                            {
+                                c.Item().Text($"Issue Date: {_invoice.IssueDate.ToShortDateString()}");
+                                c.Item().Text($"Due Date: {_invoice.DueDate.ToShortDateString()}");
+                            });
                         });
 
-                        row.RelativeItem().AlignRight().Column(c =>
-                        {
-                            c.Item().Text($"Issue Date: {_invoice.IssueDate.ToShortDateString()}");
-                            c.Item().Text($"Due Date: {_invoice.DueDate.ToShortDateString()}");
-                        });
+                        col.Item().PaddingTop(10).LineHorizontal(1).LineColor(Colors.Grey.Lighten1);
                     });
-
-                    col.Item().PaddingTop(10).LineHorizontal(1).LineColor(Colors.Grey.Lighten1);
-                });
 
                 // kolumna w kolumnieeeee crazy bro
                 page.Content().Column(col =>
                 {
+                    col.Item().Row(row =>
+                    {
+
+                    });
+                    col.Item().PaddingTop(20).LineHorizontal(1).LineColor(Colors.Grey.Lighten1);
+
                     col.Item().PaddingTop(20).Column(col2 =>
                     {
                         col2.Item().Text("Job Details:").Bold().FontSize(12);
@@ -80,15 +89,24 @@ namespace TrucksLogisticsServerAPI.Models
                             header.Cell().Background(Colors.Grey.Lighten2).Padding(5).Text("Brutto").ExtraBold();
                         });
 
-                        var vatAmount = _invoice.GrossAmount - _invoice.NetAmount;
                         table.Cell().Background(Colors.LightBlue.Medium).Padding(5).Text($"Transportation Service - {_invoice.Job.Name}");
                         table.Cell().Background(Colors.LightBlue.Medium).Padding(5).Text($"{_invoice.NetAmount:F2} zł");
-                        table.Cell().Background(Colors.LightBlue.Medium).Padding(5).Text($"{vatAmount:F2} zł");
+                        table.Cell().Background(Colors.LightBlue.Medium).Padding(5).Text($"{_invoice.GrossAmount - _invoice.NetAmount} zł");
                         table.Cell().Background(Colors.LightBlue.Medium).Padding(5).Text($"{_invoice.GrossAmount:F2} zł");
                     });
-                });
-                page.Footer();
 
+                    col.Item().PaddingTop(20).Text($"Net Amount: {_invoice.NetAmount:F2} zł");
+                    col.Item().Text($"$VAT ({_invoice.VatRate}%): {_invoice.GrossAmount - _invoice.NetAmount:F2} zł");
+                    col.Item().PaddingTop(4).Text($"Total Amount: {_invoice.GrossAmount:F2} zł").Bold().FontSize(14);
+                });
+
+                page.Footer().AlignCenter().Text(fut =>
+                {
+                    fut.Span("Page ");
+                    fut.CurrentPageNumber();
+                    fut.Span(" of ");
+                    fut.TotalPages();
+                });
 
             }
             );
