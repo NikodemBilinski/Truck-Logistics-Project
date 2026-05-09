@@ -38,7 +38,17 @@ namespace TrucksLogisticsServerAPI.Models
                             row.RelativeItem().Column(c =>
                             {
                                 c.Item().Text($"Invoice {_invoice.ID}/{_invoice.IssueDate.Year}").Bold().FontSize(20);
-                                c.Item().PaddingTop(4).Text($"Status: {_invoice.Status.ToUpper()}");
+                                c.Item().PaddingTop(4).Text(t =>
+                                {
+                                    if(_invoice.Status == "paid")
+                                    {
+                                        t.Span(_invoice.Status.ToUpper()).FontColor(Colors.Green.Medium);
+                                    }
+                                    else
+                                    {
+                                        t.Span(_invoice.Status.ToUpper()).FontColor(Colors.Red.Medium);
+                                    }
+                                });
                             });
 
                             row.RelativeItem().AlignRight().Column(c =>
@@ -59,13 +69,20 @@ namespace TrucksLogisticsServerAPI.Models
                         row.RelativeItem().Column(col2 =>
                         {
                             col2.Item().Text("Seller: ");
-                            col2.Item().Text("Nikodemus...");
+                            col2.Item().Text("Company: XYZ Sp. z o.o.");
+                            col2.Item().Text("NIP: 1234567890");
+                            col2.Item().Text("Address: ul. Template Street 1");
+                            col2.Item().Text("City: Radom");
+                            col2.Item().Text("Phone: +48 123 456 789");
+                            col2.Item().Text("Email: Contact@XYZ.pl");
+                            
                         });
 
                         row.RelativeItem().Column(col3 =>
                         {
                             col3.Item().Text("Bill To: ");
                             col3.Item().Text($"Client: {_invoice.Client.Name}");
+                            col3.Item().Text($"NIP: {_invoice.Client.NIP}");
                             col3.Item().Text($"Address: {_invoice.Client.Address}");
                             col3.Item().Text($"City: {_invoice.Client.City}");
                             col3.Item().Text($"Phone: {_invoice.Client.Phone}");
@@ -110,7 +127,7 @@ namespace TrucksLogisticsServerAPI.Models
                     });
 
                     col.Item().PaddingTop(20).Text($"Net Amount: {_invoice.NetAmount:F2} zł");
-                    col.Item().Text($"$VAT ({_invoice.VatRate}%): {_invoice.GrossAmount - _invoice.NetAmount:F2} zł");
+                    col.Item().Text($"VAT ({_invoice.VatRate}%): {_invoice.GrossAmount - _invoice.NetAmount:F2} zł");
                     col.Item().PaddingTop(4).Text($"Total Amount: {_invoice.GrossAmount:F2} zł").Bold().FontSize(14);
                 });
 
