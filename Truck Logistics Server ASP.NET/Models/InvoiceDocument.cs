@@ -29,7 +29,7 @@ namespace TrucksLogisticsServerAPI.Models
                 page.DefaultTextStyle(x => x.FontSize(11));
 
                 var imagePath = Path.Combine(Directory.GetCurrentDirectory(), "Images", "tes-skyrim-icon-16.png");
-                page.Background().AlignBottom().Image(imagePath, ImageScaling.FitArea);
+                page.Background().AlignMiddle().Image(imagePath, ImageScaling.FitArea);
 
                 page.Header().Column(col =>
                     {
@@ -126,9 +126,13 @@ namespace TrucksLogisticsServerAPI.Models
                         table.Cell().Background(Colors.LightBlue.Medium).Padding(5).Text($"{_invoice.GrossAmount:F2} zł");
                     });
 
-                    col.Item().PaddingTop(20).Text($"Net Amount: {_invoice.NetAmount:F2} zł");
-                    col.Item().Text($"VAT ({_invoice.VatRate}%): {_invoice.GrossAmount - _invoice.NetAmount:F2} zł");
-                    col.Item().PaddingTop(4).Text($"Total Amount: {_invoice.GrossAmount:F2} zł").Bold().FontSize(14);
+                    col.Item().PaddingTop(20).LineHorizontal(1).LineColor(Colors.Grey.Lighten1);
+
+                    col.Item().PaddingTop(20).AlignRight().Text($"Net Amount: {_invoice.NetAmount:F2} zł");
+                    col.Item().PaddingTop(5).AlignRight().Text($"VAT ({_invoice.VatRate}%): {_invoice.GrossAmount - _invoice.NetAmount:F2} zł");
+                    col.Item().PaddingTop(5).AlignRight().Text($"Total Amount: {_invoice.GrossAmount:F2} zł").Bold().FontSize(14);
+
+                    col.Item().PaddingTop(20).LineHorizontal(1).LineColor(Colors.Grey.Lighten1);
                 });
 
                 page.Footer().AlignCenter().Text(fut =>
