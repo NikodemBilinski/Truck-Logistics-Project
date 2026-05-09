@@ -56,17 +56,31 @@ namespace TrucksLogisticsServerAPI.Models
                 {
                     col.Item().Row(row =>
                     {
+                        row.RelativeItem().Column(col2 =>
+                        {
+                            col2.Item().Text("Seller: ");
+                            col2.Item().Text("Nikodemus...");
+                        });
 
+                        row.RelativeItem().Column(col3 =>
+                        {
+                            col3.Item().Text("Bill To: ");
+                            col3.Item().Text($"Client: {_invoice.Client.Name}");
+                            col3.Item().Text($"Address: {_invoice.Client.Address}");
+                            col3.Item().Text($"City: {_invoice.Client.City}");
+                            col3.Item().Text($"Phone: {_invoice.Client.Phone}");
+                            col3.Item().Text($"Email: {_invoice.Client.Email}");
+                        });
                     });
                     col.Item().PaddingTop(20).LineHorizontal(1).LineColor(Colors.Grey.Lighten1);
 
-                    col.Item().PaddingTop(20).Column(col2 =>
+                    col.Item().PaddingTop(20).Column(col4 =>
                     {
-                        col2.Item().Text("Job Details:").Bold().FontSize(12);
-                        col2.Item().PaddingTop(4).Text($"Job: {_invoice.Job.Name}");
-                        col2.Item().Text($"Company Name: {_invoice.Job.CompanyName}");
-                        col2.Item().Text($"Route: {_invoice.Job.LocationFrom} -> {_invoice.Job.LocationTo}");
-                        col2.Item().Text($"Description: {_invoice.Job.Description}");
+                        col4.Item().Text("Job Details:").Bold().FontSize(12);
+                        col4.Item().PaddingTop(4).Text($"Job: {_invoice.Job.Name}");
+                        col4.Item().Text($"Company Name: {_invoice.Job.CompanyName}");
+                        col4.Item().Text($"Route: {_invoice.Job.LocationFrom} -> {_invoice.Job.LocationTo}");
+                        col4.Item().Text($"Description: {_invoice.Job.Description}");
                     });
 
                     col.Item().PaddingTop(20).LineHorizontal(1).LineColor(Colors.Grey.Lighten1);
