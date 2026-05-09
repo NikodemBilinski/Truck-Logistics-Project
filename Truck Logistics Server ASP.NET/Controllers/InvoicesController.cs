@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 
 namespace TrucksLogisticsServerAPI.Controllers
 {
@@ -14,6 +17,18 @@ namespace TrucksLogisticsServerAPI.Controllers
         public InvoicesController(DataContext datacontext)
         {
             _datacontext = datacontext;
+        }
+
+        [HttpGet("GeneratePDF")]
+        public async Task<ActionResult> GetInvoice(int id)
+        {
+            QuestPDF.Settings.License = LicenseType.Community;
+
+            var document = new InvoiceDocument();
+
+            var pdfbytes = document.GeneratePdf();
+
+            return File(pdfbytes, "application/pdf", $"invoice-{id}.pdf");
         }
 
         [HttpGet("Get_All_Invoices")]
