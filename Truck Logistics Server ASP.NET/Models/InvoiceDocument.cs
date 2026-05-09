@@ -1,32 +1,35 @@
-﻿using QuestPDF.Fluent;
+﻿using TrucksLogisticsServerAPI.Models;
+using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
 namespace TrucksLogisticsServerAPI.Models
 {
-    public class InvoiceDocument : IDocument
-    { 
-        public void Compose(IDocumentContainer container)
-        {
-            var document = Document.Create(container =>
-             {
-                 container.Page(page =>
-                 {
-                     page.Header().Text("Invoice").SemiBold().FontSize(20).FontColor(Colors.Blue.Medium);
-                     page.Content().Text("This is the content of the invoice.");
-                     page.Footer().AlignCenter().Text(x =>
-                     {
-                         x.Span("Page ");
-                         x.CurrentPageNumber();
-                         x.Span(" of ");
-                         x.TotalPages();
-                     });
-                 });
-             });
 
+    
+
+    public class InvoiceDocument : IDocument
+    {
+        private readonly Invoice _invoice;
+
+        public InvoiceDocument(Invoice invoice)
+        {
+            _invoice = invoice;
         }
 
+        public DocumentMetadata GetMetadata() => DocumentMetadata.Default;
 
+        public void Compose(IDocumentContainer container)
+        {
+            container.Page(page =>
+            {
+                page.Margin(50);
+                page.Header().Height(100).Background(Colors.Grey.Lighten1);
+                page.Content().Background(Colors.Grey.Lighten3);
+                page.Footer().Height(50).Background(Colors.Grey.Lighten1);
+            }
+            );
+        }
     }
 
 }

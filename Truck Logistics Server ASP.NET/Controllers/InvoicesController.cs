@@ -19,12 +19,18 @@ namespace TrucksLogisticsServerAPI.Controllers
             _datacontext = datacontext;
         }
 
-        [HttpGet("GeneratePDF")]
+        [HttpGet("GeneratePDF/{id}")]
         public async Task<ActionResult> GetInvoice(int id)
         {
             QuestPDF.Settings.License = LicenseType.Community;
 
-            var document = new InvoiceDocument();
+            var invoice = await _datacontext.Invoices.Include(x => x.Client).Include(x => x.Job).FirstOrDefaultAsync(i => i.ID == id);
+
+            if (invoice == null)
+            {
+                return NotFound("Invoice not found.");
+            }
+            var document = new InvoiceDocument(invoice);
 
             var pdfbytes = document.GeneratePdf();
 
