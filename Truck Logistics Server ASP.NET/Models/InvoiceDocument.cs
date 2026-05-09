@@ -24,33 +24,33 @@ namespace TrucksLogisticsServerAPI.Models
         {
             container.Page(page =>
             {
-                page.Margin(50);
-                page.Header().Height(100).Background(Colors.Grey.Lighten1);
-                page.Content().Background(Colors.Grey.Lighten3);
-                page.Footer().Height(50).Background(Colors.Grey.Lighten1).Row(row => 
+                page.Size(PageSizes.A4);
+                page.Margin(40);
+                page.DefaultTextStyle(x => x.FontSize(11));
+
+
+                page.Header().Column(col =>
                 {
-                        row.RelativeItem().Text(text =>
+                    col.Item().Row(row =>
+                    {
+                        row.RelativeItem().Column(c =>
                         {
-                            text.Span("Invoice ID: ").SemiBold();
-                            text.Span(_invoice.ID.ToString());
-                        });
-                        row.RelativeItem().Text(text =>
-                        {
-                            text.Span("Issue Date: ").SemiBold();
-                            text.Span(_invoice.IssueDate.ToShortDateString());
-                        });
-                        row.RelativeItem().Text(text =>
-                        {
-                            text.Span("Due Date: ").SemiBold();
-                            text.Span(_invoice.DueDate.ToShortDateString());
-                        });
-                        row.RelativeItem().Text(text =>
-                        {
-                            text.Span("Client Name: ").SemiBold();
-                            text.Span(_invoice.Client.Name);
+                            c.Item().Text($"Invoice {_invoice.ID}/{_invoice.IssueDate.Year}").Bold().FontSize(20);
+                            c.Item().PaddingTop(4).Text($"Status: {_invoice.Status.ToUpper()}");
                         });
 
+                        row.RelativeItem().AlignRight().Column(c =>
+                        {
+                            c.Item().Text($"Issue Date: {_invoice.IssueDate.ToShortDateString()}");
+                            c.Item().Text($"Due Date: {_invoice.DueDate.ToShortDateString()}");
+                        });
+                    });
+
+                    col.Item().PaddingTop(10).LineHorizontal(1).LineColor(Colors.Grey.Lighten1);
                 });
+
+                page.Content();
+                page.Footer();
 
 
             }
