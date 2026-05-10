@@ -66,7 +66,23 @@ namespace TrucksLogisticsServerAPI.Controllers
             }
         }
 
+        [HttpDelete("Delete_Invoice/{id}")]
         
+        public async Task<ActionResult> Delete_Invoice(int id)
+        {
+            var invoiceToDelete = await _datacontext.Invoices.FindAsync(id);
+            if(invoiceToDelete != null)
+            {
+                _datacontext.Invoices.Remove(invoiceToDelete);
+                await _datacontext.SaveChangesAsync();
+                return Ok("Successfully deleted Invoice.");
+            }
+            else
+            {
+                return NotFound("Invoice to delete not found.");
+            }
 
-    }
+
+
+        }
 }
