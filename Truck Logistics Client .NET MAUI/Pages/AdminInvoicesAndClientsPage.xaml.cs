@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Storage;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
@@ -487,16 +488,18 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             {
                 var pdfbytes = await response.Content.ReadAsByteArrayAsync();
 
-                string fileName = "Invoice_" + SelectedInvoice.ID.ToString() + ".pdf";
+                using var stream = new MemoryStream(pdfbytes);
 
-                string filepath = Path.Combine(FileSystem.CacheDirectory, fileName);
+                var result = await FileSaver.SaveAsync("Invoice_" + SelectedInvoice.ID.ToString() + ".pdf", stream);
 
-                await File.WriteAllBytesAsync(filepath, pdfbytes);
-
-                await Launcher.OpenAsync(new OpenFileRequest
+                if(result.IsSuccessful)
                 {
-                    File = new ReadOnlyFile(filepath)
-                });
+                    await DisplayAlertAsync("Success", "Invoice Saved.", ":)");
+                }
+                else
+                {
+                    await DisplayAlertAsync("Error", "Error while saving Invoice", "):");
+                }
 
 
             }
