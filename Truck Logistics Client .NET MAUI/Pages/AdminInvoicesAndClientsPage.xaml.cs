@@ -290,6 +290,12 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         if (InvoiceToChange != null)
         {
+            InvoiceToChange.Status = Admin_Edit_Invoice_Status.Text.ToLower();
+            if (InvoiceToChange.Status != "paid" && InvoiceToChange.Status != "unpaid" && InvoiceToChange.Status != "overdue")
+            {
+                EditInvoiceLabelMain.Text = "Status must be either 'paid', 'unpaid', or 'overdue'.";
+                return;
+            }
             var response = await client.PutAsJsonAsync(apiUrl + "Invoices/Update_Invoice/" + InvoiceToChange.ID, InvoiceToChange);
             if (response.IsSuccessStatusCode)
             {

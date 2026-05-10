@@ -44,9 +44,17 @@ namespace TrucksLogisticsServerAPI.Models
                                     {
                                         t.Span(_invoice.Status.ToUpper()).FontColor(Colors.Green.Medium);
                                     }
-                                    else
+                                    else if (_invoice.Status == "unpaid")
+                                    {
+                                        t.Span(_invoice.Status.ToUpper()).FontColor(Colors.Orange.Medium);
+                                    }
+                                    else if( _invoice.Status == "overdue")
                                     {
                                         t.Span(_invoice.Status.ToUpper()).FontColor(Colors.Red.Medium);
+                                    }
+                                    else
+                                    {
+                                        t.Span(_invoice.Status.ToUpper()).FontColor(Colors.Grey.Medium);
                                     }
                                 });
                             });
