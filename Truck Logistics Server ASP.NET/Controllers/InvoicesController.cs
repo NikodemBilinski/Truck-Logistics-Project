@@ -66,6 +66,26 @@ namespace TrucksLogisticsServerAPI.Controllers
             }
         }
 
+        [HttpPut("Update_Invoice/{id}")]
+        public async Task<ActionResult<Invoice>> Update_Invoice(int id, Invoice InvoiceToUpdate)
+        {
+            var invoice = await _datacontext.Invoices.FirstAsync(x => x.ID == id);
+
+            if(invoice == null)
+            {
+                return NotFound("Invoice not found.");
+            }
+
+            invoice.Status = InvoiceToUpdate.Status;
+
+            _datacontext.Invoices.Update(invoice);
+
+            await _datacontext.SaveChangesAsync();
+
+            return Ok("Successfully updated Invoice.");
+        }
+        
+
         [HttpDelete("Delete_Invoice/{id}")]
 
         public async Task<ActionResult> Delete_Invoice(int id)

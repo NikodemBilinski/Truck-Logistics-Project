@@ -290,14 +290,14 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         if (InvoiceToChange != null)
         {
-            var response = await client.PutAsJsonAsync(apiUrl + "Invoices/Edit_Invoice/" + InvoiceToChange.ID, InvoiceToChange);
+            var response = await client.PutAsJsonAsync(apiUrl + "Invoices/Update_Invoice/" + InvoiceToChange.ID, InvoiceToChange);
             if (response.IsSuccessStatusCode)
             {
-                EditClientLabelMain.Text = await response.Content.ReadAsStringAsync();
+                EditInvoiceLabelMain.Text = await response.Content.ReadAsStringAsync();
             }
             else
             {
-                EditClientLabelMain.Text = await response.Content.ReadAsStringAsync();
+                EditInvoiceLabelMain.Text = await response.Content.ReadAsStringAsync();
             }
         }
     }
@@ -512,6 +512,11 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
                 if(result.IsSuccessful)
                 {
+                    await Launcher.OpenAsync(new OpenFileRequest
+                    {
+                        File = new ReadOnlyFile(result.FilePath)
+                    });
+
                     await DisplayAlertAsync("Success", "Invoice Saved.", ":)");
                 }
                 else
