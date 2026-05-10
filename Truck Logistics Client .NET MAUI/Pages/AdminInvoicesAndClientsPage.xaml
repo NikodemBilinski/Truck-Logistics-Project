@@ -185,6 +185,10 @@
                         <Label x:Name="EditInvoiceLabelMain"
                                TextColor="Red"
                                Margin="0,0,0,0"/>
+                        
+                        <Button Text="Generate Invoice PDF" 
+                                HeightRequest="50"
+                                Clicked="Admin_Genereate_Invoice_PDF"/>
 
                         <Button Text="Delete Invoice"
                                 HeightRequest="50"

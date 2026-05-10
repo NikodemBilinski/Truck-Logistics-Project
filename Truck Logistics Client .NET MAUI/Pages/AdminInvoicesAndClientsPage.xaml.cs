@@ -475,6 +475,35 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     }
 
+    private async void Admin_Genereate_Invoice_PDF(object sender, EventArgs e)
+    {
+        var SelectedInvoice = Edit_Invoice_Section.BindingContext as Invoice;
+
+        if (SelectedInvoice != null)
+        {
+            var response = await client.GetAsync(apiUrl + "Invoices/GeneratePDF/" + SelectedInvoice.ID);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var pdfbytes = await response.Content.ReadAsByteArrayAsync();
+
+                string fileName = "Invoice_" + SelectedInvoice.ID.ToString() + ".pdf";
+
+                string filepath = Path.Combine(FileSystem.CacheDirectory, fileName);
+
+                await File.WriteAllBytesAsync(filepath, pdfbytes);
+
+                await Launcher.OpenAsync(new OpenFileRequest
+                {
+                    File = new ReadOnlyFile(filepath)
+                });
+
+
+            }
+        }
+
+    }
+
 
 
 }
