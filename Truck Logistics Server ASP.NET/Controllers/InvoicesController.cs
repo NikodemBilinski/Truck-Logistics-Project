@@ -40,8 +40,8 @@ namespace TrucksLogisticsServerAPI.Controllers
         [HttpGet("Get_All_Invoices")]
         public async Task<ActionResult<List<Invoice>>> Get_All_Invoices()
         {
-            var allInvoices = await _datacontext.Invoices.Include(i => i.Client).Include(x=> x.Job).ToListAsync();
-            if(allInvoices != null)
+            var allInvoices = await _datacontext.Invoices.Include(i => i.Client).Include(x => x.Job).ToListAsync();
+            if (allInvoices != null)
             {
                 return Ok(allInvoices);
             }
@@ -54,7 +54,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         [HttpPost("Add_Invoice")]
         public async Task<ActionResult<Invoice>> Add_Invoice(Invoice InvoiceToAdd)
         {
-            if(InvoiceToAdd != null)
+            if (InvoiceToAdd != null)
             {
                 _datacontext.Invoices.Add(InvoiceToAdd);
                 await _datacontext.SaveChangesAsync();
@@ -67,11 +67,11 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpDelete("Delete_Invoice/{id}")]
-        
+
         public async Task<ActionResult> Delete_Invoice(int id)
         {
             var invoiceToDelete = await _datacontext.Invoices.FindAsync(id);
-            if(invoiceToDelete != null)
+            if (invoiceToDelete != null)
             {
                 _datacontext.Invoices.Remove(invoiceToDelete);
                 await _datacontext.SaveChangesAsync();
@@ -85,4 +85,5 @@ namespace TrucksLogisticsServerAPI.Controllers
 
 
         }
+    }
 }

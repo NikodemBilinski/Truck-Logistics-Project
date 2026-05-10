@@ -266,7 +266,21 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async void Admin_Delete_Invoice(object sender, EventArgs e)
     {
+        var InvoiceToDelete = Edit_Invoice_Section.BindingContext as Invoice;
 
+        if (InvoiceToDelete != null)
+        {
+            var response = await client.DeleteAsync(apiUrl + "Invoices/Delete_Invoice/" + InvoiceToDelete.ID);
+
+            if(response.IsSuccessStatusCode)
+            {
+                EditClientLabelMain.Text = await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                EditClientLabelMain.Text = await response.Content.ReadAsStringAsync();
+            }
+        }
     }
     
 
