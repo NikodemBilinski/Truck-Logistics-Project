@@ -283,6 +283,24 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             }
         }
     }
+
+    private async void Admin_Save_Invoice(object sender, EventArgs e)
+    {
+        var InvoiceToChange = Edit_Invoice_Section.BindingContext as Invoice;
+
+        if (InvoiceToChange != null)
+        {
+            var response = await client.PutAsJsonAsync(apiUrl + "Invoices/Edit_Invoice/" + InvoiceToChange.ID, InvoiceToChange);
+            if (response.IsSuccessStatusCode)
+            {
+                EditClientLabelMain.Text = await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                EditClientLabelMain.Text = await response.Content.ReadAsStringAsync();
+            }
+        }
+    }
     
 
     // add to database 

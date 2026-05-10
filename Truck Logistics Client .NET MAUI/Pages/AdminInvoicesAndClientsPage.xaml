@@ -167,6 +167,7 @@
                         <Label Text="Netto:"/>
                         <Label Text="VAT Rate:"/>
                         <Label Text="Brutto:"/>
+                        <Label Text="Status (Paid, Unpaid, Overdue)"/>
 
 
                     </VerticalStackLayout>
@@ -179,12 +180,17 @@
                         <Label Text="{Binding NetAmount, StringFormat='{0:F2} zł'}"/>
                         <Label Text="{Binding VatRate, StringFormat='{0}%'}"/>
                         <Label Text="{Binding GrossAmount, StringFormat='{0:F2} zł'}"/>
+                        <Entry x:Name="Admin_Edit_Invoice_Status" Text="{Binding Status}" Placeholder="Status"/>
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Grid.Column="2" Spacing="15">
                         <Label x:Name="EditInvoiceLabelMain"
                                TextColor="Red"
                                Margin="0,0,0,0"/>
+                        
+                        <Button Text="Save Changes" 
+                                HeightRequest="50"
+                                Clicked="Admin_Save_Invoice"/>
                         
                         <Button Text="Generate Invoice PDF" 
                                 HeightRequest="50"
