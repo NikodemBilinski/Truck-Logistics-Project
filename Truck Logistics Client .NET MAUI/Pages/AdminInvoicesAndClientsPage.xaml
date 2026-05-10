@@ -157,9 +157,10 @@
             <VerticalStackLayout x:Name="Edit_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10">
                 <Label x:Name="EditInvoiceLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-                <Grid ColumnDefinitions="150,400,150">
+                <Grid ColumnDefinitions="150,400,150" Margin="30">
                     <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
                         <Label Text="Company Name:"/>
+                        <Label Text="NIP:"/>
                         <Label Text="Job Name:"/>
                         <Label Text="Issue Date:"/>
                         <Label Text="Due Date:"/>
@@ -170,13 +171,14 @@
 
                     </VerticalStackLayout>
                     <VerticalStackLayout Grid.Column="1" Spacing="40" VerticalOptions="Center">
-                        <Label Text="{Binding Client.Name}"/>
+                        <Label Text="{Binding Client.Name} "/>
+                        <Label Text="{Binding Client.NIP}"/>
                         <Label Text="{Binding Job.Name}"/>
-                        <Label Text="{Binding IssueDate}"/>
-                        <Label Text="{Binding DueDate}"/>
-                        <Label Text="{Binding NetAmount}"/>
-                        <Label Text="{Binding VatRate}"/>
-                        <Label Text="{Binding GrossAmount}"/>
+                        <Label Text="{Binding IssueDate, StringFormat='{0:d}'}"/>
+                        <Label Text="{Binding DueDate, StringFormat='{0:d}'}"/>
+                        <Label Text="{Binding NetAmount, StringFormat='{0:F2} zł'}"/>
+                        <Label Text="{Binding VatRate, StringFormat='{0}%'}"/>
+                        <Label Text="{Binding GrossAmount, StringFormat='{0:F2} zł'}"/>
                     </VerticalStackLayout>
 
                     <VerticalStackLayout Grid.Column="2" Spacing="15">
