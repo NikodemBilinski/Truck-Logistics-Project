@@ -151,6 +151,46 @@
                 </Grid>
 
             </VerticalStackLayout>
+            
+            <!--Invoice Edit Section-->
+
+            <VerticalStackLayout x:Name="Edit_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10">
+                <Label x:Name="EditInvoiceLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                <Grid ColumnDefinitions="150,400,150">
+                    <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                        <Label Text="Company Name:"/>
+                        <Label Text="Job Name:"/>
+                        <Label Text="Issue Date:"/>
+                        <Label Text="Due Date:"/>
+                        <Label Text="Netto:"/>
+                        <Label Text="VAT Rate:"/>
+                        <Label Text="Brutto:"/>
+
+
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="40" VerticalOptions="Center">
+                        <Label Text="{Binding Client.Name}"/>
+                        <Label Text="{Binding Job.Name}"/>
+                        <Label Text="{Binding IssueDate}"/>
+                        <Label Text="{Binding DueDate}"/>
+                        <Label Text="{Binding NetAmount}"/>
+                        <Label Text="{Binding VatRate}"/>
+                        <Label Text="{Binding GrossAmount}"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="2" Spacing="15">
+                        <Label x:Name="EditInvoiceLabelMain"
+                               TextColor="Red"
+                               Margin="0,0,0,0"/>
+
+                        <Button Text="Delete Invoice"
+                                HeightRequest="50"
+                                Clicked="Admin_Delete_Invoice"/>
+                    </VerticalStackLayout>
+                </Grid>
+
+            </VerticalStackLayout>
 
             <!--Admin Add new Client-->
             <VerticalStackLayout x:Name="Add_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">

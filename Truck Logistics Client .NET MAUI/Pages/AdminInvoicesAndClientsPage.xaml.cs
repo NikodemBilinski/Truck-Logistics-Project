@@ -78,6 +78,9 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Edit_Client_Section.IsVisible = false;
         Edit_Client_Section.IsEnabled = false;
 
+        Edit_Invoice_Section.IsVisible = false;
+        Edit_Invoice_Section.IsEnabled = false;
+
         Add_Invoice_Section.IsVisible = false;
         Add_Invoice_Section.IsEnabled = false;
     }
@@ -135,7 +138,14 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async void Admin_Invoice_View_Selected(object sender, SelectionChangedEventArgs e)
     {
-        // not implemented yet
+        await HideEverything();
+
+        Edit_Invoice_Section.IsVisible = true;
+        Edit_Invoice_Section.IsEnabled = true;
+
+        var SelectedInvoice = e.CurrentSelection.FirstOrDefault() as Invoice;
+
+        Edit_Invoice_Section.BindingContext = SelectedInvoice;
     }
 
     private async void Admin_Open_Add_Client_Section(object sender, EventArgs e)
@@ -252,6 +262,11 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             Add_Client_Error_Label.Text = await response.Content.ReadAsStringAsync();
             Debug.WriteLine("Error deleting client.");
         }
+    }
+
+    private async void Admin_Delete_Invoice(object sender, EventArgs e)
+    {
+
     }
     
 
