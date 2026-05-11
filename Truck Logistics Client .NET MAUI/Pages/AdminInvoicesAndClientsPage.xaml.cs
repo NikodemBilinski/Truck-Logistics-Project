@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Storage;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
@@ -72,8 +73,14 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Client_View.IsVisible = false;
         Client_View.IsEnabled = false;
 
+        Invoice_View.IsVisible = false;
+        Invoice_View.IsEnabled = false;
+
         Edit_Client_Section.IsVisible = false;
         Edit_Client_Section.IsEnabled = false;
+
+        Edit_Invoice_Section.IsVisible = false;
+        Edit_Invoice_Section.IsEnabled = false;
 
         Add_Invoice_Section.IsVisible = false;
         Add_Invoice_Section.IsEnabled = false;
@@ -88,9 +95,34 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         
         var clients = await client.GetFromJsonAsync<List<Client>>(apiUrl + "Clients/Get_Clients");
 
-        All_Clients_View.ItemsSource = clients;
+        if (clients != null)
+        {
+            All_Clients_View.ItemsSource = clients;
+        }
+        else
+        {
+            Debug.WriteLine("Error fetching clients.");
+            return;
+        }
+    }
 
-        Console.WriteLine(clients);
+    private async void Admin_Show_Invoices_View(object sender, EventArgs e)
+    {
+        await HideEverything();
+        Invoice_View.IsVisible = true;
+        Invoice_View.IsEnabled = true;
+
+        var invoices = await client.GetFromJsonAsync<List<Invoice>>(apiUrl + "Invoices/Get_All_Invoices");
+
+        if(invoices != null)
+        {
+            All_Invoices_View.ItemsSource = invoices;
+        }
+        else
+        {
+            Debug.WriteLine("Error fetching invoices.");
+            return;
+        }
     }
 
     private async void Admin_Client_View_Selected(object sender, SelectionChangedEventArgs e)
@@ -105,6 +137,18 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Edit_Client_Section.BindingContext = SelectedClient;
     }
 
+    private async void Admin_Invoice_View_Selected(object sender, SelectionChangedEventArgs e)
+    {
+        await HideEverything();
+
+        Edit_Invoice_Section.IsVisible = true;
+        Edit_Invoice_Section.IsEnabled = true;
+
+        var SelectedInvoice = e.CurrentSelection.FirstOrDefault() as Invoice;
+
+        Edit_Invoice_Section.BindingContext = SelectedInvoice;
+    }
+
     private async void Admin_Open_Add_Client_Section(object sender, EventArgs e)
     {
         await HideEverything();
@@ -112,6 +156,23 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Add_Client_Section.IsVisible = true;
         Add_Client_Section.IsEnabled = true;
     }
+    private async void Admin_Open_Add_Invoice_Section(object sender, EventArgs e)
+    {
+        await HideEverything();
+
+        Add_Invoice_Section.IsVisible = true;
+        Add_Invoice_Section.IsEnabled = true;
+
+
+        var clients = await client.GetFromJsonAsync<List<Client>>(apiUrl + "Clients/Get_Clients");
+
+        if (clients != null)
+        {
+            Add_Invoice_ClientsView.ItemsSource = clients;
+        }
+
+    }
+
 
     private async void Admin_Save_Client_Edit(object sender, EventArgs e)
     {
@@ -203,22 +264,50 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             Debug.WriteLine("Error deleting client.");
         }
     }
-    private async void Admin_Open_Add_Invoice_Section(object sender, EventArgs e)
+
+    private async void Admin_Delete_Invoice(object sender, EventArgs e)
     {
-        await HideEverything();
+        var InvoiceToDelete = Edit_Invoice_Section.BindingContext as Invoice;
 
-        Add_Invoice_Section.IsVisible = true;
-        Add_Invoice_Section.IsEnabled = true;
-
-
-        var clients = await client.GetFromJsonAsync<List<Client>>(apiUrl + "Clients/Get_Clients");
-
-        if(clients != null)
+        if (InvoiceToDelete != null)
         {
-            Add_Invoice_ClientsView.ItemsSource = clients;
-        }
+            var response = await client.DeleteAsync(apiUrl + "Invoices/Delete_Invoice/" + InvoiceToDelete.ID);
 
+            if(response.IsSuccessStatusCode)
+            {
+                EditClientLabelMain.Text = await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                EditClientLabelMain.Text = await response.Content.ReadAsStringAsync();
+            }
+        }
     }
+
+    private async void Admin_Save_Invoice(object sender, EventArgs e)
+    {
+        var InvoiceToChange = Edit_Invoice_Section.BindingContext as Invoice;
+
+        if (InvoiceToChange != null)
+        {
+            InvoiceToChange.Status = Admin_Edit_Invoice_Status.Text.ToLower();
+            if (InvoiceToChange.Status != "paid" && InvoiceToChange.Status != "unpaid" && InvoiceToChange.Status != "overdue")
+            {
+                EditInvoiceLabelMain.Text = "Status must be either 'paid', 'unpaid', or 'overdue'.";
+                return;
+            }
+            var response = await client.PutAsJsonAsync(apiUrl + "Invoices/Update_Invoice/" + InvoiceToChange.ID, InvoiceToChange);
+            if (response.IsSuccessStatusCode)
+            {
+                EditInvoiceLabelMain.Text = await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                EditInvoiceLabelMain.Text = await response.Content.ReadAsStringAsync();
+            }
+        }
+    }
+    
 
     // add to database 
     private async void Admin_Add_Client_Clicked(object sender, EventArgs e)
@@ -297,7 +386,70 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async void Admin_Add_Invoice_Clicked(object sender, EventArgs e)
     {
+        if(Add_Invoice_ClientsView.SelectedItem == null || Add_Invoice_JobsView.SelectedItem == null)
+        {
+            Add_Invoice_Error_Label.Text = "Choose Client and job.";
+        }
 
+        var SelectedClient = Add_Invoice_ClientsView.SelectedItem as Client;
+
+        var SelectedJob = Add_Invoice_JobsView.SelectedItem as Job;
+
+        Invoice InvoiceToAdd = new Invoice();
+
+        #region check if ok section
+
+        if (SelectedClient == null || SelectedJob == null)
+        {
+            return;
+        }
+        if(Admin_Add_Invoice_IssueDate.Date == null)
+        {
+            Add_Invoice_Error_Label.Text = "Issue Date cant be null.";
+            return;
+        }
+        if(Admin_Add_Invoice_DueDate.Date < Admin_Add_Invoice_IssueDate.Date || Admin_Add_Invoice_DueDate.Date == null)
+        {
+            Add_Invoice_Error_Label.Text = "Due Date cant be null or earlier than Issue Date.";
+            return;
+        }
+        if(Admin_Add_Invoice_NetAmount.Text == null || !decimal.TryParse(Admin_Add_Invoice_NetAmount.Text, out var amount))
+        {
+            Add_Invoice_Error_Label.Text = "Net Amount cant be null and must be a number.";
+            return;
+        }
+        if(Admin_Add_Invoice_VatRate.Text == null || !int.TryParse(Admin_Add_Invoice_VatRate.Text, out var vatRate))
+        {
+            Add_Invoice_Error_Label.Text = "VAT Rate cant be null and must be a number.";
+            return;
+        }
+        if(!isVatOK)
+        {
+            Add_Invoice_Error_Label.Text = "Check VAT Rate and Net Amount.";
+            return;
+        }
+
+        #endregion
+
+        InvoiceToAdd.IssueDate = (DateTime)Admin_Add_Invoice_IssueDate.Date;
+        InvoiceToAdd.DueDate = (DateTime)Admin_Add_Invoice_DueDate.Date;
+        InvoiceToAdd.NetAmount = decimal.Parse(Admin_Add_Invoice_NetAmount.Text);
+        InvoiceToAdd.VatRate = int.Parse(Admin_Add_Invoice_VatRate.Text);
+        InvoiceToAdd.GrossAmount = decimal.Parse(Admin_Add_Invoice_GrossAmount.Text);
+        InvoiceToAdd.ClientID = SelectedClient.ID;
+        InvoiceToAdd.JobID = SelectedJob.ID;
+        InvoiceToAdd.Status = "unpaid";
+
+        var response = await client.PostAsJsonAsync(apiUrl + "Invoices/Add_Invoice", InvoiceToAdd);
+
+        if(response.IsSuccessStatusCode)
+        {
+            Add_Invoice_Error_Label.Text = await response.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            Add_Invoice_Error_Label.Text = await response.Content.ReadAsStringAsync();
+        }
     }
 
     //other functions
@@ -317,8 +469,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         if(decimal.TryParse(Admin_Add_Invoice_NetAmount.Text, out decimal NetAmount) && int.TryParse(Admin_Add_Invoice_VatRate.Text, out int VatRate))
         {
             decimal GrossAmount = NetAmount + (NetAmount * VatRate / 100);
-            Admin_Add_Invoice_GrossAmount.Text = GrossAmount.ToString("C");
-            //Admin_Add_Invoice_NetAmount.Text = NetAmount.ToString();
+            Admin_Add_Invoice_GrossAmount.Text = GrossAmount.ToString("F2");
             isVatOK = true;
         }
         else
@@ -330,6 +481,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async void Add_Invoice_OnClientSelected(object sender, SelectionChangedEventArgs e)
     {
+        Add_Invoice_JobsView.SelectedItem = null;
         var SelectedClient = e.CurrentSelection.FirstOrDefault() as Client;
 
         Add_Invoice_JobsView.IsVisible = true;
@@ -345,6 +497,42 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             }
         }
         
+
+    }
+
+    private async void Admin_Genereate_Invoice_PDF(object sender, EventArgs e)
+    {
+        var SelectedInvoice = Edit_Invoice_Section.BindingContext as Invoice;
+
+        if (SelectedInvoice != null)
+        {
+            var response = await client.GetAsync(apiUrl + "Invoices/GeneratePDF/" + SelectedInvoice.ID);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var pdfbytes = await response.Content.ReadAsByteArrayAsync();
+
+                using var stream = new MemoryStream(pdfbytes);
+
+                var result = await FileSaver.SaveAsync("Invoice_" + SelectedInvoice.ID.ToString() + ".pdf", stream);
+
+                if(result.IsSuccessful)
+                {
+                    await Launcher.OpenAsync(new OpenFileRequest
+                    {
+                        File = new ReadOnlyFile(result.FilePath)
+                    });
+
+                    await DisplayAlertAsync("Success", "Invoice Saved.", ":)");
+                }
+                else
+                {
+                    await DisplayAlertAsync("Error", "Error while saving Invoice", "):");
+                }
+
+
+            }
+        }
 
     }
 

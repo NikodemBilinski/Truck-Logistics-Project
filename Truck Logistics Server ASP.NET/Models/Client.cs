@@ -1,4 +1,6 @@
-﻿namespace TrucksLogisticsServerAPI.Models
+﻿using System.Text.Json.Serialization;
+
+namespace TrucksLogisticsServerAPI.Models
 {
     public class Client
     {
@@ -22,7 +24,9 @@
 
 
         //relacje 
+        [JsonIgnore]
         public List<Invoice> Invoices { get; set; } = new List<Invoice>();
+        [JsonIgnore]
         public List<Job> Jobs { get; set; } = new List<Job>();
     }
 }

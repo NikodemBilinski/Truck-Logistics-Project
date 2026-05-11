@@ -61,6 +61,53 @@
                 </Grid>
             </Grid>
             
+            <!--Invoice View-->
+            <Grid x:Name="Invoice_View"
+                  IsVisible="False">
+                <Grid RowDefinitions="*,*">
+                    <Grid ColumnDefinitions="50,150,150,150,150,150" 
+                          Margin="0,10,0,0"
+                          BackgroundColor="Transparent" 
+                          Padding="10"
+                          HorizontalOptions="Center"
+                          Grid.Row="0">
+                        
+                        <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                        <Label Grid.Column="1" Text="Client Name" FontAttributes="Bold"/>
+                        <Label Grid.Column="2" Text="Job Name" FontAttributes="Bold"/>
+                        <Label Grid.Column="3" Text="Issue Date" FontAttributes="Bold"/>
+                        <Label Grid.Column="4" Text="Due Date" FontAttributes="Bold"/>
+                        <Label Grid.Column="5" Text="Gross Amount" FontAttributes="Bold"/>
+                    </Grid>
+                    <CollectionView x:Name="All_Invoices_View"
+                                    SelectionMode="Single"
+                                    WidthRequest="850"
+                                    SelectionChanged="Admin_Invoice_View_Selected"
+                                    Grid.Row="1">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Invoice">
+                                <Border Stroke="Transparent" Padding="-5">
+                                    <Border Stroke="transparent"  StrokeThickness="3">
+                                        <Grid ColumnDefinitions="50,150,150,150,150,150"
+                                              Padding="10"
+                                              HorizontalOptions="Center">
+
+                                            <Label Grid.Column="0" Text="{Binding ID}"/>
+                                            <Label Grid.Column="1" Text="{Binding Client.Name}"/>
+                                            <Label Grid.Column="2" Text="{Binding Job.Name}"/>
+                                            <Label Grid.Column="3" Text="{Binding IssueDate, StringFormat='{0:d}'}"/>
+                                            <Label Grid.Column="4" Text="{Binding DueDate, StringFormat='{0:d}'}"/>
+                                            <Label Grid.Column="5" Text="{Binding GrossAmount, StringFormat='{0} zł'}"/>
+
+                                        </Grid>
+                                    </Border>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </Grid>
+            </Grid>
             <!--Client Edit Section-->
             <VerticalStackLayout x:Name="Edit_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">
                 <Label x:Name="EditClientLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
@@ -100,6 +147,58 @@
                         <Button Text="Delete Invoice"
                                 HeightRequest="50"
                                 Clicked="Admin_Delete_Client"/>
+                    </VerticalStackLayout>
+                </Grid>
+
+            </VerticalStackLayout>
+            
+            <!--Invoice Edit Section-->
+
+            <VerticalStackLayout x:Name="Edit_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10">
+                <Label x:Name="EditInvoiceLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+
+                <Grid ColumnDefinitions="150,400,150" Margin="30">
+                    <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                        <Label Text="Company Name:"/>
+                        <Label Text="NIP:"/>
+                        <Label Text="Job Name:"/>
+                        <Label Text="Issue Date:"/>
+                        <Label Text="Due Date:"/>
+                        <Label Text="Netto:"/>
+                        <Label Text="VAT Rate:"/>
+                        <Label Text="Brutto:"/>
+                        <Label Text="Status (Paid, Unpaid, Overdue)"/>
+
+
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="1" Spacing="40" VerticalOptions="Center">
+                        <Label Text="{Binding Client.Name} "/>
+                        <Label Text="{Binding Client.NIP}"/>
+                        <Label Text="{Binding Job.Name}"/>
+                        <Label Text="{Binding IssueDate, StringFormat='{0:d}'}"/>
+                        <Label Text="{Binding DueDate, StringFormat='{0:d}'}"/>
+                        <Label Text="{Binding NetAmount, StringFormat='{0:F2} zł'}"/>
+                        <Label Text="{Binding VatRate, StringFormat='{0}%'}"/>
+                        <Label Text="{Binding GrossAmount, StringFormat='{0:F2} zł'}"/>
+                        <Entry x:Name="Admin_Edit_Invoice_Status" Text="{Binding Status}" Placeholder="Status"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="2" Spacing="15">
+                        <Label x:Name="EditInvoiceLabelMain"
+                               TextColor="Red"
+                               Margin="0,0,0,0"/>
+                        
+                        <Button Text="Save Changes" 
+                                HeightRequest="50"
+                                Clicked="Admin_Save_Invoice"/>
+                        
+                        <Button Text="Generate Invoice PDF" 
+                                HeightRequest="50"
+                                Clicked="Admin_Genereate_Invoice_PDF"/>
+
+                        <Button Text="Delete Invoice"
+                                HeightRequest="50"
+                                Clicked="Admin_Delete_Invoice"/>
                     </VerticalStackLayout>
                 </Grid>
 
@@ -150,8 +249,8 @@
             <VerticalStackLayout x:Name="Add_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10" Margin="20">
                 <Label Text="Add New Invoice" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-                <Grid ColumnDefinitions="150,200,300,300,150">
-                    <VerticalStackLayout Grid.Column="0" Grid.Row="0" Spacing="40" VerticalOptions="Center">
+                <Grid ColumnDefinitions="150,200,250,250,250">
+                    <VerticalStackLayout Grid.Column="0" Grid.Row="0" Spacing="40" VerticalOptions="Start" Margin="0,10,0,0">
 
                         <Label Text="Issue Date:"/>
                         <Label Text="Due Date:"/>
@@ -160,12 +259,12 @@
                         <Label Text="Gross Amount: "/>
                         
                     </VerticalStackLayout>
-                    <VerticalStackLayout Grid.Column="1" Grid.Row="0" Spacing="15">
+                    <VerticalStackLayout Grid.Column="1" Grid.Row="0" Spacing="15" VerticalOptions="Start"> 
                         <DatePicker x:Name="Admin_Add_Invoice_IssueDate" HorizontalOptions="Start"/>
                         <DatePicker x:Name="Admin_Add_Invoice_DueDate" HorizontalOptions="Start"/>
                         <Entry x:Name="Admin_Add_Invoice_NetAmount" Placeholder="Net Amount" WidthRequest="150" HorizontalOptions="Start" TextChanged="Vat_Rate_Changed"/>
                         <Entry x:Name="Admin_Add_Invoice_VatRate" Placeholder="Vat Rate" WidthRequest="150" HorizontalOptions="Start" TextChanged="Vat_Rate_Changed"/>
-                        <Label x:Name="Admin_Add_Invoice_GrossAmount" WidthRequest="150" HorizontalOptions="Start"/>    
+                        <Label x:Name="Admin_Add_Invoice_GrossAmount" WidthRequest="150" HorizontalOptions="Center" VerticalOptions="End" Margin="0,10,0,0"/>    
 
                     </VerticalStackLayout>
                     <!--Clients View-->
@@ -173,10 +272,13 @@
                                     Grid.Column="2"
                                     SelectionMode="Single"
                                     SelectionChanged="Add_Invoice_OnClientSelected"
-                                    WidthRequest="200">
+                                    Margin="5">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
+                        </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:Client">
-                                <Border HeightRequest="30">
+                                <Border HeightRequest="50">
                                     <Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="Center"/>
                                 </Border>
                             </DataTemplate>
@@ -188,10 +290,14 @@
                     <CollectionView x:Name="Add_Invoice_JobsView"
                                     Grid.Column="3"
                                     SelectionMode="Single"
-                                    IsVisible="False">
+                                    IsVisible="False"
+                                    Margin="5">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
+                        </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:Job">
-                                <Border HeightRequest="30">
+                                <Border HeightRequest="50">
                                     <Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="Center"/>
                                 </Border>
                             </DataTemplate>
@@ -202,12 +308,15 @@
                            Grid.Column="4"
                            Grid.Row="0"
                            TextColor="Red"
-                           Margin="0,50,0,0"/>
+                           Margin="0,50,0,0"
+                           HorizontalOptions="Center"/>
 
-                    <Button Text="Add Client" 
+                    <Button Text="Add Invoice" 
                             Grid.Column="4" 
                             Grid.Row="0"
                             HeightRequest="50"
+                            WidthRequest="150"
+                            HorizontalOptions="Center"
                             Clicked="Admin_Add_Invoice_Clicked"/>
                 </Grid>
 
@@ -231,7 +340,8 @@
                             WidthRequest="125"
                             Clicked="Admin_Show_Clients_View"/>
                     <Button Text="Show all Invoices"
-                            WidthRequest="125"/>
+                            WidthRequest="125"
+                            Clicked="Admin_Show_Invoices_View"/>
                     
                     <Button Text="Add new Client"
                             WidthRequest="125"
