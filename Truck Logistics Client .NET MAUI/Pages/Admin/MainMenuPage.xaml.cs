@@ -27,6 +27,12 @@ public partial class MainMenuPage : ContentPage
     public MainMenuPage()
     {
         InitializeComponent();
+
+        Shell.SetBackButtonBehavior(this, new BackButtonBehavior
+        {
+            IsEnabled = false,
+            IsVisible = false
+        });
     }
 
     protected override async void OnAppearing()
@@ -37,7 +43,6 @@ public partial class MainMenuPage : ContentPage
     }
 
     //GET CURRENT USER, HIDE EVERYTHING, GET LANGUAGES
-    #region UserManagement
     private async Task Get_Current_User()
     {
 
@@ -67,20 +72,6 @@ public partial class MainMenuPage : ContentPage
             Welcome_User_Label.Text = "Error fetching user data: " + ex.Message;
         }
         
-
-    }
-
-    private async Task Hide_Everything()
-    {
-        Jobs_View.IsVisible = false;
-        Jobs_View.IsEnabled = false;
-
-        Edit_Job_Section.IsVisible = false;
-        Edit_Job_Section.IsEnabled = false;
-
-        Add_Job_Section.IsVisible = false;
-        Add_Job_Section.IsEnabled = false;
-
 
     }
 
@@ -140,301 +131,10 @@ public partial class MainMenuPage : ContentPage
         return new List<Client>();
     }
 
-    #endregion
 
 
-    //GET USERS, TRUCKS, JOBS
-    #region GetData
-
-    private async void Admin_Get_Jobs_Clicked(object sender, EventArgs e)
-    {
-        await Hide_Everything();
-
-        Jobs_View.IsEnabled = true;
-        Jobs_View.IsVisible = true;
-
-        try
-        {
-            var response = await client.GetAsync(apiUrl + "Jobs/Get_All_Jobs");
-            if (response.IsSuccessStatusCode)
-            {
-                var jobslist = await response.Content.ReadFromJsonAsync<List<Job>>();
-                Get_All_Jobs_View.ItemsSource = jobslist;
-            }
-
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine("Error: " + ex.Message);
-            return;
-        }
-    }
-
-    #endregion
-
-    //OPEN CERTAIN SECTIONS IN MAIN MENU
-    #region OpenSections
-
-    private async void Admin_Open_Add_Job_Section(object sender, EventArgs e)
-    {
-        await Hide_Everything();
-        Add_Job_Section.IsVisible = true;
-        Add_Job_Section.IsEnabled = true;
-
-        SelectedLanguages.Clear();
-
-        var languagesfromdb = await Get_Languages();
-
-        Admin_Add_Job_RequiredLanguages_View.ItemsSource = languagesfromdb;
-
-        var allclients = await Get_Clients();
-
-        Admin_Add_Job_Clients_View.ItemsSource = allclients;
-    }
-
-    private async void Admin_Jobs_View_Selected(object sender, SelectionChangedEventArgs e)
-    {
-        await Hide_Everything();
-        var selectedJob = e.CurrentSelection.FirstOrDefault() as Job;
-        if(selectedJob != null)
-        {
-            Edit_Job_Section_Header.Text = "Edit job " + selectedJob.Name;
-            Edit_Job_Section.IsEnabled = true;
-            Edit_Job_Section.IsVisible = true;
-            Edit_Job_Section.BindingContext = selectedJob;
-        }
-
-        SelectedLanguages.Clear();
-        var alllanguages = await Get_Languages();
-
-        var selectedlanguagesstring = selectedJob.RequiredLanguages.Split(",");
-
-        foreach(var lang in alllanguages)
-        {
-            if (selectedlanguagesstring.Contains(lang.Name))
-            {
-                lang.SelectionColor = Colors.LightBlue;
-                SelectedLanguages.Add(lang);
-            }
-            else
-            {
-                lang.SelectionColor = Colors.Transparent;
-            }
-        }
-
-        
-
-        try
-        {
-            var response = await client.GetAsync(apiUrl + "Users/Get_All_Users");
-
-            if (response.IsSuccessStatusCode)
-            {
-                var userslist = await response.Content.ReadFromJsonAsync<List<Users>>();
-
-                Admin_Edit_Job_Users_View.ItemsSource = userslist;
-
-                var assigneduser = userslist.FirstOrDefault(x => x.ID == selectedJob.AssignedUserId);
-
-                if (assigneduser != null)
-                {
-                    Admin_Edit_Job_Users_View.SelectedItem = assigneduser;
-                }
-                else
-                {
-                    Admin_Edit_Job_Users_View.SelectedItem = null;
-                }
-                
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine("Error: " + ex.Message);
-            return;
-        }
-
-        Admin_Edit_Job_RequiredLanguages_View.ItemsSource = alllanguages;
-    }
-
-    #endregion
-
-    //ADD TO DATABASE
-    #region AddToDatabase
-
-    private async void Admin_Add_Job_Clicked(object sender, EventArgs e)
-    {
-        Job JobToAdd = new Job();
-
-        if (string.IsNullOrEmpty(Admin_Add_Job_Name.Text))
-        {
-            Add_Job_Error_Label.Text = "Job Name is empty!";
-            return;
-        }
-        if (string.IsNullOrEmpty(Admin_Add_Job_Description.Text))
-        {
-            Add_Job_Error_Label.Text = "Job Description is empty!";
-            return;
-        }
-        if (!int.TryParse(Admin_Add_Job_RequiredMinimumCapacity.Text, out int minimumCapacity))
-        {
-            Add_Job_Error_Label.Text = "Minimum Capacity should be a number!";
-            return;
-        }
-        if (string.IsNullOrEmpty(Admin_Add_Job_LocationFrom.Text) || string.IsNullOrEmpty(Admin_Add_Job_LocationTo.Text))
-        {
-            Add_Job_Error_Label.Text = "Location From and Location To cannot be empty!";
-            return;
-        }
-        if (Admin_Add_Job_RequiredTruckBrand.Text == null)
-        {
-            JobToAdd.RequiredTruckBrand = "all";
-        }
-        else
-        {
-            JobToAdd.RequiredTruckBrand = Admin_Add_Job_RequiredTruckBrand.Text;
-        }
-        if (SelectedLanguages.Count == 0)
-        {
-            Add_Job_Error_Label.Text = "Select at least one required language!";
-            return;
-        }
-        if (Admin_Add_Job_ClientContact.Text == null)
-        {
-            Add_Job_Error_Label.Text = "Add Client contact number!";
-            return;
-        }
-        if (Admin_Add_Job_CompanyName.Text == null)
-        {
-            Add_Job_Error_Label.Text = "Add Client Company Name!";
-            return;
-        }
-        if(Admin_Add_Job_Clients_View.SelectedItem == null)
-        {
-            Add_Job_Error_Label.Text = "Choose client.";
-            return;
-        }
-        // get selected languages and convert to string separated by comma
-
-        var selectedlanguagesstring = string.Join(",", SelectedLanguages.Select(x => x.Name));
 
 
-        JobToAdd.Name = Admin_Add_Job_Name.Text;
-        JobToAdd.CompanyName = Admin_Add_Job_CompanyName.Text;
-        JobToAdd.ClientContactNumber = Admin_Add_Job_ClientContact.Text;
-        JobToAdd.Created = DateTime.Now;
-        JobToAdd.DeadLine = (DateTime)Admin_Add_Job_DeadLine.Date;
-        JobToAdd.LocationFrom = Admin_Add_Job_LocationFrom.Text;
-        JobToAdd.LocationTo = Admin_Add_Job_LocationTo.Text;
-        JobToAdd.Status = "open";
-        JobToAdd.Description = Admin_Add_Job_Description.Text;
-        
-        
-        JobToAdd.RequiredLanguages = selectedlanguagesstring;
-        JobToAdd.RequiredMinimumCapacity = minimumCapacity;
-
-        Client ClientToAdd = (Client)Admin_Add_Job_Clients_View.SelectedItem;
-
-        JobToAdd.ClientID = ClientToAdd.ID;
-
-        var response = await client.PostAsJsonAsync(apiUrl + "Jobs/Add_Job", JobToAdd);
-
-        if (response.IsSuccessStatusCode)
-        {
-            Add_Job_Error_Label.Text = await response.Content.ReadAsStringAsync();
-            Debug.WriteLine(await response.Content.ReadAsStringAsync());
-        }
-        else
-        {
-            Add_Job_Error_Label.Text = await response.Content.ReadAsStringAsync();
-            Debug.WriteLine(await response.Content.ReadAsStringAsync());
-        }
-    }
-    #endregion
-
-    //SAVE EDIT TO DATABASE
-    #region SaveEditToDatabase
-
-    private async void Admin_Save_Job_Edit(object sender, EventArgs e)
-    {
-        var selectedjob = Edit_Job_Section.BindingContext as Job;
-
-        if (selectedjob != null)
-        {
-            
-            var selectedlanguagesstring = string.Join(",", SelectedLanguages.Select(x => x.Name));
-
-            selectedjob.RequiredLanguages = selectedlanguagesstring;
-
-            var selecteduser = Admin_Edit_Job_Users_View.SelectedItem as Users;
-            if (selecteduser != null)
-            {
-                selectedjob.AssignedUserId = selecteduser.ID;
-            }
-            else
-            {
-                selectedjob.AssignedUserId = null;
-            }
-            
-
-            var response = await client.PutAsJsonAsync(apiUrl + "Jobs/Update_Job/" + selectedjob.ID, selectedjob);
-
-        
-            if (response.IsSuccessStatusCode)
-            {
-                Edit_Job_Error_Label.Text = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine("Truck updated successfully.");
-            }
-            else
-            {
-                Edit_Job_Error_Label.Text = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine("Failed to update Job, status code: " + response.Content.ReadAsStringAsync());
-            }
-
-            return;
-        }
-        else
-        {
-            //dalej nie wiem co trzeba zrobic aby to osiagnac
-            Edit_Job_Error_Label.Text = "No truck selected for editing.";
-            Debug.WriteLine("No job selected for editing.");
-            return;
-        }
-        
-    }
-
-    #endregion
-
-    //DELETE FROM DATABASE
-
-    #region DeleteFromDatabase
-
-    private async void Admin_Delete_Job(object sender, EventArgs e)
-    {
-        var JobToDelete = Edit_Job_Section.BindingContext as Job;
-
-        if(JobToDelete != null)
-        {
-            var response = await DisplayAlertAsync("Deleting Job", "Are you sure you want to delete Job: " + JobToDelete.Name + "?","Yes","No");
-
-            if(response)
-            {
-                var request = await client.DeleteAsync(apiUrl + "Jobs/Delete_Job/" + JobToDelete.ID);
-                if(request.IsSuccessStatusCode)
-                {
-                    Debug.WriteLine("Deleted Job from Database.");
-                    Edit_Job_Error_Label.Text = await request.Content.ReadAsStringAsync();
-                    await Hide_Everything();
-                    return;
-                }
-
-                Edit_Job_Error_Label.Text = await request.Content.ReadAsStringAsync();
-            }
-            
-            return;
-
-        }
-    }
-    #endregion
 
     // other stuff
     private async void On_Language_Tapped(object sender, EventArgs e)
@@ -477,10 +177,6 @@ public partial class MainMenuPage : ContentPage
         
     }
 
-    private async void Clear_Assign_Clicked(object sender, EventArgs e)
-    {
-        Admin_Edit_Job_Users_View.SelectedItem = null;
-    }
 
     private async void Admin_MoveTo_InvoicesAndClients(object sender, EventArgs e)
     {
