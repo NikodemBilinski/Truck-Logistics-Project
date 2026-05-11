@@ -114,11 +114,11 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         //Edit_Job_Section.IsVisible = false;
         //Edit_Job_Section.IsEnabled = false;
 
-        //Add_User_Section.IsVisible = false;
-        //Add_User_Section.IsEnabled = false;
+        Add_User_Section.IsVisible = false;
+        Add_User_Section.IsEnabled = false;
 
-        //Add_Truck_Section.IsVisible = false;
-        //Add_Truck_Section.IsEnabled = false;
+        Add_Truck_Section.IsVisible = false;
+        Add_Truck_Section.IsEnabled = false;
 
         //Add_Job_Section.IsVisible = false;
         //Add_Job_Section.IsEnabled = false;
@@ -253,6 +253,125 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
             Edit_Truck_Section.BindingContext = selectedTruck;
         }
+    }
+
+    private async void Admin_Open_Add_User_Section(object sender, EventArgs e)
+    {
+        await Hide_Everything();
+        Add_User_Section.IsEnabled = true;
+        Add_User_Section.IsVisible = true;
+    }
+
+    private async void Admin_Open_Add_Truck_Section(object sender, EventArgs e)
+    {
+        await Hide_Everything();
+
+        Add_Truck_Section.IsVisible = true;
+        Add_Truck_Section.IsEnabled = true;
+    }
+
+    //add users trucks
+
+    private async void Admin_Add_User_Clicked(object sender, EventArgs e)
+    {
+        if (string.IsNullOrEmpty(Admin_Add_User_FirstName.Text))
+        {
+            Add_User_Error_Label.Text = "First Name is empty!";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Add_User_LastName.Text))
+        {
+            Add_User_Error_Label.Text = "Last Name is empty!";
+            return;
+        }
+        if (!int.TryParse(Admin_Add_User_Age.Text, out int age))
+        {
+            Add_User_Error_Label.Text = "Age should be a number!";
+            return;
+        }
+
+        if(Admin_Add_User_Role.Text == null)
+        {
+            Admin_Add_User_Role.Text = "user";
+        }
+        Admin_Add_User_Role.Text = Admin_Add_User_Role.Text.ToLower();
+
+        if (Admin_Add_User_Role.Text != "user" && Admin_Add_User_Role.Text != "admin")
+        {
+            Add_User_Error_Label.Text = "Role is not either user or admin";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Add_User_Username.Text))
+        {
+            Add_User_Error_Label.Text = "Username is empty!";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Add_User_Password.Text))
+        {
+            Add_User_Error_Label.Text = "Password is empty!";
+            return;
+        }
+        var UserToAdd = new Users()
+        {
+            FirstName = Admin_Add_User_FirstName.Text,
+            LastName = Admin_Add_User_LastName.Text,
+            Age = age,
+            Role = Admin_Add_User_Role.Text,
+            Username = Admin_Add_User_Username.Text,
+            Password = Admin_Add_User_Password.Text
+        };
+
+        var result = await client.PostAsJsonAsync(apiUrl + "Users/Add_User", UserToAdd);
+
+        if (result.IsSuccessStatusCode)
+        {
+            Add_User_Error_Label.Text = await result.Content.ReadAsStringAsync();
+
+        }
+        else
+        {
+            Add_User_Error_Label.Text = await result.Content.ReadAsStringAsync();
+        }
+    }
+
+    private async void Admin_Add_Truck_Clicked(object sender, EventArgs e)
+    {
+
+        Truck TruckToAdd = new Truck();
+
+        if (string.IsNullOrEmpty(Admin_Add_Truck_Name.Text))
+        {
+            Add_Truck_Error_Label.Text = "Name is empty!";
+            return;
+        }
+        if (string.IsNullOrEmpty(Admin_Add_Truck_Brand.Text))
+        {
+            Add_Truck_Error_Label.Text = "Brand is empty!";
+            return;
+        }
+        if (!int.TryParse(Admin_Add_Truck_Capacity.Text, out int capacity))
+        {
+            Add_Truck_Error_Label.Text = "Capacity should be a number!";
+            return;
+        }
+
+        TruckToAdd.Name = Admin_Add_Truck_Name.Text;
+        TruckToAdd.brand = Admin_Add_Truck_Brand.Text;
+        TruckToAdd.Capacity = capacity;
+
+        var response = await client.PostAsJsonAsync(apiUrl + "Trucks/Add_Truck", TruckToAdd);
+
+        if (response.IsSuccessStatusCode)
+        {
+            Add_Truck_Error_Label.Text = await response.Content.ReadAsStringAsync();
+        }
+        else
+        {
+            Add_Truck_Error_Label.Text = await response.Content.ReadAsStringAsync();
+        }
+
+
+
     }
 
     //save edits
