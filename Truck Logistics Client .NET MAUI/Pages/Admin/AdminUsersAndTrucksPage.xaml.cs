@@ -66,6 +66,34 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     }
 
+    private async Task<List<Language>> Get_Languages()
+    {
+        try
+        {
+            var response = await client.GetAsync(apiUrl + "Values/Get_Languages");
+
+            if (response.IsSuccessStatusCode)
+            {
+                var Languages = await response.Content.ReadFromJsonAsync<List<Language>>();
+
+                if (Languages != null)
+                {
+                    return Languages;
+                }
+                else
+                {
+                    return new List<Language>();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Error: " + ex.Message);
+            return new List<Language>();
+        }
+        return new List<Language>();
+    }
+
     private async Task Hide_Everything()
     {
         Users_View.IsVisible = false;
@@ -77,11 +105,11 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         //Jobs_View.IsVisible = false;
         //Jobs_View.IsEnabled = false;
 
-        //Edit_User_Section.IsVisible = false;
-        //Edit_User_Section.IsEnabled = false;
+        Edit_User_Section.IsVisible = false;
+        Edit_User_Section.IsEnabled = false;
 
-        //Edit_Truck_Section.IsVisible = false;
-        //Edit_Truck_Section.IsEnabled = false;
+        Edit_Truck_Section.IsVisible = false;
+        Edit_Truck_Section.IsEnabled = false;
 
         //Edit_Job_Section.IsVisible = false;
         //Edit_Job_Section.IsEnabled = false;
@@ -152,13 +180,254 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     private async void Admin_Users_View_Selected(object sender, SelectionChangedEventArgs e)
     {
+        await Hide_Everything();
 
+
+        var selecteduser = e.CurrentSelection.FirstOrDefault() as Users;
+
+        // get all languages
+        var allLanguages = await Get_Languages();
+
+        var allTrucks = await client.GetFromJsonAsync<List<Truck>>(apiUrl + "Trucks/Get_Trucks");
+
+        //clear selected languages and trucks lists if it was used before
+        SelectedTrucks.Clear();
+        SelectedLanguages.Clear();
+        // truck section
+        if (allTrucks != null)
+        {
+            foreach (var truck in allTrucks)
+            {
+                if (selecteduser.AssignedTrucks.Any(x => x.Id == truck.Id))
+                {
+                    truck.SelectionColor = Colors.LightBlue;
+                    SelectedTrucks.Add(truck);
+                }
+                else
+                {
+                    truck.SelectionColor = Colors.Transparent;
+                }
+            }
+
+            All_Trucks_View.ItemsSource = allTrucks;
+        }
+
+        if (allLanguages != null)
+        {
+            foreach (var lang in allLanguages)
+            {
+                if (selecteduser.Languages.Any(x => x.Id == lang.Id))
+                {
+                    lang.SelectionColor = Colors.LightBlue;
+                    SelectedLanguages.Add(lang);
+                }
+                else
+                {
+                    lang.SelectionColor = Colors.Transparent;
+                }
+            }
+            All_Languages_View.ItemsSource = allLanguages;
+        }
+
+        if (selecteduser != null)
+        {
+            EditUserLabelHeader.Text = "Edit user " + selecteduser.Username;
+            Edit_User_Section.IsEnabled = true;
+            Edit_User_Section.IsVisible = true;
+
+            Edit_User_Section.BindingContext = selecteduser;
+        }
     }
 
     private async void Admin_Trucks_View_Selected(object sender, SelectionChangedEventArgs e)
     {
+        await Hide_Everything();
+
+        var selectedTruck = e.CurrentSelection.FirstOrDefault() as Truck;
+
+        if (selectedTruck != null)
+        {
+            EditTruckLabelHeader.Text = "Edit truck " + selectedTruck.Name;
+            Edit_Truck_Section.IsEnabled = true;
+            Edit_Truck_Section.IsVisible = true;
+
+            Edit_Truck_Section.BindingContext = selectedTruck;
+        }
+    }
+
+    //save edits
+
+    private async void Admin_Save_User_Edit(object sender, EventArgs e)
+    {
+        var selecteduser = Edit_User_Section.BindingContext as Users;
+
+        //get selected languages
+        var selectedlanguages = SelectedLanguages;
+        if (selecteduser != null)
+        {
+            var result = await client.PutAsJsonAsync(apiUrl + "Users/Update_User/" + selecteduser.ID, selecteduser);
+
+            //http put update languages
+            var result2 = await client.PutAsJsonAsync(apiUrl + "Users/Update_User_Languages/" + selecteduser.ID, selectedlanguages);
+
+            var result3 = await client.PutAsJsonAsync(apiUrl + "Users/Update_User_Trucks/" + selecteduser.ID, SelectedTrucks);
+            if (result.IsSuccessStatusCode && result2.IsSuccessStatusCode && result3.IsSuccessStatusCode)
+            {
+                Debug.WriteLine("User updated successfully.");
+            }
+            else
+            {
+                Debug.WriteLine("Failed to update user. Status code: " + result.Content.ReadAsStringAsync());
+                Debug.WriteLine("Failed to update user. Status code: " + result2.Content.ReadAsStringAsync());
+                Debug.WriteLine("Failed to update user. Status code: " + result3.Content.ReadAsStringAsync());
+                EditUserLabelMain.Text = await result.Content.ReadAsStringAsync() + "\n" + await result2.Content.ReadAsStringAsync()
+                    + "\n" + await result3.Content.ReadAsStringAsync();
+            }
+
+            await Hide_Everything();
+
+            Users_View.IsEnabled = true;
+            Users_View.IsVisible = true;
+
+            return;
+        }
+        else
+        {
+            await Hide_Everything();
+            Debug.WriteLine("No user selected for editing.");
+            return;
+        }
+    }
+
+    private async void Admin_Save_Truck_Edit(object sender, EventArgs e)
+    {
+        var selectedtruck = Edit_Truck_Section.BindingContext as Truck;
+        if (selectedtruck != null)
+        {
+            var result = await client.PutAsJsonAsync(apiUrl + "Trucks/Update_Truck/" + selectedtruck.Id, selectedtruck);
+            if (result.IsSuccessStatusCode)
+            {
+                EditTruckLabelMain.Text = await result.Content.ReadAsStringAsync();
+                Debug.WriteLine("Truck updated successfully.");
+            }
+            else
+            {
+                EditTruckLabelMain.Text = await result.Content.ReadAsStringAsync();
+                Debug.WriteLine("Failed to update truck. Status code: " + result.Content.ReadAsStringAsync());
+            }
+
+            await Hide_Everything();
+
+            Trucks_View.IsEnabled = true;
+            Trucks_View.IsVisible = true;
+
+            return;
+        }
+        else
+        {
+            //szczerze nie wiem co trzeba by bylo zrobic w tym programie aby osiagnac ten komunikat, ale niech bedzie
+            EditTruckLabelMain.Text = "No truck selected for editing.";
+            Debug.WriteLine("No truck selected for editing.");
+            return;
+        }
+    }
+
+    //DELETE FROM DATABASE
+
+    private async void Admin_Delete_User(object sender, EventArgs e)
+    {
+        var selecteduser = Edit_User_Section.BindingContext as Users;
+
+        if (selecteduser != null)
+        {
+            var response = await DisplayAlertAsync("Deleting User", "Are you sure you want to delete " + selecteduser.Username, "Yes", "No");
+
+            if (response)
+            {
+                var request = await client.DeleteAsync(apiUrl + "Users/Delete_User/" + selecteduser.ID);
+
+                if (request.IsSuccessStatusCode)
+                {
+                    //show goooooooooooooooooood
+                    EditUserLabelMain.Text = await request.Content.ReadAsStringAsync();
+                    return;
+                }
+
+                //show error
+                EditUserLabelMain.Text = await request.Content.ReadAsStringAsync();
+
+            }
+            return;
+        }
+    }
+
+    private async void Admin_Delete_Truck(object sender, EventArgs e)
+    {
+        var selectedtruck = Edit_Truck_Section.BindingContext as Truck;
+
+        if (selectedtruck != null)
+        {
+            var response = await DisplayAlertAsync("Deleting Truck", "Are you sure you want to delete " + selectedtruck.Name, "Yes", "No");
+
+            if (response)
+            {
+                var request = await client.DeleteAsync(apiUrl + "Trucks/Delete_Truck/" + selectedtruck.Id);
+
+                if (request.IsSuccessStatusCode)
+                {
+                    //gut
+                    EditTruckLabelMain.Text = await request.Content.ReadAsStringAsync();
+                    await Hide_Everything();
+                    return;
+                }
+
+                //error
+                EditTruckLabelMain.Text = await request.Content.ReadAsStringAsync();
+            }
+            return;
+        }
+    }
+
+    //other stuff
+
+    private async void On_Language_Tapped(object sender, EventArgs e)
+    {
+        var border = (Border)sender;
+        var tappedLanguage = (Language)border.BindingContext;
+
+        // if language is selected, deselect it, else select it
+        if (SelectedLanguages.Contains(tappedLanguage))
+        {
+            SelectedLanguages.Remove(tappedLanguage);
+            border.BackgroundColor = Colors.Transparent;
+        }
+        else
+        {
+            SelectedLanguages.Add(tappedLanguage);
+            border.BackgroundColor = Colors.LightBlue;
+        }
 
     }
 
+    private async void On_Truck_Tapped(object sender, EventArgs e)
+    {
+        var border = (Border)sender;
+
+        var tappedtruck = (Truck)border.BindingContext;
+
+        if (SelectedTrucks.Contains(tappedtruck))
+        {
+            SelectedTrucks.Remove(tappedtruck);
+            border.BackgroundColor = Colors.Transparent;
+        }
+        else
+        {
+            SelectedTrucks.Add(tappedtruck);
+            border.BackgroundColor = Colors.LightBlue;
+        }
+
+
+
+    }
 
 }
