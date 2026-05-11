@@ -75,25 +75,25 @@
 	  <Compile Update="Pages\LogInPage.xaml.cs">
 	    <DependentUpon>LogInPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="Pages\MainMenuPage.xaml.cs">
+	  <Compile Update="Pages\Admin\MainMenuPage.xaml.cs">
 	    <DependentUpon>MainMenuPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="Pages\AdminInvoicesAndClientsPage.xaml">
+	  <MauiXaml Update="Pages\Admin\AdminInvoicesAndClientsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\AdminJobsPage.xaml">
+	  <MauiXaml Update="Pages\Admin\AdminJobsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\AdminUsersAndTrucksPage.xaml">
+	  <MauiXaml Update="Pages\Admin\AdminUsersAndTrucksPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\MainMenuPage.xaml">
+	  <MauiXaml Update="Pages\Admin\MainMenuPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\UserMainMenuPage.xaml">
+	  <MauiXaml Update="Pages\User\UserMainMenuPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

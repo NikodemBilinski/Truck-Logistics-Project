@@ -868,6 +868,11 @@ public partial class MainMenuPage : ContentPage
         await Shell.Current.GoToAsync($"{nameof(AdminInvoicesAndClientsPage)}?UserID={UserID}");
     }
 
+    private async void Admin_MoveTo_UsersAndTrucks(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"{nameof(AdminUsersAndTrucksPage)}?UserID={UserID}");
+    }
+
 
 
 }

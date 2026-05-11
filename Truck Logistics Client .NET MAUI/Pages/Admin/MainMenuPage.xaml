@@ -679,6 +679,9 @@
                     <Button Text="Manage Invoices And Clients"
                             WidthRequest="125"
                             Clicked="Admin_MoveTo_InvoicesAndClients"/>
+                    <Button Text="Manage Invoices And Clients"
+                            WidthRequest="125"
+                            Clicked="Admin_MoveTo_UsersAndTrucks"/>
 
                 </VerticalStackLayout>
             </Border>
