@@ -23,6 +23,12 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 	public AdminUsersAndTrucksPage()
 	{
 		InitializeComponent();
+
+        Shell.SetBackButtonBehavior(this, new BackButtonBehavior
+        {
+            IsVisible = false,
+            IsEnabled = false
+        });
 	}
 
     protected override async void OnAppearing()
