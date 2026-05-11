@@ -23,6 +23,12 @@ public partial class AdminJobsPage : ContentPage
     public AdminJobsPage()
 	{
 		InitializeComponent();
+
+        Shell.SetBackButtonBehavior(this, new BackButtonBehavior
+        {
+            IsEnabled = false,
+            IsVisible = false
+        });
 	}
 
     protected override async void OnAppearing()
@@ -415,6 +421,8 @@ public partial class AdminJobsPage : ContentPage
         }
     }
 
+    //other stuff
+
     private async void On_Language_Tapped(object sender, EventArgs e)
     {
         var border = (Border)sender;
@@ -437,5 +445,10 @@ public partial class AdminJobsPage : ContentPage
     private async void Clear_Assign_Clicked(object sender, EventArgs e)
     {
         Admin_Edit_Job_Users_View.SelectedItem = null;
+    }
+
+    private async void Admin_Go_Back(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("..");
     }
 }

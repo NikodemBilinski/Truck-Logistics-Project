@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using System.Net.Http.Json;
+using System.Runtime.InteropServices.ObjectiveC;
 using TrucksLogisticsClient.Models;
 
 namespace TrucksLogisticsClient.Pages;
@@ -553,6 +554,11 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
 
 
+    }
+
+    private async void Admin_Go_Back(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync("..");
     }
 
 }

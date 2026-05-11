@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:model="clr-namespace:TrucksLogisticsClient.Models"
              x:Class="TrucksLogisticsClient.Pages.AdminJobsPage"
-             Title="AdminJobsPage">
+             Title="AdminJobsPage"
+             Shell.NavBarIsVisible="False">
 
 
     <Grid ColumnDefinitions="200,*">
@@ -294,7 +295,9 @@
                     <Button Text="Add New Job"
                             WidthRequest="125"
                             Clicked="Admin_Open_Add_Job_Section"/>
-
+                    <Button Text="Go Back"
+                            WidthRequest="125"
+                            Clicked="Admin_Go_Back"/>
 
 
                 </VerticalStackLayout>

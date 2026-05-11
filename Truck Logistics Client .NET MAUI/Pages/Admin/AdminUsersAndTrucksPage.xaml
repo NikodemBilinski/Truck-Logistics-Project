@@ -399,6 +399,9 @@
                     <Button Text="Add New Truck"
                             Clicked="Admin_Open_Add_Truck_Section"
                             WidthRequest="125"/>
+                    <Button Text="Go Back"
+                            WidthRequest="125"
+                            Clicked="Admin_Go_Back"/>
 
 
                 </VerticalStackLayout>
