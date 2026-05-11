@@ -324,9 +324,12 @@
                     <Button Text="Manage Invoices And Clients"
                             WidthRequest="125"
                             Clicked="Admin_MoveTo_InvoicesAndClients"/>
-                    <Button Text="Manage Invoices And Clients"
+                    <Button Text="USERS, TRUCKS"
                             WidthRequest="125"
                             Clicked="Admin_MoveTo_UsersAndTrucks"/>
+                    <Button Text="JOBS"
+                            WidthRequest="125"
+                            Clicked="Admin_MoveTo_Jobs"/>
 
                 </VerticalStackLayout>
             </Border>

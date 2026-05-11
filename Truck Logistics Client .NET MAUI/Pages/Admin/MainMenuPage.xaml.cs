@@ -492,6 +492,11 @@ public partial class MainMenuPage : ContentPage
         await Shell.Current.GoToAsync($"{nameof(AdminUsersAndTrucksPage)}?UserID={UserID}");
     }
 
+    private async void Admin_MoveTo_Jobs(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync($"{nameof(AdminJobsPage)}?UserID={UserID}");
+    }
+
 
 
 }
