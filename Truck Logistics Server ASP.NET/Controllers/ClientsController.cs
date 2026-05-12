@@ -7,7 +7,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TrucksLogisticsServerAPI.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "user")]
     [Route("api/[controller]")]
     [ApiController]
     public class ClientsController : Controller

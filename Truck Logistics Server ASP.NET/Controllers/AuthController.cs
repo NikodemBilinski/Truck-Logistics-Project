@@ -44,13 +44,16 @@ namespace TrucksLogisticsServerAPI.Controllers
 
             var signingkey = new SymmetricSecurityKey(bytestoken);
 
+            var creds = new SigningCredentials(signingkey, SecurityAlgorithms.HmacSha256);
+
             var token = new JwtSecurityToken(
                 claims: new[]
                 {
                     new Claim(ClaimTypes.Name, user.Username),
                     new Claim(ClaimTypes.Role, user.Role)
                 },
-                expires: DateTime.UtcNow.AddHours(24)
+                expires: DateTime.UtcNow.AddHours(24),
+                signingCredentials: creds
                 );
 
             var tokenstring = new JwtSecurityTokenHandler().WriteToken(token);
