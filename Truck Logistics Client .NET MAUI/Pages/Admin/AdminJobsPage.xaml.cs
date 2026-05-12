@@ -116,7 +116,7 @@ public partial class AdminJobsPage : ContentPage
     {
         try
         {
-            var response = await client.GetAsync(apiUrl + "Get_Clients");
+            var response = await client.GetAsync(apiUrl + "Clients/Get_Clients");
 
             if (response.IsSuccessStatusCode)
             {
