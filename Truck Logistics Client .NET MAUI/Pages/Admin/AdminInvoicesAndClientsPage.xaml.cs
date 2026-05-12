@@ -23,7 +23,13 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     public AdminInvoicesAndClientsPage()
 	{
 		InitializeComponent();
-	}
+
+        Shell.SetBackButtonBehavior(this, new BackButtonBehavior
+        {
+            IsEnabled = false,
+            IsVisible = false
+        });
+    }
 
     protected override async void OnAppearing()
     {
