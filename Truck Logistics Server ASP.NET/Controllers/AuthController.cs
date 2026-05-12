@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
 
@@ -10,10 +14,11 @@ namespace TrucksLogisticsServerAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly DataContext _datacontext;
-
-        public AuthController(DataContext datacontext)
+        private readonly IConfiguration _configuration;
+        public AuthController(DataContext datacontext, IConfiguration configuration)
         {
             _datacontext = datacontext;
+            _configuration = configuration;
         }
 
 
@@ -35,9 +40,24 @@ namespace TrucksLogisticsServerAPI.Controllers
 
             //var token = "fake-token";
 
+            var bytestoken = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+
+            var signingkey = new SymmetricSecurityKey(bytestoken);
+
+            var token = new JwtSecurityToken(
+                claims: new[]
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Role, user.Role)
+                },
+                expires: DateTime.UtcNow.AddHours(24)
+                );
+
+            var tokenstring = new JwtSecurityTokenHandler().WriteToken(token);
+
             Console.WriteLine("Login: Successfully Logged in " + model.Username + ".");
 
-            return Ok(user);
+            return Ok(new { user, token = tokenstring });
         }
     }
 }
