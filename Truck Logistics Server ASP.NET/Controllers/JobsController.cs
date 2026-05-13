@@ -48,6 +48,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP POSTS
+        [HttpPost("Add_Job")]
         public async Task<ActionResult<Job>> AddJob(Job JobToAdd)
         {
             Console.WriteLine("AddJob: Requested To Add Job: " + JobToAdd.Name + ".");
