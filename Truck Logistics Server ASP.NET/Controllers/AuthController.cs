@@ -38,14 +38,16 @@ namespace TrucksLogisticsServerAPI.Controllers
                 return BadRequest("Invalid username or password");
             }
 
-            //var token = "fake-token";
-
+            // zmiana klucza na bajty
             var bytestoken = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
 
+            // utworzenie klucza z tych bajtów
             var signingkey = new SymmetricSecurityKey(bytestoken);
 
+            // utworzenie "ustawien" do signingcredentials, czyli algorytmu i klucza
             var creds = new SigningCredentials(signingkey, SecurityAlgorithms.HmacSha256);
 
+            //deklaracja tokena, claims - dane w tokenie, expires - czas waznosci, signingcredentials - ustawienia do podpisu
             var token = new JwtSecurityToken(
                 claims: new[]
                 {
@@ -56,10 +58,12 @@ namespace TrucksLogisticsServerAPI.Controllers
                 signingCredentials: creds
                 );
 
+            // hashowanie tokena do stringa
             var tokenstring = new JwtSecurityTokenHandler().WriteToken(token);
 
             Console.WriteLine("Login: Successfully Logged in " + model.Username + ".");
 
+            // wysylka w paczusce
             return Ok(new { user, token = tokenstring });
         }
     }

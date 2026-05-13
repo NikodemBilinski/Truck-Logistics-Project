@@ -48,6 +48,9 @@ namespace TrucksLogisticsClient
 
                     await SecureStorage.SetAsync("auth_token", token);
 
+                    var storedToken = await SecureStorage.GetAsync("auth_token");
+                    
+
                     if (user != null)
                     {
                         LoginResultLabel.Text = "Successfully logged in!";
