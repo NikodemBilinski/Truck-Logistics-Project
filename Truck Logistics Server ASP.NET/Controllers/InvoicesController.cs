@@ -1,13 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TrucksLogisticsServerAPI.Data;
-using TrucksLogisticsServerAPI.Models;
 using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
+using TrucksLogisticsServerAPI.Data;
+using TrucksLogisticsServerAPI.Models;
 
 namespace TrucksLogisticsServerAPI.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class InvoicesController : Controller
