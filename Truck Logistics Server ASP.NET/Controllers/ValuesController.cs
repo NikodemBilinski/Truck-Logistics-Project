@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using TrucksLogisticsServerAPI.Controllers;
@@ -20,7 +21,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             _dataContext = dataContext;
         }
-
+        [Authorize(Roles = "admin,user")]
         [HttpGet("Get_Languages")]
 
         public async Task<ActionResult<List<Language>>> GetLanguages()

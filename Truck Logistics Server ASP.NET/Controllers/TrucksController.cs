@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
 
@@ -17,7 +19,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP GETS
-
+        [Authorize(Roles = "admin")]
         [HttpGet("Get_Trucks")]
 
         public async Task<ActionResult<List<Truck>>> GetTrucks()
@@ -28,7 +30,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP POST
-
+        [Authorize(Roles = "admin")]
         [HttpPost("Add_Truck")]
         public async Task<ActionResult<Truck>> AddTruck(Truck TruckToAdd)
         {
@@ -63,7 +65,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP PUTS
-
+        [Authorize(Roles = "admin")]
         [HttpPut("Update_Truck/{id}")]
         public async Task<ActionResult<Truck>> UpdateTruck(int id, Truck updatedTruck)
         {
@@ -85,7 +87,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP DELETES 
-
+        [Authorize(Roles = "admin")]
         [HttpDelete("Delete_Truck/{ID}")]
         public async Task<ActionResult<Truck>> DeleteTruck(int ID)
         {
