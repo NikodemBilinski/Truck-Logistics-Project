@@ -37,15 +37,15 @@ public partial class AdminJobsPage : ContentPage
     {
         base.OnAppearing();
 
-        await Get_Current_User();
-
         var token = await SecureStorage.GetAsync("auth_token");
 
         if(token != null)
         {
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
-        
+
+        await Get_Current_User();
+
     }
 
     private async Task Get_Current_User()
