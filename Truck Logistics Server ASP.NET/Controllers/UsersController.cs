@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TrucksLogisticsServerAPI.Data;
@@ -18,7 +19,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP GETS
-
+        [Authorize(Roles = "admin, user")]
         [HttpGet("Get_User_By_ID/{ID}")]
 
         public async Task<ActionResult<Users>> GetUserByID(int ID)
@@ -33,6 +34,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok(user);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("Get_All_Users")]
 
         public async Task<ActionResult<IEnumerable<Users>>> GetAllUsers()
@@ -45,7 +47,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP POST 
-
+        [Authorize(Roles = "admin")]
         [HttpPost("Add_User")]
 
         public async Task<ActionResult<Users>> AddUser(Users UserToAdd)
@@ -132,7 +134,7 @@ namespace TrucksLogisticsServerAPI.Controllers
 
 
         //HTTP PUTS
-
+        [Authorize(Roles = "admin,user")]
         [HttpPut("Update_User/{id}")]
 
         public async Task<ActionResult<Users>> UpdateUser(int id, Users updatedUser)
@@ -170,6 +172,8 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok("User updated successfully.");
         }
 
+
+        [Authorize(Roles = "admin,user")]
         [HttpPut("Update_User_Languages/{id}")]
         public async Task<ActionResult<Language>> UpdateUserLanguages(int id, List<Language> updatedLanguages)
         {
@@ -202,6 +206,8 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok("User languages updated successfully.");
         }
 
+
+        [Authorize(Roles = "admin,user")]
         [HttpPut("Update_User_Trucks/{id}")]
         public async Task<ActionResult<Truck>> UpdateUserTrucks(int id, List<Truck> updatedTrucks)
         {
@@ -233,7 +239,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP DELETES
-
+        [Authorize(Roles = "admin")]
         [HttpDelete("Delete_User/{ID}")]
 
         public async Task<ActionResult<Users>> DeleteUser(int ID)
