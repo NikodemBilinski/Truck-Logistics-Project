@@ -321,7 +321,7 @@ public partial class UserMainMenuPage : ContentPage
 			chosenjob.Status = "assigned";
 			chosenjob.AssignedUserId = CurrentUser.ID;
 
-			var response = await client.PutAsJsonAsync(apiUrl + "Users/Update_Job/" + chosenjob.ID, chosenjob);
+			var response = await client.PutAsJsonAsync(apiUrl + "Jobs/Update_Job/" + chosenjob.ID, chosenjob);
 
 			if(response.IsSuccessStatusCode)
 			{
@@ -348,7 +348,7 @@ public partial class UserMainMenuPage : ContentPage
 
 			chosenjob.Status = "open";
 
-			var response = await client.PutAsJsonAsync(apiUrl + "Users/Update_Job/" + chosenjob.ID, chosenjob);
+			var response = await client.PutAsJsonAsync(apiUrl + "Jobs/Update_Job/" + chosenjob.ID, chosenjob);
 
 			if(response.IsSuccessStatusCode)
 			{
