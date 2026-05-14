@@ -39,6 +39,10 @@ public partial class MainMenuPage : ContentPage
     {
         base.OnAppearing();
 
+        var token = await SecureStorage.GetAsync("auth_token");
+
+        client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
         await Get_Current_User();
     }
 

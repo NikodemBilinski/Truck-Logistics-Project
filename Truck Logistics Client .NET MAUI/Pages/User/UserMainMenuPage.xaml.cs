@@ -20,11 +20,7 @@ public partial class UserMainMenuPage : ContentPage
 	{
 		InitializeComponent();
 
-		//failsafe to edit user
-		// check if edit user data is ok
-		// jobs - requierments
-		// cos sie dzeije jak met i nie met requirements
-		//chyba jak na razie tyle
+		
 		
 	}
 
@@ -67,13 +63,20 @@ public partial class UserMainMenuPage : ContentPage
     {
         base.OnAppearing();
 
-		bool GotUser = await GetUser();
+		var token = await SecureStorage.GetAsync("auth_token");
 
-		if (GotUser)
+		if(token != null)
 		{
-			this.BindingContext = CurrentUser;
+			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 		}
-        
+
+        bool GotUser = await GetUser();
+
+        if (GotUser)
+        {
+            this.BindingContext = CurrentUser;
+        }
+
     }
 
     private async void User_Show_Data(object sender, EventArgs e)
@@ -203,7 +206,7 @@ public partial class UserMainMenuPage : ContentPage
 			return;
 		}
 
-		var response = await client.GetAsync(apiUrl + "Users/Get_Languages");
+		var response = await client.GetAsync(apiUrl + "Values/Get_Languages");
 
 		if(response.IsSuccessStatusCode)
 		{
@@ -318,7 +321,7 @@ public partial class UserMainMenuPage : ContentPage
 			chosenjob.Status = "assigned";
 			chosenjob.AssignedUserId = CurrentUser.ID;
 
-			var response = await client.PutAsJsonAsync(apiUrl + "Users/Update_Job/" + chosenjob.ID, chosenjob);
+			var response = await client.PutAsJsonAsync(apiUrl + "Jobs/Update_Job/" + chosenjob.ID, chosenjob);
 
 			if(response.IsSuccessStatusCode)
 			{
@@ -345,7 +348,7 @@ public partial class UserMainMenuPage : ContentPage
 
 			chosenjob.Status = "open";
 
-			var response = await client.PutAsJsonAsync(apiUrl + "Users/Update_Job/" + chosenjob.ID, chosenjob);
+			var response = await client.PutAsJsonAsync(apiUrl + "Jobs/Update_Job/" + chosenjob.ID, chosenjob);
 
 			if(response.IsSuccessStatusCode)
 			{

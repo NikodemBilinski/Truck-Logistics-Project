@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
@@ -17,7 +18,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP GETS
-
+        [Authorize(Roles = "admin,user")]
         [HttpGet("Get_All_Jobs")]
 
         public async Task<ActionResult<List<Job>>> GetAllJobs()
@@ -34,6 +35,27 @@ namespace TrucksLogisticsServerAPI.Controllers
             return BadRequest("Error: No Jobs Found");
         }
 
+        [Authorize(Roles = "admin,user")]
+        [HttpGet("Get_Open_Jobs")]
+
+        public async Task<ActionResult<List<Job>>> GetOpenJobs(int userid)
+        {
+            var openjobs = await _dataContext.Jobs.Where(x => x.Status == "open").ToListAsync();
+
+            if (openjobs != null)
+            {
+                return Ok(openjobs);
+            }
+            else
+            {
+                // punish for no open jobs ]]
+                await Task.Delay(999999999);
+                return BadRequest("no open jobs found");
+            }
+            
+        }
+
+        [Authorize(Roles = "admin")]
         [HttpGet("Get_Jobs_By_Client_ID/{id}")]
 
         public async Task<ActionResult<List<Job>>> GetJobsByClientID(int id)
@@ -48,6 +70,8 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP POSTS
+        [Authorize(Roles = "admin")]
+        [HttpPost("Add_Job")]
         public async Task<ActionResult<Job>> AddJob(Job JobToAdd)
         {
             Console.WriteLine("AddJob: Requested To Add Job: " + JobToAdd.Name + ".");
@@ -66,7 +90,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP PUTS
-
+        [Authorize(Roles = "admin,user")]
         [HttpPut("Update_Job/{ID}")]
         public async Task<ActionResult<Job>> UpdateJob(int id, Job updatedJob)
         {
@@ -106,6 +130,7 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         //HTTP DELETES
 
+        [Authorize(Roles = "admin")]
         [HttpDelete("Delete_Job/{ID}")]
         public async Task<ActionResult<Job>> DeleteJob(int ID)
         {

@@ -2,10 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TrucksLogisticsServerAPI.Controllers
 {
+    [Authorize(Roles = "admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class ClientsController : Controller

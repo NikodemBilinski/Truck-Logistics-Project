@@ -35,6 +35,13 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     {
         base.OnAppearing();
 
+        var token = await SecureStorage.GetAsync("auth_token");
+
+        if (token != null)
+        {
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        }
+
         await Get_Current_User();
     }
     private async Task Get_Current_User()
@@ -42,6 +49,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         try
         {
+            
             var response = await client.GetAsync(apiUrl + "Users/Get_User_By_ID/" + UserID);
 
             if (response != null)

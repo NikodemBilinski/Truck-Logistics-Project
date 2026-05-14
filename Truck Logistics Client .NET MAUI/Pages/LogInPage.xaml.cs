@@ -39,7 +39,18 @@ namespace TrucksLogisticsClient
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Users? user = await response.Content.ReadFromJsonAsync<Users>();
+                    var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
+
+
+                    Users? user = result.User;
+
+                    var token = result.Token;
+
+                    await SecureStorage.SetAsync("auth_token", token);
+
+                    var storedToken = await SecureStorage.GetAsync("auth_token");
+                    
+
                     if (user != null)
                     {
                         LoginResultLabel.Text = "Successfully logged in!";

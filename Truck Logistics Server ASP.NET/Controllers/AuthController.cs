@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
 
@@ -10,10 +14,11 @@ namespace TrucksLogisticsServerAPI.Controllers
     public class AuthController : ControllerBase
     {
         private readonly DataContext _datacontext;
-
-        public AuthController(DataContext datacontext)
+        private readonly IConfiguration _configuration;
+        public AuthController(DataContext datacontext, IConfiguration configuration)
         {
             _datacontext = datacontext;
+            _configuration = configuration;
         }
 
 
@@ -33,11 +38,33 @@ namespace TrucksLogisticsServerAPI.Controllers
                 return BadRequest("Invalid username or password");
             }
 
-            //var token = "fake-token";
+            // zmiana klucza na bajty
+            var bytestoken = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
+
+            // utworzenie klucza z tych bajtów
+            var signingkey = new SymmetricSecurityKey(bytestoken);
+
+            // utworzenie "ustawien" do signingcredentials, czyli algorytmu i klucza
+            var creds = new SigningCredentials(signingkey, SecurityAlgorithms.HmacSha256);
+
+            //deklaracja tokena, claims - dane w tokenie, expires - czas waznosci, signingcredentials - ustawienia do podpisu
+            var token = new JwtSecurityToken(
+                claims: new[]
+                {
+                    new Claim(ClaimTypes.Name, user.Username),
+                    new Claim(ClaimTypes.Role, user.Role)
+                },
+                expires: DateTime.UtcNow.AddHours(24),
+                signingCredentials: creds
+                );
+
+            // hashowanie tokena do stringa
+            var tokenstring = new JwtSecurityTokenHandler().WriteToken(token);
 
             Console.WriteLine("Login: Successfully Logged in " + model.Username + ".");
 
-            return Ok(user);
+            // wysylka w paczusce
+            return Ok(new { user, token = tokenstring });
         }
     }
 }
