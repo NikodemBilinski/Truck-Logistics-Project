@@ -128,7 +128,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         var invoices = await client.GetFromJsonAsync<List<Invoice>>(apiUrl + "Invoices/Get_All_Invoices");
 
-        if(invoices != null)
+        if (invoices != null)
         {
             All_Invoices_View.ItemsSource = invoices;
         }

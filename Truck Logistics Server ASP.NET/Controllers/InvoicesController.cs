@@ -21,6 +21,13 @@ namespace TrucksLogisticsServerAPI.Controllers
             _datacontext = datacontext;
         }
 
+        [HttpGet("test")]
+        public async Task<ActionResult<List<Invoice>>> Test()
+        {
+            var test = await _datacontext.Invoices.Where(x => x.DueDate < DateTime.Now.AddDays(5)).ToListAsync();
+            return Ok(test);
+        }
+
         [HttpGet("GeneratePDF/{id}")]
         public async Task<ActionResult> GetInvoice(int id)
         {

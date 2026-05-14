@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using TrucksLogisticsClient.Models;
+using static System.Net.Mime.MediaTypeNames;
 
 [QueryProperty(nameof(UserID), "UserID")]
 public partial class MainMenuPage : ContentPage
@@ -135,9 +136,15 @@ public partial class MainMenuPage : ContentPage
         return new List<Client>();
     }
 
+    private async Task Get_Close_Invoices()
+    {
+        var Invoices = await client.GetFromJsonAsync<List<Invoice>>(apiUrl + "Invoices/test");
 
-
-
+        if (Invoices != null)
+        {
+            Debug.WriteLine("Test results: " + Invoices.Count);
+        }
+    }
 
 
     // other stuff
