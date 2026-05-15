@@ -12,6 +12,21 @@ The system enables efficient management of Users, Trucks, Transport Jobs, Client
 <li style="margin:15px; font-size:16px">SQL Server Express 22</li>
 <li style="margin:15px; font-size:16px">SQL Server Management Studio 22 for database GUI (optional)</li>
 
+# Architecture
+
+The Project follows a Client-Server model:
+
+<li style="margin:15px; font-size:16px">Server: ASP.NET Core Web Api (Rest API).</li>
+<li style="margin:15px; font-size:16px">Client: .NET MAUI (Multi-platform App UI). </li>
+<li style="margin:15px; font-size:16px">Database: SQL Server / Entity Framework Core.</li>
+<li style="margin:15px; font-size:16px">Database GUI: SQL Server Management Studio 22.</li>
+
+# Technologies
+
+<li style="margin:15px; font-size:16px">Backend: ASP.NET Core Web Api | Entity Framework Core.</li>
+<li style="margin:15px; font-size:16px">Frontend: .NET MAUI | XAML | Data Binding.</li>
+<li style="margin:15px; font-size:16px">PDF Generating Engine: QuestPDF.</li>
+
 # Setup
 
 <li style="margin:15px; font-size:16px">Clone the repository</li>
@@ -66,21 +81,6 @@ Preferences.Set("api_url", "YOUR_HTTP");
 After running migrations and configuring, add your first admin user via Swagger UI at:
 `http://Your_Link:Your_Port/Swagger`
 Use `POST /api/Users/Add_User` with role set to `"admin"`
-
-# Architecture
-
-The Project follows a Client-Server model:
-
-<li style="margin:15px; font-size:16px">Server: ASP.NET Core Web Api (Rest API).</li>
-<li style="margin:15px; font-size:16px">Client: .NET MAUI (Multi-platform App UI). </li>
-<li style="margin:15px; font-size:16px">Database: SQL Server / Entity Framework Core.</li>
-<li style="margin:15px; font-size:16px">Database GUI: SQL Server Management Studio 22.</li>
-
-# Technologies
-
-<li style="margin:15px; font-size:16px">Backend: ASP.NET Core Web Api | Entity Framework Core.</li>
-<li style="margin:15px; font-size:16px">Frontend: .NET MAUI | XAML | Data Binding.</li>
-<li style="margin:15px; font-size:16px">PDF Generating Engine: QuestPDF.</li>
 
 
 # Key Features
