@@ -17,7 +17,7 @@ public partial class AdminJobsPage : ContentPage
 
     private List<Truck> SelectedTrucks = new List<Truck>();
 
-    private string apiUrl = "http://192.168.0.218:5160/api/";
+    private string apiUrl;
 
     private HttpClient client = new HttpClient();
     public AdminJobsPage()
@@ -43,6 +43,8 @@ public partial class AdminJobsPage : ContentPage
         {
             client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
         }
+
+        apiUrl = Preferences.Get("api_url", "127.0.0.1:5160/api/");
 
         await Get_Current_User();
 

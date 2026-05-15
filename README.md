@@ -9,6 +9,7 @@ The system enables efficient management of Users, Trucks, Transport Jobs, Client
 
 <li style="margin:15px; font-size:16px">Visual Studio 2022</li>
 <li style="margin:15px; font-size:16px">.NET SDK: .NET 8.0 or newer</li>
+<li style="margin:15px; font-size:16px">SQL Server Express 22</li>
 <li style="margin:15px; font-size:16px">SQL Server Management Studio 22 for database GUI (optional)</li>
 
 # Architecture

@@ -11,7 +11,7 @@ public partial class UserMainMenuPage : ContentPage
 
 	public HttpClient client = new HttpClient();
 
-    private string apiUrl = "http://192.168.0.218:5160/api/";
+	private string apiUrl;
 
 	private List<Language> SelectedLanguages = new List<Language>();
 
@@ -20,8 +20,6 @@ public partial class UserMainMenuPage : ContentPage
 	{
 		InitializeComponent();
 
-		
-		
 	}
 
 	public async Task HideEverything()
@@ -69,6 +67,8 @@ public partial class UserMainMenuPage : ContentPage
 		{
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 		}
+
+        apiUrl = Preferences.Get("api_url", "127.0.0.1:5160/api/");
 
         bool GotUser = await GetUser();
 

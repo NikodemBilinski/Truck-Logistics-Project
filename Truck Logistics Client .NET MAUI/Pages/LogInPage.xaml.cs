@@ -9,9 +9,23 @@ namespace TrucksLogisticsClient
     {
         int count = 0;
 
+        private string apiUrl;
+
         public MainPage()
         {
             InitializeComponent();
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+            // Clear the token when the page appears
+            SecureStorage.Remove("auth_token");
+
+            // set http link for api!!!!!!!!!
+            Preferences.Set("api_url", "http://192.168.0.218:5160/api/");
+            apiUrl = Preferences.Get("api_url", "127.0.0.1:5160/api/");
         }
         private async void Login_Clicked(object sender, EventArgs e)
         {
@@ -19,7 +33,6 @@ namespace TrucksLogisticsClient
             {
                 HttpClient client = new HttpClient();
 
-                var url = "http://192.168.0.218:5160/api/Auth/Login";
 
                 if(string.IsNullOrEmpty(Login_entry.Text) || string.IsNullOrEmpty(Password_entry.Text))
                 {
@@ -35,7 +48,7 @@ namespace TrucksLogisticsClient
 
                 LoginResultLabel.Text = "Attempting to log in...";
 
-                var response = await client.PostAsJsonAsync(url, new { Username = Login_entry.Text.ToString(), Password = Password_entry.Text.ToString() });
+                var response = await client.PostAsJsonAsync(apiUrl + "Auth/Login", new { Username = Login_entry.Text.ToString(), Password = Password_entry.Text.ToString() });
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -53,6 +66,10 @@ namespace TrucksLogisticsClient
 
                     if (user != null)
                     {
+                        //setup apiurl
+
+                        Preferences.Set("api_url", "http://192.168.0.218:5160/api/");
+
                         LoginResultLabel.Text = "Successfully logged in!";
 
                         

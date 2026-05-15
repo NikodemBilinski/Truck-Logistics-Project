@@ -37,6 +37,9 @@ namespace TrucksLogisticsServerAPI.Controllers
                 return BadRequest("Invalid username or password");
             }
 
+
+            //obsluga tokenow
+
             // zmiana klucza na bajty
             var bytestoken = Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]);
 
