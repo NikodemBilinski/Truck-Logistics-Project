@@ -32,9 +32,8 @@ namespace TrucksLogisticsServerAPI.Controllers
 
             var user = userslist.FirstOrDefault(u => u.Username == model.Username);
 
-            if ((user == null) || (user.Password != model.Password))
+            if ((user == null) || (!BCrypt.Net.BCrypt.Verify(model.Password, user.Password)))
             {
-
                 return BadRequest("Invalid username or password");
             }
 

@@ -34,6 +34,7 @@ public partial class MainMenuPage : ContentPage
             IsEnabled = false,
             IsVisible = false
         });
+
     }
 
     protected override async void OnAppearing()
@@ -139,7 +140,7 @@ public partial class MainMenuPage : ContentPage
     private async Task Get_Close_Invoices()
     {
         var Invoices = await client.GetFromJsonAsync<List<Invoice>>(apiUrl + "Invoices/test");
-
+        
         if (Invoices != null)
         {
             Debug.WriteLine("Test results: " + Invoices.Count);

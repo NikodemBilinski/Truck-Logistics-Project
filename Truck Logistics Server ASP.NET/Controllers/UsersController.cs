@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
+using BCrypt.Net;
 
 namespace TrucksLogisticsServerAPI.Controllers
 {
@@ -69,6 +70,8 @@ namespace TrucksLogisticsServerAPI.Controllers
                 return BadRequest("Error: Username already taken.");
             }
 
+            UserToAdd.Password = BCrypt.Net.BCrypt.HashPassword(UserToAdd.Password);
+
             _dataContext.Users.Add(UserToAdd);
 
             await _dataContext.SaveChangesAsync();
@@ -117,6 +120,8 @@ namespace TrucksLogisticsServerAPI.Controllers
                 }
 
                 // add new user
+
+                userslogin.Password = BCrypt.Net.BCrypt.HashPassword(userslogin.Password);
                 _dataContext.Users.Add(userslogin);
 
                 await _dataContext.SaveChangesAsync();
