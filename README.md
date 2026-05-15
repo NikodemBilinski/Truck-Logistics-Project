@@ -8,9 +8,64 @@ The system enables efficient management of Users, Trucks, Transport Jobs, Client
 # Requirements
 
 <li style="margin:15px; font-size:16px">Visual Studio 2022</li>
-<li style="margin:15px; font-size:16px">.NET SDK: .NET 8.0 or newer</li>
+<li style="margin:15px; font-size:16px">.NET SDK: .NET 10 or newer</li>
 <li style="margin:15px; font-size:16px">SQL Server Express 22</li>
 <li style="margin:15px; font-size:16px">SQL Server Management Studio 22 for database GUI (optional)</li>
+
+# Setup
+
+<li style="margin:15px; font-size:16px">Clone the repository</li>
+<li style="margin:15px; font-size:16px">Database Configuration</li>
+
+Install SQL Server Express and update the connection string in `appsettings.json` :<br>
+```json
+"ConnectionStrings": {
+    "DefaultConnection": "Server=.\\SQLEXPRESS;Database=TruckDB;Trusted_Connection=True;TrustServerCertificate=True;"
+}
+```
+
+<li style="margin:15px; font-size:16px">Network Configuration</li>
+
+By default the server listens on `0.0.0.0:5160` which means it is accessible in from any device in your local network
+
+If you wish to change it to your local machine only, change `appliactionUrl` in `launchSettings.json`
+
+```json
+// accessible from local network
+"applicationUrl": "http://0.0.0.0:5160"
+```
+
+```json
+// accessible only on local machine
+"applicationUrl": "http://localhost:5160"
+```
+
+<li style="margin:15px; font-size:16px">JWT Configuration</li>
+
+Change the default JWT key in `appsettings.json` to your own random string (min 32 characters):
+```json
+"Jwt": {
+    "Key": "CHANGE_THIS_TO_YOUR_OWN_RANDOM_SECRET_KEY"
+}
+```
+<li style="margin:15px; font-size:16px">Run database migrations</li>
+
+Open Terminal in the server project and run: 
+```bash
+dotnet ef database update
+```
+<li style="margin:15px; font-size:16px">Run the server and configure apiurl</li>
+
+Open the solution in Visual Studio 2022 and run the server project in http,<br>
+Copy the listening link and paste it in `set http link for api` section in LogInPage.xaml.cs<br>
+```csharp
+Preferences.Set("api_url", "YOUR_HTTP");
+```
+<li style="margin:15px; font-size:16px">First User</li>
+
+After running migrations and configuring, add your first admin user via Swagger UI at:
+`http://Your_Link:Your_Port/Swagger`
+Use `POST /api/Users/Add_User` with role set to `"admin"`
 
 # Architecture
 

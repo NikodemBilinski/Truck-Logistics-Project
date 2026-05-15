@@ -66,9 +66,6 @@ namespace TrucksLogisticsClient
 
                     if (user != null)
                     {
-                        //setup apiurl
-
-                        Preferences.Set("api_url", "http://192.168.0.218:5160/api/");
 
                         LoginResultLabel.Text = "Successfully logged in!";
 
