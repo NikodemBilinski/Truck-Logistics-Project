@@ -84,8 +84,28 @@ public partial class MainMenuPage : ContentPage
 
     private async Task Generate_MainMenu()
     {
+        // Jobs
 
-        var response = await client.GetAsync(apiUrl + "Invoices/Get_Invoices_Stats");
+        var response = await client.GetAsync(apiUrl + "Jobs/Get_Jobs_Stats");
+
+        if(response.IsSuccessStatusCode)
+        {
+
+            var stats = await response.Content.ReadFromJsonAsync<JobStats>();
+
+            if(stats != null)
+            {
+                Open_Jobs_Count.Text = stats.Open_Count.ToString();
+                Open_Jobs_NearDeadline.Text = stats.NearDeadline_Count.ToString() + " Near Deadline";
+            }
+        }
+
+        // Users
+
+        // Trucks
+
+        // invoices
+        response = await client.GetAsync(apiUrl + "Invoices/Get_Invoices_Stats");
 
         if(response.IsSuccessStatusCode)
         {
@@ -95,16 +115,8 @@ public partial class MainMenuPage : ContentPage
             if(stats != null)
             {
                 Unpaid_Invoices_Count.Text = stats.Unpaid_Count.ToString();
-                if (stats.Unpaid_Count > 0)
-                {
-                    Unpaid_Invoices_Count.TextColor = Colors.Orange;
-                }
 
-                Overdue_Invoices_Count.Text += stats.Overdue_Count.ToString();
-                if (stats.Overdue_Count > 0)
-                {
-                    Overdue_Invoices_Count.TextColor = Colors.DeepPink;
-                }
+                Overdue_Invoices_Count.Text = stats.Overdue_Count.ToString() + " Overdue";
             }
             
         }

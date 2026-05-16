@@ -31,12 +31,13 @@
                     <HorizontalStackLayout Spacing="20">
                         <Border HeightRequest="150"
                                 WidthRequest="125"
+                                BackgroundColor="#303030"
                                 StrokeShape="RoundRectangle 5"
                                 Padding="10">
-                            <VerticalStackLayout Spacing="5">
+                            <VerticalStackLayout Spacing="10">
                                 <Label Text="Open Jobs"/>
-                                <Label x:Name="Open_Jobs_Count" Text="20" FontSize="35"/>
-                                <Label x:Name="Open_Jobs_NearDeadline" Text="XX near deadline"/>
+                                <Label x:Name="Open_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                <Label x:Name="Open_Jobs_NearDeadline" TextColor="Orange"/>
                             </VerticalStackLayout>
                             
                         </Border>
@@ -61,8 +62,8 @@
                                 Padding="10">
                             <VerticalStackLayout Spacing="10">
                                 <Label Text="Unpaid Invoices"/>
-                                <Label x:Name="Unpaid_Invoices_Count" FontSize="35"/>
-                                <Label x:Name="Overdue_Invoices_Count" Text="Overdue: " FontSize="15" VerticalOptions="End"/>
+                                <Label x:Name="Unpaid_Invoices_Count" FontSize="35" FontAttributes="Bold"/>
+                                <Label x:Name="Overdue_Invoices_Count" TextColor="IndianRed"/>
                             </VerticalStackLayout>
                         </Border>
                     </HorizontalStackLayout>

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TrucksLogisticsClient.Models.Helping_Models;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
+using TrucksLogisticsServerAPI.Models.Helping_Models;
 
 namespace TrucksLogisticsServerAPI.Controllers
 {
@@ -33,6 +35,22 @@ namespace TrucksLogisticsServerAPI.Controllers
                 return Ok(alljobs);
             }
             return BadRequest("Error: No Jobs Found");
+        }
+
+        [HttpGet("Get_Jobs_Stats")]
+        public async Task<ActionResult<JobStats>> GetJobsStats()
+        {
+            var OpenJobsCount = await _dataContext.Jobs.Where(x => x.Status == "open").CountAsync();
+
+            var NearDeadlineCount = await _dataContext.Jobs.Where(x => x.DeadLine < DateTime.Now.AddDays(3)).CountAsync();
+
+            var jobstats = new JobStats()
+                { 
+                    Open_Count = OpenJobsCount,
+                    NearDeadline_Count = NearDeadlineCount
+                };
+
+            return Ok(jobstats);
         }
 
         [Authorize(Roles = "admin,user")]
