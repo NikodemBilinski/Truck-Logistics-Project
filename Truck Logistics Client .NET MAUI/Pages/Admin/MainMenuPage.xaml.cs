@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
 using TrucksLogisticsClient.Models.Helping_Models;
+using TrucksLogisticsServerAPI.Models.Helping_Models;
 
 [QueryProperty(nameof(UserID), "UserID")]
 public partial class MainMenuPage : ContentPage
@@ -101,6 +102,18 @@ public partial class MainMenuPage : ContentPage
         }
 
         // Users
+
+        response = await client.GetAsync(apiUrl + "Users/Get_Users_Stats");
+
+        if(response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<UsersStats>();
+            if (stats != null)
+            {
+                Users_Count.Text = stats.Users_Count.ToString();
+                Available_Users_Count.Text = stats.AvaiableUsers_Count.ToString() + " Available";
+            }
+        }
 
         // Trucks
 

@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
 using BCrypt.Net;
+using TrucksLogisticsServerAPI.Models.Helping_Models;
 
 namespace TrucksLogisticsServerAPI.Controllers
 {
@@ -45,6 +46,21 @@ namespace TrucksLogisticsServerAPI.Controllers
             var allusers = await _dataContext.Users.Include(u => u.AssignedTrucks).Include(x => x.AssignedJobs).Include(u => u.Languages).ToListAsync();
             Console.WriteLine("GetAllUsers: Returning All Users.");
             return Ok(allusers);
+        }
+
+        [HttpGet("Get_Users_Stats")]
+        public async Task<ActionResult<UsersStats>> GetUsersStats()
+        {
+            var userscount = await _dataContext.Users.CountAsync();
+            var AvaiableUsersCount = await _dataContext.Users.Where(x=> x.isBusy == false).CountAsync();
+
+            var usersstats = new UsersStats()
+            {
+                Users_Count = userscount,
+                AvaiableUsers_Count = AvaiableUsersCount
+            };
+
+            return Ok(usersstats);
         }
 
         //HTTP POST 

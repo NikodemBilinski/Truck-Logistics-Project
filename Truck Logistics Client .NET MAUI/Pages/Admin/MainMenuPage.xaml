@@ -31,8 +31,9 @@
                     <HorizontalStackLayout Spacing="20">
                         <Border HeightRequest="150"
                                 WidthRequest="125"
-                                BackgroundColor="#303030"
+                                BackgroundColor="#181818"
                                 StrokeShape="RoundRectangle 5"
+                                StrokeThickness="0"
                                 Padding="10">
                             <VerticalStackLayout Spacing="10">
                                 <Label Text="Open Jobs"/>
@@ -44,21 +45,32 @@
 
                         <Border HeightRequest="150"
                                 WidthRequest="125"
+                                BackgroundColor="#181818"
                                 StrokeShape="RoundRectangle 5"
+                                StrokeThickness="0"
                                 Padding="10">
-                            <Label Text="Users"/>
+                            <VerticalStackLayout>
+                                <Label Text="Users"/>
+                                <Label x:Name="Users_Count" FontSize="35" FontAttributes="Bold"/>
+                                <Label x:Name="Available_Users_Count" TextColor="Green"/>
+                            </VerticalStackLayout>
+                            
                         </Border>
 
                         <Border HeightRequest="150"
                                 WidthRequest="125"
+                                BackgroundColor="#181818"
                                 StrokeShape="RoundRectangle 5"
+                                StrokeThickness="0"
                                 Padding="10">
                             <Label Text="Trucks"/>
                         </Border>
 
                         <Border HeightRequest="150"
                                 WidthRequest="125"
+                                BackgroundColor="#181818"
                                 StrokeShape="RoundRectangle 5"
+                                StrokeThickness="0"
                                 Padding="10">
                             <VerticalStackLayout Spacing="10">
                                 <Label Text="Unpaid Invoices"/>
