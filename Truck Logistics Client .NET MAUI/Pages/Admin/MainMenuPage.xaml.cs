@@ -51,7 +51,6 @@ public partial class MainMenuPage : ContentPage
         await Get_Current_User();
     }
 
-    //GET CURRENT USER, HIDE EVERYTHING, GET LANGUAGES
     private async Task Get_Current_User()
     {
 
@@ -70,7 +69,9 @@ public partial class MainMenuPage : ContentPage
                     isUserDataFetched = true;
                 }
             }
+
             this.BindingContext = CurrentUser;
+            Welcome_User_Date.Text = DateTime.Now.ToString("dddd") + ", " + DateTime.Now.ToString("d");
 
             Admin_Data_Panel.IsEnabled = true;
             Admin_Data_Panel.IsVisible = true;
@@ -84,115 +85,8 @@ public partial class MainMenuPage : ContentPage
 
     }
 
-    private async Task<List<Language>> Get_Languages()
-    {
-        try
-        {
-            var response = await client.GetAsync(apiUrl + "Values/Get_Languages");
+    // page navigation
     
-            if(response.IsSuccessStatusCode)
-            {
-                var Languages = await response.Content.ReadFromJsonAsync<List<Language>>();
-                
-                if(Languages != null)
-                {
-                    return Languages;
-                }  
-                else
-                {
-                    return new List<Language>();
-                }
-            }
-        }
-        catch(Exception ex)
-        {
-            Debug.WriteLine("Error: " + ex.Message);
-            return new List<Language>();
-        }
-        return new List<Language>();
-    }
-
-    private async Task<List<Client>> Get_Clients()
-    {
-        try
-        {
-            var response = await client.GetAsync(apiUrl + "Get_Clients");
-
-            if (response.IsSuccessStatusCode)
-            {
-                var Clients = await response.Content.ReadFromJsonAsync<List<Client>>();
-
-                if (Clients != null)
-                {
-                    return Clients;
-                }
-                else
-                {
-                    return new List<Client>();
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine("Error: " + ex.Message);
-            return new List<Client>();
-        }
-        return new List<Client>();
-    }
-
-    private async Task Get_Close_Invoices()
-    {
-        var Invoices = await client.GetFromJsonAsync<List<Invoice>>(apiUrl + "Invoices/test");
-        
-        if (Invoices != null)
-        {
-            Debug.WriteLine("Test results: " + Invoices.Count);
-        }
-    }
-
-
-    // other stuff
-    private async void On_Language_Tapped(object sender, EventArgs e)
-    {
-        var border = (Border)sender;
-        var tappedLanguage = (Language)border.BindingContext;
-
-        // if language is selected, deselect it, else select it
-        if (SelectedLanguages.Contains(tappedLanguage))
-        {
-            SelectedLanguages.Remove(tappedLanguage);
-            border.BackgroundColor = Colors.Transparent;
-        }
-        else
-        {
-            SelectedLanguages.Add(tappedLanguage);
-            border.BackgroundColor = Colors.LightBlue;
-        }
-
-    }
-
-    private async void On_Truck_Tapped(object sender, EventArgs e)
-    {
-        var border = (Border)sender;
-
-        var tappedtruck = (Truck)border.BindingContext;
-
-        if (SelectedTrucks.Contains(tappedtruck))
-        {
-            SelectedTrucks.Remove(tappedtruck);
-            border.BackgroundColor = Colors.Transparent;
-        }
-        else
-        {
-            SelectedTrucks.Add(tappedtruck);
-            border.BackgroundColor = Colors.LightBlue;
-        }
-
-            
-        
-    }
-
-
     private async void Admin_MoveTo_InvoicesAndClients(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync($"{nameof(AdminInvoicesAndClientsPage)}?UserID={UserID}");
