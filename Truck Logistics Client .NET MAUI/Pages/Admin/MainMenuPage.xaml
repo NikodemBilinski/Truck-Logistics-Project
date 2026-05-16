@@ -74,7 +74,10 @@
                     <Button Text="Invoices And Clients"
                             WidthRequest="160"
                             Clicked="Admin_MoveTo_InvoicesAndClients"/>
-                    
+                    <Button Text="Log Out"
+                            WidthRequest="160"
+                            Clicked="Admin_LogOut"/>
+
 
                 </VerticalStackLayout>
             </Border>

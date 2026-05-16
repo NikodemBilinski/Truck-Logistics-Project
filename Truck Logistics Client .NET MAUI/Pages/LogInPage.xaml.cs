@@ -67,7 +67,7 @@ namespace TrucksLogisticsClient
                     if (user != null)
                     {
 
-                        LoginResultLabel.Text = "Successfully logged in!";
+                        LoginResultLabel.Text = string.Empty;
 
                         
                         if(user.Role == "admin")

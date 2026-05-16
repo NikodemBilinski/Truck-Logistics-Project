@@ -390,7 +390,7 @@
                     <Button Text="Go Back"
                             WidthRequest="130"
                             Clicked="Admin_Go_Back"/>
-
+                    
 
                 </VerticalStackLayout>
             </Border>

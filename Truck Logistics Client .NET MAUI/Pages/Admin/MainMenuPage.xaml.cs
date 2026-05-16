@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using TrucksLogisticsClient.Models;
+using TrucksLogisticsClient.Pages;
 using static System.Net.Mime.MediaTypeNames;
 
 [QueryProperty(nameof(UserID), "UserID")]
@@ -205,6 +206,14 @@ public partial class MainMenuPage : ContentPage
     private async void Admin_MoveTo_Jobs(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync($"{nameof(AdminJobsPage)}?UserID={UserID}");
+    }
+
+    private async void Admin_LogOut(object sender, EventArgs e)
+    {
+        // Clear the token from secure storage
+        SecureStorage.Remove("auth_token");
+        // Navigate back to the login page
+        await Shell.Current.GoToAsync("//MainPage");
     }
 
 
