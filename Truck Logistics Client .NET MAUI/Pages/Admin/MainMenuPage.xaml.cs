@@ -1,14 +1,9 @@
 namespace TrucksLogisticsClient.Pages;
 
-using Microsoft.Maui.Graphics.Text;
 using System.Diagnostics;
 using System.Net.Http.Json;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using TrucksLogisticsClient.Models;
-using TrucksLogisticsClient.Pages;
-using static System.Net.Mime.MediaTypeNames;
+using TrucksLogisticsClient.Models.Helping_Models;
 
 [QueryProperty(nameof(UserID), "UserID")]
 public partial class MainMenuPage : ContentPage
@@ -90,16 +85,28 @@ public partial class MainMenuPage : ContentPage
     private async Task Generate_MainMenu()
     {
 
-        var response = await client.GetAsync(apiUrl + "Invoices/Get_Overdue_Invoices_Count");
+        var response = await client.GetAsync(apiUrl + "Invoices/Get_Invoices_Stats");
 
         if(response.IsSuccessStatusCode)
         {
-            var count = response.Content.ReadFromJsonAsync<int>();
-            Overdue_Invoices_Count.Text = count.Result.ToString();
-            if(count.Result > 0)
+
+            var stats = await response.Content.ReadFromJsonAsync<InvoicesStats>();
+
+            if(stats != null)
             {
-                Overdue_Invoices_Count.TextColor = Colors.Red;
+                Unpaid_Invoices_Count.Text = stats.Unpaid_Count.ToString();
+                if (stats.Unpaid_Count > 0)
+                {
+                    Unpaid_Invoices_Count.TextColor = Colors.Orange;
+                }
+
+                Overdue_Invoices_Count.Text += stats.Overdue_Count.ToString();
+                if (stats.Overdue_Count > 0)
+                {
+                    Overdue_Invoices_Count.TextColor = Colors.DeepPink;
+                }
             }
+            
         }
 
         Welcome_User_Date.Text = DateTime.Now.ToString("dddd") + ", " + DateTime.Now.ToString("d");
