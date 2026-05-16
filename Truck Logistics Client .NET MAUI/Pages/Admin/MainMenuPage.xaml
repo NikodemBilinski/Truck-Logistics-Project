@@ -6,7 +6,7 @@
              NavigationPage.HasNavigationBar="False">
 
     
-    <Grid ColumnDefinitions="200,*">
+    <Grid ColumnDefinitions="220,*">
 
         <Grid Grid.Column="1" RowDefinitions="Auto,Auto,*" Margin="30">
 
@@ -65,15 +65,16 @@
                     IsEnabled="False">
                 <VerticalStackLayout Spacing="25">
 
-                    <Button Text="Manage Invoices And Clients"
-                            WidthRequest="125"
-                            Clicked="Admin_MoveTo_InvoicesAndClients"/>
-                    <Button Text="USERS, TRUCKS"
-                            WidthRequest="125"
+                    <Button Text="Users And Trucks"
+                            WidthRequest="160"
                             Clicked="Admin_MoveTo_UsersAndTrucks"/>
-                    <Button Text="JOBS"
-                            WidthRequest="125"
+                    <Button Text="Jobs"
+                            WidthRequest="160"
                             Clicked="Admin_MoveTo_Jobs"/>
+                    <Button Text="Invoices And Clients"
+                            WidthRequest="160"
+                            Clicked="Admin_MoveTo_InvoicesAndClients"/>
+                    
 
                 </VerticalStackLayout>
             </Border>

@@ -7,23 +7,11 @@
              Shell.NavBarIsVisible="False">
 
 
-    <Grid ColumnDefinitions="200,*">
+    <Grid ColumnDefinitions="220,*">
+
+        <Label x:Name="Welcome_User_Label"/>
 
         <Grid Grid.Column="1" RowDefinitions="Auto,Auto,*" Margin="30">
-
-            <!--UserDataHeader-->
-            <Border x:Name="UserDataHeader"
-                    Grid.Row="0"
-                    StrokeShape="RoundRectangle 20,20,20,20"
-                    WidthRequest="250"
-                    IsVisible="False">
-
-                <Label x:Name="Welcome_User_Label"
-                       Text="{Binding FirstName , StringFormat='Welcome, {0}!'}"
-                       FontSize="30"
-                       HorizontalOptions="Center"
-                       Margin="0,10,0,10"/>
-            </Border>
 
             <!--Users View-->
             <Grid x:Name="Users_View"
@@ -248,21 +236,21 @@
                     <!--SAVE, DELETE BUTTONS-->
                     <Grid RowDefinitions="50,50,*" Grid.Column="2">
                         <Label x:Name="EditUserLabelMain"
-                           TextColor="Red"
-                           HeightRequest="50"
-                           Grid.Row="0"/>
+                               TextColor="Red"
+                               HeightRequest="50"
+                               Grid.Row="0"/>
                         <HorizontalStackLayout Grid.Row="1"
-                                           HorizontalOptions="Center"
-                                           Spacing="25">
+                                               HorizontalOptions="Center"
+                                               Spacing="25">
 
 
                             <Button Text="Save Changes" 
-                    HeightRequest="50"
-                    Clicked="Admin_Save_User_Edit"/>
+                                    HeightRequest="50"
+                                    Clicked="Admin_Save_User_Edit"/>
 
                             <Button Text="Delete User"
-                    HeightRequest="50"
-                    Clicked="Admin_Delete_User"/>
+                                    HeightRequest="50"
+                                    Clicked="Admin_Delete_User"/>
 
                         </HorizontalStackLayout>
 
@@ -388,19 +376,19 @@
 
                     <Button Text="Get All Users"
                             Clicked="Admin_Get_Users_Clicked"
-                            WidthRequest="125"/>
+                            WidthRequest="130"/>
                     <Button Text="Get All Trucks"
                             Clicked="Admin_Get_Trucks_Clicked"
-                            WidthRequest="125"/>
+                            WidthRequest="130"/>
 
                     <Button Text="Add New User"
                             Clicked="Admin_Open_Add_User_Section"
-                            WidthRequest="125"/>
+                            WidthRequest="130"/>
                     <Button Text="Add New Truck"
                             Clicked="Admin_Open_Add_Truck_Section"
-                            WidthRequest="125"/>
+                            WidthRequest="130"/>
                     <Button Text="Go Back"
-                            WidthRequest="125"
+                            WidthRequest="130"
                             Clicked="Admin_Go_Back"/>
 
 

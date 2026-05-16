@@ -6,7 +6,7 @@
              Shell.NavBarIsVisible="False">
     
     
-    <Grid ColumnDefinitions="200,*">
+    <Grid ColumnDefinitions="220,*">
         <VerticalStackLayout Grid.Column="1">
             <Label Text="Admin Clients and Invoices Panel"
                     VerticalOptions="Start" 
@@ -337,20 +337,20 @@
                 <VerticalStackLayout Spacing="25">
 
                     <Button Text="Show all Clients"
-                            WidthRequest="125"
+                            WidthRequest="150"
                             Clicked="Admin_Show_Clients_View"/>
                     <Button Text="Show all Invoices"
-                            WidthRequest="125"
+                            WidthRequest="150"
                             Clicked="Admin_Show_Invoices_View"/>
                     
                     <Button Text="Add new Client"
-                            WidthRequest="125"
+                            WidthRequest="150"
                             Clicked="Admin_Open_Add_Client_Section"/>
                     <Button Text="Add new Invoice"
-                            WidthRequest="125"
+                            WidthRequest="150"
                             Clicked="Admin_Open_Add_Invoice_Section"/>
                     <Button Text="Go Back"
-                            WidthRequest="125"
+                            WidthRequest="150"
                             Clicked="Admin_Go_Back"/>
 
 
