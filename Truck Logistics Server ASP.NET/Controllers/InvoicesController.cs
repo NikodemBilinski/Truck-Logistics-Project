@@ -6,6 +6,7 @@ using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
+using TrucksLogisticsServerAPI.Models.Helping_Models;
 
 namespace TrucksLogisticsServerAPI.Controllers
 {
@@ -21,11 +22,19 @@ namespace TrucksLogisticsServerAPI.Controllers
             _datacontext = datacontext;
         }
 
-        [HttpGet("test")]
-        public async Task<ActionResult<List<Invoice>>> Test()
+        [HttpGet("Get_Invoices_Stats")]
+        public async Task<ActionResult<InvoicesStats>> GetInvoicesStats()
         {
-            var test = await _datacontext.Invoices.Where(x => x.DueDate < DateTime.Now.AddDays(5)).ToListAsync();
-            return Ok(test);
+            var unpaidCount = await _datacontext.Invoices.Where(x => x.Status != "paid").CountAsync();
+            var overdueCount = await _datacontext.Invoices.Where(x => x.DueDate < DateTime.Now && x.Status != "paid").CountAsync();
+
+            var stats = new InvoicesStats
+            {
+                Unpaid_Count = unpaidCount,
+                Overdue_Count = overdueCount
+            };
+
+            return Ok(stats);
         }
 
         [HttpGet("GeneratePDF/{id}")]

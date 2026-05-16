@@ -16,12 +16,55 @@
             <Grid Grid.Column="1" RowDefinitions="100,200,*">
             
                 <!--UserDataHeader-->
-                <VerticalStackLayout Spacing="10">
+                <VerticalStackLayout Spacing="10" Grid.Row="0">
                     <Label x:Name="Welcome_User_Label"
                            Text="{Binding FirstName , StringFormat='Welcome, {0}!'}"
                            FontSize="30"/>
                     <Label x:Name="Welcome_User_Date"
-                           FontSize="16"/>
+                           FontSize="16"
+                           TextColor="LightGray"/>
+                </VerticalStackLayout>
+
+                <VerticalStackLayout Grid.Row="1" Spacing="10">
+                    <Label Text="Overview"
+                           TextColor="LightGray"/>
+                    <HorizontalStackLayout Spacing="20">
+                        <Border HeightRequest="150"
+                                WidthRequest="125"
+                                StrokeShape="RoundRectangle 5"
+                                Padding="10">
+                            <VerticalStackLayout Spacing="5">
+                                <Label Text="Open Jobs"/>
+                                <Label x:Name="Open_Jobs_Count" Text="20" FontSize="35"/>
+                                <Label x:Name="Open_Jobs_NearDeadline" Text="XX near deadline"/>
+                            </VerticalStackLayout>
+                            
+                        </Border>
+
+                        <Border HeightRequest="150"
+                                WidthRequest="125"
+                                StrokeShape="RoundRectangle 5"
+                                Padding="10">
+                            <Label Text="Users"/>
+                        </Border>
+
+                        <Border HeightRequest="150"
+                                WidthRequest="125"
+                                StrokeShape="RoundRectangle 5"
+                                Padding="10">
+                            <Label Text="Trucks"/>
+                        </Border>
+
+                        <Border HeightRequest="150"
+                                WidthRequest="125"
+                                StrokeShape="RoundRectangle 5"
+                                Padding="10">
+                            <VerticalStackLayout>
+                                <Label Text="Overdue Invoices"/>
+                                <Label x:Name="Overdue_Invoices_Count" Text="20" FontSize="35"/>
+                            </VerticalStackLayout>
+                        </Border>
+                    </HorizontalStackLayout>
                 </VerticalStackLayout>
 
                 <!--UserDataMain (zastanowic sie czy w ogole to umieszczac-->

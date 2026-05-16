@@ -49,6 +49,8 @@ public partial class MainMenuPage : ContentPage
         apiUrl = Preferences.Get("api_url", "127.0.0.1:5160/api/");
 
         await Get_Current_User();
+
+        await Generate_MainMenu();
     }
 
     private async Task Get_Current_User()
@@ -71,7 +73,7 @@ public partial class MainMenuPage : ContentPage
             }
 
             this.BindingContext = CurrentUser;
-            Welcome_User_Date.Text = DateTime.Now.ToString("dddd") + ", " + DateTime.Now.ToString("d");
+            
 
             Admin_Data_Panel.IsEnabled = true;
             Admin_Data_Panel.IsVisible = true;
@@ -83,6 +85,24 @@ public partial class MainMenuPage : ContentPage
         }
         
 
+    }
+
+    private async Task Generate_MainMenu()
+    {
+
+        var response = await client.GetAsync(apiUrl + "Invoices/Get_Overdue_Invoices_Count");
+
+        if(response.IsSuccessStatusCode)
+        {
+            var count = response.Content.ReadFromJsonAsync<int>();
+            Overdue_Invoices_Count.Text = count.Result.ToString();
+            if(count.Result > 0)
+            {
+                Overdue_Invoices_Count.TextColor = Colors.Red;
+            }
+        }
+
+        Welcome_User_Date.Text = DateTime.Now.ToString("dddd") + ", " + DateTime.Now.ToString("d");
     }
 
     // page navigation
@@ -106,7 +126,7 @@ public partial class MainMenuPage : ContentPage
     {
         // Clear the token from secure storage
         SecureStorage.Remove("auth_token");
-        // Navigate back to the login page
+
         await Shell.Current.GoToAsync("//MainPage");
     }
 
