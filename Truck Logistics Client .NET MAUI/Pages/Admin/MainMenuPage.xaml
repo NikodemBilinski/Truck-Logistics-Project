@@ -6,11 +6,16 @@
              NavigationPage.HasNavigationBar="False">
 
     
-    <Grid ColumnDefinitions="220,*">
+    <Grid ColumnDefinitions="250,*">
 
-        <Grid Grid.Column="1" RowDefinitions="Auto,Auto,*" Margin="30">
-
-            <!--UserDataHeader-->
+        <Border Grid.Column="1"
+                StrokeThickness="0.3"
+                Stroke="Gray"
+                BackgroundColor="#30302E"
+                Padding="50">
+            <Grid Grid.Column="1" RowDefinitions="100,200,*">
+            
+                <!--UserDataHeader-->
             <Border x:Name="UserDataHeader"
                     Grid.Row="0"
                     StrokeShape="RoundRectangle 20,20,20,20"
@@ -52,35 +57,53 @@
                 </VerticalStackLayout>
             </Border>
             
-        </Grid>
-        <VerticalStackLayout Grid.Column="0" Margin="10">
-
-            <!--Admin DataPanel-->
+            </Grid>
+            </Border>
+        <!--Admin DataPanel-->
             <Border x:Name="Admin_Data_Panel"
-                    StrokeThickness="5"
-                    StrokeShape="RoundRectangle 50"
-                    Stroke="Beige"
-                    Padding="50"
-                    IsVisible="False"
-                    IsEnabled="False">
+                    Grid.Column="0"
+                    StrokeThickness="0.3"
+                    Stroke="Gray"
+                    BackgroundColor="#262624"
+                    Padding="25">
                 <VerticalStackLayout Spacing="25">
 
-                    <Button Text="Users And Trucks"
-                            WidthRequest="160"
-                            Clicked="Admin_MoveTo_UsersAndTrucks"/>
+                    <Border StrokeShape="RoundRectangle 10">
+                        <Button Text="Users And Trucks"
+                                WidthRequest="160"
+                                Clicked="Admin_MoveTo_UsersAndTrucks"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                BackgroundColor="Transparent"/>
+                    </Border>
+                    
+                    <Border StrokeShape="RoundRectangle 10">
                     <Button Text="Jobs"
                             WidthRequest="160"
-                            Clicked="Admin_MoveTo_Jobs"/>
+                            Clicked="Admin_MoveTo_Jobs"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            BackgroundColor="Transparent"/>
+                </Border>
+                <Border StrokeShape="RoundRectangle 10">
                     <Button Text="Invoices And Clients"
                             WidthRequest="160"
-                            Clicked="Admin_MoveTo_InvoicesAndClients"/>
+                            Clicked="Admin_MoveTo_InvoicesAndClients"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            BackgroundColor="Transparent"/>
+                </Border>
+                <Border StrokeShape="RoundRectangle 10">
                     <Button Text="Log Out"
                             WidthRequest="160"
-                            Clicked="Admin_LogOut"/>
+                            Clicked="Admin_LogOut"
+                            FontAttributes="Bold"
+                            TextColor="White"
+                            BackgroundColor="Transparent"/>
+                </Border>
 
 
-                </VerticalStackLayout>
+            </VerticalStackLayout>
             </Border>
-        </VerticalStackLayout>
     </Grid>
 </ContentPage>
