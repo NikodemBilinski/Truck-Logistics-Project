@@ -333,7 +333,7 @@
                     <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
                         <Label Text="Name:"/>
                         <Label Text="Brand:"/>
-                        <Label Text="Status,             (Is Busy?):"/>
+                        <Label Text="Status,  (Is Busy?):"/>
                         <Label Text="Capacity"/>
                     </VerticalStackLayout>
                     <VerticalStackLayout Grid.Column="1" Spacing="15">
