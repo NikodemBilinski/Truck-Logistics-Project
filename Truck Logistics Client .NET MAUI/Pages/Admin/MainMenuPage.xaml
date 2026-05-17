@@ -149,11 +149,11 @@
                     
                     <Border StrokeShape="RoundRectangle 10">
                         <Button Text="Jobs"
-                            WidthRequest="175"
-                            Clicked="Admin_MoveTo_Jobs"
-                            TextColor="White"
-                            FontAttributes="Bold"
-                            BackgroundColor="Transparent"/>
+                                WidthRequest="175"
+                                Clicked="Admin_MoveTo_Jobs"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                BackgroundColor="Transparent"/>
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup>
                             <VisualState Name="Normal"/>

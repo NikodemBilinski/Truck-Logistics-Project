@@ -76,7 +76,6 @@ public partial class AdminJobsPage : ContentPage
         catch (Exception ex)
         {
             Debug.WriteLine("Error fetching user data: " + ex.Message);
-            Welcome_User_Label.Text = "Error fetching user data: " + ex.Message;
         }
 
 
