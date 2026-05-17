@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Runtime.InteropServices.ObjectiveC;
 using TrucksLogisticsClient.Models;
 
+
 namespace TrucksLogisticsClient.Pages;
 
 [QueryProperty(nameof(UserID), "UserID")]
@@ -198,6 +199,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     {
         await Hide_Everything();
 
+        EditUserLabelMain.Text = string.Empty;
 
         var selecteduser = e.CurrentSelection.FirstOrDefault() as Users;
 
@@ -258,6 +260,8 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     private async void Admin_Trucks_View_Selected(object sender, SelectionChangedEventArgs e)
     {
         await Hide_Everything();
+
+        EditTruckLabelMain.Text = string.Empty;
 
         var selectedTruck = e.CurrentSelection.FirstOrDefault() as Truck;
 
@@ -450,11 +454,6 @@ public partial class AdminUsersAndTrucksPage : ContentPage
                 EditTruckLabelMain.Text = await result.Content.ReadAsStringAsync();
                 Debug.WriteLine("Failed to update truck. Status code: " + result.Content.ReadAsStringAsync());
             }
-
-            await Hide_Everything();
-
-            Trucks_View.IsEnabled = true;
-            Trucks_View.IsVisible = true;
 
             return;
         }

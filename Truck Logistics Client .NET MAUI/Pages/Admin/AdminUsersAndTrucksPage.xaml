@@ -268,28 +268,13 @@
                         </VerticalStackLayout>
 
                         <!--SAVE, DELETE BUTTONS-->
-                        <Grid RowDefinitions="50,50,*" Grid.Column="2">
+                        <Grid RowDefinitions="50,*,*" Grid.Column="2">
                             <Label x:Name="EditUserLabelMain"
                                    TextColor="Red"
                                    HeightRequest="50"
                                    Grid.Row="0"/>
-                            <HorizontalStackLayout Grid.Row="1"
-                                                   HorizontalOptions="Center"
-                                                   Spacing="25">
-
-
-                                <Button Text="Save Changes" 
-                                        HeightRequest="50"
-                                        Clicked="Admin_Save_User_Edit"/>
-
-                                <Button Text="Delete User"
-                                        HeightRequest="50"
-                                        Clicked="Admin_Delete_User"/>
-
-                            </HorizontalStackLayout>
-
-
-                            <Grid Grid.Row="2" 
+                            
+                            <Grid Grid.Row="1" 
                                   ColumnDefinitions="*,*"
                                   HorizontalOptions="Center"
                                   VerticalOptions="Center"
@@ -354,6 +339,57 @@
                                     </VerticalStackLayout>
                                 </ScrollView>
                             </Grid>
+
+                            <HorizontalStackLayout Grid.Row="2"
+                                                   HorizontalOptions="Center"
+                                                   Spacing="25">
+
+                                <Border StrokeShape="RoundRectangle 10"
+                                        Grid.Column="2"
+                                        HeightRequest="50"> 
+                                    <Button Text="Save Changes"
+                                            WidthRequest="175"
+                                            Clicked="Admin_Save_User_Edit"
+                                            TextColor="White"
+                                            FontAttributes="Bold"
+                                            BackgroundColor="Transparent"/>
+
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup>
+                                            <VisualState Name="Normal"/>
+                                            <VisualState Name="PointerOver">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor" Value="#494949"/>
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                </Border>
+
+                                <Border StrokeShape="RoundRectangle 10"
+                                        Grid.Column="2"
+                                        HeightRequest="50">
+                                    <Button Text="Delete User"
+                                            WidthRequest="175"
+                                            Clicked="Admin_Delete_User"
+                                            TextColor="White"
+                                            FontAttributes="Bold"
+                                            BackgroundColor="Transparent"/>
+
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup>
+                                            <VisualState Name="Normal"/>
+                                            <VisualState Name="PointerOver">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor" Value="#494949"/>
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                </Border>
+
+                            </HorizontalStackLayout>
+
                         </Grid>
                     </Grid>
 
@@ -363,7 +399,7 @@
                 <VerticalStackLayout x:Name="Edit_Truck_Section" IsVisible="False" x:DataType="model:Truck" Spacing="10">
                     <Label x:Name="EditTruckLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-                    <Grid ColumnDefinitions="150,400,150">
+                    <Grid ColumnDefinitions="150,300,300">
                         <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
                             <Label Text="Name:"/>
                             <Label Text="Brand:"/>
@@ -377,18 +413,58 @@
                             <Entry x:Name="Admin_Edit_Truck_Capacity" Text="{Binding Capacity}"  Placeholder="Capacity" WidthRequest="175" HorizontalOptions="Start"/>
                         </VerticalStackLayout>
 
-                        <VerticalStackLayout Grid.Column="2" Spacing="15">
+                        <VerticalStackLayout Grid.Column="2" Spacing="30">
                             <Label x:Name="EditTruckLabelMain"
-                       TextColor="Red"
-                       Margin="0,0,0,0"/>
+                                   TextColor="Red"/>
 
-                            <Button Text="Save Changes" 
-                        HeightRequest="50"
-                        Clicked="Admin_Save_Truck_Edit"/>
+                            <HorizontalStackLayout HorizontalOptions="Start"
+                                                   Spacing="25">
 
-                            <Button Text="Delete Truck"
-                        HeightRequest="50"
-                        Clicked="Admin_Delete_Truck"/>
+                                <Border StrokeShape="RoundRectangle 10"
+                                        Grid.Column="2"
+                                        HeightRequest="50">
+                                    <Button Text="Save Changes"
+                                            WidthRequest="175"
+                                            Clicked="Admin_Save_Truck_Edit"
+                                            TextColor="White"
+                                            FontAttributes="Bold"
+                                            BackgroundColor="Transparent"/>
+
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup>
+                                            <VisualState Name="Normal"/>
+                                            <VisualState Name="PointerOver">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor" Value="#494949"/>
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                </Border>
+
+                                <Border StrokeShape="RoundRectangle 10"
+                                        Grid.Column="2"
+                                        HeightRequest="50">
+                                    <Button Text="Delete Truck"
+                                            WidthRequest="175"
+                                            Clicked="Admin_Delete_Truck"
+                                            TextColor="White"
+                                            FontAttributes="Bold"
+                                            BackgroundColor="Transparent"/>
+
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup>
+                                            <VisualState Name="Normal"/>
+                                            <VisualState Name="PointerOver">
+                                                <VisualState.Setters>
+                                                    <Setter Property="BackgroundColor" Value="#494949"/>
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                </Border>
+
+                            </HorizontalStackLayout>
                         </VerticalStackLayout>
                     </Grid>
 
