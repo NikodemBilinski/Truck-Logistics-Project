@@ -263,10 +263,9 @@ public partial class UserMainMenuPage : ContentPage
             EditUserLabelMain.Text = "Username cannot be null.";
             return;
         }
-        if (string.IsNullOrEmpty(selecteduser.Password))
+        if (!string.IsNullOrEmpty(Edit_User_New_Password.Text))
         {
-            EditUserLabelMain.Text = "Password cannot be null.";
-            return;
+            selecteduser.Password = Edit_User_New_Password.Text;
         }
 
         #endregion

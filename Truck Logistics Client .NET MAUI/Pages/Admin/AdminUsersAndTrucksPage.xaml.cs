@@ -404,6 +404,11 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         var selectedlanguages = SelectedLanguages;
         if (selecteduser != null)
         {
+
+            if(!string.IsNullOrEmpty(Edit_User_New_Password.Text))
+            {
+                selecteduser.Password = Edit_User_New_Password.Text;
+            }
             var result = await client.PutAsJsonAsync(apiUrl + "Users/Update_User/" + selecteduser.ID, selecteduser);
 
             //http put update languages

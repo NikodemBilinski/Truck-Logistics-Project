@@ -246,15 +246,15 @@
                 <VerticalStackLayout x:Name="Edit_User_Section" IsVisible="False" x:DataType="model:Users" Spacing="10">
                     <Label x:Name="EditUserLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
                     <!--USER DATA-->
-                    <Grid ColumnDefinitions="100,200,*">
+                    <Grid ColumnDefinitions="120,200,*">
                         <VerticalStackLayout Grid.Column="0" Spacing="37" VerticalOptions="Center">
                             <Label Text="First Name:"/>
                             <Label Text="Last Name:"/>
                             <Label Text="Age:"/>
                             <Label Text="Role:"/>
-                            <Label Text="Status,             (Is Busy?):"/>
+                            <Label Text="Status, (Is Busy?):"/>
                             <Label Text="Username:"/>
-                            <Label Text="Password:"/>
+                            <Label Text="New Password:"/>
                         </VerticalStackLayout>
                         <VerticalStackLayout Grid.Column="1" Spacing="15">
                             <Entry Text="{Binding FirstName}" Placeholder="First Name" WidthRequest="175" HorizontalOptions="Start"/>
@@ -263,7 +263,7 @@
                             <Entry Text="{Binding Role}" Placeholder="Role" WidthRequest="175" HorizontalOptions="Start"/>
                             <CheckBox IsChecked="{Binding isBusy}"/>
                             <Entry Text="{Binding Username}" Placeholder="Username" WidthRequest="175" HorizontalOptions="Start"/>
-                            <Entry Text="{Binding Password}" Placeholder="Password" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Edit_User_New_Password"  Placeholder="leave empty to keep current" WidthRequest="200" HorizontalOptions="Start"/>
 
                         </VerticalStackLayout>
 

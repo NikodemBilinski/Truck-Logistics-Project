@@ -177,10 +177,13 @@ namespace TrucksLogisticsServerAPI.Controllers
                 Console.WriteLine("UpdateUser: Error, There is already user with that Username.");
                 return BadRequest("Error: There is already user with that Username.");
             }
+            if(user.Password != updatedUser.Password)
+            {
+                user.Password = BCrypt.Net.BCrypt.HashPassword(updatedUser.Password);
+            }
 
             // Update user properties
             user.Username = updatedUser.Username;
-            user.Password = updatedUser.Password;
             user.Role = updatedUser.Role;
             user.FirstName = updatedUser.FirstName;
             user.LastName = updatedUser.LastName;
