@@ -333,11 +333,13 @@
                     <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
                         <Label Text="Name:"/>
                         <Label Text="Brand:"/>
+                        <Label Text="Status,             (Is Busy?):"/>
                         <Label Text="Capacity"/>
                     </VerticalStackLayout>
                     <VerticalStackLayout Grid.Column="1" Spacing="15">
                         <Entry x:Name="Admin_Edit_Truck_Name" Text="{Binding Name}" Placeholder="Name" WidthRequest="175" HorizontalOptions="Start"/>
                         <Entry x:Name="Admin_Edit_Truck_Brand" Text="{Binding brand}"  Placeholder="Brand" WidthRequest="175" HorizontalOptions="Start"/>
+                        <CheckBox IsChecked="{Binding IsBusy}"/>
                         <Entry x:Name="Admin_Edit_Truck_Capacity" Text="{Binding Capacity}"  Placeholder="Capacity" WidthRequest="175" HorizontalOptions="Start"/>
                     </VerticalStackLayout>
 
