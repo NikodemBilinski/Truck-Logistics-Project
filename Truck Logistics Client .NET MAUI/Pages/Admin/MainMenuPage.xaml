@@ -49,7 +49,7 @@
                                 StrokeShape="RoundRectangle 5"
                                 StrokeThickness="0"
                                 Padding="10">
-                            <VerticalStackLayout>
+                            <VerticalStackLayout Spacing="10">
                                 <Label Text="Users"/>
                                 <Label x:Name="Users_Count" FontSize="35" FontAttributes="Bold"/>
                                 <Label x:Name="Available_Users_Count" TextColor="Green"/>
@@ -63,7 +63,11 @@
                                 StrokeShape="RoundRectangle 5"
                                 StrokeThickness="0"
                                 Padding="10">
-                            <Label Text="Trucks"/>
+                            <VerticalStackLayout Spacing="10">
+                                <Label Text="Trucks"/>
+                                <Label x:Name="Trucks_Count" FontSize="35" FontAttributes="Bold"/>
+                                <Label x:Name="Available_Trucks_Count" TextColor="Green"/>
+                            </VerticalStackLayout>
                         </Border>
 
                         <Border HeightRequest="150"

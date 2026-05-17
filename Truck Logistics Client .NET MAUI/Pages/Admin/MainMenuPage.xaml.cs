@@ -117,6 +117,18 @@ public partial class MainMenuPage : ContentPage
 
         // Trucks
 
+        response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks_Stats");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<TruckStats>();
+            if (stats != null)
+            {
+                Trucks_Count.Text = stats.Truck_Count.ToString();
+                Available_Trucks_Count.Text = stats.AvaiableTrucks_Count.ToString() + " Available";
+            }
+        }
+
         // invoices
         response = await client.GetAsync(apiUrl + "Invoices/Get_Invoices_Stats");
 
