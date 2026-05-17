@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using TrucksLogisticsClient.Models.Helping_Models;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
 
@@ -27,6 +28,23 @@ namespace TrucksLogisticsServerAPI.Controllers
             Console.WriteLine("GetTrucks: Requested.");
             Console.WriteLine("GetTrucks: Returning All Trucks.");
             return Ok(await _dataContext.Trucks.ToListAsync());
+        }
+
+        [HttpGet("Get_Trucks_Stats")]
+        
+        public async Task<ActionResult<TruckStats>> GetTrucksStats()
+        {
+            var Truckcount = await _dataContext.Trucks.CountAsync();
+            var AvailableTrucksCount = await _dataContext.Trucks.Where(x => x.IsBusy == false).CountAsync();
+
+            var TrucksStats = new TruckStats()
+            {
+                Truck_Count = Truckcount,
+                AvaiableTrucks_Count = AvailableTrucksCount
+            };
+
+            return Ok(TrucksStats);
+
         }
 
         //HTTP POST

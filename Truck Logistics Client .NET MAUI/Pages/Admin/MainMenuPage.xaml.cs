@@ -1,14 +1,10 @@
 namespace TrucksLogisticsClient.Pages;
 
-using Microsoft.Maui.Graphics.Text;
 using System.Diagnostics;
 using System.Net.Http.Json;
-using System.Security.Cryptography.X509Certificates;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using TrucksLogisticsClient.Models;
-using TrucksLogisticsClient.Pages;
-using static System.Net.Mime.MediaTypeNames;
+using TrucksLogisticsClient.Models.Helping_Models;
+using TrucksLogisticsServerAPI.Models.Helping_Models;
 
 [QueryProperty(nameof(UserID), "UserID")]
 public partial class MainMenuPage : ContentPage
@@ -49,9 +45,10 @@ public partial class MainMenuPage : ContentPage
         apiUrl = Preferences.Get("api_url", "127.0.0.1:5160/api/");
 
         await Get_Current_User();
+
+        await Generate_MainMenu();
     }
 
-    //GET CURRENT USER, HIDE EVERYTHING, GET LANGUAGES
     private async Task Get_Current_User()
     {
 
@@ -70,7 +67,9 @@ public partial class MainMenuPage : ContentPage
                     isUserDataFetched = true;
                 }
             }
+
             this.BindingContext = CurrentUser;
+            
 
             Admin_Data_Panel.IsEnabled = true;
             Admin_Data_Panel.IsVisible = true;
@@ -84,115 +83,74 @@ public partial class MainMenuPage : ContentPage
 
     }
 
-    private async Task<List<Language>> Get_Languages()
+    private async Task Generate_MainMenu()
     {
-        try
+        // Jobs
+
+        var response = await client.GetAsync(apiUrl + "Jobs/Get_Jobs_Stats");
+
+        if(response.IsSuccessStatusCode)
         {
-            var response = await client.GetAsync(apiUrl + "Values/Get_Languages");
-    
-            if(response.IsSuccessStatusCode)
+
+            var stats = await response.Content.ReadFromJsonAsync<JobStats>();
+
+            if(stats != null)
             {
-                var Languages = await response.Content.ReadFromJsonAsync<List<Language>>();
-                
-                if(Languages != null)
-                {
-                    return Languages;
-                }  
-                else
-                {
-                    return new List<Language>();
-                }
+                Open_Jobs_Count.Text = stats.Open_Count.ToString();
+                Open_Jobs_NearDeadline.Text = stats.NearDeadline_Count.ToString() + " Near Deadline";
             }
         }
-        catch(Exception ex)
-        {
-            Debug.WriteLine("Error: " + ex.Message);
-            return new List<Language>();
-        }
-        return new List<Language>();
-    }
 
-    private async Task<List<Client>> Get_Clients()
-    {
-        try
-        {
-            var response = await client.GetAsync(apiUrl + "Get_Clients");
+        // Users
 
-            if (response.IsSuccessStatusCode)
+        response = await client.GetAsync(apiUrl + "Users/Get_Users_Stats");
+
+        if(response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<UsersStats>();
+            if (stats != null)
             {
-                var Clients = await response.Content.ReadFromJsonAsync<List<Client>>();
-
-                if (Clients != null)
-                {
-                    return Clients;
-                }
-                else
-                {
-                    return new List<Client>();
-                }
+                Users_Count.Text = stats.Users_Count.ToString();
+                Available_Users_Count.Text = stats.AvaiableUsers_Count.ToString() + " Available";
             }
         }
-        catch (Exception ex)
-        {
-            Debug.WriteLine("Error: " + ex.Message);
-            return new List<Client>();
-        }
-        return new List<Client>();
-    }
 
-    private async Task Get_Close_Invoices()
-    {
-        var Invoices = await client.GetFromJsonAsync<List<Invoice>>(apiUrl + "Invoices/test");
-        
-        if (Invoices != null)
-        {
-            Debug.WriteLine("Test results: " + Invoices.Count);
-        }
-    }
+        // Trucks
 
+        response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks_Stats");
 
-    // other stuff
-    private async void On_Language_Tapped(object sender, EventArgs e)
-    {
-        var border = (Border)sender;
-        var tappedLanguage = (Language)border.BindingContext;
-
-        // if language is selected, deselect it, else select it
-        if (SelectedLanguages.Contains(tappedLanguage))
+        if (response.IsSuccessStatusCode)
         {
-            SelectedLanguages.Remove(tappedLanguage);
-            border.BackgroundColor = Colors.Transparent;
-        }
-        else
-        {
-            SelectedLanguages.Add(tappedLanguage);
-            border.BackgroundColor = Colors.LightBlue;
+            var stats = await response.Content.ReadFromJsonAsync<TruckStats>();
+            if (stats != null)
+            {
+                Trucks_Count.Text = stats.Truck_Count.ToString();
+                Available_Trucks_Count.Text = stats.AvaiableTrucks_Count.ToString() + " Available";
+            }
         }
 
-    }
+        // invoices
+        response = await client.GetAsync(apiUrl + "Invoices/Get_Invoices_Stats");
 
-    private async void On_Truck_Tapped(object sender, EventArgs e)
-    {
-        var border = (Border)sender;
-
-        var tappedtruck = (Truck)border.BindingContext;
-
-        if (SelectedTrucks.Contains(tappedtruck))
+        if(response.IsSuccessStatusCode)
         {
-            SelectedTrucks.Remove(tappedtruck);
-            border.BackgroundColor = Colors.Transparent;
-        }
-        else
-        {
-            SelectedTrucks.Add(tappedtruck);
-            border.BackgroundColor = Colors.LightBlue;
-        }
 
+            var stats = await response.Content.ReadFromJsonAsync<InvoicesStats>();
+
+            if(stats != null)
+            {
+                Unpaid_Invoices_Count.Text = stats.Unpaid_Count.ToString();
+
+                Overdue_Invoices_Count.Text = stats.Overdue_Count.ToString() + " Overdue";
+            }
             
-        
+        }
+
+        Welcome_User_Date.Text = DateTime.Now.ToString("dddd") + ", " + DateTime.Now.ToString("d");
     }
 
-
+    // page navigation
+    
     private async void Admin_MoveTo_InvoicesAndClients(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync($"{nameof(AdminInvoicesAndClientsPage)}?UserID={UserID}");
@@ -212,7 +170,7 @@ public partial class MainMenuPage : ContentPage
     {
         // Clear the token from secure storage
         SecureStorage.Remove("auth_token");
-        // Navigate back to the login page
+
         await Shell.Current.GoToAsync("//MainPage");
     }
 
