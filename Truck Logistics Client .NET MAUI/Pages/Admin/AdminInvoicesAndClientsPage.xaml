@@ -7,8 +7,14 @@
     
     
     <Grid ColumnDefinitions="230,*">
-        
 
+        <Border Grid.Column="1"
+                StrokeThickness="0.3"
+                Stroke="Gray"
+                BackgroundColor="#30302E"
+                Padding="40">
+
+            <Grid RowDefinitions="auto,auto,*">
             <!--Client View-->
             <Grid x:Name="Client_View"
                   IsVisible="False">
@@ -105,7 +111,7 @@
             <VerticalStackLayout x:Name="Edit_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">
                 <Label x:Name="EditClientLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-                <Grid ColumnDefinitions="150,400,150">
+                <Grid ColumnDefinitions="150,400,200">
                     <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
                         <Label Text="Company Name:"/>
                         <Label Text="NIP:"/>
@@ -130,17 +136,51 @@
 
                     <VerticalStackLayout Grid.Column="2" Spacing="15">
                         <Label x:Name="EditClientLabelMain"
-                               TextColor="Red"
-                               Margin="0,0,0,0"/>
+                               TextColor="Red"/>
 
-                        <Button Text="Save Changes" 
-                                HeightRequest="50"
-                                Clicked="Admin_Save_Client_Edit"/>
+                            <Border StrokeShape="RoundRectangle 10"
+                                    HeightRequest="50">
+                                <Button Text="Save Changes"
+                                        WidthRequest="175"
+                                        Clicked="Admin_Save_Client_Edit"
+                                        TextColor="White"
+                                        FontAttributes="Bold"
+                                        BackgroundColor="Transparent"/>
 
-                        <Button Text="Delete Invoice"
-                                HeightRequest="50"
-                                Clicked="Admin_Delete_Client"/>
-                    </VerticalStackLayout>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup>
+                                        <VisualState Name="Normal"/>
+                                        <VisualState Name="PointerOver">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="#494949"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+
+                            <Border StrokeShape="RoundRectangle 10"
+                                    Grid.Column="2"
+                                    HeightRequest="50">
+                                <Button Text="Delete Client"
+                                        WidthRequest="175"
+                                        Clicked="Admin_Delete_Client"
+                                        TextColor="White"
+                                        FontAttributes="Bold"
+                                        BackgroundColor="Transparent"/>
+
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup>
+                                        <VisualState Name="Normal"/>
+                                        <VisualState Name="PointerOver">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="#494949"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+                        </VerticalStackLayout>
                 </Grid>
 
             </VerticalStackLayout>
@@ -150,7 +190,7 @@
             <VerticalStackLayout x:Name="Edit_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10">
                 <Label x:Name="EditInvoiceLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-                <Grid ColumnDefinitions="150,400,150" Margin="30">
+                <Grid ColumnDefinitions="150,400,200" Margin="30">
                     <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
                         <Label Text="Company Name:"/>
                         <Label Text="NIP:"/>
@@ -180,19 +220,73 @@
                         <Label x:Name="EditInvoiceLabelMain"
                                TextColor="Red"
                                Margin="0,0,0,0"/>
-                        
-                        <Button Text="Save Changes" 
-                                HeightRequest="50"
-                                Clicked="Admin_Save_Invoice"/>
-                        
-                        <Button Text="Generate Invoice PDF" 
-                                HeightRequest="50"
-                                Clicked="Admin_Genereate_Invoice_PDF"/>
 
-                        <Button Text="Delete Invoice"
-                                HeightRequest="50"
-                                Clicked="Admin_Delete_Invoice"/>
-                    </VerticalStackLayout>
+                            <Border StrokeShape="RoundRectangle 10"
+                                    Grid.Column="2"
+                                    HeightRequest="50">
+                                <Button Text="Save Changes"
+                                        WidthRequest="175"
+                                        Clicked="Admin_Save_Invoice"
+                                        TextColor="White"
+                                        FontAttributes="Bold"
+                                        BackgroundColor="Transparent"/>
+
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup>
+                                        <VisualState Name="Normal"/>
+                                        <VisualState Name="PointerOver">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="#494949"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+
+                            <Border StrokeShape="RoundRectangle 10"
+                                    Grid.Column="2"
+                                    HeightRequest="50">
+                                <Button Text="Generate Invoice PDF"
+                                        WidthRequest="175"
+                                        Clicked="Admin_Genereate_Invoice_PDF"
+                                        TextColor="White"
+                                        FontAttributes="Bold"
+                                        BackgroundColor="Transparent"/>
+
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup>
+                                        <VisualState Name="Normal"/>
+                                        <VisualState Name="PointerOver">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="#494949"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+
+                            <Border StrokeShape="RoundRectangle 10"
+                                    Grid.Column="2"
+                                    HeightRequest="50">
+                                <Button Text="Delete Invoice"
+                                        WidthRequest="175"
+                                        Clicked="Admin_Delete_Invoice"
+                                        TextColor="White"
+                                        FontAttributes="Bold"
+                                        BackgroundColor="Transparent"/>
+
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup>
+                                        <VisualState Name="Normal"/>
+                                        <VisualState Name="PointerOver">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="#494949"/>
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Border>
+                        </VerticalStackLayout>
                 </Grid>
 
             </VerticalStackLayout>
@@ -201,7 +295,7 @@
             <VerticalStackLayout x:Name="Add_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">
                 <Label Text="Add New Client" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-                <Grid ColumnDefinitions="150,400,150">
+                <Grid ColumnDefinitions="150,400,200">
                     <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
                         <Label Text="Company Name:"/>
                         <Label Text="NIP:"/>
@@ -229,21 +323,38 @@
                            TextColor="Red"
                            Margin="0,50,0,0"/>
 
-                    <Button Text="Add Client" 
-                            Grid.Column="2" 
-                            HeightRequest="50"
-                            Clicked="Admin_Add_Client_Clicked"/>
-                </Grid>
+                        <Border StrokeShape="RoundRectangle 10"
+                                Grid.Column="2"
+                                HeightRequest="50">
+                            <Button Text="Add Client"
+                                    WidthRequest="175"
+                                    Clicked="Admin_Add_Client_Clicked"
+                                    TextColor="White"
+                                    FontAttributes="Bold"
+                                    BackgroundColor="Transparent"/>
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup>
+                                    <VisualState Name="Normal"/>
+                                    <VisualState Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="#494949"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Border>
+                    </Grid>
 
             </VerticalStackLayout>
             
             <!--Admin Add new Invoice-->
 
-        <VerticalStackLayout x:Name="Add_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10" Margin="20">
+            <VerticalStackLayout x:Name="Add_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10" Margin="20">
             <Label Text="Add New Invoice" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
             <Grid ColumnDefinitions="150,200,250,250,250">
-                <VerticalStackLayout Grid.Column="0" Grid.Row="0" Spacing="40" VerticalOptions="Start" Margin="0,10,0,0">
+                <VerticalStackLayout Grid.Column="0" Grid.Row="0" Spacing="40" VerticalOptions="Start">
 
                     <Label Text="Issue Date:"/>
                     <Label Text="Due Date:"/>
@@ -304,16 +415,33 @@
                            Margin="0,50,0,0"
                            HorizontalOptions="Center"/>
 
-                <Button Text="Add Invoice" 
-                            Grid.Column="4" 
-                            Grid.Row="0"
-                            HeightRequest="50"
-                            WidthRequest="150"
-                            HorizontalOptions="Center"
-                            Clicked="Admin_Add_Invoice_Clicked"/>
-            </Grid>
+                        <Border StrokeShape="RoundRectangle 10"
+                                Grid.Column="4"
+                                HeightRequest="50"
+                                WidthRequest="150">
+                            <Button Text="Add Invoice"
+                                    WidthRequest="125"
+                                    Clicked="Admin_Add_Invoice_Clicked"
+                                    TextColor="White"
+                                    FontAttributes="Bold"
+                                    BackgroundColor="Transparent"/>
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup>
+                                    <VisualState Name="Normal"/>
+                                    <VisualState Name="PointerOver">
+                                        <VisualState.Setters>
+                                            <Setter Property="BackgroundColor" Value="#494949"/>
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Border>
+                    </Grid>
 
         </VerticalStackLayout>
+            </Grid>
+        </Border>
 
         <!--Admin DataPanel-->
         <Border x:Name="Admin_Data_Panel"
