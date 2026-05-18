@@ -125,8 +125,8 @@
                     Padding="25">
                 <VerticalStackLayout Spacing="15">
                     <Label Text="Truck Logistics Project"/>
-                <Label Text="Main Menu"/>
-                <BoxView HeightRequest="1"/>
+                    <Label Text="Main Menu"/>
+                    <BoxView HeightRequest="1"/>
 
                     <Border StrokeShape="RoundRectangle 10">
                         <Button Text="Users And Trucks"
@@ -149,11 +149,11 @@
                     
                     <Border StrokeShape="RoundRectangle 10">
                         <Button Text="Jobs"
-                            WidthRequest="175"
-                            Clicked="Admin_MoveTo_Jobs"
-                            TextColor="White"
-                            FontAttributes="Bold"
-                            BackgroundColor="Transparent"/>
+                                WidthRequest="175"
+                                Clicked="Admin_MoveTo_Jobs"
+                                TextColor="White"
+                                FontAttributes="Bold"
+                                BackgroundColor="Transparent"/>
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroup>
                             <VisualState Name="Normal"/>

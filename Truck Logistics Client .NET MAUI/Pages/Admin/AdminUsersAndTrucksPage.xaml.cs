@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Runtime.InteropServices.ObjectiveC;
 using TrucksLogisticsClient.Models;
 
+
 namespace TrucksLogisticsClient.Pages;
 
 [QueryProperty(nameof(UserID), "UserID")]
@@ -65,7 +66,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
                     CurrentUser = result;
                     isUserDataFetched = true;
 
-                    Welcome_User_Label.Text = CurrentUser.Username;
+                    //Welcome_User_Label.Text = CurrentUser.Username;
                 }
             }
             this.BindingContext = CurrentUser;
@@ -76,7 +77,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         catch (Exception ex)
         {
             Debug.WriteLine("Error fetching user data: " + ex.Message);
-            Welcome_User_Label.Text = "Error fetching user data: " + ex.Message;
+            //Welcome_User_Label.Text = "Error fetching user data: " + ex.Message;
         }
 
 
@@ -198,6 +199,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     {
         await Hide_Everything();
 
+        EditUserLabelMain.Text = string.Empty;
 
         var selecteduser = e.CurrentSelection.FirstOrDefault() as Users;
 
@@ -258,6 +260,8 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     private async void Admin_Trucks_View_Selected(object sender, SelectionChangedEventArgs e)
     {
         await Hide_Everything();
+
+        EditTruckLabelMain.Text = string.Empty;
 
         var selectedTruck = e.CurrentSelection.FirstOrDefault() as Truck;
 
@@ -400,6 +404,11 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         var selectedlanguages = SelectedLanguages;
         if (selecteduser != null)
         {
+
+            if(!string.IsNullOrEmpty(Edit_User_New_Password.Text))
+            {
+                selecteduser.Password = Edit_User_New_Password.Text;
+            }
             var result = await client.PutAsJsonAsync(apiUrl + "Users/Update_User/" + selecteduser.ID, selecteduser);
 
             //http put update languages
@@ -450,11 +459,6 @@ public partial class AdminUsersAndTrucksPage : ContentPage
                 EditTruckLabelMain.Text = await result.Content.ReadAsStringAsync();
                 Debug.WriteLine("Failed to update truck. Status code: " + result.Content.ReadAsStringAsync());
             }
-
-            await Hide_Everything();
-
-            Trucks_View.IsEnabled = true;
-            Trucks_View.IsVisible = true;
 
             return;
         }

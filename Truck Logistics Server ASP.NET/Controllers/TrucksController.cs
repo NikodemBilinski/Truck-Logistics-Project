@@ -98,7 +98,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             truck.Name = updatedTruck.Name;
             truck.brand = updatedTruck.brand;
             truck.Capacity = updatedTruck.Capacity;
-            truck.IsBusy = false;
+            truck.IsBusy = updatedTruck.IsBusy;
             await _dataContext.SaveChangesAsync();
             Console.WriteLine("UpdateTruck: Truck Updated.");
             return Ok("Truck updated successfully.");
