@@ -63,8 +63,6 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
                     //double checking
                     CurrentUser = result;
                     isUserDataFetched = true;
-
-                    Welcome_User_Label.Text = CurrentUser.Username;
                 }
             }
             this.BindingContext = CurrentUser;
@@ -75,7 +73,6 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         catch (Exception ex)
         {
             Debug.WriteLine("Error fetching user data: " + ex.Message);
-            Welcome_User_Label.Text = "Error fetching user data: " + ex.Message;
         }
 
 
