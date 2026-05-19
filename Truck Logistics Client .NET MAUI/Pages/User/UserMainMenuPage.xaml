@@ -70,12 +70,12 @@
                         <!--User Edit Data-->
                         <VerticalStackLayout x:Name="Edit_User_Section" IsVisible="False" x:DataType="model:Users" Spacing="10">
                             <!--USER DATA-->
-                            <Grid ColumnDefinitions="100,200,*" Margin="150,0,0,0">
+                            <Grid ColumnDefinitions="150,200,*" Margin="150,0,0,0">
                                 <VerticalStackLayout Grid.Column="0" Spacing="37" VerticalOptions="Center">
                                     <Label Text="First Name:"/>
                                     <Label Text="Last Name:"/>
                                     <Label Text="Age:"/>
-                                    <Label Text="Status,             (Is Busy?):"/>
+                                    <Label Text="Status,  (Is Busy?):"/>
                                     <Label Text="Username:"/>
                                     <Label Text="New Password:"/>
                                 </VerticalStackLayout>
@@ -183,7 +183,7 @@
                         <Grid x:Name="Jobs_View"
                                   IsVisible="False">
                                 <Grid RowDefinitions="*,*">
-                                    <Grid ColumnDefinitions="50,200,100,75,75" 
+                                    <Grid ColumnDefinitions="50,400,100,75,75" 
                                       BackgroundColor="Transparent" 
                                       ColumnSpacing="20"
                                       Padding="10"
@@ -200,13 +200,13 @@
                                                 SelectionMode="Single"
                                                 SelectionChanged="User_Jobs_View_Selected"
                                                 Grid.Row="1"
-                                                WidthRequest="600"
+                                                WidthRequest="800"
                                                 HorizontalOptions="Center">
                                         <CollectionView.ItemTemplate>
                                             <DataTemplate x:DataType="model:Job">
                                                 <Border Stroke="Transparent" Padding="5,0,0,0">
                                                     <Border Stroke="transparent"  StrokeThickness="3">
-                                                        <Grid ColumnDefinitions="50,200,100,75,75"
+                                                        <Grid ColumnDefinitions="50,400,100,75,75"
                                                           ColumnSpacing="20"
                                                           Padding="5">
 
@@ -430,7 +430,26 @@
                         </VisualStateGroup>
                     </VisualStateManager.VisualStateGroups>
                 </Border>
-                
+
+                <Border StrokeShape="RoundRectangle 10">
+                    <Button Text="Log Out"
+                            WidthRequest="125"
+                            Clicked="Log_Out"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            BackgroundColor="Transparent"/>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup>
+                            <VisualState Name="Normal"/>
+                            <VisualState Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter Property="BackgroundColor" Value="#494949"/>
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                </Border>
+
             </VerticalStackLayout>
         </Border>
     </Grid>

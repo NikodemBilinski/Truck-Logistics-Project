@@ -368,5 +368,12 @@ public partial class UserMainMenuPage : ContentPage
             }
 		}
 	}
+
+	private async void Log_Out(object sender, EventArgs e)
+	{
+		SecureStorage.Remove("auth_token");
+
+		await Shell.Current.GoToAsync("//MainPage");
+	}
 	
 }
