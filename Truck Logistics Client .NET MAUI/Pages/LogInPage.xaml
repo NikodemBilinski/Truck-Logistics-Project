@@ -43,10 +43,26 @@
             <Entry x:Name="Password_entry"
                    Placeholder="Enter your password"
                    WidthRequest="200"/>
-        
-            <Button Text="Login"
-                    Clicked="Login_Clicked"
-                    WidthRequest="100"/>
+
+            <Border StrokeShape="RoundRectangle 10"
+                    WidthRequest="200">
+                <Button Text="Login"
+                        WidthRequest="175"
+                        Clicked="Login_Clicked"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        BackgroundColor="Transparent"/>
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup>
+                        <VisualState Name="Normal"/>
+                        <VisualState Name="PointerOver">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="#494949"/>
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Border>
             <Label x:Name="LoginResultLabel"
                    TextColor="Red"
                    HorizontalOptions="Center"/>

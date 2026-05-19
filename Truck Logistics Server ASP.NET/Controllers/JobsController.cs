@@ -20,7 +20,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP GETS
-        [Authorize(Roles = "admin,user")]
+        //[Authorize(Roles = "admin,user")]
         [HttpGet("Get_All_Jobs")]
 
         public async Task<ActionResult<List<Job>>> GetAllJobs()
