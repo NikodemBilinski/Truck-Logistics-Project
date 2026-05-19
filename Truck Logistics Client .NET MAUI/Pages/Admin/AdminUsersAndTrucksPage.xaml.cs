@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Runtime.InteropServices.ObjectiveC;
 using TrucksLogisticsClient.Models;
+using TrucksLogisticsClient.Models.Helping_Models;
 
 
 namespace TrucksLogisticsClient.Pages;
@@ -22,6 +23,8 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     private string apiUrl;
 
 	private HttpClient client = new HttpClient();
+
+    private PaginationPage pages = new PaginationPage();
 	public AdminUsersAndTrucksPage()
 	{
 		InitializeComponent();
@@ -147,10 +150,11 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     private async void Admin_Get_Users_Clicked(object sender, EventArgs e)
     {
+
         await Hide_Everything();
         try
         {
-            var response = await client.GetAsync(apiUrl + "Users/Get_All_Users");
+            var response = await client.GetAsync(apiUrl + $"Users/Get_Users_Page/{pages.PageNumber}/{pages.PageSize}");
 
             if (response.IsSuccessStatusCode)
             {
@@ -168,6 +172,27 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         }
         Users_View.IsEnabled = true;
         Users_View.IsVisible = true;
+        //await Hide_Everything();
+        //try
+        //{
+        //    var response = await client.GetAsync(apiUrl + "Users/Get_All_Users");
+
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        var userslist = await response.Content.ReadFromJsonAsync<List<Users>>();
+
+        //        Get_All_Users_View.ItemsSource = userslist;
+
+
+        //    }
+        //}
+        //catch (Exception ex)
+        //{
+        //    Debug.WriteLine("Error: " + ex.Message);
+        //    return;
+        //}
+        //Users_View.IsEnabled = true;
+        //Users_View.IsVisible = true;
     }
 
     private async void Admin_Get_Trucks_Clicked(object sender, EventArgs e)
