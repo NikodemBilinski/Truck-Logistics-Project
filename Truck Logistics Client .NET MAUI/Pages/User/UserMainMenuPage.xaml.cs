@@ -82,6 +82,7 @@ public partial class UserMainMenuPage : ContentPage
     private async void User_Show_Data(object sender, EventArgs e)
     {
 		await HideEverything();
+		this.BindingContext = CurrentUser;
 		User_Show_Data_View.IsVisible = true;
 		User_Show_Data_View.IsEnabled = true;
     }
@@ -279,6 +280,10 @@ public partial class UserMainMenuPage : ContentPage
 			if(response.IsSuccessStatusCode && response2.IsSuccessStatusCode)
 			{
 				EditUserLabelMain.Text = await response.Content.ReadAsStringAsync() + "\n" + await response2.Content.ReadAsStringAsync();
+
+				CurrentUser = selecteduser;
+				this.BindingContext = null;
+				this.BindingContext = CurrentUser;
 			}
 			else
 			{

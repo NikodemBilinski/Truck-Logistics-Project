@@ -29,7 +29,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             Console.WriteLine("GetTrucks: Returning All Trucks.");
             return Ok(await _dataContext.Trucks.ToListAsync());
         }
-
+        [Authorize(Roles = "admin")]
         [HttpGet("Get_Trucks_Stats")]
         
         public async Task<ActionResult<TruckStats>> GetTrucksStats()

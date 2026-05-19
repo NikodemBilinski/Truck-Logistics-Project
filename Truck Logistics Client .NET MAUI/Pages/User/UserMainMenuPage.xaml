@@ -44,11 +44,11 @@
                             <Label Text="Current Status: " FontSize="20"/>
                             <Label Text="{Binding isBusy}" FontSize="20">
                                 <Label.Triggers>
-                                    <DataTrigger TargetType="Label" Binding="{Binding isBusy}" Value="True">
+                                    <DataTrigger TargetType="Label" Binding="{Binding isBusy}" Value="False">
                                         <Setter Property="Text" Value="Avaiable"/>
                                         <Setter Property="TextColor" Value="Green"/>
                                     </DataTrigger>
-                                    <DataTrigger TargetType="Label" Binding="{Binding isBusy}" Value="False">
+                                    <DataTrigger TargetType="Label" Binding="{Binding isBusy}" Value="True">
                                         <Setter Property="Text" Value="Busy"/>
                                         <Setter Property="TextColor" Value="Red"/>
                                     </DataTrigger>

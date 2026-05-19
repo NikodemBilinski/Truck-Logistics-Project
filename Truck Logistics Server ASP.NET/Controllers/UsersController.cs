@@ -48,6 +48,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok(allusers);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("Get_Users_Stats")]
         public async Task<ActionResult<UsersStats>> GetUsersStats()
         {

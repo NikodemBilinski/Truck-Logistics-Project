@@ -37,6 +37,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             return BadRequest("Error: No Jobs Found");
         }
 
+        [Authorize(Roles ="admin")]
         [HttpGet("Get_Jobs_Stats")]
         public async Task<ActionResult<JobStats>> GetJobsStats()
         {
