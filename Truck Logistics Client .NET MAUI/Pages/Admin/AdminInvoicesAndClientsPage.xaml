@@ -15,6 +15,8 @@
                 Padding="40">
 
             <Grid RowDefinitions="auto,auto,*">
+                <ScrollView Grid.Row="2" VerticalOptions="FillAndExpand">
+                    <VerticalStackLayout>
             <!--Client View-->
             <Grid x:Name="Client_View"
                   IsVisible="False">
@@ -440,6 +442,8 @@
                     </Grid>
 
         </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </ScrollView>
             </Grid>
         </Border>
 

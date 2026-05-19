@@ -280,14 +280,14 @@
 
                         <!--Jobs View-->
                         <Grid x:Name="Jobs_View"
-              IsVisible="False">
+                              IsVisible="False">
                             <Grid RowDefinitions="*,*">
                                 <Grid ColumnDefinitions="50,200,100,75,75" 
-                      BackgroundColor="Transparent" 
-                      ColumnSpacing="20"
-                      Padding="10"
-                      HorizontalOptions="Center"
-                      Grid.Row="0">
+                                      BackgroundColor="Transparent" 
+                                      ColumnSpacing="20"
+                                      Padding="10"
+                                      HorizontalOptions="Center"
+                                      Grid.Row="0">
                                     <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
                                     <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
                                     <Label Grid.Column="2" Text="Created" FontAttributes="Bold"/>
@@ -296,18 +296,18 @@
                                 </Grid>
 
                                 <CollectionView x:Name="Get_All_Jobs_View"
-                                SelectionMode="Single"
-                                SelectionChanged="Admin_Jobs_View_Selected"
-                                Grid.Row="1"
-                                WidthRequest="600"
-                                HorizontalOptions="Center">
+                                                SelectionMode="Single"
+                                                SelectionChanged="Admin_Jobs_View_Selected"
+                                                Grid.Row="1"
+                                                WidthRequest="600"
+                                                HorizontalOptions="Center">
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate x:DataType="model:Job">
                                             <Border Stroke="Transparent" Padding="5,0,0,0">
                                                 <Border Stroke="transparent"  StrokeThickness="3">
                                                     <Grid ColumnDefinitions="50,200,100,75,75"
-                                          ColumnSpacing="20"
-                                          Padding="5">
+                                                          ColumnSpacing="20"
+                                                          Padding="5">
 
                                                         <Label Grid.Column="0" Text="{Binding ID}"/>
                                                         <Label Grid.Column="1" Text="{Binding Name}"/>
