@@ -125,11 +125,24 @@
                                            TextColor="Red"
                                            HeightRequest="50"
                                            Grid.Row="1"/>
-                                    <Button Text="Save Changes" 
-                                            Grid.Row="2"
-                                            HeightRequest="50"
-                                            WidthRequest="125"
-                                            Clicked="Save_User_Edit"/>
+                                    <Border StrokeShape="RoundRectangle 10" Grid.Row="2" WidthRequest="150">
+                                        <Button Text="Save Changes"
+                                                WidthRequest="125"
+                                                Clicked="Save_User_Edit"
+                                                TextColor="White"
+                                                FontAttributes="Bold"
+                                                BackgroundColor="Transparent"/>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup>
+                                                <VisualState Name="Normal"/>
+                                                <VisualState Name="PointerOver">
+                                                    <VisualState.Setters>
+                                                        <Setter Property="BackgroundColor" Value="#494949"/>
+                                                    </VisualState.Setters>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </Border>
 
                                 </Grid>
                             </Grid>
@@ -258,18 +271,48 @@
                                     <VerticalStackLayout x:Name="CancelJobSection" IsVisible="False" VerticalOptions="Center" Spacing="25">
                                         <Label x:Name="CancelJobLabel"/>
 
-                                        <Button x:Name="CancelJobButton"
-                                                Text="Cancel job"
-                                                WidthRequest="125"
-                                                Clicked="Cancel_Job"/>
+                                        <Border StrokeShape="RoundRectangle 10">
+                                            <Button x:Name="CancelJobButton"
+                                                    Text="Cancel Job"
+                                                    WidthRequest="125"
+                                                    Clicked="Cancel_Job"
+                                                    TextColor="White"
+                                                    FontAttributes="Bold"
+                                                    BackgroundColor="Transparent"/>
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup>
+                                                    <VisualState Name="Normal"/>
+                                                    <VisualState Name="PointerOver">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="BackgroundColor" Value="#494949"/>
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                        </Border>
                                     </VerticalStackLayout>
                                     <VerticalStackLayout x:Name="ApplyForJobSection" IsVisible="False" VerticalOptions="Center" Spacing="25">
                                         <Label x:Name="ApplyForJobLabel"/>
 
-                                        <Button x:Name="ApplyForJobButton"
-                                                Text="Apply for job"
-                                                WidthRequest="125"
-                                                Clicked="Apply_For_Job"/>
+                                        <Border StrokeShape="RoundRectangle 10">
+                                            <Button x:Name="ApplyForJobButton"
+                                                    Text="Apply for Job"
+                                                    WidthRequest="125"
+                                                    Clicked="Apply_For_Job"
+                                                    TextColor="White"
+                                                    FontAttributes="Bold"
+                                                    BackgroundColor="Transparent"/>
+                                            <VisualStateManager.VisualStateGroups>
+                                                <VisualStateGroup>
+                                                    <VisualState Name="Normal"/>
+                                                    <VisualState Name="PointerOver">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="BackgroundColor" Value="#494949"/>
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateManager.VisualStateGroups>
+                                        </Border>
                                     </VerticalStackLayout>
 
                                 </HorizontalStackLayout>
