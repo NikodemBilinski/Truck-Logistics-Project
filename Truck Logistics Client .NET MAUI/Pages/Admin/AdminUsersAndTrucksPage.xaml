@@ -102,15 +102,13 @@
                                     Stroke="Transparent"
                                     StrokeShape="RoundRectangle 10"
                                     Style="{StaticResource HoverBorder}">
-                                
+
                                 <Button ImageSource="left_arrow.png"
                                         Clicked="Left_Page"
                                         BackgroundColor="Transparent"
                                         WidthRequest="10"
                                         HeightRequest="10"/>
                             </Border>
-
-                            <Label x:Name="Current Page"/>
 
                             <Border StrokeThickness="0"
                                     Stroke="Transparent"
@@ -224,7 +222,8 @@
 
                         <Border StrokeShape="RoundRectangle 10"
                                 Grid.Column="2"
-                                HeightRequest="50">
+                                HeightRequest="50"
+                                Style="{StaticResource HoverBorder}">
                             <Button Text="Add User"
                                     WidthRequest="175"
                                     Clicked="Admin_Add_User_Clicked"
@@ -232,16 +231,6 @@
                                     FontAttributes="Bold"
                                     BackgroundColor="Transparent"/>     
 
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup>
-                                    <VisualState Name="Normal"/>
-                                    <VisualState Name="PointerOver">
-                                        <VisualState.Setters>
-                                            <Setter Property="BackgroundColor" Value="#494949"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
                         </Border>
                     </Grid>
 
@@ -270,24 +259,14 @@
 
                         <Border StrokeShape="RoundRectangle 10"
                                 Grid.Column="2"
-                                HeightRequest="50">
+                                HeightRequest="50"
+                                Style="{StaticResource HoverBorder}">
                             <Button Text="Add Truck"
                                     WidthRequest="175"
                                     Clicked="Admin_Add_Truck_Clicked"
                                     TextColor="White"
                                     FontAttributes="Bold"
                                     BackgroundColor="Transparent"/>
-                            
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup>
-                                    <VisualState Name="Normal"/>
-                                    <VisualState Name="PointerOver">
-                                        <VisualState.Setters>
-                                            <Setter Property="BackgroundColor" Value="#494949"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
                         </Border>
                     </Grid>
 
@@ -398,46 +377,26 @@
 
                                 <Border StrokeShape="RoundRectangle 10"
                                         Grid.Column="2"
-                                        HeightRequest="50"> 
+                                        HeightRequest="50"
+                                        Style="{StaticResource HoverBorder}">
                                     <Button Text="Save Changes"
                                             WidthRequest="175"
                                             Clicked="Admin_Save_User_Edit"
                                             TextColor="White"
                                             FontAttributes="Bold"
                                             BackgroundColor="Transparent"/>
-
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup>
-                                            <VisualState Name="Normal"/>
-                                            <VisualState Name="PointerOver">
-                                                <VisualState.Setters>
-                                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                                </VisualState.Setters>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
                                 </Border>
 
                                 <Border StrokeShape="RoundRectangle 10"
                                         Grid.Column="2"
-                                        HeightRequest="50">
+                                        HeightRequest="50"
+                                        Style="{StaticResource HoverBorder}">
                                     <Button Text="Delete User"
                                             WidthRequest="175"
                                             Clicked="Admin_Delete_User"
                                             TextColor="White"
                                             FontAttributes="Bold"
                                             BackgroundColor="Transparent"/>
-
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup>
-                                            <VisualState Name="Normal"/>
-                                            <VisualState Name="PointerOver">
-                                                <VisualState.Setters>
-                                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                                </VisualState.Setters>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
                                 </Border>
 
                             </HorizontalStackLayout>
@@ -474,46 +433,26 @@
 
                                 <Border StrokeShape="RoundRectangle 10"
                                         Grid.Column="2"
-                                        HeightRequest="50">
+                                        HeightRequest="50"
+                                        Style="{StaticResource HoverBorder}">
                                     <Button Text="Save Changes"
                                             WidthRequest="175"
                                             Clicked="Admin_Save_Truck_Edit"
                                             TextColor="White"
                                             FontAttributes="Bold"
                                             BackgroundColor="Transparent"/>
-
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup>
-                                            <VisualState Name="Normal"/>
-                                            <VisualState Name="PointerOver">
-                                                <VisualState.Setters>
-                                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                                </VisualState.Setters>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
                                 </Border>
 
                                 <Border StrokeShape="RoundRectangle 10"
                                         Grid.Column="2"
-                                        HeightRequest="50">
+                                        HeightRequest="50"
+                                        Style="{StaticResource HoverBorder}">
                                     <Button Text="Delete Truck"
                                             WidthRequest="175"
                                             Clicked="Admin_Delete_Truck"
                                             TextColor="White"
                                             FontAttributes="Bold"
                                             BackgroundColor="Transparent"/>
-
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup>
-                                            <VisualState Name="Normal"/>
-                                            <VisualState Name="PointerOver">
-                                                <VisualState.Setters>
-                                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                                </VisualState.Setters>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
                                 </Border>
 
                             </HorizontalStackLayout>
@@ -537,96 +476,55 @@
                     <Label Text="Users And Trucks"/>
                     <BoxView HeightRequest="1"/>
 
-                    <Border StrokeShape="RoundRectangle 10">
+                    <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
                         <Button Text="Get All Users"
-                                    Clicked="Admin_Get_Users_Clicked"
-                                    WidthRequest="175"
-                                    TextColor="White"
-                                    FontAttributes="Bold"
-                                    BackgroundColor="Transparent"/>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup>
-                                <VisualState Name="Normal"/>
-                                <VisualState Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor" Value="#494949"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+                                            Clicked="Admin_Get_Users_Clicked"
+                                            WidthRequest="175"
+                                            TextColor="White"
+                                            FontAttributes="Bold"
+                                            BackgroundColor="Transparent"/>
                     </Border>
-                    <Border StrokeShape="RoundRectangle 10">
+                    <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
                         <Button Text="Get All Trucks"
                                     Clicked="Admin_Get_Trucks_Clicked"
                                     WidthRequest="175"
                                     TextColor="White"
                                     FontAttributes="Bold"
                                     BackgroundColor="Transparent"/>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup>
-                                <VisualState Name="Normal"/>
-                                <VisualState Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor" Value="#494949"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+
                     </Border>
 
-                    <Border StrokeShape="RoundRectangle 10">
+                    <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
                         <Button Text="Add New User"
                                     Clicked="Admin_Open_Add_User_Section"
                                     WidthRequest="175"
                                     TextColor="White"
                                     FontAttributes="Bold"
                                     BackgroundColor="Transparent"/>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup>
-                                <VisualState Name="Normal"/>
-                                <VisualState Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor" Value="#494949"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+
                     </Border>
-                    <Border StrokeShape="RoundRectangle 10">
+                    <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
                         <Button Text="Add New Truck"
                                     Clicked="Admin_Open_Add_Truck_Section"
                                     WidthRequest="175"
                                     TextColor="White"
                                     FontAttributes="Bold"
                                     BackgroundColor="Transparent"/>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup>
-                                <VisualState Name="Normal"/>
-                                <VisualState Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor" Value="#494949"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+
                     </Border>
-                    <Border StrokeShape="RoundRectangle 10">
+                    <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
                         <Button Text="Go Back"
                                     WidthRequest="175"
                                     Clicked="Admin_Go_Back"
                                     TextColor="White"
                                     FontAttributes="Bold"
                                     BackgroundColor="Transparent"/>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup>
-                                <VisualState Name="Normal"/>
-                                <VisualState Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor" Value="#494949"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+
                     </Border>
 
 
