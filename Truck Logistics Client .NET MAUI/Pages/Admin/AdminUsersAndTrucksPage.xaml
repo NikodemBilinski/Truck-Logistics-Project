@@ -85,6 +85,14 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
 
+                        <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
+                            <Button Text="Left Page"
+                                    Clicked="Left_Page"/>
+                            <Button Text="Right PAGEEEEEEEEEEEEE"
+                                    Clicked="Right_Page"/>
+                        </HorizontalStackLayout>
+                        
+
                     </VerticalStackLayout>
                 </Grid>
 

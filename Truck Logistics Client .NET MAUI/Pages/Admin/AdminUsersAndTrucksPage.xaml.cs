@@ -163,6 +163,19 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         return new List<Users>();
     }
 
+    private async void Right_Page(object sender, EventArgs e)
+    {
+        pages.PageNumber++;
+        var users = await GetPage();
+        Get_All_Users_View.ItemsSource = users;
+    }
+    private async void Left_Page(object sender, EventArgs e)
+    {
+        pages.PageNumber--;
+        var users = await GetPage();
+        Get_All_Users_View.ItemsSource = users;
+    }
+
     // GET Users, Trucks
 
     private async void Admin_Get_Users_Clicked(object sender, EventArgs e)
