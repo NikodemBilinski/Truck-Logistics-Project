@@ -146,6 +146,23 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     }
 
+    private async Task<List<Users>> GetPage()
+    {
+        var response = await client.GetAsync(apiUrl + $"Users/Get_Users_Page/{pages.PageNumber}/{pages.PageSize}");
+
+        if(response.IsSuccessStatusCode)
+        {
+            var userslistpage = await response.Content.ReadFromJsonAsync<List<Users>>();
+            if(userslistpage.Count == 0)
+            {
+                return new List<Users>();
+            }
+            return userslistpage;
+        }
+
+        return new List<Users>();
+    }
+
     // GET Users, Trucks
 
     private async void Admin_Get_Users_Clicked(object sender, EventArgs e)
@@ -154,16 +171,8 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         await Hide_Everything();
         try
         {
-            var response = await client.GetAsync(apiUrl + $"Users/Get_Users_Page/{pages.PageNumber}/{pages.PageSize}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                var userslist = await response.Content.ReadFromJsonAsync<List<Users>>();
-
-                Get_All_Users_View.ItemsSource = userslist;
-
-
-            }
+            var users = await GetPage();
+            Get_All_Users_View.ItemsSource = users;
         }
         catch (Exception ex)
         {
