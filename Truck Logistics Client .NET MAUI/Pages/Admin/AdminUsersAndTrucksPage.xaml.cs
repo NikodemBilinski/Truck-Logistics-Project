@@ -3,6 +3,7 @@ using System.Net.Http.Json;
 using System.Runtime.InteropServices.ObjectiveC;
 using TrucksLogisticsClient.Models;
 using TrucksLogisticsClient.Models.Helping_Models;
+using TrucksLogisticsServerAPI.Models.Helping_Models;
 
 
 namespace TrucksLogisticsClient.Pages;
@@ -50,6 +51,9 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         apiUrl = Preferences.Get("api_url", "127.0.0.1:5160/api/");
 
         await Get_Current_User();
+
+        //set total pages for pagination
+        pages.TotalPages = await CountTotalPages();
     }
 
     private async Task Get_Current_User()
@@ -163,14 +167,43 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         return new List<Users>();
     }
 
+    private async Task<int> CountTotalPages()
+    {
+        var response = await client.GetAsync(apiUrl + "Users/Get_Users_Stats");
+
+        if(response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<UsersStats>();
+
+            if (stats == null)
+            {
+                return 0;
+            }
+
+            var totalpages = (int)Math.Ceiling((double)stats.Users_Count / pages.PageSize);
+
+            return totalpages;
+        }
+
+        return 0;
+    }
+
     private async void Right_Page(object sender, EventArgs e)
     {
+        if(pages.PageNumber >= pages.TotalPages)
+        {
+            return;
+        }
         pages.PageNumber++;
         var users = await GetPage();
         Get_All_Users_View.ItemsSource = users;
     }
     private async void Left_Page(object sender, EventArgs e)
     {
+        if (pages.PageNumber <= 1)
+        {
+            return;
+        }
         pages.PageNumber--;
         var users = await GetPage();
         Get_All_Users_View.ItemsSource = users;
