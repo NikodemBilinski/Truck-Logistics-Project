@@ -150,6 +150,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     }
 
+    //Pagination
     private async Task<List<Users>> GetPage()
     {
         var response = await client.GetAsync(apiUrl + $"Users/Get_Users_Page/{pages.PageNumber}/{pages.PageSize}");
@@ -227,27 +228,6 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         }
         Users_View.IsEnabled = true;
         Users_View.IsVisible = true;
-        //await Hide_Everything();
-        //try
-        //{
-        //    var response = await client.GetAsync(apiUrl + "Users/Get_All_Users");
-
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        var userslist = await response.Content.ReadFromJsonAsync<List<Users>>();
-
-        //        Get_All_Users_View.ItemsSource = userslist;
-
-
-        //    }
-        //}
-        //catch (Exception ex)
-        //{
-        //    Debug.WriteLine("Error: " + ex.Message);
-        //    return;
-        //}
-        //Users_View.IsEnabled = true;
-        //Users_View.IsVisible = true;
     }
 
     private async void Admin_Get_Trucks_Clicked(object sender, EventArgs e)

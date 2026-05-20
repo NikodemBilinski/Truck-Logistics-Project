@@ -84,12 +84,56 @@
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
+                        
+                        <!--Pagination-->
+                        <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
 
-                        <HorizontalStackLayout Spacing="20" HorizontalOptions="Center">
-                            <Button Text="Left Page"
-                                    Clicked="Left_Page"/>
-                            <Button Text="Right PAGEEEEEEEEEEEEE"
-                                    Clicked="Right_Page"/>
+                                <Button ImageSource="doubleleft_arrow.png"
+                                        Clicked="Right_Page"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+                                
+                                <Button ImageSource="left_arrow.png"
+                                        Clicked="Left_Page"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+
+                            <Label x:Name="Current Page"/>
+
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+                                
+                                <Button ImageSource="right_arrow.png"
+                                        Clicked="Right_Page"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+                                
+                                <Button  ImageSource="doubleright_arrow.png"
+                                        Clicked="Right_Page"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
                         </HorizontalStackLayout>
                         
 

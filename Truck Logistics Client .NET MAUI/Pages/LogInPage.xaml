@@ -44,7 +44,8 @@
                    Placeholder="Enter your password"
                    WidthRequest="200"/>
 
-            <Border StrokeShape="RoundRectangle 10"
+            <Border Style="{StaticResource HoverBorder}"
+                    StrokeShape="RoundRectangle 10"
                     WidthRequest="200">
                 <Button Text="Login"
                         WidthRequest="175"
@@ -52,16 +53,6 @@
                         TextColor="White"
                         FontAttributes="Bold"
                         BackgroundColor="Transparent"/>
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup>
-                        <VisualState Name="Normal"/>
-                        <VisualState Name="PointerOver">
-                            <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="#494949"/>
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
             </Border>
             <Label x:Name="LoginResultLabel"
                    TextColor="Red"
