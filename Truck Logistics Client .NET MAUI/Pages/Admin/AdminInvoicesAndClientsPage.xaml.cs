@@ -1,5 +1,4 @@
 using CommunityToolkit.Maui.Storage;
-using Java.Security;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
@@ -105,7 +104,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     #region pagination
 
-    private async Task<List<Invoice>> GetInvoicesPage()
+    private async Task<List<Invoice>> GetPageInvoices()
     {
         var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Page/{pages.PageNumber}/{pages.PageSize}");
 
@@ -122,6 +121,58 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         }
         return new List<Invoice>();
     }
+
+    private async Task<int> CountTotalPagesInvoices()
+    {
+        var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Stats");
+        if(response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<InvoicesStats>();
+
+            if(stats != null)
+            {
+                return (int)Math.Ceiling((double)stats.Invoices_Count / pages.PageSize);
+            }
+
+            return 0;
+        }
+        return 0;
+    }
+
+    private async void Right_PageInvoices(object sender, EventArgs e)
+    {
+        if (pages.PageNumber >= pages.TotalPages)
+        {
+            return;
+        }
+        pages.PageNumber++;
+        var users = await GetPageInvoices();
+        All_Invoices_View.ItemsSource = users;
+    }
+    private async void Left_PageUsers(object sender, EventArgs e)
+    {
+        if (pages.PageNumber <= 1)
+        {
+            return;
+        }
+        pages.PageNumber--;
+        var users = await GetPageInvoices();
+        All_Invoices_View.ItemsSource = users;
+    }
+    private async void First_PageUsers(object sender, EventArgs e)
+    {
+        pages.PageNumber = 1;
+        var users = await GetPageInvoices();
+        All_Invoices_View.ItemsSource = users;
+    }
+    private async void Last_PageUsers(object sender, EventArgs e)
+    {
+        pages.PageNumber = pages.TotalPages;
+        var users = await GetPageInvoices();
+        All_Invoices_View.ItemsSource = users;
+    }
+
+
 
     #endregion
     // open sections
