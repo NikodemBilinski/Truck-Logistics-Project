@@ -141,56 +141,105 @@
                 <!--Trucks View-->
                 <Grid x:Name="Trucks_View"
                     IsVisible="False">
-                    <Grid RowDefinitions="*,*">
-                        <Grid ColumnDefinitions="50,100,150,75,75" 
+                    <VerticalStackLayout>
+                        <Grid RowDefinitions="*,*">
+                            <Grid ColumnDefinitions="50,100,150,75,75" 
                               BackgroundColor="Transparent" 
                               Padding="10"
                               HorizontalOptions="Center"
                               Grid.Row="0">
-                            <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
-                            <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
-                            <Label Grid.Column="2" Text="Brand" FontAttributes="Bold"/>
-                            <Label Grid.Column="3" Text="Status" FontAttributes="Bold"/>
-                            <Label Grid.Column="4" Text="Capacity" FontAttributes="Bold"/>
-                        </Grid>
+                                <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                                <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
+                                <Label Grid.Column="2" Text="Brand" FontAttributes="Bold"/>
+                                <Label Grid.Column="3" Text="Status" FontAttributes="Bold"/>
+                                <Label Grid.Column="4" Text="Capacity" FontAttributes="Bold"/>
+                            </Grid>
 
-                        <CollectionView x:Name="Get_All_Trucks_View"
+                            <CollectionView x:Name="Get_All_Trucks_View"
                                     SelectionMode="Single"
                                     SelectionChanged="Admin_Trucks_View_Selected"
                                     WidthRequest="500"
                                     Grid.Row="1">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="model:Truck">
-                                    <Border Stroke="Transparent" Padding="-5">
-                                        <Border Stroke="transparent"  StrokeThickness="3">
-                                            <Grid ColumnDefinitions="50,100,150,75,75"
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:Truck">
+                                        <Border Stroke="Transparent" Padding="-5">
+                                            <Border Stroke="transparent"  StrokeThickness="3">
+                                                <Grid ColumnDefinitions="50,100,150,75,75"
                                               Padding="10"
                                               HorizontalOptions="Center">
 
-                                                <Label Grid.Column="0" Text="{Binding Id}"/>
-                                                <Label Grid.Column="1" Text="{Binding Name}"/>
-                                                <Label Grid.Column="2" Text="{Binding brand}"/>
-                                                <Label Grid.Column="3" Text="{Binding IsBusy}">
-                                                    <Label.Triggers>
-                                                        <DataTrigger TargetType="Label" Binding="{Binding IsBusy}" Value="True">
-                                                            <Setter Property="Text" Value="Busy"/>
-                                                            <Setter Property="TextColor" Value="Red"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger TargetType="Label" Binding="{Binding IsBusy}" Value="False">
-                                                            <Setter Property="Text" Value="Available"/>
-                                                            <Setter Property="TextColor" Value="Green"/>
-                                                        </DataTrigger>
-                                                    </Label.Triggers>
-                                                </Label>
-                                                <Label Grid.Column="4" Text="{Binding Capacity}" HorizontalOptions="Center"/>
-                                            </Grid>
+                                                    <Label Grid.Column="0" Text="{Binding Id}"/>
+                                                    <Label Grid.Column="1" Text="{Binding Name}"/>
+                                                    <Label Grid.Column="2" Text="{Binding brand}"/>
+                                                    <Label Grid.Column="3" Text="{Binding IsBusy}">
+                                                        <Label.Triggers>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding IsBusy}" Value="True">
+                                                                <Setter Property="Text" Value="Busy"/>
+                                                                <Setter Property="TextColor" Value="Red"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding IsBusy}" Value="False">
+                                                                <Setter Property="Text" Value="Available"/>
+                                                                <Setter Property="TextColor" Value="Green"/>
+                                                            </DataTrigger>
+                                                        </Label.Triggers>
+                                                    </Label>
+                                                    <Label Grid.Column="4" Text="{Binding Capacity}" HorizontalOptions="Center"/>
+                                                </Grid>
+                                            </Border>
                                         </Border>
-                                    </Border>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </Grid>
+                        <!--Pagination-->
+                        <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
 
-                    </Grid>
+                                <Button ImageSource="doubleleft_arrow.png"
+                                        Clicked="First_PageTrucks"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button ImageSource="left_arrow.png"
+                                        Clicked="Left_PageTrucks"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button ImageSource="right_arrow.png"
+                                        Clicked="Right_PageTrucks"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button  ImageSource="doubleright_arrow.png"
+                                        Clicked="Last_PageTrucks"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
                 </Grid>
 
                 <!--Add New User (admin)-->

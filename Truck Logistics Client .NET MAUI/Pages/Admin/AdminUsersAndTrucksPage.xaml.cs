@@ -265,8 +265,8 @@ public partial class AdminUsersAndTrucksPage : ContentPage
             return;
         }
         pages.PageNumber++;
-        var users = await GetPageTrucks();
-        Get_All_Users_View.ItemsSource = users;
+        var trucks = await GetPageTrucks();
+        Get_All_Trucks_View.ItemsSource = trucks;
     }
     private async void Left_PageTrucks(object sender, EventArgs e)
     {
@@ -275,20 +275,20 @@ public partial class AdminUsersAndTrucksPage : ContentPage
             return;
         }
         pages.PageNumber--;
-        var users = await GetPageTrucks();
-        Get_All_Users_View.ItemsSource = users;
+        var trucks = await GetPageTrucks();
+        Get_All_Trucks_View.ItemsSource = trucks;
     }
     private async void First_PageTrucks(object sender, EventArgs e)
     {
         pages.PageNumber = 1;
-        var users = await GetPageTrucks();
-        Get_All_Users_View.ItemsSource = users;
+        var trucks = await GetPageTrucks();
+        Get_All_Trucks_View.ItemsSource = trucks;
     }
     private async void Last_PageTrucks(object sender, EventArgs e)
     {
         pages.PageNumber = pages.TotalPages;
-        var users = await GetPageTrucks();
-        Get_All_Users_View.ItemsSource = users;
+        var trucks = await GetPageTrucks();
+        Get_All_Trucks_View.ItemsSource = trucks;
     }
 
     #endregion
