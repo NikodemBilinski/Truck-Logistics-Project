@@ -93,7 +93,7 @@
                                     Style="{StaticResource HoverBorder}">
 
                                 <Button ImageSource="doubleleft_arrow.png"
-                                        Clicked="Right_Page"
+                                        Clicked="First_Page"
                                         BackgroundColor="Transparent"
                                         WidthRequest="10"
                                         HeightRequest="10"/>
@@ -127,7 +127,7 @@
                                     Style="{StaticResource HoverBorder}">
                                 
                                 <Button  ImageSource="doubleright_arrow.png"
-                                        Clicked="Right_Page"
+                                        Clicked="Last_Page"
                                         BackgroundColor="Transparent"
                                         WidthRequest="10"
                                         HeightRequest="10"/>
