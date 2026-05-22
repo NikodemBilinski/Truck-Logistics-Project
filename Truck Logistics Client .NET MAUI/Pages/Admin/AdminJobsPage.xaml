@@ -248,7 +248,7 @@
                         <Grid x:Name="Jobs_View"
                               IsVisible="False">
                             <Grid RowDefinitions="*,*">
-                                <Grid ColumnDefinitions="50,200,100,75,75" 
+                                <Grid ColumnDefinitions="50,600,100,75,75" 
                                       BackgroundColor="Transparent" 
                                       ColumnSpacing="20"
                                       Padding="10"
@@ -265,14 +265,14 @@
                                                 SelectionMode="Single"
                                                 SelectionChanged="Admin_Jobs_View_Selected"
                                                 Grid.Row="1"
-                                                WidthRequest="600"
+                                                WidthRequest="1030"
                                                 HorizontalOptions="Center">
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate x:DataType="model:Job">
                                             <Border Stroke="Transparent" Padding="5,0,0,0">
                                                 <Border Stroke="transparent"  StrokeThickness="3">
-                                                    <Grid ColumnDefinitions="50,200,100,75,75"
-                                                          ColumnSpacing="20"
+                                                    <Grid ColumnDefinitions="50,600,100,75,75"
+                                                          ColumnSpacing="25"
                                                           Padding="5">
 
                                                         <Label Grid.Column="0" Text="{Binding ID}"/>
@@ -300,6 +300,7 @@
                                 </CollectionView>
                             </Grid>
                         </Grid>
+                        
                         <!--Pagination-->
                         <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
                             <Border StrokeThickness="0"

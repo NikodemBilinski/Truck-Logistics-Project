@@ -2,7 +2,6 @@ using System.Diagnostics;
 using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
 using TrucksLogisticsClient.Models.Helping_Models;
-using TrucksLogisticsServerAPI.Models.Helping_Models;
 
 namespace TrucksLogisticsClient.Pages;
 
