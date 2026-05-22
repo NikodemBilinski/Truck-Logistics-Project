@@ -202,7 +202,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Invoice_View.IsVisible = true;
         Invoice_View.IsEnabled = true;
 
-        await CountTotalPagesInvoices();
+        pages.TotalPages = await CountTotalPagesInvoices();
 
         var invoices = await client.GetFromJsonAsync<List<Invoice>>(apiUrl + "Invoices/Get_All_Invoices");
 
