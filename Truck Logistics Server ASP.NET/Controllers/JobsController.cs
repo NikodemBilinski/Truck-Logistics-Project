@@ -37,19 +37,34 @@ namespace TrucksLogisticsServerAPI.Controllers
             return BadRequest("Error: No Jobs Found");
         }
 
+        [HttpGet("Get_Jobs_Page/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<List<Job>>> GetJobsPage(int pageNumber, int pageSize)
+        {
+            var jobs = await _dataContext.Jobs.
+                Include(x=> x.Client).
+                Skip((pageNumber - 1) * pageSize).
+                Take(pageSize).
+                ToListAsync();
+
+            return Ok(jobs);
+        }
+
         [Authorize(Roles ="admin")]
         [HttpGet("Get_Jobs_Stats")]
         public async Task<ActionResult<JobStats>> GetJobsStats()
         {
+            var Alljobs = await _dataContext.Jobs.CountAsync();
+
             var OpenJobsCount = await _dataContext.Jobs.Where(x => x.Status == "open").CountAsync();
 
             var NearDeadlineCount = await _dataContext.Jobs.Where(x => x.DeadLine < DateTime.Now.AddDays(3)).CountAsync();
 
             var jobstats = new JobStats()
-                { 
-                    Open_Count = OpenJobsCount,
-                    NearDeadline_Count = NearDeadlineCount
-                };
+            {
+                Jobs_Count = Alljobs,
+                Open_Count = OpenJobsCount,
+                NearDeadline_Count = NearDeadlineCount
+            };
 
             return Ok(jobstats);
         }

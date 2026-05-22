@@ -1,6 +1,8 @@
 using System.Diagnostics;
 using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
+using TrucksLogisticsClient.Models.Helping_Models;
+using TrucksLogisticsServerAPI.Models.Helping_Models;
 
 namespace TrucksLogisticsClient.Pages;
 
@@ -18,6 +20,8 @@ public partial class AdminJobsPage : ContentPage
     private List<Truck> SelectedTrucks = new List<Truck>();
 
     private string apiUrl;
+
+    private PaginationPage pages = new PaginationPage();
 
     private HttpClient client = new HttpClient();
     public AdminJobsPage()
@@ -152,6 +156,48 @@ public partial class AdminJobsPage : ContentPage
         return new List<Client>();
     }
 
+    //Pagination
+
+    private async Task<List<Job>> GetPageJobs()
+    {
+
+        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var joblistpage = await response.Content.ReadFromJsonAsync<List<Job>>();
+            if (joblistpage.Count == 0)
+            {
+                return new List<Job>();
+            }
+            return joblistpage;
+        }
+
+        return new List<Job>();
+
+    }
+
+    private async Task<int> CountTotalPagesJobs()
+    {
+        var response = await client.GetAsync(apiUrl + "Jobs/Get_Jobs_Stats");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<JobStats>();
+
+            if (stats == null)
+            {
+                return 0;
+            }
+
+            var totalpages = (int)Math.Ceiling((double)stats.Jobs_Count / pages.PageSize);
+
+            return totalpages;
+        }
+
+        return 0;
+    }
+
     //GET USERS, TRUCKS, JOBS
 
     private async void Admin_Get_Jobs_Clicked(object sender, EventArgs e)
@@ -161,14 +207,15 @@ public partial class AdminJobsPage : ContentPage
         Jobs_View.IsEnabled = true;
         Jobs_View.IsVisible = true;
 
+        pages.PageNumber = 1;
+
         try
         {
-            var response = await client.GetAsync(apiUrl + "Jobs/Get_All_Jobs");
-            if (response.IsSuccessStatusCode)
-            {
-                var jobslist = await response.Content.ReadFromJsonAsync<List<Job>>();
-                Get_All_Jobs_View.ItemsSource = jobslist;
-            }
+            pages.TotalPages = await CountTotalPagesJobs();
+
+            var jobs = await GetPageJobs();
+
+            Get_All_Jobs_View.ItemsSource = jobs;
 
         }
         catch (Exception ex)
