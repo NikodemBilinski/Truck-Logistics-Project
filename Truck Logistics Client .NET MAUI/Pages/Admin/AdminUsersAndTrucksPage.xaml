@@ -93,7 +93,7 @@
                                     Style="{StaticResource HoverBorder}">
 
                                 <Button ImageSource="doubleleft_arrow.png"
-                                        Clicked="First_Page"
+                                        Clicked="First_PageUsers"
                                         BackgroundColor="Transparent"
                                         WidthRequest="10"
                                         HeightRequest="10"/>
@@ -104,7 +104,7 @@
                                     Style="{StaticResource HoverBorder}">
 
                                 <Button ImageSource="left_arrow.png"
-                                        Clicked="Left_Page"
+                                        Clicked="Left_PageUsers"
                                         BackgroundColor="Transparent"
                                         WidthRequest="10"
                                         HeightRequest="10"/>
@@ -116,7 +116,7 @@
                                     Style="{StaticResource HoverBorder}">
                                 
                                 <Button ImageSource="right_arrow.png"
-                                        Clicked="Right_Page"
+                                        Clicked="Right_PageUsers"
                                         BackgroundColor="Transparent"
                                         WidthRequest="10"
                                         HeightRequest="10"/>
@@ -127,7 +127,7 @@
                                     Style="{StaticResource HoverBorder}">
                                 
                                 <Button  ImageSource="doubleright_arrow.png"
-                                        Clicked="Last_Page"
+                                        Clicked="Last_PageUsers"
                                         BackgroundColor="Transparent"
                                         WidthRequest="10"
                                         HeightRequest="10"/>

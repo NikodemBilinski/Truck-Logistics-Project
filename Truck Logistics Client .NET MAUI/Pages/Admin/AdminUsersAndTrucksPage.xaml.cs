@@ -150,15 +150,17 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     }
 
-    //Pagination
-    private async Task<List<Users>> GetPage()
+    #region Pagination
+    //users
+    private async Task<List<Users>> GetPageUsers()
     {
+        
         var response = await client.GetAsync(apiUrl + $"Users/Get_Users_Page/{pages.PageNumber}/{pages.PageSize}");
 
-        if(response.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
         {
             var userslistpage = await response.Content.ReadFromJsonAsync<List<Users>>();
-            if(userslistpage.Count == 0)
+            if (userslistpage.Count == 0)
             {
                 return new List<Users>();
             }
@@ -166,9 +168,10 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         }
 
         return new List<Users>();
+    
     }
 
-    private async Task<int> CountTotalPages()
+    private async Task<int> CountTotalPagesUsers()
     {
         var response = await client.GetAsync(apiUrl + "Users/Get_Users_Stats");
 
@@ -189,7 +192,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         return 0;
     }
 
-    private async void Right_Page(object sender, EventArgs e)
+    private async void Right_PageUsers(object sender, EventArgs e)
     {
         if(pages.PageNumber >= pages.TotalPages)
         {
@@ -199,7 +202,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         var users = await GetPage();
         Get_All_Users_View.ItemsSource = users;
     }
-    private async void Left_Page(object sender, EventArgs e)
+    private async void Left_PageUsers(object sender, EventArgs e)
     {
         if (pages.PageNumber <= 1)
         {
@@ -209,20 +212,20 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         var users = await GetPage();
         Get_All_Users_View.ItemsSource = users;
     }
-
-    private async void First_Page(object sender, EventArgs e)
+    private async void First_PageUsers(object sender, EventArgs e)
     {
         pages.PageNumber = 1;
         var users = await GetPage();
         Get_All_Users_View.ItemsSource = users;
     }
-
-    private async void Last_Page(object sender, EventArgs e)
+    private async void Last_PageUsers(object sender, EventArgs e)
     {
         pages.PageNumber = pages.TotalPages;
         var users = await GetPage();
         Get_All_Users_View.ItemsSource = users;
     }
+
+    #endregion
 
     // GET Users, Trucks
 
@@ -232,7 +235,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         await Hide_Everything();
         try
         {
-            var users = await GetPage();
+            var users = await GetPageUsers();
             Get_All_Users_View.ItemsSource = users;
         }
         catch (Exception ex)
