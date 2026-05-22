@@ -1,7 +1,9 @@
 using CommunityToolkit.Maui.Storage;
+using Java.Security;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
+using TrucksLogisticsClient.Models.Helping_Models;
 
 namespace TrucksLogisticsClient.Pages;
 
@@ -19,6 +21,8 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     private string apiUrl;
 
     private HttpClient client = new HttpClient();
+
+    private PaginationPage pages = new PaginationPage();
 
     public AdminInvoicesAndClientsPage()
 	{
@@ -98,6 +102,28 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Add_Invoice_Section.IsVisible = false;
         Add_Invoice_Section.IsEnabled = false;
     }
+
+    #region pagination
+
+    private async Task<List<Invoice>> GetInvoicesPage()
+    {
+        var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Page/{pages.PageNumber}/{pages.PageSize}");
+
+        if(response.IsSuccessStatusCode)
+        {
+            var invoiceslistpage = await response.Content.ReadFromJsonAsync<List<Invoice>>();
+
+            if(invoiceslistpage.Count == 0)
+            {
+                return new List<Invoice>();
+            }
+
+            return invoiceslistpage;
+        }
+        return new List<Invoice>();
+    }
+
+    #endregion
     // open sections
     private async void Admin_Show_Clients_View(object sender, EventArgs e)
     {

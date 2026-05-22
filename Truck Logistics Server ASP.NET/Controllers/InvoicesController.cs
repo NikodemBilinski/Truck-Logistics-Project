@@ -25,11 +25,13 @@ namespace TrucksLogisticsServerAPI.Controllers
         [HttpGet("Get_Invoices_Stats")]
         public async Task<ActionResult<InvoicesStats>> GetInvoicesStats()
         {
+            var invoicescount = await _datacontext.Invoices.CountAsync();
             var unpaidCount = await _datacontext.Invoices.Where(x => x.Status != "paid").CountAsync();
             var overdueCount = await _datacontext.Invoices.Where(x => x.DueDate < DateTime.Now && x.Status != "paid").CountAsync();
 
             var stats = new InvoicesStats
             {
+                Invoices_Count = invoicescount,
                 Unpaid_Count = unpaidCount,
                 Overdue_Count = overdueCount
             };
@@ -67,6 +69,19 @@ namespace TrucksLogisticsServerAPI.Controllers
             {
                 return BadRequest("No Invoices were found in the database.");
             }
+        }
+
+        [HttpGet("Get_Invoices_Page/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<List<Invoice>>> GetInvoicesPage(int pageNumber, int pageSize)
+        {
+            var invoices = await _datacontext.Invoices
+                .Include(x => x.Client)
+                .Include(x => x.Job)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(invoices);
         }
 
         [HttpPost("Add_Invoice")]
