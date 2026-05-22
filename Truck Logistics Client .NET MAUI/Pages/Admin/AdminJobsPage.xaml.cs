@@ -156,7 +156,7 @@ public partial class AdminJobsPage : ContentPage
         return new List<Client>();
     }
 
-    //Pagination
+    #region Pagtination
 
     private async Task<List<Job>> GetPageJobs()
     {
@@ -176,6 +176,42 @@ public partial class AdminJobsPage : ContentPage
         return new List<Job>();
 
     }
+
+    private async void Right_PageJobs(object sender, EventArgs e)
+    {
+        if (pages.PageNumber < pages.TotalPages)
+        {
+            pages.PageNumber++;
+            var jobs = await GetPageJobs();
+            Get_All_Jobs_View.ItemsSource = jobs;
+        }
+    }
+
+    private async void Left_PageJobs(object sender, EventArgs e)
+    {
+        if (pages.PageNumber > 1)
+        {
+            pages.PageNumber--;
+            var jobs = await GetPageJobs();
+            Get_All_Jobs_View.ItemsSource = jobs;
+        }
+    }
+
+    private async void First_PageJobs(object sender, EventArgs e)
+    {
+        pages.PageNumber = 1;
+        var jobs = await GetPageJobs();
+        Get_All_Jobs_View.ItemsSource = jobs;
+    }
+
+    private async void Last_PageJobs(object sender, EventArgs e)
+    {
+        pages.PageNumber = pages.TotalPages;
+        var jobs = await GetPageJobs();
+        Get_All_Jobs_View.ItemsSource = jobs;
+    }
+
+    #endregion
 
     private async Task<int> CountTotalPagesJobs()
     {

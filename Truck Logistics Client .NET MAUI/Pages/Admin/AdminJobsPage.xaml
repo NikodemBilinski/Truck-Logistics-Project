@@ -300,6 +300,54 @@
                                 </CollectionView>
                             </Grid>
                         </Grid>
+                        <!--Pagination-->
+                        <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button ImageSource="doubleleft_arrow.png"
+                                        Clicked="First_PageJobs"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button ImageSource="left_arrow.png"
+                                        Clicked="Left_PageJobs"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button ImageSource="right_arrow.png"
+                                        Clicked="Right_PageJobs"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button ImageSource="doubleright_arrow.png"
+                                        Clicked="Last_PageJobs"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                        </HorizontalStackLayout>
                     </VerticalStackLayout>
                 </ScrollView>
 
