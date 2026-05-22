@@ -134,9 +134,9 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
                 return (int)Math.Ceiling((double)stats.Invoices_Count / pages.PageSize);
             }
 
-            return 0;
+            return 1;
         }
-        return 0;
+        return 1;
     }
 
     private async void Right_PageInvoices(object sender, EventArgs e)
@@ -149,7 +149,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         var users = await GetPageInvoices();
         All_Invoices_View.ItemsSource = users;
     }
-    private async void Left_PageUsers(object sender, EventArgs e)
+    private async void Left_PageInvoices(object sender, EventArgs e)
     {
         if (pages.PageNumber <= 1)
         {
@@ -159,13 +159,13 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         var users = await GetPageInvoices();
         All_Invoices_View.ItemsSource = users;
     }
-    private async void First_PageUsers(object sender, EventArgs e)
+    private async void First_PageInvoices(object sender, EventArgs e)
     {
         pages.PageNumber = 1;
         var users = await GetPageInvoices();
         All_Invoices_View.ItemsSource = users;
     }
-    private async void Last_PageUsers(object sender, EventArgs e)
+    private async void Last_PageInvoices(object sender, EventArgs e)
     {
         pages.PageNumber = pages.TotalPages;
         var users = await GetPageInvoices();
@@ -201,6 +201,8 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         await HideEverything();
         Invoice_View.IsVisible = true;
         Invoice_View.IsEnabled = true;
+
+        await CountTotalPagesInvoices();
 
         var invoices = await client.GetFromJsonAsync<List<Invoice>>(apiUrl + "Invoices/Get_All_Invoices");
 

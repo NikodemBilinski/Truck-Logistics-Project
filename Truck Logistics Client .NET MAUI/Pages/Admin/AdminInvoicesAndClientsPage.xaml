@@ -65,6 +65,7 @@
             <!--Invoice View-->
             <Grid x:Name="Invoice_View"
                   IsVisible="False">
+                <VerticalStackLayout>
                 <Grid RowDefinitions="*,*">
                     <Grid ColumnDefinitions="50,150,150,150,150,150" 
                           Margin="0,10,0,0"
@@ -108,6 +109,55 @@
                     </CollectionView>
 
                 </Grid>
+                                <!--Pagination-->
+                                <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="doubleleft_arrow.png"
+                                                Clicked="First_PageInvoices"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="left_arrow.png"
+                                                Clicked="Left_PageInvoices"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="right_arrow.png"
+                                                Clicked="Right_PageInvoices"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="doubleright_arrow.png"
+                                                Clicked="Last_PageInvoices"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
             </Grid>
             <!--Client Edit Section-->
             <VerticalStackLayout x:Name="Edit_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">
