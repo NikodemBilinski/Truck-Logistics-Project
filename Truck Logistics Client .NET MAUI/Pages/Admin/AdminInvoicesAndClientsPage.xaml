@@ -20,47 +20,97 @@
             <!--Client View-->
             <Grid x:Name="Client_View"
                   IsVisible="False">
-                <Grid RowDefinitions="*,*">
-                    <Grid ColumnDefinitions="50,150,150,150,150" 
+                            <VerticalStackLayout>
+                                <Grid RowDefinitions="*,*">
+                                    <Grid ColumnDefinitions="50,150,150,150,150" 
                            Margin="0,10,0,0"
                            BackgroundColor="Transparent" 
                            Padding="10"
                            HorizontalOptions="Center"
                            Grid.Row="0">
-                        <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
-                        <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
-                        <Label Grid.Column="2" Text="NIP" FontAttributes="Bold"/>
-                        <Label Grid.Column="3" Text="City" FontAttributes="Bold"/>
-                        <Label Grid.Column="4" Text="Country" FontAttributes="Bold"/>
-                    </Grid>
+                                        <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                                        <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
+                                        <Label Grid.Column="2" Text="NIP" FontAttributes="Bold"/>
+                                        <Label Grid.Column="3" Text="City" FontAttributes="Bold"/>
+                                        <Label Grid.Column="4" Text="Country" FontAttributes="Bold"/>
+                                    </Grid>
 
-                    <CollectionView x:Name="All_Clients_View"
+                                    <CollectionView x:Name="All_Clients_View"
                                      SelectionMode="Single"
                                      WidthRequest="660"
                                      SelectionChanged="Admin_Client_View_Selected"
                                      Grid.Row="1">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="model:Client">
-                                <Border Stroke="Transparent" Padding="-5">
-                                    <Border Stroke="transparent"  StrokeThickness="3">
-                                        <Grid ColumnDefinitions="50,150,150,150,150"
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="model:Client">
+                                                <Border Stroke="Transparent" Padding="-5">
+                                                    <Border Stroke="transparent"  StrokeThickness="3">
+                                                        <Grid ColumnDefinitions="50,150,150,150,150"
                                               Padding="10"
                                               HorizontalOptions="Center">
 
-                                            <Label Grid.Column="0" Text="{Binding ID}"/>
-                                            <Label Grid.Column="1" Text="{Binding Name}"/>
-                                            <Label Grid.Column="2" Text="{Binding NIP}"/>
-                                            <Label Grid.Column="3" Text="{Binding City}"/>
-                                            <Label Grid.Column="4" Text="{Binding Country}"/>
-                                        </Grid>
-                                    </Border>
-                                </Border>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                                                            <Label Grid.Column="0" Text="{Binding ID}"/>
+                                                            <Label Grid.Column="1" Text="{Binding Name}"/>
+                                                            <Label Grid.Column="2" Text="{Binding NIP}"/>
+                                                            <Label Grid.Column="3" Text="{Binding City}"/>
+                                                            <Label Grid.Column="4" Text="{Binding Country}"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </Border>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
 
-                </Grid>
-            </Grid>
+                                </Grid>
+                                <!--Pagination-->
+                                <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="doubleleft_arrow.png"
+                                                Clicked="First_PageClients"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="left_arrow.png"
+                                                Clicked="Left_PageClients"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="right_arrow.png"
+                                                Clicked="Right_PageClients"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="doubleright_arrow.png"
+                                                Clicked="Last_PageClients"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Grid>
             
             <!--Invoice View-->
             <Grid x:Name="Invoice_View"

@@ -172,9 +172,10 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         All_Invoices_View.ItemsSource = users;
     }
 
-    private async Task<List<Client>> GetPageClients(object sender, EventArgs e)
+    //clients 
+    private async Task<List<Client>> GetPageClients()
     {
-        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Stats");
+        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Page/{pages.PageNumber}/{pages.PageSize}");
         if(response.IsSuccessStatusCode)
         {
             var clientslist = await response.Content.ReadFromJsonAsync<List<Client>>();
@@ -203,6 +204,39 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             return 1;
         }
         return 1;
+    }
+
+    private async void Right_PageClients(object sender, EventArgs e)
+    {
+        if (pages.PageNumber >= pages.TotalPages)
+        {
+            return;
+        }
+        pages.PageNumber++;
+        var users = await GetPageClients();
+        All_Invoices_View.ItemsSource = users;
+    }
+    private async void Left_PageClients(object sender, EventArgs e)
+    {
+        if (pages.PageNumber <= 1)
+        {
+            return;
+        }
+        pages.PageNumber--;
+        var users = await GetPageClients();
+        All_Invoices_View.ItemsSource = users;
+    }
+    private async void First_PageClients(object sender, EventArgs e)
+    {
+        pages.PageNumber = 1;
+        var users = await GetPageClients();
+        All_Invoices_View.ItemsSource = users;
+    }
+    private async void Last_PageClients (object sender, EventArgs e)
+    {
+        pages.PageNumber = pages.TotalPages;
+        var users = await GetPageClients();
+        All_Invoices_View.ItemsSource = users;
     }
 
     #endregion
