@@ -188,6 +188,23 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         return new List<Client>();
     }
 
+    private async Task<int> CountTotalPagesClients()
+    {
+        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Stats");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<ClientsStats>();
+
+            if(stats != null)
+            {
+                return (int)Math.Ceiling((double)stats.TotalClients / pages.PageSize);
+            }
+            return 1;
+        }
+        return 1;
+    }
+
     #endregion
     // open sections
     private async void Admin_Show_Clients_View(object sender, EventArgs e)
@@ -196,7 +213,9 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         Client_View.IsVisible = true;
         Client_View.IsEnabled = true;
-        
+
+        pages.TotalPages = await CountTotalPagesClients();
+
         var clients = await client.GetFromJsonAsync<List<Client>>(apiUrl + "Clients/Get_Clients");
 
         if (clients != null)

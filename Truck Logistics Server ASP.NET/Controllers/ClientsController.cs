@@ -4,6 +4,7 @@ using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
 using Microsoft.AspNetCore.Authorization;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using TrucksLogisticsServerAPI.Models.Helping_Models;
 
 namespace TrucksLogisticsServerAPI.Controllers
 {
@@ -57,6 +58,19 @@ namespace TrucksLogisticsServerAPI.Controllers
 
             return Ok(clients);
         }
+
+        [HttpGet("Get_Clients_Stats")]
+        public async Task<ActionResult<ClientsStats>> GetClientsStats()
+        {
+            var clientcount = await _dataContext.Clients.CountAsync();
+
+            return Ok(new ClientsStats()
+            {
+                TotalClients = clientcount
+            });
+
+        }
+
 
         //HTTP POSTS
 
