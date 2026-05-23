@@ -45,6 +45,19 @@ namespace TrucksLogisticsServerAPI.Controllers
             return BadRequest("Error: No client with that id was found");
         }
 
+        [HttpGet("Get_Clients_Page/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<List<Client>>> GetClientsPage(int pageNumber, int pageSize)
+        {
+            var clients = await _dataContext.Clients
+                .Include(x => x.Invoices)
+                .Include(x => x.Jobs)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(clients);
+        }
+
         //HTTP POSTS
 
         [HttpPost("Add_Client")]

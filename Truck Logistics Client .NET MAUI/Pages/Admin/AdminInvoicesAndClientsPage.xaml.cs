@@ -172,7 +172,21 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         All_Invoices_View.ItemsSource = users;
     }
 
+    private async Task<List<Client>> GetPageClients(object sender, EventArgs e)
+    {
+        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Stats");
+        if(response.IsSuccessStatusCode)
+        {
+            var clientslist = await response.Content.ReadFromJsonAsync<List<Client>>();
 
+            if(clientslist.Count == 0)
+            {
+                return new List<Client>();
+            }
+            return clientslist;
+        }
+        return new List<Client>();
+    }
 
     #endregion
     // open sections
