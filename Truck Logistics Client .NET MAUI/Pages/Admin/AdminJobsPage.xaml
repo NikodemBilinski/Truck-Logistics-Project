@@ -326,6 +326,8 @@
                                         HeightRequest="10"/>
                             </Border>
 
+                            <Label x:Name="Jobs_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
+
                             <Border StrokeThickness="0"
                                     Stroke="Transparent"
                                     StrokeShape="RoundRectangle 10"

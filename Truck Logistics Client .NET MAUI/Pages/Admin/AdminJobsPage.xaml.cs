@@ -162,6 +162,8 @@ public partial class AdminJobsPage : ContentPage
 
         var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}");
 
+        Jobs_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
         if (response.IsSuccessStatusCode)
         {
             var joblistpage = await response.Content.ReadFromJsonAsync<List<Job>>();
