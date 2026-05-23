@@ -188,7 +188,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         }
         return new List<Client>();
     }
-
+    
     private async Task<int> CountTotalPagesClients()
     {
         var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Stats");

@@ -154,6 +154,8 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         
         var response = await client.GetAsync(apiUrl + $"Users/Get_Users_Page/{pages.PageNumber}/{pages.PageSize}");
 
+        Users_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
         if (response.IsSuccessStatusCode)
         {
             var userslistpage = await response.Content.ReadFromJsonAsync<List<Users>>();
@@ -228,6 +230,8 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
         var response = await client.GetAsync(apiUrl + $"Trucks/Get_Trucks_Page/{pages.PageNumber}/{pages.PageSize}");
 
+        Trucks_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
         if (response.IsSuccessStatusCode)
         {
             var truckslistpage = await response.Content.ReadFromJsonAsync<List<Truck>>();
@@ -237,8 +241,9 @@ public partial class AdminUsersAndTrucksPage : ContentPage
             }
             return truckslistpage;
         }
-
+        
         return new List<Truck>();
+
 
     }
 
@@ -305,6 +310,8 @@ public partial class AdminUsersAndTrucksPage : ContentPage
             pages.PageNumber = 1;
             var users = await GetPageUsers();
             Get_All_Users_View.ItemsSource = users;
+
+            
         }
         catch (Exception ex)
         {

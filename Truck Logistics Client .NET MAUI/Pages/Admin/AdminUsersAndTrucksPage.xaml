@@ -110,6 +110,8 @@
                                         HeightRequest="10"/>
                             </Border>
 
+                            <Label x:Name="Users_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
+
                             <Border StrokeThickness="0"
                                     Stroke="Transparent"
                                     StrokeShape="RoundRectangle 10"
@@ -156,17 +158,17 @@
                             </Grid>
 
                             <CollectionView x:Name="Get_All_Trucks_View"
-                                    SelectionMode="Single"
-                                    SelectionChanged="Admin_Trucks_View_Selected"
-                                    WidthRequest="500"
-                                    Grid.Row="1">
+                                            SelectionMode="Single"
+                                            SelectionChanged="Admin_Trucks_View_Selected"
+                                            WidthRequest="500"
+                                            Grid.Row="1">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate x:DataType="model:Truck">
                                         <Border Stroke="Transparent" Padding="-5">
                                             <Border Stroke="transparent"  StrokeThickness="3">
                                                 <Grid ColumnDefinitions="50,100,150,75,75"
-                                              Padding="10"
-                                              HorizontalOptions="Center">
+                                                      Padding="10"
+                                                      HorizontalOptions="Center">
 
                                                     <Label Grid.Column="0" Text="{Binding Id}"/>
                                                     <Label Grid.Column="1" Text="{Binding Name}"/>
@@ -215,6 +217,8 @@
                                         WidthRequest="10"
                                         HeightRequest="10"/>
                             </Border>
+                            
+                            <Label x:Name="Trucks_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
 
                             <Border StrokeThickness="0"
                                     Stroke="Transparent"
