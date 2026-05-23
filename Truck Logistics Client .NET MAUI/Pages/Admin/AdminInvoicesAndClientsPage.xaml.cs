@@ -213,8 +213,8 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             return;
         }
         pages.PageNumber++;
-        var users = await GetPageClients();
-        All_Invoices_View.ItemsSource = users;
+        var clients = await GetPageClients();
+        All_Clients_View.ItemsSource = clients;
     }
     private async void Left_PageClients(object sender, EventArgs e)
     {
@@ -223,20 +223,20 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             return;
         }
         pages.PageNumber--;
-        var users = await GetPageClients();
-        All_Invoices_View.ItemsSource = users;
+        var clients = await GetPageClients();
+        All_Clients_View.ItemsSource = clients;
     }
     private async void First_PageClients(object sender, EventArgs e)
     {
         pages.PageNumber = 1;
-        var users = await GetPageClients();
-        All_Invoices_View.ItemsSource = users;
+        var clients = await GetPageClients();
+        All_Clients_View.ItemsSource = clients;
     }
     private async void Last_PageClients (object sender, EventArgs e)
     {
         pages.PageNumber = pages.TotalPages;
-        var users = await GetPageClients();
-        All_Invoices_View.ItemsSource = users;
+        var clients = await GetPageClients();
+        All_Clients_View.ItemsSource = clients;
     }
 
     #endregion
@@ -248,17 +248,16 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Client_View.IsVisible = true;
         Client_View.IsEnabled = true;
 
-        pages.TotalPages = await CountTotalPagesClients();
-
-        var clients = await client.GetFromJsonAsync<List<Client>>(apiUrl + "Clients/Get_Clients");
-
-        if (clients != null)
+        try
         {
+            pages.TotalPages = await CountTotalPagesClients();
+            pages.PageNumber = 1;
+            var clients = await GetPageClients();
             All_Clients_View.ItemsSource = clients;
         }
-        else
+        catch (Exception ex)
         {
-            Debug.WriteLine("Error fetching clients.");
+            Debug.WriteLine("Error: " + ex.Message);
             return;
         }
     }
@@ -271,15 +270,16 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         pages.TotalPages = await CountTotalPagesInvoices();
 
-        var invoices = await client.GetFromJsonAsync<List<Invoice>>(apiUrl + "Invoices/Get_All_Invoices");
-
-        if (invoices != null)
+        try
         {
+            pages.TotalPages = await CountTotalPagesInvoices();
+            pages.PageNumber = 1;
+            var invoices = await GetPageInvoices();
             All_Invoices_View.ItemsSource = invoices;
         }
-        else
+        catch(Exception ex)
         {
-            Debug.WriteLine("Error fetching invoices.");
+            Debug.WriteLine("Error: " + ex.Message);
             return;
         }
     }
