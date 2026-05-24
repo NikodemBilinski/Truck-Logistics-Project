@@ -170,8 +170,8 @@ public partial class UserMainMenuPage : ContentPage
 		{
 			pages.PageNumber = 1;
 			var jobs = await GetPageJobs();
-
-			jobs = jobs.Where(x => x.Status == "assigned" && x.AssignedUserId == CurrentUser.ID).ToList();
+			pages.TotalPages = jobs.Where(x => x.Status == "assigned" && x.AssignedUserId == CurrentUser.ID).Count();
+            jobs = jobs.Where(x => x.Status == "assigned" && x.AssignedUserId == CurrentUser.ID).ToList();
 			Jobs_View_Collection.ItemsSource = jobs;
 		}
 	}
@@ -188,8 +188,8 @@ public partial class UserMainMenuPage : ContentPage
 		{
             pages.PageNumber = 1;
             var jobs = await GetPageJobs();
-
-			jobs = jobs.Where(x => x.Status == "open").ToList();
+			pages.TotalPages = jobs.Where(x => x.Status == "open" && x.AssignedUserId == CurrentUser.ID).Count();
+            jobs = jobs.Where(x => x.Status == "open").ToList();
 
             Jobs_View_Collection.ItemsSource = jobs;
         }

@@ -69,6 +69,21 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok(jobstats);
         }
 
+        [Authorize(Roles ="admin,user")]
+        [HttpGet("Get_Jobs_Stats_User/{UserID}")]
+        public async Task<ActionResult<JobStats>> GetUserJobStats(int UserID)
+        {
+            var openjobscount = await _dataContext.Jobs.Where(x=> x.Status == "open" && x.AssignedUserId == UserID).CountAsync();
+            var assignedjobscount = await _dataContext.Jobs.Where(x => x.Status == "assigned" && x.AssignedUserId == UserID).CountAsync();
+
+
+            return Ok(new JobStats()
+            {
+                Open_Count = openjobscount,
+                Assigned_Count = assignedjobscount
+            });
+        }
+
         [Authorize(Roles = "admin,user")]
         [HttpGet("Get_Open_Jobs")]
 

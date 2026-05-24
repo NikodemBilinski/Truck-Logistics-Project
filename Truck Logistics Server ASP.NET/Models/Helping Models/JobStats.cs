@@ -10,5 +10,7 @@ namespace TrucksLogisticsClient.Models.Helping_Models
         public int Open_Count { get; set; }
 
         public int NearDeadline_Count { get; set; }
+
+        public int Assigned_Count { get; set; }
     }
 }
