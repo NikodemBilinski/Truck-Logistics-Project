@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
+using TrucksLogisticsClient.Models.Helping_Models;
 
 namespace TrucksLogisticsClient.Pages;
 
@@ -15,6 +16,8 @@ public partial class UserMainMenuPage : ContentPage
 
 	private List<Language> SelectedLanguages = new List<Language>();
 
+	private PaginationPage pages = new PaginationPage();
+
     public Users? CurrentUser { get; set; }
     public UserMainMenuPage()
 	{
@@ -22,7 +25,7 @@ public partial class UserMainMenuPage : ContentPage
 
 	}
 
-	public async Task HideEverything()
+	private async Task HideEverything()
 	{
 		User_Show_Data_View.IsVisible = false;
 		User_Show_Data_View.IsEnabled = false;
@@ -39,7 +42,7 @@ public partial class UserMainMenuPage : ContentPage
 		Edit_User_Section.IsVisible = false;
         Edit_User_Section.IsEnabled = false;
     }
-	public async Task<bool> GetUser()
+	private async Task<bool> GetUser()
 	{
 		var response = await client.GetAsync(apiUrl + "Users/Get_User_By_ID/" + UserID);
 
@@ -56,6 +59,61 @@ public partial class UserMainMenuPage : ContentPage
 		}
 		return true;
 	}
+
+    private async Task<List<Job>> GetPageJobs()
+    {
+
+        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}");
+
+        Jobs_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+        if (response.IsSuccessStatusCode)
+        {
+            var joblistpage = await response.Content.ReadFromJsonAsync<List<Job>>();
+            if (joblistpage.Count == 0)
+            {
+                return new List<Job>();
+            }
+            return joblistpage;
+        }
+
+        return new List<Job>();
+
+    }
+
+    private async void Right_PageJobs(object sender, EventArgs e)
+    {
+        if (pages.PageNumber < pages.TotalPages)
+        {
+            pages.PageNumber++;
+            var jobs = await GetPageJobs();
+            Jobs_View_Collection.ItemsSource = jobs;
+        }
+    }
+
+    private async void Left_PageJobs(object sender, EventArgs e)
+    {
+        if (pages.PageNumber > 1)
+        {
+            pages.PageNumber--;
+            var jobs = await GetPageJobs();
+            Jobs_View_Collection.ItemsSource = jobs;
+        }
+    }
+
+    private async void First_PageJobs(object sender, EventArgs e)
+    {
+        pages.PageNumber = 1;
+        var jobs = await GetPageJobs();
+        Jobs_View_Collection.ItemsSource = jobs;
+    }
+
+    private async void Last_PageJobs(object sender, EventArgs e)
+    {
+        pages.PageNumber = pages.TotalPages;
+        var jobs = await GetPageJobs();
+        Jobs_View_Collection.ItemsSource = jobs;
+    }
 
     protected override async void OnAppearing()
     {
@@ -110,12 +168,14 @@ public partial class UserMainMenuPage : ContentPage
 
 		if (CurrentUser != null)
 		{
-			Jobs_View_Collection.ItemsSource = CurrentUser.AssignedJobs;
-            Jobs_View_Collection.SelectedItem = null;
+			pages.PageNumber = 1;
+			var jobs = await GetPageJobs();
 
-        }
+			jobs = jobs.Where(x => x.Status == "assigned" && x.AssignedUserId == CurrentUser.ID).ToList();
+			Jobs_View_Collection.ItemsSource = jobs;
+		}
+	}
 
-    }
 
 	private async void User_Show_Available_Jobs(object sender, EventArgs e)
 	{
@@ -124,17 +184,14 @@ public partial class UserMainMenuPage : ContentPage
         Jobs_View.IsVisible = true;
         Jobs_View.IsEnabled = true;
 
-		var response = await client.GetAsync(apiUrl + "Jobs/Get_Open_Jobs");
-
-		if(response.IsSuccessStatusCode)
+		if (CurrentUser != null)
 		{
-			var allopenjobs = await response.Content.ReadFromJsonAsync<List<Job>>();
+            pages.PageNumber = 1;
+            var jobs = await GetPageJobs();
 
-            if (allopenjobs != null)
-            {
-				Jobs_View_Collection.ItemsSource = allopenjobs;
-                Jobs_View_Collection.SelectedItem = null;
-            }
+			jobs = jobs.Where(x => x.Status == "open").ToList();
+
+            Jobs_View_Collection.ItemsSource = jobs;
         }
     }
 

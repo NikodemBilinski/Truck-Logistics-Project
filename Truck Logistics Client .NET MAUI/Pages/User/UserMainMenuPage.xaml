@@ -176,6 +176,7 @@
                         <!--Job Show Data Collection View-->
                         <Grid x:Name="Jobs_View"
                                   IsVisible="False">
+                            <VerticalStackLayout>
                                 <Grid RowDefinitions="*,*">
                                     <Grid ColumnDefinitions="50,400,100,75,75" 
                                       BackgroundColor="Transparent" 
@@ -228,7 +229,58 @@
                                         </CollectionView.ItemTemplate>
                                     </CollectionView>
                                 </Grid>
-                            </Grid>
+                                <!--Pagination-->
+                                <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="doubleleft_arrow.png"
+                                                Clicked="First_PageJobs"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="left_arrow.png"
+                                                Clicked="Left_PageJobs"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+
+                                    <Label x:Name="Jobs_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="right_arrow.png"
+                                                Clicked="Right_PageJobs"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="doubleright_arrow.png"
+                                                Clicked="Last_PageJobs"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Grid>
 
                         <!--Show Chosen Job-->
                         <VerticalStackLayout x:Name="User_Show_Chosen_Job" x:DataType="model:Job" IsEnabled="False" IsVisible="False" Spacing="20">
