@@ -18,6 +18,10 @@ public partial class UserMainMenuPage : ContentPage
 
 	private PaginationPage pages = new PaginationPage();
 
+	private int totalassignedjobs;
+
+	private int totalopenjobs;
+
     public Users? CurrentUser { get; set; }
     public UserMainMenuPage()
 	{
@@ -65,8 +69,6 @@ public partial class UserMainMenuPage : ContentPage
 
         var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}");
 
-        Jobs_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
-
         if (response.IsSuccessStatusCode)
         {
             var joblistpage = await response.Content.ReadFromJsonAsync<List<Job>>();
@@ -78,6 +80,21 @@ public partial class UserMainMenuPage : ContentPage
         }
 
         return new List<Job>();
+
+    }
+
+	private async Task GetJobTotalCount()
+	{
+		var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Stats_User/{CurrentUser.ID}");
+
+		if(response.IsSuccessStatusCode)
+		{
+			var stats = await response.Content.ReadFromJsonAsync<JobStats>();
+
+			totalassignedjobs = stats.Assigned_Count;
+			totalopenjobs = stats.Open_Count;
+			Console.WriteLine("dedg");
+		}
 
     }
 
@@ -170,10 +187,16 @@ public partial class UserMainMenuPage : ContentPage
 		{
 			pages.PageNumber = 1;
 			var jobs = await GetPageJobs();
-			pages.TotalPages = jobs.Where(x => x.Status == "assigned" && x.AssignedUserId == CurrentUser.ID).Count();
+
+            await GetJobTotalCount();
+
+            pages.TotalPages = (int)Math.Ceiling((double)totalassignedjobs / pages.PageSize);
             jobs = jobs.Where(x => x.Status == "assigned" && x.AssignedUserId == CurrentUser.ID).ToList();
+
 			Jobs_View_Collection.ItemsSource = jobs;
-		}
+
+            Jobs_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+        }
 	}
 
 
@@ -188,10 +211,15 @@ public partial class UserMainMenuPage : ContentPage
 		{
             pages.PageNumber = 1;
             var jobs = await GetPageJobs();
-			pages.TotalPages = jobs.Where(x => x.Status == "open" && x.AssignedUserId == CurrentUser.ID).Count();
+
+			await GetJobTotalCount();
+
+            pages.TotalPages = (int)Math.Ceiling((double)totalopenjobs / pages.PageSize);
             jobs = jobs.Where(x => x.Status == "open").ToList();
 
             Jobs_View_Collection.ItemsSource = jobs;
+
+            Jobs_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
         }
     }
 

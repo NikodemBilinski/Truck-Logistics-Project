@@ -73,7 +73,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         [HttpGet("Get_Jobs_Stats_User/{UserID}")]
         public async Task<ActionResult<JobStats>> GetUserJobStats(int UserID)
         {
-            var openjobscount = await _dataContext.Jobs.Where(x=> x.Status == "open" && x.AssignedUserId == UserID).CountAsync();
+            var openjobscount = await _dataContext.Jobs.Where(x=> x.Status == "open").CountAsync();
             var assignedjobscount = await _dataContext.Jobs.Where(x => x.Status == "assigned" && x.AssignedUserId == UserID).CountAsync();
 
 
