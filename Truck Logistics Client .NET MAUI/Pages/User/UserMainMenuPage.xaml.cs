@@ -29,7 +29,29 @@ public partial class UserMainMenuPage : ContentPage
 
 	}
 
-	private async Task HideEverything()
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        var token = await SecureStorage.GetAsync("auth_token");
+
+        if (token != null)
+        {
+            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+        }
+
+        apiUrl = Preferences.Get("api_url", "127.0.0.1:5160/api/");
+
+        bool GotUser = await GetUser();
+
+        if (GotUser)
+        {
+            this.BindingContext = CurrentUser;
+        }
+
+    }
+
+    private async Task HideEverything()
 	{
 		User_Show_Data_View.IsVisible = false;
 		User_Show_Data_View.IsEnabled = false;
@@ -93,7 +115,6 @@ public partial class UserMainMenuPage : ContentPage
 
 			totalassignedjobs = stats.Assigned_Count;
 			totalopenjobs = stats.Open_Count;
-			Console.WriteLine("dedg");
 		}
 
     }
@@ -130,28 +151,6 @@ public partial class UserMainMenuPage : ContentPage
         pages.PageNumber = pages.TotalPages;
         var jobs = await GetPageJobs();
         Jobs_View_Collection.ItemsSource = jobs;
-    }
-
-    protected override async void OnAppearing()
-    {
-        base.OnAppearing();
-
-		var token = await SecureStorage.GetAsync("auth_token");
-
-		if(token != null)
-		{
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-		}
-
-        apiUrl = Preferences.Get("api_url", "127.0.0.1:5160/api/");
-
-        bool GotUser = await GetUser();
-
-        if (GotUser)
-        {
-            this.BindingContext = CurrentUser;
-        }
-
     }
 
     private async void User_Show_Data(object sender, EventArgs e)
