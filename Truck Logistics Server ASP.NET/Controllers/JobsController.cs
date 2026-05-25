@@ -70,6 +70,19 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [Authorize(Roles ="admin,user")]
+        [HttpGet("Get_User_Assigned_Jobs_Page/{UserID}")]
+        public async Task<ActionResult<List<Job>>> GetUserAssignedJobs(int UserID)
+        {
+            var userjobs = await _dataContext.Jobs.Where(x => x.AssignedUserId == UserID && x.Status == "assigned").ToListAsync();
+            if (userjobs != null)
+            {
+                return Ok(userjobs);
+            }
+
+            return BadRequest("no jobs found for user");
+        }
+
+        [Authorize(Roles ="admin,user")]
         [HttpGet("Get_Jobs_Stats_User/{UserID}")]
         public async Task<ActionResult<JobStats>> GetUserJobStats(int UserID)
         {
@@ -85,22 +98,15 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [Authorize(Roles = "admin,user")]
-        [HttpGet("Get_Open_Jobs")]
-
-        public async Task<ActionResult<List<Job>>> GetOpenJobs(int userid)
+        [HttpGet("Get_Open_Jobs_Page/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<List<Job>>> GetOpenJobsPage(int pageNumber, int pageSize, int UserID)
         {
-            var openjobs = await _dataContext.Jobs.Where(x => x.Status == "open").ToListAsync();
+            var openjobs = await _dataContext.Jobs.Where(x => x.Status == "open")
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
-            if (openjobs != null)
-            {
-                return Ok(openjobs);
-            }
-            else
-            {
-                // punish for no open jobs ]]
-                await Task.Delay(999999999);
-                return BadRequest("no open jobs found");
-            }
+            return Ok(openjobs);
             
         }
 

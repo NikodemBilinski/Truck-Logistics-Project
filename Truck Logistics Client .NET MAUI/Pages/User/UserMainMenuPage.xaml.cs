@@ -22,6 +22,8 @@ public partial class UserMainMenuPage : ContentPage
 
 	private int totalopenjobs;
 
+	private string currentjobs;
+
     public Users? CurrentUser { get; set; }
     public UserMainMenuPage()
 	{
@@ -86,21 +88,37 @@ public partial class UserMainMenuPage : ContentPage
 		return true;
 	}
 
-    private async Task<List<Job>> GetPageJobs()
+    private async Task<List<Job>> GetPageJobs(string currentjobs)
     {
 
-        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}");
+		if(currentjobs == "open")
+		{
+            var response = await client.GetAsync(apiUrl + $"Jobs/Get_Open_Jobs_Page/{pages.PageNumber}/{pages.PageSize}");
 
-        if (response.IsSuccessStatusCode)
-        {
-            var joblistpage = await response.Content.ReadFromJsonAsync<List<Job>>();
-            if (joblistpage.Count == 0)
-            {
-                return new List<Job>();
+			if(response.IsSuccessStatusCode)
+			{
+                var joblistpage = await response.Content.ReadFromJsonAsync<List<Job>>();
+                if (joblistpage.Count == 0)
+                {
+                    return new List<Job>();
+                }
+                return joblistpage;
             }
-            return joblistpage;
         }
+		else
+		{
+            var response = await client.GetAsync(apiUrl + $"Jobs/Get_Assigned_Jobs_Page/{pages.PageNumber}/{pages.PageSize}/{UserID}");
 
+			if(response.IsSuccessStatusCode)
+			{
+                var joblistpage = await response.Content.ReadFromJsonAsync<List<Job>>();
+                if (joblistpage.Count == 0)
+                {
+                    return new List<Job>();
+                }
+                return joblistpage;
+            }
+        }
         return new List<Job>();
 
     }
@@ -124,7 +142,7 @@ public partial class UserMainMenuPage : ContentPage
         if (pages.PageNumber < pages.TotalPages)
         {
             pages.PageNumber++;
-            var jobs = await GetPageJobs();
+            var jobs = await GetPageJobs(currentjobs);
             Jobs_View_Collection.ItemsSource = jobs;
         }
     }
@@ -134,7 +152,7 @@ public partial class UserMainMenuPage : ContentPage
         if (pages.PageNumber > 1)
         {
             pages.PageNumber--;
-            var jobs = await GetPageJobs();
+            var jobs = await GetPageJobs(currentjobs);
             Jobs_View_Collection.ItemsSource = jobs;
         }
     }
@@ -142,14 +160,14 @@ public partial class UserMainMenuPage : ContentPage
     private async void First_PageJobs(object sender, EventArgs e)
     {
         pages.PageNumber = 1;
-        var jobs = await GetPageJobs();
+        var jobs = await GetPageJobs(currentjobs);
         Jobs_View_Collection.ItemsSource = jobs;
     }
 
     private async void Last_PageJobs(object sender, EventArgs e)
     {
         pages.PageNumber = pages.TotalPages;
-        var jobs = await GetPageJobs();
+        var jobs = await GetPageJobs(currentjobs);
         Jobs_View_Collection.ItemsSource = jobs;
     }
 
@@ -184,8 +202,10 @@ public partial class UserMainMenuPage : ContentPage
 
 		if (CurrentUser != null)
 		{
-			pages.PageNumber = 1;
-			var jobs = await GetPageJobs();
+			currentjobs = "assigned";
+
+            pages.PageNumber = 1;
+			var jobs = await GetPageJobs(currentjobs);
 
             await GetJobTotalCount();
 
@@ -208,13 +228,16 @@ public partial class UserMainMenuPage : ContentPage
 
 		if (CurrentUser != null)
 		{
+
+            currentjobs = "open";
+
             pages.PageNumber = 1;
-            var jobs = await GetPageJobs();
 
 			await GetJobTotalCount();
 
             pages.TotalPages = (int)Math.Ceiling((double)totalopenjobs / pages.PageSize);
-            jobs = jobs.Where(x => x.Status == "open").ToList();
+            
+			var jobs = await GetPageJobs(currentjobs);
 
             Jobs_View_Collection.ItemsSource = jobs;
 
