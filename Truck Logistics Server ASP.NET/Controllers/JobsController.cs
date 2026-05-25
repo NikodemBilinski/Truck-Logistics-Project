@@ -110,6 +110,19 @@ namespace TrucksLogisticsServerAPI.Controllers
             
         }
 
+        [Authorize(Roles = "admin,user")]
+        [HttpGet("Get_Assigned_Jobs_Page/{pageNumber}/{pageSize}/{UserID}")]
+        public async Task<ActionResult<List<Job>>> GetAssignedJobsPage(int pageNumber, int pageSize, int UserID)
+        {
+            var assignedjobs = await _dataContext.Jobs
+                .Where(x => x.Status == "assigned" && x.AssignedUserId == UserID)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(assignedjobs);
+        }
+
         [Authorize(Roles = "admin")]
         [HttpGet("Get_Jobs_By_Client_ID/{id}")]
 

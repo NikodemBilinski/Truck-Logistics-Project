@@ -210,7 +210,6 @@ public partial class UserMainMenuPage : ContentPage
             await GetJobTotalCount();
 
             pages.TotalPages = (int)Math.Ceiling((double)totalassignedjobs / pages.PageSize);
-            jobs = jobs.Where(x => x.Status == "assigned" && x.AssignedUserId == CurrentUser.ID).ToList();
 
 			Jobs_View_Collection.ItemsSource = jobs;
 
