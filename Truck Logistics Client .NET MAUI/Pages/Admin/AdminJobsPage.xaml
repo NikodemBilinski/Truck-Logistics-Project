@@ -105,7 +105,8 @@
 
                                     <Border StrokeShape="RoundRectangle 10"
                                             Grid.Column="3"
-                                            HeightRequest="50">
+                                            HeightRequest="50"
+                                            Style="{StaticResource HoverBorder}">
                                         <Button Text="Save Job"
                                                 WidthRequest="125"
                                                 Clicked="Admin_Save_Job_Edit"
@@ -113,21 +114,13 @@
                                                 FontAttributes="Bold"
                                                 BackgroundColor="Transparent"/>
 
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup>
-                                                <VisualState Name="Normal"/>
-                                                <VisualState Name="PointerOver">
-                                                    <VisualState.Setters>
-                                                        <Setter Property="BackgroundColor" Value="#494949"/>
-                                                    </VisualState.Setters>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
+
                                     </Border>
 
                                     <Border StrokeShape="RoundRectangle 10"
                                             Grid.Column="3"
-                                            HeightRequest="50">
+                                            HeightRequest="50"
+                                            Style="{StaticResource HoverBorder}">
                                         <Button Text="Delete Job"
                                                 WidthRequest="125"
                                                 Clicked="Admin_Delete_Job"
@@ -135,20 +128,11 @@
                                                 FontAttributes="Bold"
                                                 BackgroundColor="Transparent"/>
 
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup>
-                                                <VisualState Name="Normal"/>
-                                                <VisualState Name="PointerOver">
-                                                    <VisualState.Setters>
-                                                        <Setter Property="BackgroundColor" Value="#494949"/>
-                                                    </VisualState.Setters>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
                                     </Border>
                                     <Border StrokeShape="RoundRectangle 10"
                                             Grid.Column="3"
-                                            HeightRequest="50">
+                                            HeightRequest="50"
+                                            Style="{StaticResource HoverBorder}">
                                         <Button Text="Clear Assign"
                                                 WidthRequest="125"
                                                 Clicked="Clear_Assign_Clicked"
@@ -156,16 +140,7 @@
                                                 FontAttributes="Bold"
                                                 BackgroundColor="Transparent"/>
 
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup>
-                                                <VisualState Name="Normal"/>
-                                                <VisualState Name="PointerOver">
-                                                    <VisualState.Setters>
-                                                        <Setter Property="BackgroundColor" Value="#494949"/>
-                                                    </VisualState.Setters>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
+                                        
                                     </Border>
                                 </VerticalStackLayout>
                             </Grid>
@@ -254,7 +229,8 @@
 
                                 <Border StrokeShape="RoundRectangle 10"
                                         Grid.Column="3"
-                                        HeightRequest="50">
+                                        HeightRequest="50"
+                                        Style="{StaticResource HoverBorder}">
                                     <Button Text="Add Job"
                                             WidthRequest="125"
                                             Clicked="Admin_Add_Job_Clicked"
@@ -262,16 +238,6 @@
                                             FontAttributes="Bold"
                                             BackgroundColor="Transparent"/>
 
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup>
-                                            <VisualState Name="Normal"/>
-                                            <VisualState Name="PointerOver">
-                                                <VisualState.Setters>
-                                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                                </VisualState.Setters>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
                                 </Border>
                             </Grid>
 
@@ -282,7 +248,7 @@
                         <Grid x:Name="Jobs_View"
                               IsVisible="False">
                             <Grid RowDefinitions="*,*">
-                                <Grid ColumnDefinitions="50,200,100,75,75" 
+                                <Grid ColumnDefinitions="50,600,100,75,75" 
                                       BackgroundColor="Transparent" 
                                       ColumnSpacing="20"
                                       Padding="10"
@@ -299,14 +265,14 @@
                                                 SelectionMode="Single"
                                                 SelectionChanged="Admin_Jobs_View_Selected"
                                                 Grid.Row="1"
-                                                WidthRequest="600"
+                                                WidthRequest="1030"
                                                 HorizontalOptions="Center">
                                     <CollectionView.ItemTemplate>
                                         <DataTemplate x:DataType="model:Job">
                                             <Border Stroke="Transparent" Padding="5,0,0,0">
                                                 <Border Stroke="transparent"  StrokeThickness="3">
-                                                    <Grid ColumnDefinitions="50,200,100,75,75"
-                                                          ColumnSpacing="20"
+                                                    <Grid ColumnDefinitions="50,600,100,75,75"
+                                                          ColumnSpacing="25"
                                                           Padding="5">
 
                                                         <Label Grid.Column="0" Text="{Binding ID}"/>
@@ -334,6 +300,57 @@
                                 </CollectionView>
                             </Grid>
                         </Grid>
+                        
+                        <!--Pagination-->
+                        <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button ImageSource="doubleleft_arrow.png"
+                                        Clicked="First_PageJobs"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button ImageSource="left_arrow.png"
+                                        Clicked="Left_PageJobs"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+
+                            <Label x:Name="Jobs_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button ImageSource="right_arrow.png"
+                                        Clicked="Right_PageJobs"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button ImageSource="doubleright_arrow.png"
+                                        Clicked="Last_PageJobs"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                        </HorizontalStackLayout>
                     </VerticalStackLayout>
                 </ScrollView>
 
@@ -351,59 +368,35 @@
                 <Label Text="Truck Logistics Project"/>
                 <Label Text="Jobs"/>
                 <BoxView HeightRequest="1"/>
-                <Border StrokeShape="RoundRectangle 10">
+                <Border StrokeShape="RoundRectangle 10"
+                        Style="{StaticResource HoverBorder}">
                     <Button Text="Get All Jobs"
                             WidthRequest="125"
                             Clicked="Admin_Get_Jobs_Clicked"
                             TextColor="White"
                             FontAttributes="Bold"
                             BackgroundColor="Transparent"/>
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="Normal"/>
-                            <VisualState Name="PointerOver">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+
                 </Border>
-                <Border StrokeShape="RoundRectangle 10">
+                <Border StrokeShape="RoundRectangle 10"
+                        Style="{StaticResource HoverBorder}">
                     <Button Text="Add New Job"
                             WidthRequest="125"
                             Clicked="Admin_Open_Add_Job_Section"
                             TextColor="White"
                             FontAttributes="Bold"
                             BackgroundColor="Transparent"/>
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="Normal"/>
-                            <VisualState Name="PointerOver">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                    
                 </Border>
-                <Border StrokeShape="RoundRectangle 10">
+                <Border StrokeShape="RoundRectangle 10"
+                        Style="{StaticResource HoverBorder}">
                     <Button Text="Go Back"
                             WidthRequest="125"
                             Clicked="Admin_Go_Back"
                             TextColor="White"
                             FontAttributes="Bold"
                             BackgroundColor="Transparent"/>
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="Normal"/>
-                            <VisualState Name="PointerOver">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                    
                 </Border>
 
 

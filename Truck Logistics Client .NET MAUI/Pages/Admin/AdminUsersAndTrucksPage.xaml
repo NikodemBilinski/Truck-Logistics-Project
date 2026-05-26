@@ -84,6 +84,58 @@
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
+                        
+                        <!--Pagination-->
+                        <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button ImageSource="doubleleft_arrow.png"
+                                        Clicked="First_PageUsers"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button ImageSource="left_arrow.png"
+                                        Clicked="Left_PageUsers"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+
+                            <Label x:Name="Users_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+                                
+                                <Button ImageSource="right_arrow.png"
+                                        Clicked="Right_PageUsers"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+                                
+                                <Button  ImageSource="doubleright_arrow.png"
+                                        Clicked="Last_PageUsers"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                        </HorizontalStackLayout>
+                        
 
                     </VerticalStackLayout>
                 </Grid>
@@ -91,56 +143,107 @@
                 <!--Trucks View-->
                 <Grid x:Name="Trucks_View"
                     IsVisible="False">
-                    <Grid RowDefinitions="*,*">
-                        <Grid ColumnDefinitions="50,100,150,75,75" 
+                    <VerticalStackLayout>
+                        <Grid RowDefinitions="*,*">
+                            <Grid ColumnDefinitions="50,100,150,75,75" 
                               BackgroundColor="Transparent" 
                               Padding="10"
                               HorizontalOptions="Center"
                               Grid.Row="0">
-                            <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
-                            <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
-                            <Label Grid.Column="2" Text="Brand" FontAttributes="Bold"/>
-                            <Label Grid.Column="3" Text="Status" FontAttributes="Bold"/>
-                            <Label Grid.Column="4" Text="Capacity" FontAttributes="Bold"/>
-                        </Grid>
+                                <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                                <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
+                                <Label Grid.Column="2" Text="Brand" FontAttributes="Bold"/>
+                                <Label Grid.Column="3" Text="Status" FontAttributes="Bold"/>
+                                <Label Grid.Column="4" Text="Capacity" FontAttributes="Bold"/>
+                            </Grid>
 
-                        <CollectionView x:Name="Get_All_Trucks_View"
-                                    SelectionMode="Single"
-                                    SelectionChanged="Admin_Trucks_View_Selected"
-                                    WidthRequest="500"
-                                    Grid.Row="1">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate x:DataType="model:Truck">
-                                    <Border Stroke="Transparent" Padding="-5">
-                                        <Border Stroke="transparent"  StrokeThickness="3">
-                                            <Grid ColumnDefinitions="50,100,150,75,75"
-                                              Padding="10"
-                                              HorizontalOptions="Center">
+                            <CollectionView x:Name="Get_All_Trucks_View"
+                                            SelectionMode="Single"
+                                            SelectionChanged="Admin_Trucks_View_Selected"
+                                            WidthRequest="500"
+                                            Grid.Row="1">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:Truck">
+                                        <Border Stroke="Transparent" Padding="-5">
+                                            <Border Stroke="transparent"  StrokeThickness="3">
+                                                <Grid ColumnDefinitions="50,100,150,75,75"
+                                                      Padding="10"
+                                                      HorizontalOptions="Center">
 
-                                                <Label Grid.Column="0" Text="{Binding Id}"/>
-                                                <Label Grid.Column="1" Text="{Binding Name}"/>
-                                                <Label Grid.Column="2" Text="{Binding brand}"/>
-                                                <Label Grid.Column="3" Text="{Binding IsBusy}">
-                                                    <Label.Triggers>
-                                                        <DataTrigger TargetType="Label" Binding="{Binding IsBusy}" Value="True">
-                                                            <Setter Property="Text" Value="Busy"/>
-                                                            <Setter Property="TextColor" Value="Red"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger TargetType="Label" Binding="{Binding IsBusy}" Value="False">
-                                                            <Setter Property="Text" Value="Available"/>
-                                                            <Setter Property="TextColor" Value="Green"/>
-                                                        </DataTrigger>
-                                                    </Label.Triggers>
-                                                </Label>
-                                                <Label Grid.Column="4" Text="{Binding Capacity}" HorizontalOptions="Center"/>
-                                            </Grid>
+                                                    <Label Grid.Column="0" Text="{Binding Id}"/>
+                                                    <Label Grid.Column="1" Text="{Binding Name}"/>
+                                                    <Label Grid.Column="2" Text="{Binding brand}"/>
+                                                    <Label Grid.Column="3" Text="{Binding IsBusy}">
+                                                        <Label.Triggers>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding IsBusy}" Value="True">
+                                                                <Setter Property="Text" Value="Busy"/>
+                                                                <Setter Property="TextColor" Value="Red"/>
+                                                            </DataTrigger>
+                                                            <DataTrigger TargetType="Label" Binding="{Binding IsBusy}" Value="False">
+                                                                <Setter Property="Text" Value="Available"/>
+                                                                <Setter Property="TextColor" Value="Green"/>
+                                                            </DataTrigger>
+                                                        </Label.Triggers>
+                                                    </Label>
+                                                    <Label Grid.Column="4" Text="{Binding Capacity}" HorizontalOptions="Center"/>
+                                                </Grid>
+                                            </Border>
                                         </Border>
-                                    </Border>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </Grid>
+                        <!--Pagination-->
+                        <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
 
-                    </Grid>
+                                <Button ImageSource="doubleleft_arrow.png"
+                                        Clicked="First_PageTrucks"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button ImageSource="left_arrow.png"
+                                        Clicked="Left_PageTrucks"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                            
+                            <Label x:Name="Trucks_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button ImageSource="right_arrow.png"
+                                        Clicked="Right_PageTrucks"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                            <Border StrokeThickness="0"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 10"
+                                    Style="{StaticResource HoverBorder}">
+
+                                <Button  ImageSource="doubleright_arrow.png"
+                                        Clicked="Last_PageTrucks"
+                                        BackgroundColor="Transparent"
+                                        WidthRequest="10"
+                                        HeightRequest="10"/>
+                            </Border>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
                 </Grid>
 
                 <!--Add New User (admin)-->
@@ -172,7 +275,8 @@
 
                         <Border StrokeShape="RoundRectangle 10"
                                 Grid.Column="2"
-                                HeightRequest="50">
+                                HeightRequest="50"
+                                Style="{StaticResource HoverBorder}">
                             <Button Text="Add User"
                                     WidthRequest="175"
                                     Clicked="Admin_Add_User_Clicked"
@@ -180,16 +284,6 @@
                                     FontAttributes="Bold"
                                     BackgroundColor="Transparent"/>     
 
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup>
-                                    <VisualState Name="Normal"/>
-                                    <VisualState Name="PointerOver">
-                                        <VisualState.Setters>
-                                            <Setter Property="BackgroundColor" Value="#494949"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
                         </Border>
                     </Grid>
 
@@ -218,24 +312,14 @@
 
                         <Border StrokeShape="RoundRectangle 10"
                                 Grid.Column="2"
-                                HeightRequest="50">
+                                HeightRequest="50"
+                                Style="{StaticResource HoverBorder}">
                             <Button Text="Add Truck"
                                     WidthRequest="175"
                                     Clicked="Admin_Add_Truck_Clicked"
                                     TextColor="White"
                                     FontAttributes="Bold"
                                     BackgroundColor="Transparent"/>
-                            
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup>
-                                    <VisualState Name="Normal"/>
-                                    <VisualState Name="PointerOver">
-                                        <VisualState.Setters>
-                                            <Setter Property="BackgroundColor" Value="#494949"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
                         </Border>
                     </Grid>
 
@@ -346,46 +430,26 @@
 
                                 <Border StrokeShape="RoundRectangle 10"
                                         Grid.Column="2"
-                                        HeightRequest="50"> 
+                                        HeightRequest="50"
+                                        Style="{StaticResource HoverBorder}">
                                     <Button Text="Save Changes"
                                             WidthRequest="175"
                                             Clicked="Admin_Save_User_Edit"
                                             TextColor="White"
                                             FontAttributes="Bold"
                                             BackgroundColor="Transparent"/>
-
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup>
-                                            <VisualState Name="Normal"/>
-                                            <VisualState Name="PointerOver">
-                                                <VisualState.Setters>
-                                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                                </VisualState.Setters>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
                                 </Border>
 
                                 <Border StrokeShape="RoundRectangle 10"
                                         Grid.Column="2"
-                                        HeightRequest="50">
+                                        HeightRequest="50"
+                                        Style="{StaticResource HoverBorder}">
                                     <Button Text="Delete User"
                                             WidthRequest="175"
                                             Clicked="Admin_Delete_User"
                                             TextColor="White"
                                             FontAttributes="Bold"
                                             BackgroundColor="Transparent"/>
-
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup>
-                                            <VisualState Name="Normal"/>
-                                            <VisualState Name="PointerOver">
-                                                <VisualState.Setters>
-                                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                                </VisualState.Setters>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
                                 </Border>
 
                             </HorizontalStackLayout>
@@ -422,46 +486,26 @@
 
                                 <Border StrokeShape="RoundRectangle 10"
                                         Grid.Column="2"
-                                        HeightRequest="50">
+                                        HeightRequest="50"
+                                        Style="{StaticResource HoverBorder}">
                                     <Button Text="Save Changes"
                                             WidthRequest="175"
                                             Clicked="Admin_Save_Truck_Edit"
                                             TextColor="White"
                                             FontAttributes="Bold"
                                             BackgroundColor="Transparent"/>
-
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup>
-                                            <VisualState Name="Normal"/>
-                                            <VisualState Name="PointerOver">
-                                                <VisualState.Setters>
-                                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                                </VisualState.Setters>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
                                 </Border>
 
                                 <Border StrokeShape="RoundRectangle 10"
                                         Grid.Column="2"
-                                        HeightRequest="50">
+                                        HeightRequest="50"
+                                        Style="{StaticResource HoverBorder}">
                                     <Button Text="Delete Truck"
                                             WidthRequest="175"
                                             Clicked="Admin_Delete_Truck"
                                             TextColor="White"
                                             FontAttributes="Bold"
                                             BackgroundColor="Transparent"/>
-
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup>
-                                            <VisualState Name="Normal"/>
-                                            <VisualState Name="PointerOver">
-                                                <VisualState.Setters>
-                                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                                </VisualState.Setters>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
                                 </Border>
 
                             </HorizontalStackLayout>
@@ -485,96 +529,55 @@
                     <Label Text="Users And Trucks"/>
                     <BoxView HeightRequest="1"/>
 
-                    <Border StrokeShape="RoundRectangle 10">
+                    <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
                         <Button Text="Get All Users"
-                                    Clicked="Admin_Get_Users_Clicked"
-                                    WidthRequest="175"
-                                    TextColor="White"
-                                    FontAttributes="Bold"
-                                    BackgroundColor="Transparent"/>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup>
-                                <VisualState Name="Normal"/>
-                                <VisualState Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor" Value="#494949"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+                                            Clicked="Admin_Get_Users_Clicked"
+                                            WidthRequest="175"
+                                            TextColor="White"
+                                            FontAttributes="Bold"
+                                            BackgroundColor="Transparent"/>
                     </Border>
-                    <Border StrokeShape="RoundRectangle 10">
+                    <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
                         <Button Text="Get All Trucks"
                                     Clicked="Admin_Get_Trucks_Clicked"
                                     WidthRequest="175"
                                     TextColor="White"
                                     FontAttributes="Bold"
                                     BackgroundColor="Transparent"/>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup>
-                                <VisualState Name="Normal"/>
-                                <VisualState Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor" Value="#494949"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+
                     </Border>
 
-                    <Border StrokeShape="RoundRectangle 10">
+                    <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
                         <Button Text="Add New User"
                                     Clicked="Admin_Open_Add_User_Section"
                                     WidthRequest="175"
                                     TextColor="White"
                                     FontAttributes="Bold"
                                     BackgroundColor="Transparent"/>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup>
-                                <VisualState Name="Normal"/>
-                                <VisualState Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor" Value="#494949"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+
                     </Border>
-                    <Border StrokeShape="RoundRectangle 10">
+                    <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
                         <Button Text="Add New Truck"
                                     Clicked="Admin_Open_Add_Truck_Section"
                                     WidthRequest="175"
                                     TextColor="White"
                                     FontAttributes="Bold"
                                     BackgroundColor="Transparent"/>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup>
-                                <VisualState Name="Normal"/>
-                                <VisualState Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor" Value="#494949"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+
                     </Border>
-                    <Border StrokeShape="RoundRectangle 10">
+                    <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
                         <Button Text="Go Back"
                                     WidthRequest="175"
                                     Clicked="Admin_Go_Back"
                                     TextColor="White"
                                     FontAttributes="Bold"
                                     BackgroundColor="Transparent"/>
-                        <VisualStateManager.VisualStateGroups>
-                            <VisualStateGroup>
-                                <VisualState Name="Normal"/>
-                                <VisualState Name="PointerOver">
-                                    <VisualState.Setters>
-                                        <Setter Property="BackgroundColor" Value="#494949"/>
-                                    </VisualState.Setters>
-                                </VisualState>
-                            </VisualStateGroup>
-                        </VisualStateManager.VisualStateGroups>
+
                     </Border>
 
 

@@ -128,84 +128,49 @@
                     <Label Text="Main Menu"/>
                     <BoxView HeightRequest="1"/>
 
-                    <Border StrokeShape="RoundRectangle 10">
+                    <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
                         <Button Text="Users And Trucks"
                                 WidthRequest="175"
                                 Clicked="Admin_MoveTo_UsersAndTrucks"
                                 TextColor="White"
                                 FontAttributes="Bold"
                                 BackgroundColor="Transparent"/>
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="Normal"/>
-                            <VisualState Name="PointerOver">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
                     </Border>
                     
-                    <Border StrokeShape="RoundRectangle 10">
+                    <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
                         <Button Text="Jobs"
                                 WidthRequest="175"
                                 Clicked="Admin_MoveTo_Jobs"
                                 TextColor="White"
                                 FontAttributes="Bold"
                                 BackgroundColor="Transparent"/>
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="Normal"/>
-                            <VisualState Name="PointerOver">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                    
                 </Border>
                     
-                    <Border StrokeShape="RoundRectangle 10">
+                    <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
                         <Button Text="Invoices and Clients"
                             WidthRequest="175"
                             Clicked="Admin_MoveTo_InvoicesAndClients"
                             FontAttributes="Bold"
                             TextColor="White"
                             BackgroundColor="Transparent"/>
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="Normal"/>
-                            <VisualState Name="PointerOver">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
-                </Border>
                     
-                    <Border StrokeShape="RoundRectangle 10">
-                        <Button Text="Log Out"
+                </Border>
+
+                <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
+                    <Button Text="Log Out"
                                 WidthRequest="175"
                                 Clicked="Admin_LogOut"
                                 FontAttributes="Bold"
                                 TextColor="White"
                                 BackgroundColor="Transparent"/>
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="Normal"/>
-                            <VisualState Name="PointerOver">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+
 
                 </Border>
-
-
             </VerticalStackLayout>
             </Border>
     </Grid>

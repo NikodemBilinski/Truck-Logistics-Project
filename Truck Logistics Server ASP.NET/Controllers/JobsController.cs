@@ -37,41 +37,90 @@ namespace TrucksLogisticsServerAPI.Controllers
             return BadRequest("Error: No Jobs Found");
         }
 
+        [HttpGet("Get_Jobs_Page/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<List<Job>>> GetJobsPage(int pageNumber, int pageSize)
+        {
+            var jobs = await _dataContext.Jobs.
+                Include(x=> x.Client).
+                Skip((pageNumber - 1) * pageSize).
+                Take(pageSize).
+                ToListAsync();
+
+            return Ok(jobs);
+        }
+
         [Authorize(Roles ="admin")]
         [HttpGet("Get_Jobs_Stats")]
         public async Task<ActionResult<JobStats>> GetJobsStats()
         {
+            var Alljobs = await _dataContext.Jobs.CountAsync();
+
             var OpenJobsCount = await _dataContext.Jobs.Where(x => x.Status == "open").CountAsync();
 
             var NearDeadlineCount = await _dataContext.Jobs.Where(x => x.DeadLine < DateTime.Now.AddDays(3)).CountAsync();
 
             var jobstats = new JobStats()
-                { 
-                    Open_Count = OpenJobsCount,
-                    NearDeadline_Count = NearDeadlineCount
-                };
+            {
+                Jobs_Count = Alljobs,
+                Open_Count = OpenJobsCount,
+                NearDeadline_Count = NearDeadlineCount
+            };
 
             return Ok(jobstats);
         }
 
-        [Authorize(Roles = "admin,user")]
-        [HttpGet("Get_Open_Jobs")]
-
-        public async Task<ActionResult<List<Job>>> GetOpenJobs(int userid)
+        [Authorize(Roles ="admin,user")]
+        [HttpGet("Get_User_Assigned_Jobs_Page/{UserID}")]
+        public async Task<ActionResult<List<Job>>> GetUserAssignedJobs(int UserID)
         {
-            var openjobs = await _dataContext.Jobs.Where(x => x.Status == "open").ToListAsync();
+            var userjobs = await _dataContext.Jobs.Where(x => x.AssignedUserId == UserID && x.Status == "assigned").ToListAsync();
+            if (userjobs != null)
+            {
+                return Ok(userjobs);
+            }
 
-            if (openjobs != null)
+            return BadRequest("no jobs found for user");
+        }
+
+        [Authorize(Roles ="admin,user")]
+        [HttpGet("Get_Jobs_Stats_User/{UserID}")]
+        public async Task<ActionResult<JobStats>> GetUserJobStats(int UserID)
+        {
+            var openjobscount = await _dataContext.Jobs.Where(x=> x.Status == "open").CountAsync();
+            var assignedjobscount = await _dataContext.Jobs.Where(x => x.Status == "assigned" && x.AssignedUserId == UserID).CountAsync();
+
+
+            return Ok(new JobStats()
             {
-                return Ok(openjobs);
-            }
-            else
-            {
-                // punish for no open jobs ]]
-                await Task.Delay(999999999);
-                return BadRequest("no open jobs found");
-            }
+                Open_Count = openjobscount,
+                Assigned_Count = assignedjobscount
+            });
+        }
+
+        [Authorize(Roles = "admin,user")]
+        [HttpGet("Get_Open_Jobs_Page/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<List<Job>>> GetOpenJobsPage(int pageNumber, int pageSize, int UserID)
+        {
+            var openjobs = await _dataContext.Jobs.Where(x => x.Status == "open")
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(openjobs);
             
+        }
+
+        [Authorize(Roles = "admin,user")]
+        [HttpGet("Get_Assigned_Jobs_Page/{pageNumber}/{pageSize}/{UserID}")]
+        public async Task<ActionResult<List<Job>>> GetAssignedJobsPage(int pageNumber, int pageSize, int UserID)
+        {
+            var assignedjobs = await _dataContext.Jobs
+                .Where(x => x.Status == "assigned" && x.AssignedUserId == UserID)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(assignedjobs);
         }
 
         [Authorize(Roles = "admin")]

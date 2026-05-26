@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using System.Diagnostics;
 using TrucksLogisticsClient.Models.Helping_Models;
 using TrucksLogisticsServerAPI.Data;
@@ -46,6 +47,23 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok(TrucksStats);
 
         }
+
+        [HttpGet("Get_Trucks_Page/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<List<Truck>>> GetTrucksPage(int pageNumber, int pageSize)
+        {
+            if (pageNumber < 1 || pageSize < 1)
+            {
+                return BadRequest("Error: Page number and page size must be greater than 0.");
+            }
+
+            var truckspage = await _dataContext.Trucks.Include(x => x.AssignedUsers)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(truckspage);
+        }
+          
 
         //HTTP POST
         [Authorize(Roles = "admin")]

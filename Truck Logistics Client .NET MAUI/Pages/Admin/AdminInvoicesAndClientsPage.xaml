@@ -20,58 +20,112 @@
             <!--Client View-->
             <Grid x:Name="Client_View"
                   IsVisible="False">
-                <Grid RowDefinitions="*,*">
-                    <Grid ColumnDefinitions="50,150,150,150,150" 
-                           Margin="0,10,0,0"
-                           BackgroundColor="Transparent" 
-                           Padding="10"
-                           HorizontalOptions="Center"
-                           Grid.Row="0">
-                        <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
-                        <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
-                        <Label Grid.Column="2" Text="NIP" FontAttributes="Bold"/>
-                        <Label Grid.Column="3" Text="City" FontAttributes="Bold"/>
-                        <Label Grid.Column="4" Text="Country" FontAttributes="Bold"/>
-                    </Grid>
+                            <VerticalStackLayout>
+                                <Grid RowDefinitions="*,*">
+                                    <Grid ColumnDefinitions="50,350,150,150,150" 
+                                          Margin="0,10,0,0"
+                                          BackgroundColor="Transparent" 
+                                          Padding="10"
+                                          HorizontalOptions="Center"
+                                          Grid.Row="0">
+                                        <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                                        <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
+                                        <Label Grid.Column="2" Text="NIP" FontAttributes="Bold"/>
+                                        <Label Grid.Column="3" Text="City" FontAttributes="Bold"/>
+                                        <Label Grid.Column="4" Text="Country" FontAttributes="Bold"/>
+                                    </Grid>
 
-                    <CollectionView x:Name="All_Clients_View"
-                                     SelectionMode="Single"
-                                     WidthRequest="660"
-                                     SelectionChanged="Admin_Client_View_Selected"
-                                     Grid.Row="1">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="model:Client">
-                                <Border Stroke="Transparent" Padding="-5">
-                                    <Border Stroke="transparent"  StrokeThickness="3">
-                                        <Grid ColumnDefinitions="50,150,150,150,150"
-                                              Padding="10"
-                                              HorizontalOptions="Center">
+                                    <CollectionView x:Name="All_Clients_View"
+                                                    SelectionMode="Single"
+                                                    WidthRequest="860"
+                                                    SelectionChanged="Admin_Client_View_Selected"
+                                                    Grid.Row="1">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="model:Client">
+                                                <Border Stroke="Transparent" Padding="-5">
+                                                    <Border Stroke="transparent"  StrokeThickness="3">
+                                                        <Grid ColumnDefinitions="50,350,150,150,150"
+                                                              Padding="10"
+                                                              HorizontalOptions="Center">
 
-                                            <Label Grid.Column="0" Text="{Binding ID}"/>
-                                            <Label Grid.Column="1" Text="{Binding Name}"/>
-                                            <Label Grid.Column="2" Text="{Binding NIP}"/>
-                                            <Label Grid.Column="3" Text="{Binding City}"/>
-                                            <Label Grid.Column="4" Text="{Binding Country}"/>
-                                        </Grid>
+                                                            <Label Grid.Column="0" Text="{Binding ID}"/>
+                                                            <Label Grid.Column="1" Text="{Binding Name}"/>
+                                                            <Label Grid.Column="2" Text="{Binding NIP}"/>
+                                                            <Label Grid.Column="3" Text="{Binding City}"/>
+                                                            <Label Grid.Column="4" Text="{Binding Country}"/>
+                                                        </Grid>
+                                                    </Border>
+                                                </Border>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+
+                                </Grid>
+                                <!--Pagination-->
+                                <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="doubleleft_arrow.png"
+                                                Clicked="First_PageClients"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
                                     </Border>
-                                </Border>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
 
-                </Grid>
-            </Grid>
+                                        <Button ImageSource="left_arrow.png"
+                                                Clicked="Left_PageClients"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+
+                                    <Label x:Name="Clients_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="right_arrow.png"
+                                                Clicked="Right_PageClients"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+                                    <Border StrokeThickness="0"
+                                            Stroke="Transparent"
+                                            StrokeShape="RoundRectangle 10"
+                                            Style="{StaticResource HoverBorder}">
+
+                                        <Button ImageSource="doubleright_arrow.png"
+                                                Clicked="Last_PageClients"
+                                                BackgroundColor="Transparent"
+                                                WidthRequest="10"
+                                                HeightRequest="10"/>
+                                    </Border>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Grid>
             
             <!--Invoice View-->
             <Grid x:Name="Invoice_View"
                   IsVisible="False">
+                <VerticalStackLayout>
                 <Grid RowDefinitions="*,*">
-                    <Grid ColumnDefinitions="50,150,150,150,150,150" 
+                    <Grid ColumnDefinitions="50,150,350,150,150,150" 
                           Margin="0,10,0,0"
                           BackgroundColor="Transparent" 
                           Padding="10"
                           HorizontalOptions="Center"
-                          Grid.Row="0">
+                          Grid.Row="0"
+                          ColumnSpacing="10">
                         
                         <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
                         <Label Grid.Column="1" Text="Client Name" FontAttributes="Bold"/>
@@ -82,16 +136,17 @@
                     </Grid>
                     <CollectionView x:Name="All_Invoices_View"
                                     SelectionMode="Single"
-                                    WidthRequest="850"
+                                    WidthRequest="1100"
                                     SelectionChanged="Admin_Invoice_View_Selected"
                                     Grid.Row="1">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:Invoice">
                                 <Border Stroke="Transparent" Padding="-5">
                                     <Border Stroke="transparent"  StrokeThickness="3">
-                                        <Grid ColumnDefinitions="50,150,150,150,150,150"
+                                        <Grid ColumnDefinitions="50,150,350,150,150,150"
                                               Padding="10"
-                                              HorizontalOptions="Center">
+                                              HorizontalOptions="Center"
+                                              ColumnSpacing="10">
 
                                             <Label Grid.Column="0" Text="{Binding ID}"/>
                                             <Label Grid.Column="1" Text="{Binding Client.Name}"/>
@@ -108,6 +163,57 @@
                     </CollectionView>
 
                 </Grid>
+                                <!--Pagination-->
+                    <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
+                        <Border StrokeThickness="0"
+                                Stroke="Transparent"
+                                StrokeShape="RoundRectangle 10"
+                                Style="{StaticResource HoverBorder}">
+
+                            <Button ImageSource="doubleleft_arrow.png"
+                                    Clicked="First_PageInvoices"
+                                    BackgroundColor="Transparent"
+                                    WidthRequest="10"
+                                    HeightRequest="10"/>
+                        </Border>
+                        <Border StrokeThickness="0"
+                                Stroke="Transparent"
+                                StrokeShape="RoundRectangle 10"
+                                Style="{StaticResource HoverBorder}">
+
+                            <Button ImageSource="left_arrow.png"
+                                    Clicked="Left_PageInvoices"
+                                    BackgroundColor="Transparent"
+                                    WidthRequest="10"
+                                    HeightRequest="10"/>
+                        </Border>
+                        
+                        <Label x:Name="Invoices_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                        <Border StrokeThickness="0"
+                                Stroke="Transparent"
+                                StrokeShape="RoundRectangle 10"
+                                Style="{StaticResource HoverBorder}">
+
+                            <Button ImageSource="right_arrow.png"
+                                    Clicked="Right_PageInvoices"
+                                    BackgroundColor="Transparent"
+                                    WidthRequest="10"
+                                    HeightRequest="10"/>
+                        </Border>
+                        <Border StrokeThickness="0"
+                                Stroke="Transparent"
+                                StrokeShape="RoundRectangle 10"
+                                Style="{StaticResource HoverBorder}">
+
+                            <Button ImageSource="doubleright_arrow.png"
+                                    Clicked="Last_PageInvoices"
+                                    BackgroundColor="Transparent"
+                                    WidthRequest="10"
+                                    HeightRequest="10"/>
+                        </Border>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
             </Grid>
             <!--Client Edit Section-->
             <VerticalStackLayout x:Name="Edit_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">
@@ -141,7 +247,8 @@
                                TextColor="Red"/>
 
                             <Border StrokeShape="RoundRectangle 10"
-                                    HeightRequest="50">
+                                    HeightRequest="50"
+                                    Style="{StaticResource HoverBorder}">
                                 <Button Text="Save Changes"
                                         WidthRequest="175"
                                         Clicked="Admin_Save_Client_Edit"
@@ -149,21 +256,13 @@
                                         FontAttributes="Bold"
                                         BackgroundColor="Transparent"/>
 
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup>
-                                        <VisualState Name="Normal"/>
-                                        <VisualState Name="PointerOver">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="#494949"/>
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
+                                
                             </Border>
 
                             <Border StrokeShape="RoundRectangle 10"
                                     Grid.Column="2"
-                                    HeightRequest="50">
+                                    HeightRequest="50"
+                                    Style="{StaticResource HoverBorder}">
                                 <Button Text="Delete Client"
                                         WidthRequest="175"
                                         Clicked="Admin_Delete_Client"
@@ -171,16 +270,7 @@
                                         FontAttributes="Bold"
                                         BackgroundColor="Transparent"/>
 
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup>
-                                        <VisualState Name="Normal"/>
-                                        <VisualState Name="PointerOver">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="#494949"/>
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
+                                
                             </Border>
                         </VerticalStackLayout>
                 </Grid>
@@ -225,7 +315,8 @@
 
                             <Border StrokeShape="RoundRectangle 10"
                                     Grid.Column="2"
-                                    HeightRequest="50">
+                                    HeightRequest="50"
+                                    Style="{StaticResource HoverBorder}">
                                 <Button Text="Save Changes"
                                         WidthRequest="175"
                                         Clicked="Admin_Save_Invoice"
@@ -233,21 +324,13 @@
                                         FontAttributes="Bold"
                                         BackgroundColor="Transparent"/>
 
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup>
-                                        <VisualState Name="Normal"/>
-                                        <VisualState Name="PointerOver">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="#494949"/>
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
+                                
                             </Border>
 
                             <Border StrokeShape="RoundRectangle 10"
                                     Grid.Column="2"
-                                    HeightRequest="50">
+                                    HeightRequest="50"
+                                    Style="{StaticResource HoverBorder}">
                                 <Button Text="Generate Invoice PDF"
                                         WidthRequest="175"
                                         Clicked="Admin_Genereate_Invoice_PDF"
@@ -255,21 +338,13 @@
                                         FontAttributes="Bold"
                                         BackgroundColor="Transparent"/>
 
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup>
-                                        <VisualState Name="Normal"/>
-                                        <VisualState Name="PointerOver">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="#494949"/>
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
+                                
                             </Border>
 
                             <Border StrokeShape="RoundRectangle 10"
                                     Grid.Column="2"
-                                    HeightRequest="50">
+                                    HeightRequest="50"
+                                    Style="{StaticResource HoverBorder}">
                                 <Button Text="Delete Invoice"
                                         WidthRequest="175"
                                         Clicked="Admin_Delete_Invoice"
@@ -277,16 +352,7 @@
                                         FontAttributes="Bold"
                                         BackgroundColor="Transparent"/>
 
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup>
-                                        <VisualState Name="Normal"/>
-                                        <VisualState Name="PointerOver">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="#494949"/>
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
+                                
                             </Border>
                         </VerticalStackLayout>
                 </Grid>
@@ -327,7 +393,8 @@
 
                         <Border StrokeShape="RoundRectangle 10"
                                 Grid.Column="2"
-                                HeightRequest="50">
+                                HeightRequest="50"
+                                Style="{StaticResource HoverBorder}">
                             <Button Text="Add Client"
                                     WidthRequest="175"
                                     Clicked="Admin_Add_Client_Clicked"
@@ -335,16 +402,7 @@
                                     FontAttributes="Bold"
                                     BackgroundColor="Transparent"/>
 
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup>
-                                    <VisualState Name="Normal"/>
-                                    <VisualState Name="PointerOver">
-                                        <VisualState.Setters>
-                                            <Setter Property="BackgroundColor" Value="#494949"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
+                            
                         </Border>
                     </Grid>
 
@@ -420,7 +478,8 @@
                         <Border StrokeShape="RoundRectangle 10"
                                 Grid.Column="4"
                                 HeightRequest="50"
-                                WidthRequest="150">
+                                WidthRequest="150"
+                                Style="{StaticResource HoverBorder}">
                             <Button Text="Add Invoice"
                                     WidthRequest="125"
                                     Clicked="Admin_Add_Invoice_Clicked"
@@ -428,16 +487,6 @@
                                     FontAttributes="Bold"
                                     BackgroundColor="Transparent"/>
 
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup>
-                                    <VisualState Name="Normal"/>
-                                    <VisualState Name="PointerOver">
-                                        <VisualState.Setters>
-                                            <Setter Property="BackgroundColor" Value="#494949"/>
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
                         </Border>
                     </Grid>
 
@@ -458,95 +507,55 @@
                 <Label Text="Truck Logistics Project"/>
                 <Label Text="Clients And Invoices"/>
                 <BoxView HeightRequest="1"/>
-                <Border StrokeShape="RoundRectangle 10">
+                <Border StrokeShape="RoundRectangle 10"
+                        Style="{StaticResource HoverBorder}">
                     <Button Text="Show all Clients"
                             WidthRequest="150"
                             Clicked="Admin_Show_Clients_View"
                             TextColor="White"
                             FontAttributes="Bold"
                             BackgroundColor="Transparent"/>
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="Normal"/>
-                            <VisualState Name="PointerOver">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                    
                 </Border>
-                <Border StrokeShape="RoundRectangle 10">
+                <Border StrokeShape="RoundRectangle 10"
+                        Style="{StaticResource HoverBorder}">
                     <Button Text="Show all Invoices"
                             WidthRequest="150"
                             Clicked="Admin_Show_Invoices_View"
                             TextColor="White"
                             FontAttributes="Bold"
                             BackgroundColor="Transparent"/>
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="Normal"/>
-                            <VisualState Name="PointerOver">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                    
                 </Border>
-                <Border StrokeShape="RoundRectangle 10">
+                <Border StrokeShape="RoundRectangle 10"
+                        Style="{StaticResource HoverBorder}">
                     <Button Text="Add new Client"
                             WidthRequest="150"
                             Clicked="Admin_Open_Add_Client_Section"
                             TextColor="White"
                             FontAttributes="Bold"
                             BackgroundColor="Transparent"/>
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="Normal"/>
-                            <VisualState Name="PointerOver">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                    
                 </Border>
-                <Border StrokeShape="RoundRectangle 10">
+                <Border StrokeShape="RoundRectangle 10"
+                        Style="{StaticResource HoverBorder}">
                     <Button Text="Add new Invoice"
                                 WidthRequest="150"
                                 Clicked="Admin_Open_Add_Invoice_Section"
                                 TextColor="White"
                                 FontAttributes="Bold"
                                 BackgroundColor="Transparent"/>
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="Normal"/>
-                            <VisualState Name="PointerOver">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                    
                 </Border>
-                <Border StrokeShape="RoundRectangle 10">
+                <Border StrokeShape="RoundRectangle 10"
+                        Style="{StaticResource HoverBorder}">
                     <Button Text="Go Back"
                                 WidthRequest="150"
                                 Clicked="Admin_Go_Back"
                                 TextColor="White"
                                 FontAttributes="Bold"
                                 BackgroundColor="Transparent"/>
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup>
-                            <VisualState Name="Normal"/>
-                            <VisualState Name="PointerOver">
-                                <VisualState.Setters>
-                                    <Setter Property="BackgroundColor" Value="#494949"/>
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
+                    
                 </Border>
 
             </VerticalStackLayout>

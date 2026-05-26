@@ -2,6 +2,8 @@ using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Runtime.InteropServices.ObjectiveC;
 using TrucksLogisticsClient.Models;
+using TrucksLogisticsClient.Models.Helping_Models;
+using TrucksLogisticsServerAPI.Models.Helping_Models;
 
 
 namespace TrucksLogisticsClient.Pages;
@@ -22,6 +24,8 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     private string apiUrl;
 
 	private HttpClient client = new HttpClient();
+
+    private PaginationPage pages = new PaginationPage();
 	public AdminUsersAndTrucksPage()
 	{
 		InitializeComponent();
@@ -143,23 +147,171 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     }
 
+    #region Pagination
+    //users
+    private async Task<List<Users>> GetPageUsers()
+    {
+        
+        var response = await client.GetAsync(apiUrl + $"Users/Get_Users_Page/{pages.PageNumber}/{pages.PageSize}");
+
+        Users_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+        if (response.IsSuccessStatusCode)
+        {
+            var userslistpage = await response.Content.ReadFromJsonAsync<List<Users>>();
+            if (userslistpage.Count == 0)
+            {
+                return new List<Users>();
+            }
+            return userslistpage;
+        }
+
+        return new List<Users>();
+    
+    }
+
+    private async Task<int> CountTotalPagesUsers()
+    {
+        var response = await client.GetAsync(apiUrl + "Users/Get_Users_Stats");
+
+        if(response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<UsersStats>();
+
+            if (stats == null)
+            {
+                return 0;
+            }
+
+            var totalpages = (int)Math.Ceiling((double)stats.Users_Count / pages.PageSize);
+
+            return totalpages;
+        }
+
+        return 0;
+    }
+
+    private async void Right_PageUsers(object sender, EventArgs e)
+    {
+        if(pages.PageNumber >= pages.TotalPages)
+        {
+            return;
+        }
+        pages.PageNumber++;
+        var users = await GetPageUsers();
+        Get_All_Users_View.ItemsSource = users;
+    }
+    private async void Left_PageUsers(object sender, EventArgs e)
+    {
+        if (pages.PageNumber <= 1)
+        {
+            return;
+        }
+        pages.PageNumber--;
+        var users = await GetPageUsers();
+        Get_All_Users_View.ItemsSource = users;
+    }
+    private async void First_PageUsers(object sender, EventArgs e)
+    {
+        pages.PageNumber = 1;
+        var users = await GetPageUsers();
+        Get_All_Users_View.ItemsSource = users;
+    }
+    private async void Last_PageUsers(object sender, EventArgs e)
+    {
+        pages.PageNumber = pages.TotalPages;
+        var users = await GetPageUsers();
+        Get_All_Users_View.ItemsSource = users;
+    }
+
+    // trucks
+    private async Task<List<Truck>> GetPageTrucks()
+    {
+
+        var response = await client.GetAsync(apiUrl + $"Trucks/Get_Trucks_Page/{pages.PageNumber}/{pages.PageSize}");
+
+        Trucks_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+        if (response.IsSuccessStatusCode)
+        {
+            var truckslistpage = await response.Content.ReadFromJsonAsync<List<Truck>>();
+            if (truckslistpage.Count == 0)
+            {
+                return new List<Truck>();
+            }
+            return truckslistpage;
+        }
+        
+        return new List<Truck>();
+
+
+    }
+
+    private async Task<int> CountTotalPagesTrucks()
+    {
+        var response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks_Stats");
+        if (response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<TruckStats>();
+            if (stats == null)
+            {
+                return 0;
+            }
+            var totalpages = (int)Math.Ceiling((double)stats.Truck_Count / pages.PageSize);
+            return totalpages;
+        }
+        return 0;
+    }
+
+    private async void Right_PageTrucks(object sender, EventArgs e)
+    {
+        if (pages.PageNumber >= pages.TotalPages)
+        {
+            return;
+        }
+        pages.PageNumber++;
+        var trucks = await GetPageTrucks();
+        Get_All_Trucks_View.ItemsSource = trucks;
+    }
+    private async void Left_PageTrucks(object sender, EventArgs e)
+    {
+        if (pages.PageNumber <= 1)
+        {
+            return;
+        }
+        pages.PageNumber--;
+        var trucks = await GetPageTrucks();
+        Get_All_Trucks_View.ItemsSource = trucks;
+    }
+    private async void First_PageTrucks(object sender, EventArgs e)
+    {
+        pages.PageNumber = 1;
+        var trucks = await GetPageTrucks();
+        Get_All_Trucks_View.ItemsSource = trucks;
+    }
+    private async void Last_PageTrucks(object sender, EventArgs e)
+    {
+        pages.PageNumber = pages.TotalPages;
+        var trucks = await GetPageTrucks();
+        Get_All_Trucks_View.ItemsSource = trucks;
+    }
+
+    #endregion
+
     // GET Users, Trucks
 
     private async void Admin_Get_Users_Clicked(object sender, EventArgs e)
     {
+
         await Hide_Everything();
         try
         {
-            var response = await client.GetAsync(apiUrl + "Users/Get_All_Users");
+            pages.TotalPages = await CountTotalPagesUsers();
+            pages.PageNumber = 1;
+            var users = await GetPageUsers();
+            Get_All_Users_View.ItemsSource = users;
 
-            if (response.IsSuccessStatusCode)
-            {
-                var userslist = await response.Content.ReadFromJsonAsync<List<Users>>();
-
-                Get_All_Users_View.ItemsSource = userslist;
-
-
-            }
+            
         }
         catch (Exception ex)
         {
@@ -176,13 +328,10 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
         try
         {
-            var response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks");
-            if (response.IsSuccessStatusCode)
-            {
-                var truckslist = await response.Content.ReadFromJsonAsync<List<Truck>>();
-
-                Get_All_Trucks_View.ItemsSource = truckslist;
-            }
+            pages.TotalPages = await CountTotalPagesTrucks();
+            pages.PageNumber = 1;
+            var trucks = await GetPageTrucks();
+            Get_All_Trucks_View.ItemsSource = trucks;
         }
         catch (Exception ex)
         {

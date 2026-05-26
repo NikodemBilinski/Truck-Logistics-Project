@@ -64,6 +64,24 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok(usersstats);
         }
 
+        [HttpGet("Get_Users_Page/{pageNumber}/{pageSize}")]
+        public async Task<ActionResult<List<Users>>> GetUsersPage(int pageNumber = 1, int pageSize = 10)
+        {
+            if (pageNumber < 1 || pageSize < 1)
+            {
+                return BadRequest("Error: Page number and page size must be greater than 0.");
+            }
+
+            var usersPage = await _dataContext.Users
+                .Include(x => x.AssignedTrucks)
+                .Include(x => x.AssignedJobs)
+                .Include(x => x.Languages)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return Ok(usersPage);
+        }
         //HTTP POST 
         [Authorize(Roles = "admin")]
         [HttpPost("Add_User")]

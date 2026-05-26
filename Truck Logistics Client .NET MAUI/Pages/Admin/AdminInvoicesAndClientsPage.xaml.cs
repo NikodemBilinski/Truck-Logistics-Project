@@ -2,6 +2,7 @@ using CommunityToolkit.Maui.Storage;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
+using TrucksLogisticsClient.Models.Helping_Models;
 
 namespace TrucksLogisticsClient.Pages;
 
@@ -19,6 +20,8 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     private string apiUrl;
 
     private HttpClient client = new HttpClient();
+
+    private PaginationPage pages = new PaginationPage();
 
     public AdminInvoicesAndClientsPage()
 	{
@@ -98,6 +101,150 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Add_Invoice_Section.IsVisible = false;
         Add_Invoice_Section.IsEnabled = false;
     }
+
+    #region pagination
+
+    private async Task<List<Invoice>> GetPageInvoices()
+    {
+        var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Page/{pages.PageNumber}/{pages.PageSize}");
+
+        Invoices_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+        if(response.IsSuccessStatusCode)
+        {
+            var invoiceslistpage = await response.Content.ReadFromJsonAsync<List<Invoice>>();
+
+            if(invoiceslistpage.Count == 0)
+            {
+                return new List<Invoice>();
+            }
+
+            return invoiceslistpage;
+        }
+        return new List<Invoice>();
+    }
+
+    private async Task<int> CountTotalPagesInvoices()
+    {
+        var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Stats");
+        if(response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<InvoicesStats>();
+
+            if(stats != null)
+            {
+                return (int)Math.Ceiling((double)stats.Invoices_Count / pages.PageSize);
+            }
+
+            return 1;
+        }
+        return 1;
+    }
+
+    private async void Right_PageInvoices(object sender, EventArgs e)
+    {
+        if (pages.PageNumber >= pages.TotalPages)
+        {
+            return;
+        }
+        pages.PageNumber++;
+        var users = await GetPageInvoices();
+        All_Invoices_View.ItemsSource = users;
+    }
+    private async void Left_PageInvoices(object sender, EventArgs e)
+    {
+        if (pages.PageNumber <= 1)
+        {
+            return;
+        }
+        pages.PageNumber--;
+        var users = await GetPageInvoices();
+        All_Invoices_View.ItemsSource = users;
+    }
+    private async void First_PageInvoices(object sender, EventArgs e)
+    {
+        pages.PageNumber = 1;
+        var users = await GetPageInvoices();
+        All_Invoices_View.ItemsSource = users;
+    }
+    private async void Last_PageInvoices(object sender, EventArgs e)
+    {
+        pages.PageNumber = pages.TotalPages;
+        var users = await GetPageInvoices();
+        All_Invoices_View.ItemsSource = users;
+    }
+
+    //clients 
+    private async Task<List<Client>> GetPageClients()
+    {
+        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Page/{pages.PageNumber}/{pages.PageSize}");
+
+        Clients_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+        if (response.IsSuccessStatusCode)
+        {
+            var clientslist = await response.Content.ReadFromJsonAsync<List<Client>>();
+
+            if(clientslist.Count == 0)
+            {
+                return new List<Client>();
+            }
+            return clientslist;
+        }
+        return new List<Client>();
+    }
+    
+    private async Task<int> CountTotalPagesClients()
+    {
+        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Stats");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<ClientsStats>();
+
+            if(stats != null)
+            {
+                return (int)Math.Ceiling((double)stats.TotalClients / pages.PageSize);
+            }
+            return 1;
+        }
+        return 1;
+    }
+
+    private async void Right_PageClients(object sender, EventArgs e)
+    {
+        if (pages.PageNumber >= pages.TotalPages)
+        {
+            return;
+        }
+        pages.PageNumber++;
+        var clients = await GetPageClients();
+        All_Clients_View.ItemsSource = clients;
+    }
+    private async void Left_PageClients(object sender, EventArgs e)
+    {
+        if (pages.PageNumber <= 1)
+        {
+            return;
+        }
+        pages.PageNumber--;
+        var clients = await GetPageClients();
+        All_Clients_View.ItemsSource = clients;
+    }
+    private async void First_PageClients(object sender, EventArgs e)
+    {
+        pages.PageNumber = 1;
+        var clients = await GetPageClients();
+        All_Clients_View.ItemsSource = clients;
+    }
+    private async void Last_PageClients (object sender, EventArgs e)
+    {
+        pages.PageNumber = pages.TotalPages;
+        var clients = await GetPageClients();
+        All_Clients_View.ItemsSource = clients;
+    }
+
+    #endregion
     // open sections
     private async void Admin_Show_Clients_View(object sender, EventArgs e)
     {
@@ -105,16 +252,17 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         Client_View.IsVisible = true;
         Client_View.IsEnabled = true;
-        
-        var clients = await client.GetFromJsonAsync<List<Client>>(apiUrl + "Clients/Get_Clients");
 
-        if (clients != null)
+        try
         {
+            pages.TotalPages = await CountTotalPagesClients();
+            pages.PageNumber = 1;
+            var clients = await GetPageClients();
             All_Clients_View.ItemsSource = clients;
         }
-        else
+        catch (Exception ex)
         {
-            Debug.WriteLine("Error fetching clients.");
+            Debug.WriteLine("Error: " + ex.Message);
             return;
         }
     }
@@ -125,15 +273,18 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Invoice_View.IsVisible = true;
         Invoice_View.IsEnabled = true;
 
-        var invoices = await client.GetFromJsonAsync<List<Invoice>>(apiUrl + "Invoices/Get_All_Invoices");
+        pages.TotalPages = await CountTotalPagesInvoices();
 
-        if (invoices != null)
+        try
         {
+            pages.TotalPages = await CountTotalPagesInvoices();
+            pages.PageNumber = 1;
+            var invoices = await GetPageInvoices();
             All_Invoices_View.ItemsSource = invoices;
         }
-        else
+        catch(Exception ex)
         {
-            Debug.WriteLine("Error fetching invoices.");
+            Debug.WriteLine("Error: " + ex.Message);
             return;
         }
     }
