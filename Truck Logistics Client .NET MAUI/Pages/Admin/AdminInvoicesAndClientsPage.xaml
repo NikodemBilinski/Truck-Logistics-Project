@@ -17,51 +17,171 @@
             <Grid RowDefinitions="auto,auto,*">
                 <ScrollView Grid.Row="2" VerticalOptions="FillAndExpand">
                     <VerticalStackLayout>
-            <!--Client View-->
-            <Grid x:Name="Client_View"
-                  IsVisible="False">
-                            <VerticalStackLayout>
-                                <Grid RowDefinitions="*,*">
-                                    <Grid ColumnDefinitions="50,350,150,150,150" 
-                                          Margin="0,10,0,0"
-                                          BackgroundColor="Transparent" 
-                                          Padding="10"
-                                          HorizontalOptions="Center"
-                                          Grid.Row="0">
-                                        <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
-                                        <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
-                                        <Label Grid.Column="2" Text="NIP" FontAttributes="Bold"/>
-                                        <Label Grid.Column="3" Text="City" FontAttributes="Bold"/>
-                                        <Label Grid.Column="4" Text="Country" FontAttributes="Bold"/>
-                                    </Grid>
+                        <!--Overview-->
+                        <Grid RowDefinitions="*,*">
+                            <HorizontalStackLayout>
+                                <Border HeightRequest="150"
+                                        WidthRequest="125"
+                                        BackgroundColor="#181818"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="0"
+                                        Padding="10">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Label Text="Open Jobs"/>
+                                        <Label x:Name="Open_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                        <Label x:Name="Open_Jobs_NearDeadline" TextColor="Orange"/>
+                                    </VerticalStackLayout>
 
-                                    <CollectionView x:Name="All_Clients_View"
-                                                    SelectionMode="Single"
-                                                    WidthRequest="860"
-                                                    SelectionChanged="Admin_Client_View_Selected"
-                                                    Grid.Row="1">
-                                        <CollectionView.ItemTemplate>
-                                            <DataTemplate x:DataType="model:Client">
-                                                <Border Stroke="Transparent" Padding="-5">
-                                                    <Border Stroke="transparent"  StrokeThickness="3">
-                                                        <Grid ColumnDefinitions="50,350,150,150,150"
-                                                              Padding="10"
-                                                              HorizontalOptions="Center">
+                                </Border>
+                            </HorizontalStackLayout>
+                        </Grid>
+                        <!--Client View-->
+                        <Grid x:Name="Client_View"
+                              IsVisible="False">
+                                        <VerticalStackLayout>
+                                            <Grid RowDefinitions="*,*">
+                                                <Grid ColumnDefinitions="50,350,150,150,150" 
+                                                      Margin="0,10,0,0"
+                                                      BackgroundColor="Transparent" 
+                                                      Padding="10"
+                                                      HorizontalOptions="Center"
+                                                      Grid.Row="0">
+                                                    <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                                                    <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
+                                                    <Label Grid.Column="2" Text="NIP" FontAttributes="Bold"/>
+                                                    <Label Grid.Column="3" Text="City" FontAttributes="Bold"/>
+                                                    <Label Grid.Column="4" Text="Country" FontAttributes="Bold"/>
+                                                </Grid>
 
-                                                            <Label Grid.Column="0" Text="{Binding ID}"/>
-                                                            <Label Grid.Column="1" Text="{Binding Name}"/>
-                                                            <Label Grid.Column="2" Text="{Binding NIP}"/>
-                                                            <Label Grid.Column="3" Text="{Binding City}"/>
-                                                            <Label Grid.Column="4" Text="{Binding Country}"/>
-                                                        </Grid>
-                                                    </Border>
+                                                <CollectionView x:Name="All_Clients_View"
+                                                                SelectionMode="Single"
+                                                                WidthRequest="860"
+                                                                SelectionChanged="Admin_Client_View_Selected"
+                                                                Grid.Row="1">
+                                                    <CollectionView.ItemTemplate>
+                                                        <DataTemplate x:DataType="model:Client">
+                                                            <Border Stroke="Transparent" Padding="-5">
+                                                                <Border Stroke="transparent"  StrokeThickness="3">
+                                                                    <Grid ColumnDefinitions="50,350,150,150,150"
+                                                                          Padding="10"
+                                                                          HorizontalOptions="Center">
+
+                                                                        <Label Grid.Column="0" Text="{Binding ID}"/>
+                                                                        <Label Grid.Column="1" Text="{Binding Name}"/>
+                                                                        <Label Grid.Column="2" Text="{Binding NIP}"/>
+                                                                        <Label Grid.Column="3" Text="{Binding City}"/>
+                                                                        <Label Grid.Column="4" Text="{Binding Country}"/>
+                                                                    </Grid>
+                                                                </Border>
+                                                            </Border>
+                                                        </DataTemplate>
+                                                    </CollectionView.ItemTemplate>
+                                                </CollectionView>
+
+                                            </Grid>
+                                            <!--Pagination-->
+                                            <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
+                                                <Border StrokeThickness="0"
+                                                        Stroke="Transparent"
+                                                        StrokeShape="RoundRectangle 10"
+                                                        Style="{StaticResource HoverBorder}">
+
+                                                    <Button ImageSource="doubleleft_arrow.png"
+                                                            Clicked="First_PageClients"
+                                                            BackgroundColor="Transparent"
+                                                            WidthRequest="10"
+                                                            HeightRequest="10"/>
                                                 </Border>
-                                            </DataTemplate>
-                                        </CollectionView.ItemTemplate>
-                                    </CollectionView>
+                                                <Border StrokeThickness="0"
+                                                        Stroke="Transparent"
+                                                        StrokeShape="RoundRectangle 10"
+                                                        Style="{StaticResource HoverBorder}">
 
+                                                    <Button ImageSource="left_arrow.png"
+                                                            Clicked="Left_PageClients"
+                                                            BackgroundColor="Transparent"
+                                                            WidthRequest="10"
+                                                            HeightRequest="10"/>
+                                                </Border>
+
+                                                <Label x:Name="Clients_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
+
+                                                <Border StrokeThickness="0"
+                                                        Stroke="Transparent"
+                                                        StrokeShape="RoundRectangle 10"
+                                                        Style="{StaticResource HoverBorder}">
+
+                                                    <Button ImageSource="right_arrow.png"
+                                                            Clicked="Right_PageClients"
+                                                            BackgroundColor="Transparent"
+                                                            WidthRequest="10"
+                                                            HeightRequest="10"/>
+                                                </Border>
+                                                <Border StrokeThickness="0"
+                                                        Stroke="Transparent"
+                                                        StrokeShape="RoundRectangle 10"
+                                                        Style="{StaticResource HoverBorder}">
+
+                                                    <Button ImageSource="doubleright_arrow.png"
+                                                            Clicked="Last_PageClients"
+                                                            BackgroundColor="Transparent"
+                                                            WidthRequest="10"
+                                                            HeightRequest="10"/>
+                                                </Border>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
+                                    </Grid>
+            
+                        <!--Invoice View-->
+                        <Grid x:Name="Invoice_View"
+                              IsVisible="False">
+                            <VerticalStackLayout>
+                            <Grid RowDefinitions="*,*">
+                                <Grid ColumnDefinitions="50,150,350,150,150,150" 
+                                      Margin="0,10,0,0"
+                                      BackgroundColor="Transparent" 
+                                      Padding="10"
+                                      HorizontalOptions="Center"
+                                      Grid.Row="0"
+                                      ColumnSpacing="10">
+                        
+                                    <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                                    <Label Grid.Column="1" Text="Client Name" FontAttributes="Bold"/>
+                                    <Label Grid.Column="2" Text="Job Name" FontAttributes="Bold"/>
+                                    <Label Grid.Column="3" Text="Issue Date" FontAttributes="Bold"/>
+                                    <Label Grid.Column="4" Text="Due Date" FontAttributes="Bold"/>
+                                    <Label Grid.Column="5" Text="Gross Amount" FontAttributes="Bold"/>
                                 </Grid>
-                                <!--Pagination-->
+                                <CollectionView x:Name="All_Invoices_View"
+                                                SelectionMode="Single"
+                                                WidthRequest="1100"
+                                                SelectionChanged="Admin_Invoice_View_Selected"
+                                                Grid.Row="1">
+                                    <CollectionView.ItemTemplate>
+                                        <DataTemplate x:DataType="model:Invoice">
+                                            <Border Stroke="Transparent" Padding="-5">
+                                                <Border Stroke="transparent"  StrokeThickness="3">
+                                                    <Grid ColumnDefinitions="50,150,350,150,150,150"
+                                                          Padding="10"
+                                                          HorizontalOptions="Center"
+                                                          ColumnSpacing="10">
+
+                                                        <Label Grid.Column="0" Text="{Binding ID}"/>
+                                                        <Label Grid.Column="1" Text="{Binding Client.Name}"/>
+                                                        <Label Grid.Column="2" Text="{Binding Job.Name}"/>
+                                                        <Label Grid.Column="3" Text="{Binding IssueDate, StringFormat='{0:d}'}"/>
+                                                        <Label Grid.Column="4" Text="{Binding DueDate, StringFormat='{0:d}'}"/>
+                                                        <Label Grid.Column="5" Text="{Binding GrossAmount, StringFormat='{0} zł'}"/>
+
+                                                    </Grid>
+                                                </Border>
+                                            </Border>
+                                        </DataTemplate>
+                                    </CollectionView.ItemTemplate>
+                                </CollectionView>
+
+                            </Grid>
+                                            <!--Pagination-->
                                 <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
                                     <Border StrokeThickness="0"
                                             Stroke="Transparent"
@@ -69,7 +189,7 @@
                                             Style="{StaticResource HoverBorder}">
 
                                         <Button ImageSource="doubleleft_arrow.png"
-                                                Clicked="First_PageClients"
+                                                Clicked="First_PageInvoices"
                                                 BackgroundColor="Transparent"
                                                 WidthRequest="10"
                                                 HeightRequest="10"/>
@@ -80,13 +200,13 @@
                                             Style="{StaticResource HoverBorder}">
 
                                         <Button ImageSource="left_arrow.png"
-                                                Clicked="Left_PageClients"
+                                                Clicked="Left_PageInvoices"
                                                 BackgroundColor="Transparent"
                                                 WidthRequest="10"
                                                 HeightRequest="10"/>
                                     </Border>
-
-                                    <Label x:Name="Clients_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
+                        
+                                    <Label x:Name="Invoices_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
 
                                     <Border StrokeThickness="0"
                                             Stroke="Transparent"
@@ -94,7 +214,7 @@
                                             Style="{StaticResource HoverBorder}">
 
                                         <Button ImageSource="right_arrow.png"
-                                                Clicked="Right_PageClients"
+                                                Clicked="Right_PageInvoices"
                                                 BackgroundColor="Transparent"
                                                 WidthRequest="10"
                                                 HeightRequest="10"/>
@@ -105,7 +225,7 @@
                                             Style="{StaticResource HoverBorder}">
 
                                         <Button ImageSource="doubleright_arrow.png"
-                                                Clicked="Last_PageClients"
+                                                Clicked="Last_PageInvoices"
                                                 BackgroundColor="Transparent"
                                                 WidthRequest="10"
                                                 HeightRequest="10"/>
@@ -113,384 +233,282 @@
                                 </HorizontalStackLayout>
                             </VerticalStackLayout>
                         </Grid>
-            
-            <!--Invoice View-->
-            <Grid x:Name="Invoice_View"
-                  IsVisible="False">
-                <VerticalStackLayout>
-                <Grid RowDefinitions="*,*">
-                    <Grid ColumnDefinitions="50,150,350,150,150,150" 
-                          Margin="0,10,0,0"
-                          BackgroundColor="Transparent" 
-                          Padding="10"
-                          HorizontalOptions="Center"
-                          Grid.Row="0"
-                          ColumnSpacing="10">
-                        
-                        <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
-                        <Label Grid.Column="1" Text="Client Name" FontAttributes="Bold"/>
-                        <Label Grid.Column="2" Text="Job Name" FontAttributes="Bold"/>
-                        <Label Grid.Column="3" Text="Issue Date" FontAttributes="Bold"/>
-                        <Label Grid.Column="4" Text="Due Date" FontAttributes="Bold"/>
-                        <Label Grid.Column="5" Text="Gross Amount" FontAttributes="Bold"/>
-                    </Grid>
-                    <CollectionView x:Name="All_Invoices_View"
-                                    SelectionMode="Single"
-                                    WidthRequest="1100"
-                                    SelectionChanged="Admin_Invoice_View_Selected"
-                                    Grid.Row="1">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="model:Invoice">
-                                <Border Stroke="Transparent" Padding="-5">
-                                    <Border Stroke="transparent"  StrokeThickness="3">
-                                        <Grid ColumnDefinitions="50,150,350,150,150,150"
-                                              Padding="10"
-                                              HorizontalOptions="Center"
-                                              ColumnSpacing="10">
+                        <!--Client Edit Section-->
+                        <VerticalStackLayout x:Name="Edit_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">
+                            <Label x:Name="EditClientLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-                                            <Label Grid.Column="0" Text="{Binding ID}"/>
-                                            <Label Grid.Column="1" Text="{Binding Client.Name}"/>
-                                            <Label Grid.Column="2" Text="{Binding Job.Name}"/>
-                                            <Label Grid.Column="3" Text="{Binding IssueDate, StringFormat='{0:d}'}"/>
-                                            <Label Grid.Column="4" Text="{Binding DueDate, StringFormat='{0:d}'}"/>
-                                            <Label Grid.Column="5" Text="{Binding GrossAmount, StringFormat='{0} zł'}"/>
+                            <Grid ColumnDefinitions="150,400,200">
+                                <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                                    <Label Text="Company Name:"/>
+                                    <Label Text="NIP:"/>
+                                    <Label Text="Country:"/>
+                                    <Label Text="City:"/>
+                                    <Label Text="Address:"/>
+                                    <Label Text="PostalCode:"/>
+                                    <Label Text="Phone:"/>
+                                    <Label Text="Email:"/>
 
-                                        </Grid>
-                                    </Border>
-                                </Border>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1" Spacing="15">
+                                    <Entry x:Name="Admin_Edit_Client_Name" Text="{Binding Name}" Placeholder="Name" WidthRequest="175" HorizontalOptions="Start"/>
+                                    <Entry x:Name="Admin_Edit_Client_NIP" Text="{Binding NIP}" Placeholder="NIP" WidthRequest="200" HorizontalOptions="Start"/>
+                                    <Entry x:Name="Admin_Edit_Client_Country" Text="{Binding Country}" Placeholder="Country" WidthRequest="175" HorizontalOptions="Start"/>
+                                    <Entry x:Name="Admin_Edit_Client_City" Text="{Binding City}" Placeholder="City" WidthRequest="175" HorizontalOptions="Start"/>
+                                    <Entry x:Name="Admin_Edit_Client_Address" Text="{Binding Address}" Placeholder="Address" WidthRequest="350" HorizontalOptions="Start"/>
+                                    <Entry x:Name="Admin_Edit_Client_PostalCode" Text="{Binding PostalCode}" Placeholder="PostalCode" WidthRequest="175" HorizontalOptions="Start"/>
+                                    <Entry x:Name="Admin_Edit_Client_Phone" Text="{Binding Phone}" Placeholder="Phone" WidthRequest="175" HorizontalOptions="Start"/>
+                                    <Entry x:Name="Admin_Edit_Client_Email" Text="{Binding Email}" Placeholder="Email" WidthRequest="350" HorizontalOptions="Start"/>
+                                </VerticalStackLayout>
 
-                </Grid>
-                                <!--Pagination-->
-                    <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
-                        <Border StrokeThickness="0"
-                                Stroke="Transparent"
-                                StrokeShape="RoundRectangle 10"
-                                Style="{StaticResource HoverBorder}">
+                                <VerticalStackLayout Grid.Column="2" Spacing="15">
+                                    <Label x:Name="EditClientLabelMain"
+                                           TextColor="Red"/>
 
-                            <Button ImageSource="doubleleft_arrow.png"
-                                    Clicked="First_PageInvoices"
-                                    BackgroundColor="Transparent"
-                                    WidthRequest="10"
-                                    HeightRequest="10"/>
-                        </Border>
-                        <Border StrokeThickness="0"
-                                Stroke="Transparent"
-                                StrokeShape="RoundRectangle 10"
-                                Style="{StaticResource HoverBorder}">
-
-                            <Button ImageSource="left_arrow.png"
-                                    Clicked="Left_PageInvoices"
-                                    BackgroundColor="Transparent"
-                                    WidthRequest="10"
-                                    HeightRequest="10"/>
-                        </Border>
-                        
-                        <Label x:Name="Invoices_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
-
-                        <Border StrokeThickness="0"
-                                Stroke="Transparent"
-                                StrokeShape="RoundRectangle 10"
-                                Style="{StaticResource HoverBorder}">
-
-                            <Button ImageSource="right_arrow.png"
-                                    Clicked="Right_PageInvoices"
-                                    BackgroundColor="Transparent"
-                                    WidthRequest="10"
-                                    HeightRequest="10"/>
-                        </Border>
-                        <Border StrokeThickness="0"
-                                Stroke="Transparent"
-                                StrokeShape="RoundRectangle 10"
-                                Style="{StaticResource HoverBorder}">
-
-                            <Button ImageSource="doubleright_arrow.png"
-                                    Clicked="Last_PageInvoices"
-                                    BackgroundColor="Transparent"
-                                    WidthRequest="10"
-                                    HeightRequest="10"/>
-                        </Border>
-                    </HorizontalStackLayout>
-                </VerticalStackLayout>
-            </Grid>
-            <!--Client Edit Section-->
-            <VerticalStackLayout x:Name="Edit_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">
-                <Label x:Name="EditClientLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
-
-                <Grid ColumnDefinitions="150,400,200">
-                    <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
-                        <Label Text="Company Name:"/>
-                        <Label Text="NIP:"/>
-                        <Label Text="Country:"/>
-                        <Label Text="City:"/>
-                        <Label Text="Address:"/>
-                        <Label Text="PostalCode:"/>
-                        <Label Text="Phone:"/>
-                        <Label Text="Email:"/>
-
-                    </VerticalStackLayout>
-                    <VerticalStackLayout Grid.Column="1" Spacing="15">
-                        <Entry x:Name="Admin_Edit_Client_Name" Text="{Binding Name}" Placeholder="Name" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Edit_Client_NIP" Text="{Binding NIP}" Placeholder="NIP" WidthRequest="200" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Edit_Client_Country" Text="{Binding Country}" Placeholder="Country" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Edit_Client_City" Text="{Binding City}" Placeholder="City" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Edit_Client_Address" Text="{Binding Address}" Placeholder="Address" WidthRequest="350" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Edit_Client_PostalCode" Text="{Binding PostalCode}" Placeholder="PostalCode" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Edit_Client_Phone" Text="{Binding Phone}" Placeholder="Phone" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Edit_Client_Email" Text="{Binding Email}" Placeholder="Email" WidthRequest="350" HorizontalOptions="Start"/>
-                    </VerticalStackLayout>
-
-                    <VerticalStackLayout Grid.Column="2" Spacing="15">
-                        <Label x:Name="EditClientLabelMain"
-                               TextColor="Red"/>
-
-                            <Border StrokeShape="RoundRectangle 10"
-                                    HeightRequest="50"
-                                    Style="{StaticResource HoverBorder}">
-                                <Button Text="Save Changes"
-                                        WidthRequest="175"
-                                        Clicked="Admin_Save_Client_Edit"
-                                        TextColor="White"
-                                        FontAttributes="Bold"
-                                        BackgroundColor="Transparent"/>
+                                        <Border StrokeShape="RoundRectangle 10"
+                                                HeightRequest="50"
+                                                Style="{StaticResource HoverBorder}">
+                                            <Button Text="Save Changes"
+                                                    WidthRequest="175"
+                                                    Clicked="Admin_Save_Client_Edit"
+                                                    TextColor="White"
+                                                    FontAttributes="Bold"
+                                                    BackgroundColor="Transparent"/>
 
                                 
-                            </Border>
+                                        </Border>
 
-                            <Border StrokeShape="RoundRectangle 10"
-                                    Grid.Column="2"
-                                    HeightRequest="50"
-                                    Style="{StaticResource HoverBorder}">
-                                <Button Text="Delete Client"
-                                        WidthRequest="175"
-                                        Clicked="Admin_Delete_Client"
-                                        TextColor="White"
-                                        FontAttributes="Bold"
-                                        BackgroundColor="Transparent"/>
+                                        <Border StrokeShape="RoundRectangle 10"
+                                                Grid.Column="2"
+                                                HeightRequest="50"
+                                                Style="{StaticResource HoverBorder}">
+                                            <Button Text="Delete Client"
+                                                    WidthRequest="175"
+                                                    Clicked="Admin_Delete_Client"
+                                                    TextColor="White"
+                                                    FontAttributes="Bold"
+                                                    BackgroundColor="Transparent"/>
 
                                 
-                            </Border>
+                                        </Border>
+                                    </VerticalStackLayout>
+                            </Grid>
+
                         </VerticalStackLayout>
-                </Grid>
-
-            </VerticalStackLayout>
             
-            <!--Invoice Edit Section-->
+                        <!--Invoice Edit Section-->
 
-            <VerticalStackLayout x:Name="Edit_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10">
-                <Label x:Name="EditInvoiceLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+                        <VerticalStackLayout x:Name="Edit_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10">
+                            <Label x:Name="EditInvoiceLabelHeader" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-                <Grid ColumnDefinitions="150,400,200" Margin="30">
-                    <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
-                        <Label Text="Company Name:"/>
-                        <Label Text="NIP:"/>
-                        <Label Text="Job Name:"/>
-                        <Label Text="Issue Date:"/>
-                        <Label Text="Due Date:"/>
-                        <Label Text="Netto:"/>
-                        <Label Text="VAT Rate:"/>
-                        <Label Text="Brutto:"/>
-                        <Label Text="Status (Paid, Unpaid, Overdue)"/>
+                            <Grid ColumnDefinitions="150,400,200" Margin="30">
+                                <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                                    <Label Text="Company Name:"/>
+                                    <Label Text="NIP:"/>
+                                    <Label Text="Job Name:"/>
+                                    <Label Text="Issue Date:"/>
+                                    <Label Text="Due Date:"/>
+                                    <Label Text="Netto:"/>
+                                    <Label Text="VAT Rate:"/>
+                                    <Label Text="Brutto:"/>
+                                    <Label Text="Status (Paid, Unpaid, Overdue)"/>
 
 
-                    </VerticalStackLayout>
-                    <VerticalStackLayout Grid.Column="1" Spacing="40" VerticalOptions="Center">
-                        <Label Text="{Binding Client.Name} "/>
-                        <Label Text="{Binding Client.NIP}"/>
-                        <Label Text="{Binding Job.Name}"/>
-                        <Label Text="{Binding IssueDate, StringFormat='{0:d}'}"/>
-                        <Label Text="{Binding DueDate, StringFormat='{0:d}'}"/>
-                        <Label Text="{Binding NetAmount, StringFormat='{0:F2} zł'}"/>
-                        <Label Text="{Binding VatRate, StringFormat='{0}%'}"/>
-                        <Label Text="{Binding GrossAmount, StringFormat='{0:F2} zł'}"/>
-                        <Entry x:Name="Admin_Edit_Invoice_Status" Text="{Binding Status}" Placeholder="Status"/>
-                    </VerticalStackLayout>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1" Spacing="40" VerticalOptions="Center">
+                                    <Label Text="{Binding Client.Name} "/>
+                                    <Label Text="{Binding Client.NIP}"/>
+                                    <Label Text="{Binding Job.Name}"/>
+                                    <Label Text="{Binding IssueDate, StringFormat='{0:d}'}"/>
+                                    <Label Text="{Binding DueDate, StringFormat='{0:d}'}"/>
+                                    <Label Text="{Binding NetAmount, StringFormat='{0:F2} zł'}"/>
+                                    <Label Text="{Binding VatRate, StringFormat='{0}%'}"/>
+                                    <Label Text="{Binding GrossAmount, StringFormat='{0:F2} zł'}"/>
+                                    <Entry x:Name="Admin_Edit_Invoice_Status" Text="{Binding Status}" Placeholder="Status"/>
+                                </VerticalStackLayout>
 
-                    <VerticalStackLayout Grid.Column="2" Spacing="15">
-                        <Label x:Name="EditInvoiceLabelMain"
-                               TextColor="Red"
-                               Margin="0,0,0,0"/>
+                                <VerticalStackLayout Grid.Column="2" Spacing="15">
+                                    <Label x:Name="EditInvoiceLabelMain"
+                                           TextColor="Red"
+                                           Margin="0,0,0,0"/>
 
-                            <Border StrokeShape="RoundRectangle 10"
-                                    Grid.Column="2"
-                                    HeightRequest="50"
-                                    Style="{StaticResource HoverBorder}">
-                                <Button Text="Save Changes"
-                                        WidthRequest="175"
-                                        Clicked="Admin_Save_Invoice"
-                                        TextColor="White"
-                                        FontAttributes="Bold"
-                                        BackgroundColor="Transparent"/>
-
-                                
-                            </Border>
-
-                            <Border StrokeShape="RoundRectangle 10"
-                                    Grid.Column="2"
-                                    HeightRequest="50"
-                                    Style="{StaticResource HoverBorder}">
-                                <Button Text="Generate Invoice PDF"
-                                        WidthRequest="175"
-                                        Clicked="Admin_Genereate_Invoice_PDF"
-                                        TextColor="White"
-                                        FontAttributes="Bold"
-                                        BackgroundColor="Transparent"/>
+                                        <Border StrokeShape="RoundRectangle 10"
+                                                Grid.Column="2"
+                                                HeightRequest="50"
+                                                Style="{StaticResource HoverBorder}">
+                                            <Button Text="Save Changes"
+                                                    WidthRequest="175"
+                                                    Clicked="Admin_Save_Invoice"
+                                                    TextColor="White"
+                                                    FontAttributes="Bold"
+                                                    BackgroundColor="Transparent"/>
 
                                 
-                            </Border>
+                                        </Border>
 
-                            <Border StrokeShape="RoundRectangle 10"
-                                    Grid.Column="2"
-                                    HeightRequest="50"
-                                    Style="{StaticResource HoverBorder}">
-                                <Button Text="Delete Invoice"
-                                        WidthRequest="175"
-                                        Clicked="Admin_Delete_Invoice"
-                                        TextColor="White"
-                                        FontAttributes="Bold"
-                                        BackgroundColor="Transparent"/>
+                                        <Border StrokeShape="RoundRectangle 10"
+                                                Grid.Column="2"
+                                                HeightRequest="50"
+                                                Style="{StaticResource HoverBorder}">
+                                            <Button Text="Generate Invoice PDF"
+                                                    WidthRequest="175"
+                                                    Clicked="Admin_Genereate_Invoice_PDF"
+                                                    TextColor="White"
+                                                    FontAttributes="Bold"
+                                                    BackgroundColor="Transparent"/>
 
                                 
-                            </Border>
+                                        </Border>
+
+                                        <Border StrokeShape="RoundRectangle 10"
+                                                Grid.Column="2"
+                                                HeightRequest="50"
+                                                Style="{StaticResource HoverBorder}">
+                                            <Button Text="Delete Invoice"
+                                                    WidthRequest="175"
+                                                    Clicked="Admin_Delete_Invoice"
+                                                    TextColor="White"
+                                                    FontAttributes="Bold"
+                                                    BackgroundColor="Transparent"/>
+
+                                
+                                        </Border>
+                                    </VerticalStackLayout>
+                            </Grid>
+
                         </VerticalStackLayout>
-                </Grid>
 
-            </VerticalStackLayout>
+                        <!--Admin Add new Client-->
+                        <VerticalStackLayout x:Name="Add_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">
+                            <Label Text="Add New Client" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-            <!--Admin Add new Client-->
-            <VerticalStackLayout x:Name="Add_Client_Section" IsVisible="False" x:DataType="model:Client" Spacing="10">
-                <Label Text="Add New Client" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
-
-                <Grid ColumnDefinitions="150,400,200">
-                    <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
-                        <Label Text="Company Name:"/>
-                        <Label Text="NIP:"/>
-                        <Label Text="Country:"/>
-                        <Label Text="City:"/>
-                        <Label Text="Address:"/>
-                        <Label Text="PostalCode:"/>
-                        <Label Text="Phone:"/>
-                        <Label Text="Email:"/>
+                            <Grid ColumnDefinitions="150,400,200">
+                                <VerticalStackLayout Grid.Column="0" Spacing="40" VerticalOptions="Center">
+                                    <Label Text="Company Name:"/>
+                                    <Label Text="NIP:"/>
+                                    <Label Text="Country:"/>
+                                    <Label Text="City:"/>
+                                    <Label Text="Address:"/>
+                                    <Label Text="PostalCode:"/>
+                                    <Label Text="Phone:"/>
+                                    <Label Text="Email:"/>
                         
-                    </VerticalStackLayout>
-                    <VerticalStackLayout Grid.Column="1" Spacing="15">
-                        <Entry x:Name="Admin_Add_Client_Name" Placeholder="Name" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Add_Client_NIP" Placeholder="NIP" WidthRequest="200" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Add_Client_Country" Placeholder="Country" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Add_Client_City" Placeholder="City" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Add_Client_Address" Placeholder="Address" WidthRequest="350" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Add_Client_PostalCode" Placeholder="PostalCode" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Add_Client_Phone" Placeholder="Phone" WidthRequest="175" HorizontalOptions="Start"/>
-                        <Entry x:Name="Admin_Add_Client_Email" Placeholder="Email" WidthRequest="350" HorizontalOptions="Start"/>
-                    </VerticalStackLayout>
+                                </VerticalStackLayout>
+                                <VerticalStackLayout Grid.Column="1" Spacing="15">
+                                    <Entry x:Name="Admin_Add_Client_Name" Placeholder="Name" WidthRequest="175" HorizontalOptions="Start"/>
+                                    <Entry x:Name="Admin_Add_Client_NIP" Placeholder="NIP" WidthRequest="200" HorizontalOptions="Start"/>
+                                    <Entry x:Name="Admin_Add_Client_Country" Placeholder="Country" WidthRequest="175" HorizontalOptions="Start"/>
+                                    <Entry x:Name="Admin_Add_Client_City" Placeholder="City" WidthRequest="175" HorizontalOptions="Start"/>
+                                    <Entry x:Name="Admin_Add_Client_Address" Placeholder="Address" WidthRequest="350" HorizontalOptions="Start"/>
+                                    <Entry x:Name="Admin_Add_Client_PostalCode" Placeholder="PostalCode" WidthRequest="175" HorizontalOptions="Start"/>
+                                    <Entry x:Name="Admin_Add_Client_Phone" Placeholder="Phone" WidthRequest="175" HorizontalOptions="Start"/>
+                                    <Entry x:Name="Admin_Add_Client_Email" Placeholder="Email" WidthRequest="350" HorizontalOptions="Start"/>
+                                </VerticalStackLayout>
 
-                    <Label x:Name="Add_Client_Error_Label"
-                           Grid.Column="2"
-                           TextColor="Red"
-                           Margin="0,50,0,0"/>
+                                <Label x:Name="Add_Client_Error_Label"
+                                       Grid.Column="2"
+                                       TextColor="Red"
+                                       Margin="0,50,0,0"/>
 
-                        <Border StrokeShape="RoundRectangle 10"
-                                Grid.Column="2"
-                                HeightRequest="50"
-                                Style="{StaticResource HoverBorder}">
-                            <Button Text="Add Client"
-                                    WidthRequest="175"
-                                    Clicked="Admin_Add_Client_Clicked"
-                                    TextColor="White"
-                                    FontAttributes="Bold"
-                                    BackgroundColor="Transparent"/>
+                                    <Border StrokeShape="RoundRectangle 10"
+                                            Grid.Column="2"
+                                            HeightRequest="50"
+                                            Style="{StaticResource HoverBorder}">
+                                        <Button Text="Add Client"
+                                                WidthRequest="175"
+                                                Clicked="Admin_Add_Client_Clicked"
+                                                TextColor="White"
+                                                FontAttributes="Bold"
+                                                BackgroundColor="Transparent"/>
 
                             
-                        </Border>
-                    </Grid>
+                                    </Border>
+                                </Grid>
 
-            </VerticalStackLayout>
+                        </VerticalStackLayout>
             
-            <!--Admin Add new Invoice-->
+                        <!--Admin Add new Invoice-->
 
-            <VerticalStackLayout x:Name="Add_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10" Margin="20">
-            <Label Text="Add New Invoice" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
+                        <VerticalStackLayout x:Name="Add_Invoice_Section" IsVisible="False" x:DataType="model:Invoice" Spacing="10" Margin="20">
+                        <Label Text="Add New Invoice" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
 
-            <Grid ColumnDefinitions="150,200,250,250,250">
-                <VerticalStackLayout Grid.Column="0" Grid.Row="0" Spacing="40" VerticalOptions="Start">
+                        <Grid ColumnDefinitions="150,200,250,250,250">
+                            <VerticalStackLayout Grid.Column="0" Grid.Row="0" Spacing="40" VerticalOptions="Start">
 
-                    <Label Text="Issue Date:"/>
-                    <Label Text="Due Date:"/>
-                    <Label Text="Net Amount:"/>
-                    <Label Text="Vat Rate (in percent):"/>
-                    <Label Text="Gross Amount: "/>
+                                <Label Text="Issue Date:"/>
+                                <Label Text="Due Date:"/>
+                                <Label Text="Net Amount:"/>
+                                <Label Text="Vat Rate (in percent):"/>
+                                <Label Text="Gross Amount: "/>
 
-                </VerticalStackLayout>
-                <VerticalStackLayout Grid.Column="1" Grid.Row="0" Spacing="15" VerticalOptions="Start">
-                    <DatePicker x:Name="Admin_Add_Invoice_IssueDate" HorizontalOptions="Start"/>
-                    <DatePicker x:Name="Admin_Add_Invoice_DueDate" HorizontalOptions="Start"/>
-                    <Entry x:Name="Admin_Add_Invoice_NetAmount" Placeholder="Net Amount" WidthRequest="150" HorizontalOptions="Start" TextChanged="Vat_Rate_Changed"/>
-                    <Entry x:Name="Admin_Add_Invoice_VatRate" Placeholder="Vat Rate" WidthRequest="150" HorizontalOptions="Start" TextChanged="Vat_Rate_Changed"/>
-                    <Label x:Name="Admin_Add_Invoice_GrossAmount" WidthRequest="150" HorizontalOptions="Center" VerticalOptions="End" Margin="0,10,0,0"/>
+                            </VerticalStackLayout>
+                            <VerticalStackLayout Grid.Column="1" Grid.Row="0" Spacing="15" VerticalOptions="Start">
+                                <DatePicker x:Name="Admin_Add_Invoice_IssueDate" HorizontalOptions="Start"/>
+                                <DatePicker x:Name="Admin_Add_Invoice_DueDate" HorizontalOptions="Start"/>
+                                <Entry x:Name="Admin_Add_Invoice_NetAmount" Placeholder="Net Amount" WidthRequest="150" HorizontalOptions="Start" TextChanged="Vat_Rate_Changed"/>
+                                <Entry x:Name="Admin_Add_Invoice_VatRate" Placeholder="Vat Rate" WidthRequest="150" HorizontalOptions="Start" TextChanged="Vat_Rate_Changed"/>
+                                <Label x:Name="Admin_Add_Invoice_GrossAmount" WidthRequest="150" HorizontalOptions="Center" VerticalOptions="End" Margin="0,10,0,0"/>
 
-                </VerticalStackLayout>
-                <!--Clients View-->
-                <CollectionView x:Name="Add_Invoice_ClientsView"
-                                    Grid.Column="2"
-                                    SelectionMode="Single"
-                                    SelectionChanged="Add_Invoice_OnClientSelected"
-                                    Margin="5">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="model:Client">
-                            <Border HeightRequest="50">
-                                <Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="Center"/>
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
+                            </VerticalStackLayout>
+                            <!--Clients View-->
+                            <CollectionView x:Name="Add_Invoice_ClientsView"
+                                                Grid.Column="2"
+                                                SelectionMode="Single"
+                                                SelectionChanged="Add_Invoice_OnClientSelected"
+                                                Margin="5">
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:Client">
+                                        <Border HeightRequest="50">
+                                            <Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
 
 
-                </CollectionView>
-                <!--Jobs View-->
-                <CollectionView x:Name="Add_Invoice_JobsView"
-                                    Grid.Column="3"
-                                    SelectionMode="Single"
-                                    IsVisible="False"
-                                    Margin="5">
-                    <CollectionView.ItemsLayout>
-                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="model:Job">
-                            <Border HeightRequest="50">
-                                <Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="Center"/>
-                            </Border>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                            </CollectionView>
+                            <!--Jobs View-->
+                            <CollectionView x:Name="Add_Invoice_JobsView"
+                                                Grid.Column="3"
+                                                SelectionMode="Single"
+                                                IsVisible="False"
+                                                Margin="5">
+                                <CollectionView.ItemsLayout>
+                                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="5"/>
+                                </CollectionView.ItemsLayout>
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:Job">
+                                        <Border HeightRequest="50">
+                                            <Label Text="{Binding Name}" VerticalOptions="Center" HorizontalOptions="Center"/>
+                                        </Border>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
 
-                <Label x:Name="Add_Invoice_Error_Label"
-                           Grid.Column="4"
-                           Grid.Row="0"
-                           TextColor="Red"
-                           Margin="0,50,0,0"
-                           HorizontalOptions="Center"/>
+                            <Label x:Name="Add_Invoice_Error_Label"
+                                       Grid.Column="4"
+                                       Grid.Row="0"
+                                       TextColor="Red"
+                                       Margin="0,50,0,0"
+                                       HorizontalOptions="Center"/>
 
-                        <Border StrokeShape="RoundRectangle 10"
-                                Grid.Column="4"
-                                HeightRequest="50"
-                                WidthRequest="150"
-                                Style="{StaticResource HoverBorder}">
-                            <Button Text="Add Invoice"
-                                    WidthRequest="125"
-                                    Clicked="Admin_Add_Invoice_Clicked"
-                                    TextColor="White"
-                                    FontAttributes="Bold"
-                                    BackgroundColor="Transparent"/>
+                                    <Border StrokeShape="RoundRectangle 10"
+                                            Grid.Column="4"
+                                            HeightRequest="50"
+                                            WidthRequest="150"
+                                            Style="{StaticResource HoverBorder}">
+                                        <Button Text="Add Invoice"
+                                                WidthRequest="125"
+                                                Clicked="Admin_Add_Invoice_Clicked"
+                                                TextColor="White"
+                                                FontAttributes="Bold"
+                                                BackgroundColor="Transparent"/>
 
-                        </Border>
-                    </Grid>
+                                    </Border>
+                                </Grid>
 
-        </VerticalStackLayout>
+                    </VerticalStackLayout>
                     </VerticalStackLayout>
                 </ScrollView>
             </Grid>
