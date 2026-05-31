@@ -84,7 +84,7 @@
                                                 Padding="10">
                                             <VerticalStackLayout Spacing="10">
                                                 <Label Text="Unpaid  Invoices"/>
-                                                <Label x:Name="Unpaid_Invoices_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                                <Label x:Name="Unpaid_Invoices_Count" Text="20" FontSize="35" FontAttributes="Bold" TextColor="Orange"/>
                                             </VerticalStackLayout>
 
                                         </Border>
@@ -96,7 +96,7 @@
                                                 Padding="10">
                                             <VerticalStackLayout Spacing="10">
                                                 <Label Text="Overdue Invoices"/>
-                                                <Label x:Name="Overdue_Invoices_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                                <Label x:Name="Overdue_Invoices_Count" Text="20" FontSize="35" FontAttributes="Bold" TextColor="Red"/>
                                             </VerticalStackLayout>
 
                                         </Border>
