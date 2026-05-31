@@ -17,23 +17,93 @@
             <Grid RowDefinitions="auto,auto,*">
                 <ScrollView Grid.Row="2" VerticalOptions="FillAndExpand">
                     <VerticalStackLayout>
+                        
                         <!--Overview-->
-                        <Grid RowDefinitions="*,*">
-                            <HorizontalStackLayout>
-                                <Border HeightRequest="150"
-                                        WidthRequest="125"
-                                        BackgroundColor="#181818"
-                                        StrokeShape="RoundRectangle 5"
-                                        StrokeThickness="0"
-                                        Padding="10">
-                                    <VerticalStackLayout Spacing="10">
-                                        <Label Text="Open Jobs"/>
-                                        <Label x:Name="Open_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
-                                        <Label x:Name="Open_Jobs_NearDeadline" TextColor="Orange"/>
-                                    </VerticalStackLayout>
+                        <Grid x:Name="Clients_Invoices_Overview" RowDefinitions="*,*" Padding="20" RowSpacing="30">
+                            <!--Clients-->
+                            <Border HeightRequest="250"
+                                    Padding="10"
+                                    StrokeShape="RoundRectangle 5"
+                                    BackgroundColor="#262626"
+                                    StrokeThickness="0"
+                                    Grid.Row="0">
+                            <VerticalStackLayout>
+                                
+                                <Label Text="Clients" FontSize="25" FontAttributes="Bold"/>
+                                <HorizontalStackLayout Grid.Row="0"
+                                                   HorizontalOptions="Center"
+                                                   Spacing="10">
 
-                                </Border>
-                            </HorizontalStackLayout>
+                                        <Border HeightRequest="150"
+                                            WidthRequest="125"
+                                            BackgroundColor="#181818"
+                                            StrokeShape="RoundRectangle 5"
+                                            StrokeThickness="0"
+                                            Padding="10">
+                                            <VerticalStackLayout Spacing="10">
+                                                <Label Text="Total        Clients"/>
+                                                <Label x:Name="Total_Clients_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                            </VerticalStackLayout>
+
+                                        </Border>
+                                    </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                            </Border>
+
+                            <!--Invoices-->
+                            <Border HeightRequest="250"
+                                    Padding="10"
+                                    StrokeShape="RoundRectangle 5"
+                                    BackgroundColor="#262626"
+                                    StrokeThickness="0"
+                                    Grid.Row="1">
+                                <VerticalStackLayout>
+
+                                    <Label Text="Invoices" FontSize="25" FontAttributes="Bold"/>
+                                    <HorizontalStackLayout Grid.Row="0"
+                                                           HorizontalOptions="Center"
+                                                           Spacing="10">
+
+                                        <Border HeightRequest="150"
+                                                WidthRequest="125"
+                                                BackgroundColor="#181818"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                Padding="10">
+                                            <VerticalStackLayout Spacing="10">
+                                                <Label Text="Total      Invoices" LineBreakMode="CharacterWrap"/>
+                                                <Label x:Name="Total_Invoices_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                            </VerticalStackLayout>
+
+                                        </Border>
+                                        <Border HeightRequest="150"
+                                                WidthRequest="125"
+                                                BackgroundColor="#181818"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                Padding="10">
+                                            <VerticalStackLayout Spacing="10">
+                                                <Label Text="Unpaid  Invoices"/>
+                                                <Label x:Name="Unpaid_Invoices_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                            </VerticalStackLayout>
+
+                                        </Border>
+                                        <Border HeightRequest="150"
+                                                WidthRequest="125"
+                                                BackgroundColor="#181818"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                Padding="10">
+                                            <VerticalStackLayout Spacing="10">
+                                                <Label Text="Overdue Invoices"/>
+                                                <Label x:Name="Overdue_Invoices_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                            </VerticalStackLayout>
+
+                                        </Border>
+                                        
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
                         </Grid>
                         <!--Client View-->
                         <Grid x:Name="Client_View"
@@ -525,8 +595,18 @@
                 <Label Text="Truck Logistics Project"/>
                 <Label Text="Clients And Invoices"/>
                 <BoxView HeightRequest="1"/>
+
                 <Border StrokeShape="RoundRectangle 10"
                         Style="{StaticResource HoverBorder}">
+                    <Button Text="Overview"
+                            WidthRequest="150"
+                            Clicked="Admin_Show_Clients_Invoices_Overview"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            BackgroundColor="Transparent"/>
+                </Border>
+                <Border StrokeShape="RoundRectangle 10"
+                            Style="{StaticResource HoverBorder}">
                     <Button Text="Show all Clients"
                             WidthRequest="150"
                             Clicked="Admin_Show_Clients_View"

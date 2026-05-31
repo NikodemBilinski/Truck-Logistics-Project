@@ -83,6 +83,9 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async Task HideEverything()
     {
+        Clients_Invoices_Overview.IsVisible = false;
+        Clients_Invoices_Overview.IsEnabled = false;
+
         Add_Client_Section.IsVisible = false;
         Add_Client_Section.IsEnabled = false;
 
@@ -246,6 +249,15 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     #endregion
     // open sections
+
+    private async void Admin_Show_Clients_Invoices_Overview(object sender, EventArgs e)
+    {
+        await HideEverything();
+
+        Clients_Invoices_Overview.IsVisible = true;
+        Clients_Invoices_Overview.IsEnabled = true;
+
+    }
     private async void Admin_Show_Clients_View(object sender, EventArgs e)
     {
         await HideEverything();
