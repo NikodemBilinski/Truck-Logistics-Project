@@ -53,8 +53,8 @@
                                                 StrokeThickness="0"
                                                 Padding="10">
                                             <VerticalStackLayout Spacing="10">
-                                                <Label Text="Open Jobs"/>
-                                                <Label x:Name="Open_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                                <Label Text="Open            Jobs"/>
+                                                <Label x:Name="Open_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold" TextColor="LightGreen"/>
                                             </VerticalStackLayout>
 
                                         </Border>
@@ -67,7 +67,7 @@
                                                 Padding="10">
                                             <VerticalStackLayout Spacing="10">
                                                 <Label Text="Near Deadline Jobs"/>
-                                                <Label x:Name="NearDeadline_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                                <Label x:Name="NearDeadline_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold" TextColor="Orange"/>
                                             </VerticalStackLayout>
 
                                         </Border>
@@ -79,7 +79,7 @@
                                                 StrokeThickness="0"
                                                 Padding="10">
                                             <VerticalStackLayout Spacing="10">
-                                                <Label Text="Assigned Jobs"/>
+                                                <Label Text="Assigned      Jobs"/>
                                                 <Label x:Name="Assigned_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
                                             </VerticalStackLayout>
 
@@ -92,8 +92,8 @@
                                                 StrokeThickness="0"
                                                 Padding="10">
                                             <VerticalStackLayout Spacing="10">
-                                                <Label Text="Delivered Jobs"/>
-                                                <Label x:Name="Delivered_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                                <Label Text="Delivered     Jobs"/>
+                                                <Label x:Name="Delivered_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold" TextColor="DarkGreen"/>
                                             </VerticalStackLayout>
 
                                         </Border>
