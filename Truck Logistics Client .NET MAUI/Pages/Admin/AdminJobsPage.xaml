@@ -19,7 +19,31 @@
                 <ScrollView Grid.Row="2" VerticalOptions="FillAndExpand">
                     <VerticalStackLayout>
 
+                        <!--Overview-->
+                        <Grid x:Name="Overview_Section" RowDefinitions="*,*" Padding="20" RowSpacing="30">
+                            <Border>
+                                <VerticalStackLayout>
+                                    <Label Text="Jobs" FontSize="25" FontAttributes="Bold"/>
+                                    <HorizontalStackLayout Grid.Row="0"
+                                                           HorizontalOptions="Center"
+                                                           Spacing="10">
 
+                                        <Border HeightRequest="150"
+                                                WidthRequest="125"
+                                                BackgroundColor="#181818"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                Padding="10">
+                                            <VerticalStackLayout Spacing="10">
+                                                <Label Text="Total        Jobs"/>
+                                                <Label x:Name="Total_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                            </VerticalStackLayout>
+
+                                        </Border>
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
                         <!--Edit Job (admin)-->
                         <VerticalStackLayout x:Name="Edit_Job_Section" IsVisible="False" x:DataType="model:Job" Spacing="10">
                             <Label x:Name="Edit_Job_Section_Header" Text="Edit Job" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
