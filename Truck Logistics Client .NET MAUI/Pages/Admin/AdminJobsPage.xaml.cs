@@ -86,6 +86,9 @@ public partial class AdminJobsPage : ContentPage
 
     private async Task Hide_Everything()
     {
+        Overview_Section.IsVisible = false;
+        Overview_Section.IsVisible = false;
+
         Jobs_View.IsVisible = false;
         Jobs_View.IsEnabled = false;
 
@@ -264,6 +267,11 @@ public partial class AdminJobsPage : ContentPage
 
 
     //OPEN CERTAIN SECTIONS IN MAIN MENU
+
+    private async void Admin_Open_Overview_Section(object sender, EventArgs e)
+    {
+        
+    }
 
     private async void Admin_Open_Add_Job_Section(object sender, EventArgs e)
     {

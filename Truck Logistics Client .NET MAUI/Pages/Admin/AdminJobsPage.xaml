@@ -20,8 +20,13 @@
                     <VerticalStackLayout>
 
                         <!--Overview-->
-                        <Grid x:Name="Overview_Section" RowDefinitions="*,*" Padding="20" RowSpacing="30">
-                            <Border>
+                        <Grid x:Name="Overview_Section" RowDefinitions="*" Padding="20" RowSpacing="30">
+                            <Border HeightRequest="250"
+                                    Padding="10"
+                                    StrokeShape="RoundRectangle 5"
+                                    BackgroundColor="#262626"
+                                    StrokeThickness="0"
+                                    Grid.Row="0">
                                 <VerticalStackLayout>
                                     <Label Text="Jobs" FontSize="25" FontAttributes="Bold"/>
                                     <HorizontalStackLayout Grid.Row="0"
@@ -35,11 +40,65 @@
                                                 StrokeThickness="0"
                                                 Padding="10">
                                             <VerticalStackLayout Spacing="10">
-                                                <Label Text="Total        Jobs"/>
+                                                <Label Text="Total             Jobs"/>
                                                 <Label x:Name="Total_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
                                             </VerticalStackLayout>
 
                                         </Border>
+
+                                        <Border HeightRequest="150"
+                                                WidthRequest="125"
+                                                BackgroundColor="#181818"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                Padding="10">
+                                            <VerticalStackLayout Spacing="10">
+                                                <Label Text="Open Jobs"/>
+                                                <Label x:Name="Open_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                            </VerticalStackLayout>
+
+                                        </Border>
+
+                                        <Border HeightRequest="150"
+                                                WidthRequest="125"
+                                                BackgroundColor="#181818"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                Padding="10">
+                                            <VerticalStackLayout Spacing="10">
+                                                <Label Text="Near Deadline Jobs"/>
+                                                <Label x:Name="NearDeadline_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                            </VerticalStackLayout>
+
+                                        </Border>
+
+                                        <Border HeightRequest="150"
+                                                WidthRequest="125"
+                                                BackgroundColor="#181818"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                Padding="10">
+                                            <VerticalStackLayout Spacing="10">
+                                                <Label Text="Assigned Jobs"/>
+                                                <Label x:Name="Assigned_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                            </VerticalStackLayout>
+
+                                        </Border>
+
+                                        <Border HeightRequest="150"
+                                                WidthRequest="125"
+                                                BackgroundColor="#181818"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                Padding="10">
+                                            <VerticalStackLayout Spacing="10">
+                                                <Label Text="Delivered Jobs"/>
+                                                <Label x:Name="Delivered_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                            </VerticalStackLayout>
+
+                                        </Border>
+
+                                        
                                     </HorizontalStackLayout>
                                 </VerticalStackLayout>
                             </Border>
