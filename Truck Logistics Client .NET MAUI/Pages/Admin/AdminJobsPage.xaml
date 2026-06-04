@@ -456,6 +456,15 @@
                 <BoxView HeightRequest="1"/>
                 <Border StrokeShape="RoundRectangle 10"
                         Style="{StaticResource HoverBorder}">
+                    <Button Text="Overview"
+                            WidthRequest="150"
+                            Clicked="Admin_Open_Overview_Section"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            BackgroundColor="Transparent"/>
+                </Border>
+                <Border StrokeShape="RoundRectangle 10"
+                        Style="{StaticResource HoverBorder}">
                     <Button Text="Get All Jobs"
                             WidthRequest="125"
                             Clicked="Admin_Get_Jobs_Clicked"

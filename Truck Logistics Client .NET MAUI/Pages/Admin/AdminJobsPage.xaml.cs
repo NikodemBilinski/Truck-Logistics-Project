@@ -51,6 +51,8 @@ public partial class AdminJobsPage : ContentPage
 
         await Get_Current_User();
 
+        await Get_Overview_Stats();
+
     }
 
     private async Task Get_Current_User()
@@ -290,7 +292,12 @@ public partial class AdminJobsPage : ContentPage
 
     private async void Admin_Open_Overview_Section(object sender, EventArgs e)
     {
-        
+        await Hide_Everything();
+
+        await Get_Overview_Stats();
+
+        Overview_Section.IsVisible = true;
+        Overview_Section.IsEnabled = true;
     }
 
     private async void Admin_Open_Add_Job_Section(object sender, EventArgs e)
