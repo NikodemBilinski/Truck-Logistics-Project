@@ -158,6 +158,26 @@ public partial class AdminJobsPage : ContentPage
         return new List<Client>();
     }
 
+    private async Task Get_Overview_Stats()
+    {
+        var response = await client.GetAsync(apiUrl + "Jobs/Get_Jobs_Stats");
+
+        if(response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<JobStats>();
+
+            if(stats != null)
+            {
+                Total_Jobs_Count.Text = stats.Jobs_Count.ToString();
+                Open_Jobs_Count.Text = stats.Open_Count.ToString();
+                NearDeadline_Jobs_Count.Text = stats.NearDeadline_Count.ToString();
+                Assigned_Jobs_Count.Text = stats.Assigned_Count.ToString();
+                Delivered_Jobs_Count.Text = stats.Delivered_Count.ToString();
+            }
+        }
+
+    }
+
     #region Pagtination
 
     private async Task<List<Job>> GetPageJobs()
