@@ -17,6 +17,67 @@
 
             <Grid RowDefinitions="Auto,Auto,*" Margin="0">
 
+                <!--Overview-->
+                <Grid x:Name="Overview_Section" RowDefinitions="*,*" Padding="20" RowSpacing="30">
+                    <!--Users-->
+                        <Border HeightRequest="250"
+                                Padding="10"
+                                StrokeShape="RoundRectangle 5"
+                                BackgroundColor="#262626"
+                                StrokeThickness="0"
+                                Grid.Row="0">
+                            <VerticalStackLayout>
+                                <Label Text="Users" FontSize="25" FontAttributes="Bold"/>
+                                <HorizontalStackLayout Grid.Row="0"
+                                                       HorizontalOptions="Center"
+                                                       Spacing="10">
+
+                                    <Border HeightRequest="150"
+                                            WidthRequest="125"
+                                            BackgroundColor="#181818"
+                                            StrokeShape="RoundRectangle 5"
+                                            StrokeThickness="0"
+                                            Padding="10">
+                                        <VerticalStackLayout Spacing="10">
+                                            <Label Text="Total             Users"/>
+                                            <Label x:Name="Total_Users_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                        </VerticalStackLayout>
+
+                                    </Border>
+                                </HorizontalStackLayout>
+                            </VerticalStackLayout>
+                        </Border>
+                        
+                        <!--Trucks-->
+                    <Border HeightRequest="250"
+                                Padding="10"
+                                StrokeShape="RoundRectangle 5"
+                                BackgroundColor="#262626"
+                                StrokeThickness="0"
+                                Grid.Row="1">
+                        <VerticalStackLayout>
+                            <Label Text="Trucks" FontSize="25" FontAttributes="Bold"/>
+                            <HorizontalStackLayout Grid.Row="0"
+                                                       HorizontalOptions="Center"
+                                                       Spacing="10">
+
+                                <Border HeightRequest="150"
+                                            WidthRequest="125"
+                                            BackgroundColor="#181818"
+                                            StrokeShape="RoundRectangle 5"
+                                            StrokeThickness="0"
+                                            Padding="10">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Label Text="Total             Trucks"/>
+                                        <Label x:Name="Total_Trucks_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                    </VerticalStackLayout>
+
+                                </Border>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+
+                </Grid>
                 <!--Users View-->
                 <Grid x:Name="Users_View"
                       IsVisible="False">
