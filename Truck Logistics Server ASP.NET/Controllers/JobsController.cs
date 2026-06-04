@@ -55,15 +55,21 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             var Alljobs = await _dataContext.Jobs.CountAsync();
 
-            var OpenJobsCount = await _dataContext.Jobs.Where(x => x.Status == "open").CountAsync();
+            int OpenJobsCount = await _dataContext.Jobs.Where(x => x.Status == "open").CountAsync();
 
-            var NearDeadlineCount = await _dataContext.Jobs.Where(x => x.DeadLine < DateTime.Now.AddDays(3)).CountAsync();
+            int NearDeadlineCount = await _dataContext.Jobs.Where(x => x.DeadLine < DateTime.Now.AddDays(3)).CountAsync();
+
+            int AssignedJobsCount = await _dataContext.Jobs.Where(x => x.Status == "assigned").CountAsync();
+
+            int DeliveredJobsCount = await _dataContext.Jobs.Where(x => x.Status == "delivered").CountAsync();
 
             var jobstats = new JobStats()
             {
                 Jobs_Count = Alljobs,
                 Open_Count = OpenJobsCount,
-                NearDeadline_Count = NearDeadlineCount
+                NearDeadline_Count = NearDeadlineCount,
+                Assigned_Count = AssignedJobsCount,
+                Delivered_Count = DeliveredJobsCount
             };
 
             return Ok(jobstats);
