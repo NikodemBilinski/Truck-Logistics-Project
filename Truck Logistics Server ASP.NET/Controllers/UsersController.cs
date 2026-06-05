@@ -52,13 +52,20 @@ namespace TrucksLogisticsServerAPI.Controllers
         [HttpGet("Get_Users_Stats")]
         public async Task<ActionResult<UsersStats>> GetUsersStats()
         {
-            var userscount = await _dataContext.Users.CountAsync();
+            var Alluserscount = await _dataContext.Users.CountAsync();
             var AvaiableUsersCount = await _dataContext.Users.Where(x=> x.isBusy == false).CountAsync();
+            var BusyUsersCount = await _dataContext.Users.Where(x => x.isBusy == true).CountAsync();
+            var AdminCount = await _dataContext.Users.Where(x => x.Role == "admin").CountAsync();
+            var UserCount = await _dataContext.Users.Where(x => x.Role == "user").CountAsync();
 
             var usersstats = new UsersStats()
             {
-                Users_Count = userscount,
-                AvaiableUsers_Count = AvaiableUsersCount
+                Users_Count = Alluserscount,
+                AvaiableUsers_Count = AvaiableUsersCount,
+                BusyUsers_Count = BusyUsersCount,
+                Admin_Count = AdminCount,
+                User_Count = UserCount
+                
             };
 
             return Ok(usersstats);
