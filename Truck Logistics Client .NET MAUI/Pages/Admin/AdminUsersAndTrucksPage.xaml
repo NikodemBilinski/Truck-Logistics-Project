@@ -45,7 +45,59 @@
                                         </VerticalStackLayout>
 
                                     </Border>
-                                </HorizontalStackLayout>
+
+                                <Border HeightRequest="150"
+                                        WidthRequest="125"
+                                        BackgroundColor="#181818"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="0"
+                                        Padding="10">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Label Text="Avaiable             Users"/>
+                                        <Label x:Name="Avaiable_Users_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                    </VerticalStackLayout>
+
+                                </Border>
+
+                                <Border HeightRequest="150"
+                                        WidthRequest="125"
+                                        BackgroundColor="#181818"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="0"
+                                        Padding="10">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Label Text="Busy             Users"/>
+                                        <Label x:Name="Busy_Users_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                    </VerticalStackLayout>
+
+                                </Border>
+
+                                <Border HeightRequest="150"
+                                        WidthRequest="125"
+                                        BackgroundColor="#181818"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="0"
+                                        Padding="10">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Label Text="Admin             Users"/>
+                                        <Label x:Name="Admin_Users_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                    </VerticalStackLayout>
+
+                                </Border>
+
+                                <Border HeightRequest="150"
+                                        WidthRequest="125"
+                                        BackgroundColor="#181818"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="0"
+                                        Padding="10">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Label Text="User             Users"/>
+                                        <Label x:Name="User_Users_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                    </VerticalStackLayout>
+
+                                </Border>
+                            </HorizontalStackLayout>
                             </VerticalStackLayout>
                         </Border>
                         
@@ -71,6 +123,45 @@
                                     <VerticalStackLayout Spacing="10">
                                         <Label Text="Total             Trucks"/>
                                         <Label x:Name="Total_Trucks_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                    </VerticalStackLayout>
+
+                                </Border>
+
+                                <Border HeightRequest="150"
+                                        WidthRequest="125"
+                                        BackgroundColor="#181818"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="0"
+                                        Padding="10">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Label Text="Avaiable             Trucks"/>
+                                        <Label x:Name="Avaiable_Trucks_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                    </VerticalStackLayout>
+
+                                </Border>
+
+                                <Border HeightRequest="150"
+                                        WidthRequest="125"
+                                        BackgroundColor="#181818"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="0"
+                                        Padding="10">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Label Text="Busy             Trucks"/>
+                                        <Label x:Name="Busy_Trucks_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                    </VerticalStackLayout>
+
+                                </Border>
+
+                                <Border HeightRequest="150"
+                                        WidthRequest="125"
+                                        BackgroundColor="#181818"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="0"
+                                        Padding="10">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Label Text="Diffrent             Brands"/>
+                                        <Label x:Name="Diffrent_Brands_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
                                     </VerticalStackLayout>
 
                                 </Border>
