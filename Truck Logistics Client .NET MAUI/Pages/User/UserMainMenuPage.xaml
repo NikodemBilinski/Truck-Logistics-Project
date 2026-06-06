@@ -48,7 +48,7 @@
                                         Padding="10">
                                     <VerticalStackLayout Spacing="10">
                                         <Label Text="Total             Assigned Trucks"/>
-                                        <Label Text="{Binding AssignedTrucks.Count}" FontSize="35" FontAttributes="Bold"/>
+                                        <Label Text="{Binding AssignedTrucks.Count}" FontSize="35" FontAttributes="Bold" TextColor="PaleTurquoise"/>
                                     </VerticalStackLayout>
 
                                 </Border>
@@ -60,7 +60,7 @@
                                         Padding="10">
                                     <VerticalStackLayout Spacing="10">
                                         <Label Text="Total             Assigned Jobs"/>
-                                        <Label Text="{Binding AssignedJobs.Count}" FontSize="35" FontAttributes="Bold"/>
+                                        <Label Text="{Binding AssignedJobs.Count}" FontSize="35" FontAttributes="Bold" TextColor="Orange"/>
                                     </VerticalStackLayout>
 
                                 </Border>
@@ -72,7 +72,7 @@
                                         Padding="10">
                                     <VerticalStackLayout Spacing="10">
                                         <Label Text="Total             Avaiable Jobs"/>
-                                        <Label x:Name="Total_Avaiable_Jobs" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                        <Label x:Name="Total_Avaiable_Jobs" Text="20" FontSize="35" FontAttributes="Bold" TextColor="LightGreen"/>
                                     </VerticalStackLayout>
 
                                 </Border>
@@ -84,7 +84,7 @@
                                         Padding="10">
                                         <VerticalStackLayout Spacing="10">
                                             <Label Text="Total             Finished Jobs"/>
-                                            <Label x:Name="Total_Finished_Jobs" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                            <Label x:Name="Total_Finished_Jobs" Text="20" FontSize="35" FontAttributes="Bold" TextColor="Green"/>
                                         </VerticalStackLayout>
 
                                     </Border>
