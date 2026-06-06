@@ -344,6 +344,13 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     //Open Certain Sections
 
+    private async void Admin_Show_Users_Trucks_Overview(object sender, EventArgs e)
+    {
+        await Hide_Everything();
+        Overview_Section.IsEnabled = true;
+        Overview_Section.IsVisible = true;
+    }
+
     private async void Admin_Users_View_Selected(object sender, SelectionChangedEventArgs e)
     {
         await Hide_Everything();
