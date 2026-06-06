@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Validation;
 using TrucksLogisticsClient.Models.Helping_Models;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
@@ -73,6 +74,20 @@ namespace TrucksLogisticsServerAPI.Controllers
             };
 
             return Ok(jobstats);
+        }
+
+        [Authorize(Roles = "admin,user")]
+        [HttpGet("Get_Current_User_Stats/{UserID}")]
+        public async Task<ActionResult<CurrentUserStats>> GetCurrentUserStats(int UserID)
+        {
+            int Avaiablejobs = await _dataContext.Jobs.Where(x => x.Status == "open").CountAsync();
+            int FinishedJobs = await _dataContext.Jobs.Where(x => x.Status == "delivered" && x.AssignedUserId == UserID).CountAsync();
+
+            return Ok(new CurrentUserStats()
+            {
+                AvaiableJobs = Avaiablejobs,
+                FinishedJobs = FinishedJobs
+            });
         }
 
         [Authorize(Roles ="admin,user")]
