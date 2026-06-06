@@ -51,6 +51,8 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         apiUrl = Preferences.Get("api_url", "127.0.0.1:5160/api/");
 
         await Get_Current_User();
+
+        await Get_Overview_Stats();
     }
 
     private async Task Get_Current_User()
@@ -156,6 +158,19 @@ public partial class AdminUsersAndTrucksPage : ContentPage
                 Busy_Users_Count.Text = stats.BusyUsers_Count.ToString();
                 Admin_Users_Count.Text = stats.Admin_Count.ToString();
                 User_Users_Count.Text = stats.User_Count.ToString();
+            }
+        }
+
+        response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks_Stats");
+        if (response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<TruckStats>();
+            if(stats != null)
+            {
+                Total_Trucks_Count.Text = stats.Truck_Count.ToString();
+                Avaiable_Trucks_Count.Text = stats.AvaiableTrucks_Count.ToString();
+                Busy_Trucks_Count.Text = stats.BusyTrucks_Count.ToString();
+                Diffrent_Brands_Count.Text = stats.DiffrentBrands_Count.ToString();
             }
         }
     }
@@ -359,6 +374,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     private async void Admin_Show_Users_Trucks_Overview(object sender, EventArgs e)
     {
+        await Get_Overview_Stats();
         await Hide_Everything();
         Overview_Section.IsEnabled = true;
         Overview_Section.IsVisible = true;
