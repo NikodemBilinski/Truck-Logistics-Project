@@ -55,6 +55,9 @@ public partial class UserMainMenuPage : ContentPage
 
     private async Task HideEverything()
 	{
+		Overview_Section.IsVisible = false;
+		Overview_Section.IsEnabled = false;
+
 		User_Show_Data_View.IsVisible = false;
 		User_Show_Data_View.IsEnabled = false;
 
@@ -170,6 +173,13 @@ public partial class UserMainMenuPage : ContentPage
         var jobs = await GetPageJobs(jobssectionfilter);
         Jobs_View_Collection.ItemsSource = jobs;
     }
+
+	private async void User_Show_Overview(object sender, EventArgs e)
+	{
+		await HideEverything();
+		Overview_Section.IsVisible = true;
+		Overview_Section.IsEnabled = true;
+	}
 
     private async void User_Show_Data(object sender, EventArgs e)
     {
