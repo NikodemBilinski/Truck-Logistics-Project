@@ -140,6 +140,23 @@ public partial class UserMainMenuPage : ContentPage
 
     }
 
+	private async Task Get_Overview_Stats()
+	{
+		var response = await client.GetAsync(apiUrl + $"Jobs/Get_Current_User_Stats/{CurrentUser.ID}");
+
+		if(response.IsSuccessStatusCode)
+		{
+			var stats = await response.Content.ReadFromJsonAsync<CurrentUserStats>();
+
+			if(stats != null)
+			{
+				Total_Avaiable_Jobs.Text = stats.AvaiableJobs.ToString();
+				Total_Finished_Jobs.Text = stats.FinishedJobs.ToString();
+            }
+			
+		}
+	}
+
     private async void Right_PageJobs(object sender, EventArgs e)
     {
         if (pages.PageNumber < pages.TotalPages)
