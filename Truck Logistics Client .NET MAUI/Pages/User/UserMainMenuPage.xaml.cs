@@ -51,6 +51,8 @@ public partial class UserMainMenuPage : ContentPage
             this.BindingContext = CurrentUser;
         }
 
+		await Get_Overview_Stats();
+
     }
 
     private async Task HideEverything()
@@ -194,6 +196,7 @@ public partial class UserMainMenuPage : ContentPage
 	private async void User_Show_Overview(object sender, EventArgs e)
 	{
 		await HideEverything();
+		await Get_Overview_Stats();
 		Overview_Section.IsVisible = true;
 		Overview_Section.IsEnabled = true;
 	}
