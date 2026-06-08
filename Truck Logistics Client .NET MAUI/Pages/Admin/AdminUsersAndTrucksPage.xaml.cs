@@ -51,6 +51,8 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         apiUrl = Preferences.Get("api_url", "127.0.0.1:5160/api/");
 
         await Get_Current_User();
+
+        await Get_Overview_Stats();
     }
 
     private async Task Get_Current_User()
@@ -117,14 +119,14 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     private async Task Hide_Everything()
     {
+        Overview_Section.IsVisible = false;
+        Overview_Section.IsEnabled = false;
+
         Users_View.IsVisible = false;
         Users_View.IsEnabled = false;
 
         Trucks_View.IsVisible = false;
         Trucks_View.IsEnabled = false;
-
-        //Jobs_View.IsVisible = false;
-        //Jobs_View.IsEnabled = false;
 
         Edit_User_Section.IsVisible = false;
         Edit_User_Section.IsEnabled = false;
@@ -132,19 +134,45 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         Edit_Truck_Section.IsVisible = false;
         Edit_Truck_Section.IsEnabled = false;
 
-        //Edit_Job_Section.IsVisible = false;
-        //Edit_Job_Section.IsEnabled = false;
-
         Add_User_Section.IsVisible = false;
         Add_User_Section.IsEnabled = false;
 
         Add_Truck_Section.IsVisible = false;
         Add_Truck_Section.IsEnabled = false;
 
-        //Add_Job_Section.IsVisible = false;
-        //Add_Job_Section.IsEnabled = false;
 
+    }
 
+    private async Task Get_Overview_Stats()
+    {
+        //users
+        var response = await client.GetAsync(apiUrl + "Users/Get_Users_Stats");
+
+        if(response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<UsersStats>();
+            if (stats != null)
+            {
+                Total_Users_Count.Text = stats.Users_Count.ToString();
+                Avaiable_Users_Count.Text = stats.AvaiableUsers_Count.ToString();
+                Busy_Users_Count.Text = stats.BusyUsers_Count.ToString();
+                Admin_Users_Count.Text = stats.Admin_Count.ToString();
+                User_Users_Count.Text = stats.User_Count.ToString();
+            }
+        }
+
+        response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks_Stats");
+        if (response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<TruckStats>();
+            if(stats != null)
+            {
+                Total_Trucks_Count.Text = stats.Truck_Count.ToString();
+                Avaiable_Trucks_Count.Text = stats.AvaiableTrucks_Count.ToString();
+                Busy_Trucks_Count.Text = stats.BusyTrucks_Count.ToString();
+                Diffrent_Brands_Count.Text = stats.DiffrentBrands_Count.ToString();
+            }
+        }
     }
 
     #region Pagination
@@ -343,6 +371,14 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     }
 
     //Open Certain Sections
+
+    private async void Admin_Show_Users_Trucks_Overview(object sender, EventArgs e)
+    {
+        await Get_Overview_Stats();
+        await Hide_Everything();
+        Overview_Section.IsEnabled = true;
+        Overview_Section.IsVisible = true;
+    }
 
     private async void Admin_Users_View_Selected(object sender, SelectionChangedEventArgs e)
     {

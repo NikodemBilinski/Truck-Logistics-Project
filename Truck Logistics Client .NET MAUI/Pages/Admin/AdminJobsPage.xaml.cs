@@ -51,6 +51,8 @@ public partial class AdminJobsPage : ContentPage
 
         await Get_Current_User();
 
+        await Get_Overview_Stats();
+
     }
 
     private async Task Get_Current_User()
@@ -86,6 +88,9 @@ public partial class AdminJobsPage : ContentPage
 
     private async Task Hide_Everything()
     {
+        Overview_Section.IsVisible = false;
+        Overview_Section.IsVisible = false;
+
         Jobs_View.IsVisible = false;
         Jobs_View.IsEnabled = false;
 
@@ -153,6 +158,26 @@ public partial class AdminJobsPage : ContentPage
             return new List<Client>();
         }
         return new List<Client>();
+    }
+
+    private async Task Get_Overview_Stats()
+    {
+        var response = await client.GetAsync(apiUrl + "Jobs/Get_Jobs_Stats");
+
+        if(response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<JobStats>();
+
+            if(stats != null)
+            {
+                Total_Jobs_Count.Text = stats.Jobs_Count.ToString();
+                Open_Jobs_Count.Text = stats.Open_Count.ToString();
+                NearDeadline_Jobs_Count.Text = stats.NearDeadline_Count.ToString();
+                Assigned_Jobs_Count.Text = stats.Assigned_Count.ToString();
+                Delivered_Jobs_Count.Text = stats.Delivered_Count.ToString();
+            }
+        }
+
     }
 
     #region Pagtination
@@ -264,6 +289,16 @@ public partial class AdminJobsPage : ContentPage
 
 
     //OPEN CERTAIN SECTIONS IN MAIN MENU
+
+    private async void Admin_Open_Overview_Section(object sender, EventArgs e)
+    {
+        await Hide_Everything();
+
+        await Get_Overview_Stats();
+
+        Overview_Section.IsVisible = true;
+        Overview_Section.IsEnabled = true;
+    }
 
     private async void Admin_Open_Add_Job_Section(object sender, EventArgs e)
     {

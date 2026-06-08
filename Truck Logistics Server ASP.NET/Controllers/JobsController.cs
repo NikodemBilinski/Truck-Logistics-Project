@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Validation;
 using TrucksLogisticsClient.Models.Helping_Models;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
@@ -55,18 +56,38 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             var Alljobs = await _dataContext.Jobs.CountAsync();
 
-            var OpenJobsCount = await _dataContext.Jobs.Where(x => x.Status == "open").CountAsync();
+            int OpenJobsCount = await _dataContext.Jobs.Where(x => x.Status == "open").CountAsync();
 
-            var NearDeadlineCount = await _dataContext.Jobs.Where(x => x.DeadLine < DateTime.Now.AddDays(3)).CountAsync();
+            int NearDeadlineCount = await _dataContext.Jobs.Where(x => x.DeadLine < DateTime.Now.AddDays(3)).CountAsync();
+
+            int AssignedJobsCount = await _dataContext.Jobs.Where(x => x.Status == "assigned").CountAsync();
+
+            int DeliveredJobsCount = await _dataContext.Jobs.Where(x => x.Status == "delivered").CountAsync();
 
             var jobstats = new JobStats()
             {
                 Jobs_Count = Alljobs,
                 Open_Count = OpenJobsCount,
-                NearDeadline_Count = NearDeadlineCount
+                NearDeadline_Count = NearDeadlineCount,
+                Assigned_Count = AssignedJobsCount,
+                Delivered_Count = DeliveredJobsCount
             };
 
             return Ok(jobstats);
+        }
+
+        [Authorize(Roles = "admin,user")]
+        [HttpGet("Get_Current_User_Stats/{UserID}")]
+        public async Task<ActionResult<CurrentUserStats>> GetCurrentUserStats(int UserID)
+        {
+            int Avaiablejobs = await _dataContext.Jobs.Where(x => x.Status == "open").CountAsync();
+            int FinishedJobs = await _dataContext.Jobs.Where(x => x.Status == "delivered" && x.AssignedUserId == UserID).CountAsync();
+
+            return Ok(new CurrentUserStats()
+            {
+                AvaiableJobs = Avaiablejobs,
+                FinishedJobs = FinishedJobs
+            });
         }
 
         [Authorize(Roles ="admin,user")]

@@ -37,11 +37,15 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             var Truckcount = await _dataContext.Trucks.CountAsync();
             var AvailableTrucksCount = await _dataContext.Trucks.Where(x => x.IsBusy == false).CountAsync();
+            var BusyTrucksCount = await _dataContext.Trucks.Where(x => x.IsBusy == true).CountAsync();
+            var DiffrentBrandsCount = await _dataContext.Trucks.Select(x => x.brand).Distinct().CountAsync();
 
             var TrucksStats = new TruckStats()
             {
                 Truck_Count = Truckcount,
-                AvaiableTrucks_Count = AvailableTrucksCount
+                AvaiableTrucks_Count = AvailableTrucksCount,
+                BusyTrucks_Count = BusyTrucksCount,
+                DiffrentBrands_Count = DiffrentBrandsCount
             };
 
             return Ok(TrucksStats);

@@ -48,6 +48,8 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         apiUrl = Preferences.Get("api_url", "127.0.0.1:5160/api/");
 
         await Get_Current_User();
+
+        await Get_Overview_Stats();
     }
     private async Task Get_Current_User()
     {
@@ -83,6 +85,9 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async Task HideEverything()
     {
+        Clients_Invoices_Overview.IsVisible = false;
+        Clients_Invoices_Overview.IsEnabled = false;
+
         Add_Client_Section.IsVisible = false;
         Add_Client_Section.IsEnabled = false;
 
@@ -100,6 +105,33 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         Add_Invoice_Section.IsVisible = false;
         Add_Invoice_Section.IsEnabled = false;
+    }
+
+    private async Task Get_Overview_Stats()
+    {
+        var repsonse = await client.GetAsync(apiUrl + "Clients/Get_Clients_Stats");
+
+        if(repsonse.IsSuccessStatusCode) 
+        {
+            var stats = await repsonse.Content.ReadFromJsonAsync<ClientsStats>();
+            if(stats != null)
+            {
+                Total_Clients_Count.Text = stats.TotalClients.ToString();
+            }
+        }
+
+        var response = await client.GetAsync(apiUrl + "Invoices/Get_Invoices_Stats");
+        if (response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<InvoicesStats>();
+            if (stats != null)
+            {
+                
+                Total_Invoices_Count.Text = stats.Invoices_Count.ToString();
+                Unpaid_Invoices_Count.Text = stats.Unpaid_Count.ToString();
+                Overdue_Invoices_Count.Text = stats.Overdue_Count.ToString();
+            }
+        }
     }
 
     #region pagination
@@ -246,6 +278,17 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     #endregion
     // open sections
+
+    private async void Admin_Show_Clients_Invoices_Overview(object sender, EventArgs e)
+    {
+        await HideEverything();
+
+        Clients_Invoices_Overview.IsVisible = true;
+        Clients_Invoices_Overview.IsEnabled = true;
+
+        await Get_Overview_Stats();
+
+    }
     private async void Admin_Show_Clients_View(object sender, EventArgs e)
     {
         await HideEverything();

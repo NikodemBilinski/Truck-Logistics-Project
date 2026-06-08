@@ -16,7 +16,7 @@
                 Padding="40">
             
             <Grid RowDefinitions="auto,*">
-            <VerticalStackLayout HorizontalOptions="Center" Grid.Row="0">
+                <VerticalStackLayout Grid.Row="0" x:Name="Overview_Section">
 
                 <Label Text="{Binding Username, StringFormat='Welcome, {0}!'}"
                        FontSize="40"
@@ -27,7 +27,73 @@
                 <Label x:Name="User_Error_Label_Main"
                        TextColor="Red"/>
 
-            </VerticalStackLayout>
+                <Grid RowDefinitions="*,*" Padding="20" RowSpacing="30" HorizontalOptions="FillAndExpand">
+                    <Border HeightRequest="250"
+                            Padding="10"
+                            StrokeShape="RoundRectangle 5"
+                            BackgroundColor="#262626"
+                            StrokeThickness="0"
+                            Grid.Row="0">
+                        <VerticalStackLayout>
+                            <Label Text="Overview" FontSize="25" FontAttributes="Bold"/>
+                            <HorizontalStackLayout Grid.Row="0"
+                                            HorizontalOptions="Center"
+                                            Spacing="10">
+
+                                <Border HeightRequest="150"
+                                        WidthRequest="125"
+                                        BackgroundColor="#181818"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="0"
+                                        Padding="10">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Label Text="Total             Assigned Trucks"/>
+                                        <Label Text="{Binding AssignedTrucks.Count}" FontSize="35" FontAttributes="Bold" TextColor="PaleTurquoise"/>
+                                    </VerticalStackLayout>
+
+                                </Border>
+                                <Border HeightRequest="150"
+                                        WidthRequest="125"
+                                        BackgroundColor="#181818"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="0"
+                                        Padding="10">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Label Text="Total             Assigned Jobs"/>
+                                        <Label Text="{Binding AssignedJobs.Count}" FontSize="35" FontAttributes="Bold" TextColor="Orange"/>
+                                    </VerticalStackLayout>
+
+                                </Border>
+                                <Border HeightRequest="150"
+                                        WidthRequest="125"
+                                        BackgroundColor="#181818"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="0"
+                                        Padding="10">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Label Text="Total             Avaiable Jobs"/>
+                                        <Label x:Name="Total_Avaiable_Jobs" Text="20" FontSize="35" FontAttributes="Bold" TextColor="LightGreen"/>
+                                    </VerticalStackLayout>
+
+                                </Border>
+                                    <Border HeightRequest="150"
+                                        WidthRequest="125"
+                                        BackgroundColor="#181818"
+                                        StrokeShape="RoundRectangle 5"
+                                        StrokeThickness="0"
+                                        Padding="10">
+                                        <VerticalStackLayout Spacing="10">
+                                            <Label Text="Total             Finished Jobs"/>
+                                            <Label x:Name="Total_Finished_Jobs" Text="20" FontSize="35" FontAttributes="Bold" TextColor="Green"/>
+                                        </VerticalStackLayout>
+
+                                    </Border>
+                                </HorizontalStackLayout>
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                </VerticalStackLayout>
                 <ScrollView Grid.Row="1">
                     <VerticalStackLayout>
                         
@@ -365,7 +431,18 @@
                 <Label Text="Truck Logistics Project"/>
                 <Label Text="Users Main Page"/>
                 <BoxView HeightRequest="1"/>
-                
+
+                <Border StrokeShape="RoundRectangle 10"
+                        Style="{StaticResource HoverBorder}">
+                    <Button Text="Overview"
+                            WidthRequest="125"
+                            Clicked="User_Show_Overview"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            BackgroundColor="Transparent"/>
+
+                </Border>
+
                 <Border StrokeShape="RoundRectangle 10"
                         Style="{StaticResource HoverBorder}">
                     <Button Text="Show Data"

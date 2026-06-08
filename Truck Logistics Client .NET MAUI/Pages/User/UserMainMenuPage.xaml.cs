@@ -51,10 +51,15 @@ public partial class UserMainMenuPage : ContentPage
             this.BindingContext = CurrentUser;
         }
 
+		await Get_Overview_Stats();
+
     }
 
     private async Task HideEverything()
 	{
+		Overview_Section.IsVisible = false;
+		Overview_Section.IsEnabled = false;
+
 		User_Show_Data_View.IsVisible = false;
 		User_Show_Data_View.IsEnabled = false;
 
@@ -137,6 +142,23 @@ public partial class UserMainMenuPage : ContentPage
 
     }
 
+	private async Task Get_Overview_Stats()
+	{
+		var response = await client.GetAsync(apiUrl + $"Jobs/Get_Current_User_Stats/{CurrentUser.ID}");
+
+		if(response.IsSuccessStatusCode)
+		{
+			var stats = await response.Content.ReadFromJsonAsync<CurrentUserStats>();
+
+			if(stats != null)
+			{
+				Total_Avaiable_Jobs.Text = stats.AvaiableJobs.ToString();
+				Total_Finished_Jobs.Text = stats.FinishedJobs.ToString();
+            }
+			
+		}
+	}
+
     private async void Right_PageJobs(object sender, EventArgs e)
     {
         if (pages.PageNumber < pages.TotalPages)
@@ -170,6 +192,14 @@ public partial class UserMainMenuPage : ContentPage
         var jobs = await GetPageJobs(jobssectionfilter);
         Jobs_View_Collection.ItemsSource = jobs;
     }
+
+	private async void User_Show_Overview(object sender, EventArgs e)
+	{
+		await HideEverything();
+		await Get_Overview_Stats();
+		Overview_Section.IsVisible = true;
+		Overview_Section.IsEnabled = true;
+	}
 
     private async void User_Show_Data(object sender, EventArgs e)
     {

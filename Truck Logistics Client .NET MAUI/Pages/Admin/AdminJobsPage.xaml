@@ -19,7 +19,90 @@
                 <ScrollView Grid.Row="2" VerticalOptions="FillAndExpand">
                     <VerticalStackLayout>
 
+                        <!--Overview-->
+                        <Grid x:Name="Overview_Section" RowDefinitions="*" Padding="20" RowSpacing="30">
+                            <Border HeightRequest="250"
+                                    Padding="10"
+                                    StrokeShape="RoundRectangle 5"
+                                    BackgroundColor="#262626"
+                                    StrokeThickness="0"
+                                    Grid.Row="0">
+                                <VerticalStackLayout>
+                                    <Label Text="Jobs" FontSize="25" FontAttributes="Bold"/>
+                                    <HorizontalStackLayout Grid.Row="0"
+                                                           HorizontalOptions="Center"
+                                                           Spacing="10">
 
+                                        <Border HeightRequest="150"
+                                                WidthRequest="125"
+                                                BackgroundColor="#181818"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                Padding="10">
+                                            <VerticalStackLayout Spacing="10">
+                                                <Label Text="Total             Jobs"/>
+                                                <Label x:Name="Total_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                            </VerticalStackLayout>
+
+                                        </Border>
+
+                                        <Border HeightRequest="150"
+                                                WidthRequest="125"
+                                                BackgroundColor="#181818"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                Padding="10">
+                                            <VerticalStackLayout Spacing="10">
+                                                <Label Text="Open            Jobs"/>
+                                                <Label x:Name="Open_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold" TextColor="LightGreen"/>
+                                            </VerticalStackLayout>
+
+                                        </Border>
+
+                                        <Border HeightRequest="150"
+                                                WidthRequest="125"
+                                                BackgroundColor="#181818"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                Padding="10">
+                                            <VerticalStackLayout Spacing="10">
+                                                <Label Text="Near Deadline Jobs"/>
+                                                <Label x:Name="NearDeadline_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold" TextColor="Orange"/>
+                                            </VerticalStackLayout>
+
+                                        </Border>
+
+                                        <Border HeightRequest="150"
+                                                WidthRequest="125"
+                                                BackgroundColor="#181818"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                Padding="10">
+                                            <VerticalStackLayout Spacing="10">
+                                                <Label Text="Assigned      Jobs"/>
+                                                <Label x:Name="Assigned_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold"/>
+                                            </VerticalStackLayout>
+
+                                        </Border>
+
+                                        <Border HeightRequest="150"
+                                                WidthRequest="125"
+                                                BackgroundColor="#181818"
+                                                StrokeShape="RoundRectangle 5"
+                                                StrokeThickness="0"
+                                                Padding="10">
+                                            <VerticalStackLayout Spacing="10">
+                                                <Label Text="Delivered     Jobs"/>
+                                                <Label x:Name="Delivered_Jobs_Count" Text="20" FontSize="35" FontAttributes="Bold" TextColor="DarkGreen"/>
+                                            </VerticalStackLayout>
+
+                                        </Border>
+
+                                        
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Border>
+                        </Grid>
                         <!--Edit Job (admin)-->
                         <VerticalStackLayout x:Name="Edit_Job_Section" IsVisible="False" x:DataType="model:Job" Spacing="10">
                             <Label x:Name="Edit_Job_Section_Header" Text="Edit Job" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center"/>
@@ -245,112 +328,115 @@
                         <!-- Collection view templates-->
 
                         <!--Jobs View-->
-                        <Grid x:Name="Jobs_View"
-                              IsVisible="False">
-                            <Grid RowDefinitions="*,*">
-                                <Grid ColumnDefinitions="50,600,100,75,75" 
+                        <VerticalStackLayout x:Name="Jobs_View"
+                                             IsVisible="False">
+                            <Grid>
+                                <Grid RowDefinitions="*,*">
+                                    <Grid ColumnDefinitions="50,600,100,75,75" 
                                       BackgroundColor="Transparent" 
                                       ColumnSpacing="20"
                                       Padding="10"
                                       HorizontalOptions="Center"
                                       Grid.Row="0">
-                                    <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
-                                    <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
-                                    <Label Grid.Column="2" Text="Created" FontAttributes="Bold"/>
-                                    <Label Grid.Column="3" Text="DeadLine" FontAttributes="Bold"/>
-                                    <Label Grid.Column="4" Text="Status" FontAttributes="Bold"/>
-                                </Grid>
+                                        <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
+                                        <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
+                                        <Label Grid.Column="2" Text="Created" FontAttributes="Bold"/>
+                                        <Label Grid.Column="3" Text="DeadLine" FontAttributes="Bold"/>
+                                        <Label Grid.Column="4" Text="Status" FontAttributes="Bold"/>
+                                    </Grid>
 
-                                <CollectionView x:Name="Get_All_Jobs_View"
+                                    <CollectionView x:Name="Get_All_Jobs_View"
                                                 SelectionMode="Single"
                                                 SelectionChanged="Admin_Jobs_View_Selected"
                                                 Grid.Row="1"
                                                 WidthRequest="1030"
                                                 HorizontalOptions="Center">
-                                    <CollectionView.ItemTemplate>
-                                        <DataTemplate x:DataType="model:Job">
-                                            <Border Stroke="Transparent" Padding="5,0,0,0">
-                                                <Border Stroke="transparent"  StrokeThickness="3">
-                                                    <Grid ColumnDefinitions="50,600,100,75,75"
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="model:Job">
+                                                <Border Stroke="Transparent" Padding="5,0,0,0">
+                                                    <Border Stroke="transparent"  StrokeThickness="3">
+                                                        <Grid ColumnDefinitions="50,600,100,75,75"
                                                           ColumnSpacing="25"
                                                           Padding="5">
 
-                                                        <Label Grid.Column="0" Text="{Binding ID}"/>
-                                                        <Label Grid.Column="1" Text="{Binding Name}"/>
-                                                        <Label Grid.Column="2" Text="{Binding Created, StringFormat='{0:d}'}"/>
-                                                        <Label Grid.Column="3" Text="{Binding DeadLine, StringFormat='{0:d}'}"/>
-                                                        <Label Grid.Column="4" Text="{Binding Status}">
-                                                            <Label.Triggers>
-                                                                <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="open">
-                                                                    <Setter Property="TextColor" Value="Green"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="assigned">
-                                                                    <Setter Property="TextColor" Value="Orange"/>
-                                                                </DataTrigger>
-                                                                <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="delivered">
-                                                                    <Setter Property="TextColor" Value="Red"/>
-                                                                </DataTrigger>
-                                                            </Label.Triggers>
-                                                        </Label>
-                                                    </Grid>
+                                                            <Label Grid.Column="0" Text="{Binding ID}"/>
+                                                            <Label Grid.Column="1" Text="{Binding Name}"/>
+                                                            <Label Grid.Column="2" Text="{Binding Created, StringFormat='{0:d}'}"/>
+                                                            <Label Grid.Column="3" Text="{Binding DeadLine, StringFormat='{0:d}'}"/>
+                                                            <Label Grid.Column="4" Text="{Binding Status}">
+                                                                <Label.Triggers>
+                                                                    <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="open">
+                                                                        <Setter Property="TextColor" Value="Green"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="assigned">
+                                                                        <Setter Property="TextColor" Value="Orange"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger TargetType="Label" Binding="{Binding Status}" Value="delivered">
+                                                                        <Setter Property="TextColor" Value="Red"/>
+                                                                    </DataTrigger>
+                                                                </Label.Triggers>
+                                                            </Label>
+                                                        </Grid>
+                                                    </Border>
                                                 </Border>
-                                            </Border>
-                                        </DataTemplate>
-                                    </CollectionView.ItemTemplate>
-                                </CollectionView>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                        
-                        <!--Pagination-->
-                        <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
-                            <Border StrokeThickness="0"
-                                    Stroke="Transparent"
-                                    StrokeShape="RoundRectangle 10"
-                                    Style="{StaticResource HoverBorder}">
+                            <!--Pagination-->
+                            <HorizontalStackLayout Spacing="20" HorizontalOptions="Center" Margin="20">
+                                <Border StrokeThickness="0"
+                                        Stroke="Transparent"
+                                        StrokeShape="RoundRectangle 10"
+                                        Style="{StaticResource HoverBorder}">
 
-                                <Button ImageSource="doubleleft_arrow.png"
-                                        Clicked="First_PageJobs"
-                                        BackgroundColor="Transparent"
-                                        WidthRequest="10"
-                                        HeightRequest="10"/>
-                            </Border>
-                            <Border StrokeThickness="0"
-                                    Stroke="Transparent"
-                                    StrokeShape="RoundRectangle 10"
-                                    Style="{StaticResource HoverBorder}">
+                                    <Button ImageSource="doubleleft_arrow.png"
+                                            Clicked="First_PageJobs"
+                                            BackgroundColor="Transparent"
+                                            WidthRequest="10"
+                                            HeightRequest="10"/>
+                                </Border>
+                                <Border StrokeThickness="0"
+                                        Stroke="Transparent"
+                                        StrokeShape="RoundRectangle 10"
+                                        Style="{StaticResource HoverBorder}">
 
-                                <Button ImageSource="left_arrow.png"
-                                        Clicked="Left_PageJobs"
-                                        BackgroundColor="Transparent"
-                                        WidthRequest="10"
-                                        HeightRequest="10"/>
-                            </Border>
+                                    <Button ImageSource="left_arrow.png"
+                                            Clicked="Left_PageJobs"
+                                            BackgroundColor="Transparent"
+                                            WidthRequest="10"
+                                            HeightRequest="10"/>
+                                </Border>
 
-                            <Label x:Name="Jobs_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                <Label x:Name="Jobs_Page_Label" Text="1/1" HorizontalOptions="Center" VerticalOptions="Center"/>
 
-                            <Border StrokeThickness="0"
-                                    Stroke="Transparent"
-                                    StrokeShape="RoundRectangle 10"
-                                    Style="{StaticResource HoverBorder}">
+                                <Border StrokeThickness="0"
+                                        Stroke="Transparent"
+                                        StrokeShape="RoundRectangle 10"
+                                        Style="{StaticResource HoverBorder}">
 
-                                <Button ImageSource="right_arrow.png"
-                                        Clicked="Right_PageJobs"
-                                        BackgroundColor="Transparent"
-                                        WidthRequest="10"
-                                        HeightRequest="10"/>
-                            </Border>
-                            <Border StrokeThickness="0"
-                                    Stroke="Transparent"
-                                    StrokeShape="RoundRectangle 10"
-                                    Style="{StaticResource HoverBorder}">
+                                    <Button ImageSource="right_arrow.png"
+                                            Clicked="Right_PageJobs"
+                                            BackgroundColor="Transparent"
+                                            WidthRequest="10"
+                                            HeightRequest="10"/>
+                                </Border>
+                                <Border StrokeThickness="0"
+                                        Stroke="Transparent"
+                                        StrokeShape="RoundRectangle 10"
+                                        Style="{StaticResource HoverBorder}">
 
-                                <Button ImageSource="doubleright_arrow.png"
-                                        Clicked="Last_PageJobs"
-                                        BackgroundColor="Transparent"
-                                        WidthRequest="10"
-                                        HeightRequest="10"/>
-                            </Border>
-                        </HorizontalStackLayout>
+                                    <Button ImageSource="doubleright_arrow.png"
+                                            Clicked="Last_PageJobs"
+                                            BackgroundColor="Transparent"
+                                            WidthRequest="10"
+                                            HeightRequest="10"/>
+                                </Border>
+                            </HorizontalStackLayout>
+                        </VerticalStackLayout>
+
+
                     </VerticalStackLayout>
                 </ScrollView>
 
@@ -368,6 +454,15 @@
                 <Label Text="Truck Logistics Project"/>
                 <Label Text="Jobs"/>
                 <BoxView HeightRequest="1"/>
+                <Border StrokeShape="RoundRectangle 10"
+                        Style="{StaticResource HoverBorder}">
+                    <Button Text="Overview"
+                            WidthRequest="150"
+                            Clicked="Admin_Open_Overview_Section"
+                            TextColor="White"
+                            FontAttributes="Bold"
+                            BackgroundColor="Transparent"/>
+                </Border>
                 <Border StrokeShape="RoundRectangle 10"
                         Style="{StaticResource HoverBorder}">
                     <Button Text="Get All Jobs"
