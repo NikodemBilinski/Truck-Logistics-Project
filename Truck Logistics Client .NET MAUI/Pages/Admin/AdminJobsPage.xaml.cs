@@ -166,7 +166,7 @@ public partial class AdminJobsPage : ContentPage
 
         if(response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<JobStats>();
+            var stats = await response.Content.ReadFromJsonAsync<JobResponse>();
 
             if(stats != null)
             {
@@ -185,18 +185,21 @@ public partial class AdminJobsPage : ContentPage
     private async Task<List<Job>> GetPageJobs()
     {
 
-        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?status=open&searchname=test");
+        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?searchname=tt");
 
-        Jobs_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+        
 
         if (response.IsSuccessStatusCode)
         {
-            var joblistpage = await response.Content.ReadFromJsonAsync<List<Job>>();
-            if (joblistpage.Count == 0)
+            var stats = await response.Content.ReadFromJsonAsync<JobResponse>();
+            if (stats != null)
             {
-                return new List<Job>();
+                pages.TotalPages = (int)Math.Ceiling((double)stats.Jobs_Count / pages.PageSize);
+
+                Jobs_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+                return stats.Jobs;
             }
-            return joblistpage;
         }
 
         return new List<Job>();
@@ -245,7 +248,7 @@ public partial class AdminJobsPage : ContentPage
 
         if (response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<JobStats>();
+            var stats = await response.Content.ReadFromJsonAsync<JobResponse>();
 
             if (stats == null)
             {
@@ -273,7 +276,7 @@ public partial class AdminJobsPage : ContentPage
 
         try
         {
-            pages.TotalPages = await CountTotalPagesJobs();
+            //pages.TotalPages = await CountTotalPagesJobs();
 
             var jobs = await GetPageJobs();
 

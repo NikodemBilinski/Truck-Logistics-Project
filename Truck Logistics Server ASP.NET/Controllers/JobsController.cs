@@ -39,7 +39,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpGet("Get_Jobs_Page/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<List<Job>>> GetJobsPage(int pageNumber, int pageSize, string? status = null, string? searchname = null)
+        public async Task<ActionResult<JobResponse>> GetJobsPage(int pageNumber, int pageSize, string? status = null, string? searchname = null)
         {
             var query = _dataContext.Jobs
                 .Include(x => x.Client)
@@ -54,23 +54,23 @@ namespace TrucksLogisticsServerAPI.Controllers
                 query = query.Where(x => x.Name.Contains(searchname));
             }
 
-            var jobs = query
+            var totalcount = await query.CountAsync();
+
+            List<Job> jobs = await query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            //var jobs = await _dataContext.Jobs.
-            //    Include(x=> x.Client).
-            //    Skip((pageNumber - 1) * pageSize).
-            //    Take(pageSize).
-            //    ToListAsync();
-
-            return Ok(jobs);
+            return Ok(new JobResponse() 
+            { 
+                Jobs = jobs,
+                Jobs_Count = totalcount
+            });
         }
 
         [Authorize(Roles ="admin")]
         [HttpGet("Get_Jobs_Stats")]
-        public async Task<ActionResult<JobStats>> GetJobsStats()
+        public async Task<ActionResult<JobResponse>> GetJobsStats()
         {
             var Alljobs = await _dataContext.Jobs.CountAsync();
 
@@ -82,7 +82,7 @@ namespace TrucksLogisticsServerAPI.Controllers
 
             int DeliveredJobsCount = await _dataContext.Jobs.Where(x => x.Status == "delivered").CountAsync();
 
-            var jobstats = new JobStats()
+            var jobstats = new JobResponse()
             {
                 Jobs_Count = Alljobs,
                 Open_Count = OpenJobsCount,
@@ -123,13 +123,13 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         [Authorize(Roles ="admin,user")]
         [HttpGet("Get_Jobs_Stats_User/{UserID}")]
-        public async Task<ActionResult<JobStats>> GetUserJobStats(int UserID)
+        public async Task<ActionResult<JobResponse>> GetUserJobStats(int UserID)
         {
             var openjobscount = await _dataContext.Jobs.Where(x=> x.Status == "open").CountAsync();
             var assignedjobscount = await _dataContext.Jobs.Where(x => x.Status == "assigned" && x.AssignedUserId == UserID).CountAsync();
 
 
-            return Ok(new JobStats()
+            return Ok(new JobResponse()
             {
                 Open_Count = openjobscount,
                 Assigned_Count = assignedjobscount

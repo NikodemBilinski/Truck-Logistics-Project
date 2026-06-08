@@ -134,7 +134,7 @@ public partial class UserMainMenuPage : ContentPage
 
 		if(response.IsSuccessStatusCode)
 		{
-			var stats = await response.Content.ReadFromJsonAsync<JobStats>();
+			var stats = await response.Content.ReadFromJsonAsync<JobResponse>();
 
 			totalassignedjobs = stats.Assigned_Count;
 			totalopenjobs = stats.Open_Count;
