@@ -39,13 +39,31 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpGet("Get_Jobs_Page/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<List<Job>>> GetJobsPage(int pageNumber, int pageSize)
+        public async Task<ActionResult<List<Job>>> GetJobsPage(int pageNumber, int pageSize, string? status = null, string? searchname = null)
         {
-            var jobs = await _dataContext.Jobs.
-                Include(x=> x.Client).
-                Skip((pageNumber - 1) * pageSize).
-                Take(pageSize).
-                ToListAsync();
+            var query = _dataContext.Jobs
+                .Include(x => x.Client)
+                .AsQueryable();
+
+            if(!string.IsNullOrEmpty(status))
+            {
+                query = query.Where(x => x.Status == status);
+            }
+            if(!string.IsNullOrEmpty(searchname))
+            {
+                query = query.Where(x => x.Name.Contains(searchname));
+            }
+
+            var jobs = query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            //var jobs = await _dataContext.Jobs.
+            //    Include(x=> x.Client).
+            //    Skip((pageNumber - 1) * pageSize).
+            //    Take(pageSize).
+            //    ToListAsync();
 
             return Ok(jobs);
         }

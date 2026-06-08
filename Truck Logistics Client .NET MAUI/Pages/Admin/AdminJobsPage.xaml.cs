@@ -185,7 +185,7 @@ public partial class AdminJobsPage : ContentPage
     private async Task<List<Job>> GetPageJobs()
     {
 
-        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}");
+        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?status=open&searchname=test");
 
         Jobs_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
 
