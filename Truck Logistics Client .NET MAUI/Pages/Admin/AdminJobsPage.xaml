@@ -330,14 +330,20 @@
                         <!--Jobs View-->
                         <VerticalStackLayout x:Name="Jobs_View"
                                              IsVisible="False">
+                            <Grid RowDefinitions="*,*">
+                                <HorizontalStackLayout>
+                                    <Button Text="Filter"
+                                            Clicked="Admin_Filter_Jobs_Clicked"/>
+                                </HorizontalStackLayout>
+                            </Grid>
                             <Grid>
                                 <Grid RowDefinitions="*,*">
                                     <Grid ColumnDefinitions="50,600,100,75,75" 
-                                      BackgroundColor="Transparent" 
-                                      ColumnSpacing="20"
-                                      Padding="10"
-                                      HorizontalOptions="Center"
-                                      Grid.Row="0">
+                                          BackgroundColor="Transparent" 
+                                          ColumnSpacing="20"
+                                          Padding="10"
+                                          HorizontalOptions="Center"
+                                          Grid.Row="0">
                                         <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
                                         <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
                                         <Label Grid.Column="2" Text="Created" FontAttributes="Bold"/>
