@@ -180,6 +180,12 @@ public partial class AdminJobsPage : ContentPage
 
     }
 
+    private async void Admin_Filter_Jobs_Clicked(object sender, EventArgs e)
+    {
+        Admin_Job_Filter_Section.IsVisible = true;
+        Admin_Job_Filter_Section.IsEnabled = true;
+    }
+
     #region Pagtination
 
     private async Task<List<Job>> GetPageJobs()

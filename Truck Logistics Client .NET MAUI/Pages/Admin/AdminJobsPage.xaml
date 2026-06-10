@@ -334,6 +334,11 @@
                                 <HorizontalStackLayout>
                                     <Button Text="Filter"
                                             Clicked="Admin_Filter_Jobs_Clicked"/>
+                                    <HorizontalStackLayout x:Name="Admin_Job_Filter_Section" IsVisible="False" IsEnabled="False">
+                                        <Entry x:Name="Admin_Job_Filter_Status"
+                                               Placeholder="Filter by Status"/>
+                                        
+                                    </HorizontalStackLayout>
                                 </HorizontalStackLayout>
                             </Grid>
                             <Grid>
