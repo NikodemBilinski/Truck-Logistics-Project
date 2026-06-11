@@ -23,6 +23,11 @@ public partial class AdminJobsPage : ContentPage
     private PaginationPage pages = new PaginationPage();
 
     private HttpClient client = new HttpClient();
+
+    private string jobStatusFilter;
+
+    private string jobSearchNameFilter;
+    
     public AdminJobsPage()
 	{
 		InitializeComponent();
@@ -189,24 +194,18 @@ public partial class AdminJobsPage : ContentPage
 
     private async void Admin_Filter_Jobs_Refresh(object sender, EventArgs e)
     {
+        
         await GetPageJobs();
     }
     private async void Admin_Filter_Jobs_Apply(object sender, EventArgs e)
     {
-        if(string.IsNullOrEmpty(Admin_Job_Filter_Status.Text))
-        {
 
-        }
-        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?searchName=");
+        jobStatusFilter = Admin_Job_Filter_Status.Text;
+        jobSearchNameFilter = Admin_Job_Filter_Name.Text;
 
-        if(response.IsSuccessStatusCode)
-        {
-            var stats = await response.Content.ReadFromJsonAsync<JobResponse>();
+        var jobs = await GetPageJobs();
 
-            var jobs = stats.Jobs;
-
-            jobs.Count();
-        }
+        Get_All_Jobs_View.ItemsSource = jobs;
 
         Admin_Job_Filter_Section.IsVisible = false;
         Admin_Job_Filter_Section.IsEnabled = false;
@@ -216,7 +215,7 @@ public partial class AdminJobsPage : ContentPage
     private async Task<List<Job>> GetPageJobs()
     {
 
-        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}");
+        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?searchname={jobSearchNameFilter}&status={jobStatusFilter}");
 
         if (response.IsSuccessStatusCode)
         {
@@ -270,27 +269,6 @@ public partial class AdminJobsPage : ContentPage
     }
 
     #endregion
-
-    private async Task<int> CountTotalPagesJobs()
-    {
-        var response = await client.GetAsync(apiUrl + "Jobs/Get_Jobs_Stats");
-
-        if (response.IsSuccessStatusCode)
-        {
-            var stats = await response.Content.ReadFromJsonAsync<JobResponse>();
-
-            if (stats == null)
-            {
-                return 0;
-            }
-
-            var totalpages = (int)Math.Ceiling((double)stats.Jobs_Count / pages.PageSize);
-
-            return totalpages;
-        }
-
-        return 0;
-    }
 
     //GET USERS, TRUCKS, JOBS
 
