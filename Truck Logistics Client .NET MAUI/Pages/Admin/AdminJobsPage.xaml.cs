@@ -180,20 +180,43 @@ public partial class AdminJobsPage : ContentPage
 
     }
 
-    private async void Admin_Filter_Jobs_Clicked(object sender, EventArgs e)
+    //filtering
+    private async void Admin_Filter_Jobs_Open(object sender, EventArgs e)
     {
         Admin_Job_Filter_Section.IsVisible = true;
         Admin_Job_Filter_Section.IsEnabled = true;
     }
 
+    private async void Admin_Filter_Jobs_Refresh(object sender, EventArgs e)
+    {
+        await GetPageJobs();
+    }
+    private async void Admin_Filter_Jobs_Apply(object sender, EventArgs e)
+    {
+        if(string.IsNullOrEmpty(Admin_Job_Filter_Status.Text))
+        {
+
+        }
+        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?searchName=");
+
+        if(response.IsSuccessStatusCode)
+        {
+            var stats = await response.Content.ReadFromJsonAsync<JobResponse>();
+
+            var jobs = stats.Jobs;
+
+            jobs.Count();
+        }
+
+        Admin_Job_Filter_Section.IsVisible = false;
+        Admin_Job_Filter_Section.IsEnabled = false;
+    }
     #region Pagtination
 
     private async Task<List<Job>> GetPageJobs()
     {
 
-        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?searchname=tt");
-
-        
+        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}");
 
         if (response.IsSuccessStatusCode)
         {

@@ -330,14 +330,21 @@
                         <!--Jobs View-->
                         <VerticalStackLayout x:Name="Jobs_View"
                                              IsVisible="False">
-                            <Grid RowDefinitions="*,*">
-                                <HorizontalStackLayout>
+                            <Grid RowDefinitions="*,*" Padding="30">
+                                <HorizontalStackLayout HorizontalOptions="End" Spacing="20">
                                     <Button Text="Filter"
-                                            Clicked="Admin_Filter_Jobs_Clicked"/>
-                                    <HorizontalStackLayout x:Name="Admin_Job_Filter_Section" IsVisible="False" IsEnabled="False">
+                                            Clicked="Admin_Filter_Jobs_Open"/>
+                                    <HorizontalStackLayout x:Name="Admin_Job_Filter_Section" IsVisible="False" IsEnabled="False" Spacing="20">
+                                        <Button Text="Refresh"
+                                                Clicked="Admin_Filter_Jobs_Refresh"/>
+                                        <Button Text="Apply"
+                                                Clicked="Admin_Filter_Jobs_Apply"/>
                                         <Entry x:Name="Admin_Job_Filter_Status"
-                                               Placeholder="Filter by Status"/>
-                                        
+                                               Placeholder="Filter by Status"
+                                               WidthRequest="250"/>
+                                        <Entry x:Name="Admin_Job_Filter_Name"
+                                               Placeholder="Filter by Name"
+                                               WidthRequest="250"/>
                                     </HorizontalStackLayout>
                                 </HorizontalStackLayout>
                             </Grid>
