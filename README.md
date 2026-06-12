@@ -94,4 +94,4 @@ Use `POST /api/Users/Add_User` with role set to `"admin"`
 <li style="margin:15px; font-size:16px">Admin - Managing Clients.</li>
 <li style="margin:15px; font-size:16px">Admin - Creating and Generating Invoices for a specific client and job, exporting them to a .PDF file.</li>
 <li style="margin:15px; font-size:16px">Pagination for Users, Trucks, Jobs, Clients and Invoices</li>
-<li style="margin:15px; font-size:16px">Soon adding filtering too</li>
+<li style="margin:15px; font-size:16px">Filtering for Users, Trucks, Jobs, Clients and Invoices</li>
