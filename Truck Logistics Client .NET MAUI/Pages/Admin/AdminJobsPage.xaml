@@ -328,6 +328,7 @@
                         <!-- Collection view templates-->
 
                         <!--Jobs View-->
+                            <!--Filtering-->
                         <VerticalStackLayout x:Name="Jobs_View"
                                              IsVisible="False">
                             <Grid RowDefinitions="*,*" Padding="30">
@@ -339,6 +340,8 @@
                                                 Clicked="Admin_Filter_Jobs_Refresh"/>
                                         <Button Text="Apply"
                                                 Clicked="Admin_Filter_Jobs_Apply"/>
+                                        <Label Text="Creation Date:" VerticalOptions="Center"/>
+                                        <DatePicker x:Name="Admin_Job_Filter_Date"/>
                                         <Entry x:Name="Admin_Job_Filter_Status"
                                                Placeholder="Filter by Status"
                                                WidthRequest="250"/>
@@ -348,6 +351,7 @@
                                     </HorizontalStackLayout>
                                 </HorizontalStackLayout>
                             </Grid>
+                            <!--Jobs View-->
                             <Grid>
                                 <Grid RowDefinitions="*,*">
                                     <Grid ColumnDefinitions="50,600,100,75,75" 
