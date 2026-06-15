@@ -335,14 +335,16 @@
                                 <HorizontalStackLayout HorizontalOptions="End" Spacing="20">
                                     <Button Text="Filter"
                                             Clicked="Admin_Filter_Jobs_Open"/>
-                                    <HorizontalStackLayout x:Name="Admin_Job_Filter_Section" IsVisible="False" IsEnabled="False" Spacing="20">
+                                    <HorizontalStackLayout x:Name="Admin_Job_Filter_Section" IsVisible="False" IsEnabled="False" Spacing="15">
                                         <Button Text="Refresh"
                                                 Clicked="Admin_Filter_Jobs_Refresh"/>
                                         <Button Text="Apply"
                                                 Clicked="Admin_Filter_Jobs_Apply"/>
-                                        <CheckBox x:Name="Admin_Job_Filter_DateCreated_CheckBox"
-                                                  CheckedChanged="Admin_Job_Filter_DateCreated_CheckBox_Change"/>
+                                        
                                         <Label Text="Creation Date:" VerticalOptions="Center"/>
+                                        <CheckBox x:Name="Admin_Job_Filter_DateCreated_CheckBox"
+                                                  CheckedChanged="Admin_Job_Filter_DateCreated_CheckBox_Change"
+                                                  HorizontalOptions="End"/>
                                         <DatePicker x:Name="Admin_Job_Filter_DateCreated"
                                                     IsEnabled="False"/>
                                         <Entry x:Name="Admin_Job_Filter_Status"

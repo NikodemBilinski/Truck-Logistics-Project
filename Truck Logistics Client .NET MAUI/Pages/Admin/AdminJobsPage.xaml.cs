@@ -223,7 +223,11 @@ public partial class AdminJobsPage : ContentPage
 
         jobStatusFilter = Admin_Job_Filter_Status.Text;
         jobSearchNameFilter = Admin_Job_Filter_Name.Text;
-        jobDateCreatedFilter = Admin_Job_Filter_DateCreated.Date;
+        if(Admin_Job_Filter_DateCreated_CheckBox.IsChecked)
+        {
+            jobDateCreatedFilter = Admin_Job_Filter_DateCreated.Date;
+        }
+        
 
         var jobs = await GetPageJobs();
 
@@ -631,6 +635,7 @@ public partial class AdminJobsPage : ContentPage
         {
             Admin_Job_Filter_DateCreated.IsEnabled = false;
             jobDateCreatedFilter = null;
+            Console.WriteLine(jobDateCreatedFilter);
         }
     }
 }
