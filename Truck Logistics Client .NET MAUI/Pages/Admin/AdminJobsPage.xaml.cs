@@ -234,7 +234,15 @@ public partial class AdminJobsPage : ContentPage
     private async Task<List<Job>> GetPageJobs()
     {
 
-        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?searchname={jobSearchNameFilter}&status={jobStatusFilter}&creationdate={jobDateCreatedFilter}");
+        string date = string.Empty;
+
+        if (jobDateCreatedFilter.HasValue)
+        {
+            date = jobDateCreatedFilter.Value.ToString("yyyy-MM-dd");
+            Debug.WriteLine(date);
+        }
+
+        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?searchname={jobSearchNameFilter}&status={jobStatusFilter}&creationdate={date}");
 
         if (response.IsSuccessStatusCode)
         {

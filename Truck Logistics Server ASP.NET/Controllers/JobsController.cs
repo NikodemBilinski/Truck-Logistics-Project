@@ -55,7 +55,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             }
             if(creationdate != null)
             {
-                query = query.Where(x => x.Created == creationdate);
+                query = query.Where(x => x.Created.Date == creationdate.Value.Date);
             }
 
             var totalcount = await query.CountAsync();
