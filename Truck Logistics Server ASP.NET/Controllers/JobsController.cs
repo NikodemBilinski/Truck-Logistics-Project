@@ -39,7 +39,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpGet("Get_Jobs_Page/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<JobResponse>> GetJobsPage(int pageNumber, int pageSize, string? status = null, string? searchname = null)
+        public async Task<ActionResult<JobResponse>> GetJobsPage(int pageNumber, int pageSize, DateTime? creationdate = null, string? status = null, string? searchname = null)
         {
             var query = _dataContext.Jobs
                 .Include(x => x.Client)
@@ -52,6 +52,10 @@ namespace TrucksLogisticsServerAPI.Controllers
             if(!string.IsNullOrEmpty(searchname))
             {
                 query = query.Where(x => x.Name.Contains(searchname));
+            }
+            if(creationdate != null)
+            {
+                query = query.Where(x => x.Created == creationdate);
             }
 
             var totalcount = await query.CountAsync();

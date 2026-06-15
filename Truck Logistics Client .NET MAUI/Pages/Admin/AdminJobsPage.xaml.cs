@@ -24,9 +24,11 @@ public partial class AdminJobsPage : ContentPage
 
     private HttpClient client = new HttpClient();
 
-    private string jobStatusFilter;
+    private string? jobStatusFilter;
 
-    private string jobSearchNameFilter;
+    private string? jobSearchNameFilter;
+
+    private DateTime? jobDateCreatedFilter = null;
     
     public AdminJobsPage()
 	{
@@ -205,6 +207,9 @@ public partial class AdminJobsPage : ContentPage
     {
         Admin_Job_Filter_Status.Text = string.Empty;
         Admin_Job_Filter_Name.Text = string.Empty;
+        Admin_Job_Filter_DateCreated.Date = DateTime.Now;
+
+        jobDateCreatedFilter = null;
         jobStatusFilter = string.Empty;
         jobSearchNameFilter = string.Empty;
 
@@ -218,6 +223,7 @@ public partial class AdminJobsPage : ContentPage
 
         jobStatusFilter = Admin_Job_Filter_Status.Text;
         jobSearchNameFilter = Admin_Job_Filter_Name.Text;
+        jobDateCreatedFilter = Admin_Job_Filter_DateCreated.Date;
 
         var jobs = await GetPageJobs();
 
@@ -228,7 +234,7 @@ public partial class AdminJobsPage : ContentPage
     private async Task<List<Job>> GetPageJobs()
     {
 
-        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?searchname={jobSearchNameFilter}&status={jobStatusFilter}");
+        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?searchname={jobSearchNameFilter}&status={jobStatusFilter}&creationdate={jobDateCreatedFilter}");
 
         if (response.IsSuccessStatusCode)
         {
@@ -604,5 +610,19 @@ public partial class AdminJobsPage : ContentPage
     private async void Admin_Go_Back(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("..");
+    }
+
+    private async void Admin_Job_Filter_DateCreated_CheckBox_Change(object sender, EventArgs e)
+    {
+        if(Admin_Job_Filter_DateCreated_CheckBox.IsChecked)
+        {
+            Admin_Job_Filter_DateCreated.IsEnabled = true;
+            jobDateCreatedFilter = Admin_Job_Filter_DateCreated.Date;
+        }
+        else
+        {
+            Admin_Job_Filter_DateCreated.IsEnabled = false;
+            jobDateCreatedFilter = null;
+        }
     }
 }
