@@ -188,14 +188,30 @@ public partial class AdminJobsPage : ContentPage
     //filtering
     private async void Admin_Filter_Jobs_Open(object sender, EventArgs e)
     {
-        Admin_Job_Filter_Section.IsVisible = true;
-        Admin_Job_Filter_Section.IsEnabled = true;
+        if(!Admin_Job_Filter_Section.IsVisible)
+        {
+            Admin_Job_Filter_Section.IsVisible = true;
+            Admin_Job_Filter_Section.IsEnabled = true;
+        }
+        else
+        {
+            Admin_Job_Filter_Section.IsVisible = false;
+            Admin_Job_Filter_Section.IsEnabled = false;
+        }
+        
     }
 
     private async void Admin_Filter_Jobs_Refresh(object sender, EventArgs e)
     {
-        
-        await GetPageJobs();
+        Admin_Job_Filter_Status.Text = string.Empty;
+        Admin_Job_Filter_Name.Text = string.Empty;
+        jobStatusFilter = string.Empty;
+        jobSearchNameFilter = string.Empty;
+
+        var jobs = await GetPageJobs();
+
+        Get_All_Jobs_View.ItemsSource = jobs;
+
     }
     private async void Admin_Filter_Jobs_Apply(object sender, EventArgs e)
     {
@@ -206,9 +222,6 @@ public partial class AdminJobsPage : ContentPage
         var jobs = await GetPageJobs();
 
         Get_All_Jobs_View.ItemsSource = jobs;
-
-        Admin_Job_Filter_Section.IsVisible = false;
-        Admin_Job_Filter_Section.IsEnabled = false;
     }
     #region Pagtination
 
