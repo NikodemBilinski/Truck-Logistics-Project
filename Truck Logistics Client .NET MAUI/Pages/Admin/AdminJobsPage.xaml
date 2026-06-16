@@ -333,14 +333,20 @@
                                              IsVisible="False">
                             <Grid RowDefinitions="*,*" Padding="30">
                                 <HorizontalStackLayout HorizontalOptions="End" Spacing="20">
-                                    <Button Text="Filter"
-                                            Clicked="Admin_Filter_Jobs_Open"/>
+                                    <ImageButton Source="search.png"
+                                                 WidthRequest="5"
+                                                 HeightRequest="5"
+                                                 Clicked="Admin_Filter_Jobs_Open"/>
                                     <HorizontalStackLayout x:Name="Admin_Job_Filter_Section" IsVisible="False" IsEnabled="False" Spacing="15">
-                                        <Button Text="Refresh"
-                                                Clicked="Admin_Filter_Jobs_Refresh"/>
-                                        <Button Text="Apply"
-                                                Clicked="Admin_Filter_Jobs_Apply"/>
-                                        
+                                        <ImageButton Source="refresh.png"
+                                                     WidthRequest="10"
+                                                     HeightRequest="10"
+                                                     Clicked="Admin_Filter_Jobs_Refresh"/>
+                                        <ImageButton Source="apply_filters.png"
+                                                     WidthRequest="10"
+                                                     HeightRequest="10"
+                                                     Clicked="Admin_Filter_Jobs_Apply"/>
+
                                         <Label Text="Creation Date:" VerticalOptions="Center"/>
                                         <CheckBox x:Name="Admin_Job_Filter_DateCreated_CheckBox"
                                                   CheckedChanged="Admin_Job_Filter_DateCreated_CheckBox_Change"
