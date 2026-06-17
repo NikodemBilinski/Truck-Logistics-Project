@@ -92,7 +92,7 @@ public partial class MainMenuPage : ContentPage
         if(response.IsSuccessStatusCode)
         {
 
-            var stats = await response.Content.ReadFromJsonAsync<JobStats>();
+            var stats = await response.Content.ReadFromJsonAsync<JobResponse>();
 
             if(stats != null)
             {

@@ -328,16 +328,49 @@
                         <!-- Collection view templates-->
 
                         <!--Jobs View-->
+                            <!--Filtering-->
                         <VerticalStackLayout x:Name="Jobs_View"
                                              IsVisible="False">
+                            <Grid RowDefinitions="*,*" Padding="30">
+                                <HorizontalStackLayout HorizontalOptions="End" Spacing="20">
+                                    <ImageButton Source="search.png"
+                                                 WidthRequest="5"
+                                                 HeightRequest="5"
+                                                 Clicked="Admin_Filter_Jobs_Open"/>
+                                    <HorizontalStackLayout x:Name="Admin_Job_Filter_Section" IsVisible="False" IsEnabled="False" Spacing="15">
+                                        <ImageButton Source="refresh.png"
+                                                     WidthRequest="10"
+                                                     HeightRequest="10"
+                                                     Clicked="Admin_Filter_Jobs_Refresh"/>
+                                        <ImageButton Source="apply_filters.png"
+                                                     WidthRequest="10"
+                                                     HeightRequest="10"
+                                                     Clicked="Admin_Filter_Jobs_Apply"/>
+
+                                        <Label Text="Creation Date:" VerticalOptions="Center"/>
+                                        <CheckBox x:Name="Admin_Job_Filter_DateCreated_CheckBox"
+                                                  CheckedChanged="Admin_Job_Filter_DateCreated_CheckBox_Change"
+                                                  HorizontalOptions="End"/>
+                                        <DatePicker x:Name="Admin_Job_Filter_DateCreated"
+                                                    IsEnabled="False"/>
+                                        <Entry x:Name="Admin_Job_Filter_Status"
+                                               Placeholder="Filter by Status"
+                                               WidthRequest="250"/>
+                                        <Entry x:Name="Admin_Job_Filter_Name"
+                                               Placeholder="Filter by Name"
+                                               WidthRequest="250"/>
+                                    </HorizontalStackLayout>
+                                </HorizontalStackLayout>
+                            </Grid>
+                            <!--Jobs View-->
                             <Grid>
                                 <Grid RowDefinitions="*,*">
                                     <Grid ColumnDefinitions="50,600,100,75,75" 
-                                      BackgroundColor="Transparent" 
-                                      ColumnSpacing="20"
-                                      Padding="10"
-                                      HorizontalOptions="Center"
-                                      Grid.Row="0">
+                                          BackgroundColor="Transparent" 
+                                          ColumnSpacing="20"
+                                          Padding="10"
+                                          HorizontalOptions="Center"
+                                          Grid.Row="0">
                                         <Label Grid.Column="0" Text="ID" FontAttributes="Bold"/>
                                         <Label Grid.Column="1" Text="Name" FontAttributes="Bold"/>
                                         <Label Grid.Column="2" Text="Created" FontAttributes="Bold"/>

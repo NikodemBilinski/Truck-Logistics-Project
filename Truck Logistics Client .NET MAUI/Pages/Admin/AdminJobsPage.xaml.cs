@@ -23,6 +23,13 @@ public partial class AdminJobsPage : ContentPage
     private PaginationPage pages = new PaginationPage();
 
     private HttpClient client = new HttpClient();
+
+    private string? jobStatusFilter;
+
+    private string? jobSearchNameFilter;
+
+    private DateTime? jobDateCreatedFilter = null;
+    
     public AdminJobsPage()
 	{
 		InitializeComponent();
@@ -166,7 +173,7 @@ public partial class AdminJobsPage : ContentPage
 
         if(response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<JobStats>();
+            var stats = await response.Content.ReadFromJsonAsync<JobResponse>();
 
             if(stats != null)
             {
@@ -180,23 +187,78 @@ public partial class AdminJobsPage : ContentPage
 
     }
 
+    //filtering
+    private async void Admin_Filter_Jobs_Open(object sender, EventArgs e)
+    {
+        if(!Admin_Job_Filter_Section.IsVisible)
+        {
+            Admin_Job_Filter_Section.IsVisible = true;
+            Admin_Job_Filter_Section.IsEnabled = true;
+        }
+        else
+        {
+            Admin_Job_Filter_Section.IsVisible = false;
+            Admin_Job_Filter_Section.IsEnabled = false;
+        }
+        
+    }
+
+    private async void Admin_Filter_Jobs_Refresh(object sender, EventArgs e)
+    {
+        Admin_Job_Filter_Status.Text = string.Empty;
+        Admin_Job_Filter_Name.Text = string.Empty;
+        Admin_Job_Filter_DateCreated.Date = DateTime.Now;
+
+        jobDateCreatedFilter = null;
+        jobStatusFilter = string.Empty;
+        jobSearchNameFilter = string.Empty;
+
+        var jobs = await GetPageJobs();
+
+        Get_All_Jobs_View.ItemsSource = jobs;
+
+    }
+    private async void Admin_Filter_Jobs_Apply(object sender, EventArgs e)
+    {
+
+        jobStatusFilter = Admin_Job_Filter_Status.Text;
+        jobSearchNameFilter = Admin_Job_Filter_Name.Text;
+        if(Admin_Job_Filter_DateCreated_CheckBox.IsChecked)
+        {
+            jobDateCreatedFilter = Admin_Job_Filter_DateCreated.Date;
+        }
+        
+
+        var jobs = await GetPageJobs();
+
+        Get_All_Jobs_View.ItemsSource = jobs;
+    }
     #region Pagtination
 
     private async Task<List<Job>> GetPageJobs()
     {
 
-        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}");
+        string date = string.Empty;
 
-        Jobs_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+        if (jobDateCreatedFilter.HasValue)
+        {
+            date = jobDateCreatedFilter.Value.ToString("yyyy-MM-dd");
+            Debug.WriteLine(date);
+        }
+
+        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?searchname={jobSearchNameFilter}&status={jobStatusFilter}&creationdate={date}");
 
         if (response.IsSuccessStatusCode)
         {
-            var joblistpage = await response.Content.ReadFromJsonAsync<List<Job>>();
-            if (joblistpage.Count == 0)
+            var stats = await response.Content.ReadFromJsonAsync<JobResponse>();
+            if (stats != null)
             {
-                return new List<Job>();
+                pages.TotalPages = (int)Math.Ceiling((double)stats.Jobs_Count / pages.PageSize);
+
+                Jobs_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+                return stats.Jobs;
             }
-            return joblistpage;
         }
 
         return new List<Job>();
@@ -239,27 +301,6 @@ public partial class AdminJobsPage : ContentPage
 
     #endregion
 
-    private async Task<int> CountTotalPagesJobs()
-    {
-        var response = await client.GetAsync(apiUrl + "Jobs/Get_Jobs_Stats");
-
-        if (response.IsSuccessStatusCode)
-        {
-            var stats = await response.Content.ReadFromJsonAsync<JobStats>();
-
-            if (stats == null)
-            {
-                return 0;
-            }
-
-            var totalpages = (int)Math.Ceiling((double)stats.Jobs_Count / pages.PageSize);
-
-            return totalpages;
-        }
-
-        return 0;
-    }
-
     //GET USERS, TRUCKS, JOBS
 
     private async void Admin_Get_Jobs_Clicked(object sender, EventArgs e)
@@ -273,7 +314,7 @@ public partial class AdminJobsPage : ContentPage
 
         try
         {
-            pages.TotalPages = await CountTotalPagesJobs();
+            //pages.TotalPages = await CountTotalPagesJobs();
 
             var jobs = await GetPageJobs();
 
@@ -581,5 +622,20 @@ public partial class AdminJobsPage : ContentPage
     private async void Admin_Go_Back(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("..");
+    }
+
+    private async void Admin_Job_Filter_DateCreated_CheckBox_Change(object sender, EventArgs e)
+    {
+        if(Admin_Job_Filter_DateCreated_CheckBox.IsChecked)
+        {
+            Admin_Job_Filter_DateCreated.IsEnabled = true;
+            jobDateCreatedFilter = Admin_Job_Filter_DateCreated.Date;
+        }
+        else
+        {
+            Admin_Job_Filter_DateCreated.IsEnabled = false;
+            jobDateCreatedFilter = null;
+            Console.WriteLine(jobDateCreatedFilter);
+        }
     }
 }

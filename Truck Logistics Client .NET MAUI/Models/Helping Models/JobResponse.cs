@@ -4,8 +4,9 @@ using System.Text;
 
 namespace TrucksLogisticsClient.Models.Helping_Models
 {
-    public class JobStats
+    public class JobResponse
     {
+        public List<Job> Jobs { get; set; } = new();
         public int Jobs_Count { get; set; }
         public int Open_Count { get; set; }
 
