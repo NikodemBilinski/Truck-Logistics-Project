@@ -150,7 +150,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
         if(response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<UsersStats>();
+            var stats = await response.Content.ReadFromJsonAsync<UsersResponse>();
             if (stats != null)
             {
                 Total_Users_Count.Text = stats.Users_Count.ToString();
@@ -186,12 +186,15 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
         if (response.IsSuccessStatusCode)
         {
-            var userslistpage = await response.Content.ReadFromJsonAsync<List<Users>>();
-            if (userslistpage.Count == 0)
+            var stats = response.Content.ReadFromJsonAsync<UsersResponse>();
+            if(stats != null)
             {
-                return new List<Users>();
+                pages.TotalPages = (int)Math.Ceiling((double)stats.Result.Users_Count / pages.PageSize);
+
+                Users_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+                return stats.Result.Users;
             }
-            return userslistpage;
         }
 
         return new List<Users>();
@@ -204,7 +207,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
         if(response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<UsersStats>();
+            var stats = await response.Content.ReadFromJsonAsync<UsersResponse>();
 
             if (stats == null)
             {
@@ -334,7 +337,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         await Hide_Everything();
         try
         {
-            pages.TotalPages = await CountTotalPagesUsers();
+            //pages.TotalPages = await CountTotalPagesUsers();
             pages.PageNumber = 1;
             var users = await GetPageUsers();
             Get_All_Users_View.ItemsSource = users;

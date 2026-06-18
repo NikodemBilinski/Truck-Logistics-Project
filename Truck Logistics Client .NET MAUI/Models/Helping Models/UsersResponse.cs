@@ -2,7 +2,7 @@
 
 namespace TrucksLogisticsServerAPI.Models.Helping_Models
 {
-    public class UsersStats
+    public class UsersResponse
     {
         public List<Users> Users { get; set; } = new();
         public int Users_Count { get; set; }
