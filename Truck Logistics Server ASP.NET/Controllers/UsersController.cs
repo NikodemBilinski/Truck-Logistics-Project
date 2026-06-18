@@ -72,7 +72,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpGet("Get_Users_Page/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<UsersResponse>> GetUsersPage(int pageNumber = 1, int pageSize = 10)
+        public async Task<ActionResult<UsersResponse>> GetUsersPage(int pageNumber = 1, int pageSize = 10, string status = null, string username = null)
         {
             if (pageNumber < 1 || pageSize < 1)
             {
@@ -84,17 +84,34 @@ namespace TrucksLogisticsServerAPI.Controllers
                 .Include(x => x.Languages)
                 .AsQueryable();
 
-            //var usersPage = await _dataContext.Users
-            //    .Include(x => x.AssignedTrucks)
-            //    .Include(x => x.AssignedJobs)
-            //    .Include(x => x.Languages)
-            //    .Skip((pageNumber - 1) * pageSize)
-            //    .Take(pageSize)
-            //    .ToListAsync();
+            if (!string.IsNullOrEmpty(status))
+            {
+                if(status == "available")
+                {
+                    query = query.Where(x => x.isBusy == false);
+                }
+                if(status == "busy")
+                {
+                    query = query.Where(x => x.isBusy == true);
+                }    
+            }
+
+            if(!string.IsNullOrEmpty(username))
+            {
+                query = query.Where(x => x.Username.Contains(username));
+            }
+
+            int totalusers = await query.CountAsync();
+
+            var usersPage = await query
+                .Skip((pageNumber - 1 ) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
             return Ok(new UsersResponse()
             {
-                Users = usersPage
+                Users = usersPage,
+                Users_Count = totalusers
             });
         }
         //HTTP POST 
