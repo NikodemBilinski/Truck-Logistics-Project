@@ -50,7 +50,7 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         [Authorize(Roles = "admin")]
         [HttpGet("Get_Users_Stats")]
-        public async Task<ActionResult<UsersStats>> GetUsersStats()
+        public async Task<ActionResult<UsersResponse>> GetUsersStats()
         {
             var Alluserscount = await _dataContext.Users.CountAsync();
             var AvaiableUsersCount = await _dataContext.Users.Where(x=> x.isBusy == false).CountAsync();
@@ -58,7 +58,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             var AdminCount = await _dataContext.Users.Where(x => x.Role == "admin").CountAsync();
             var UserCount = await _dataContext.Users.Where(x => x.Role == "user").CountAsync();
 
-            var usersstats = new UsersStats()
+            var usersstats = new UsersResponse()
             {
                 Users_Count = Alluserscount,
                 AvaiableUsers_Count = AvaiableUsersCount,
@@ -72,22 +72,30 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpGet("Get_Users_Page/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<List<Users>>> GetUsersPage(int pageNumber = 1, int pageSize = 10)
+        public async Task<ActionResult<UsersResponse>> GetUsersPage(int pageNumber = 1, int pageSize = 10)
         {
             if (pageNumber < 1 || pageSize < 1)
             {
                 return BadRequest("Error: Page number and page size must be greater than 0.");
             }
 
-            var usersPage = await _dataContext.Users
-                .Include(x => x.AssignedTrucks)
+            var query = _dataContext.Users.Include(x => x.AssignedTrucks)
                 .Include(x => x.AssignedJobs)
                 .Include(x => x.Languages)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .ToListAsync();
+                .AsQueryable();
 
-            return Ok(usersPage);
+            //var usersPage = await _dataContext.Users
+            //    .Include(x => x.AssignedTrucks)
+            //    .Include(x => x.AssignedJobs)
+            //    .Include(x => x.Languages)
+            //    .Skip((pageNumber - 1) * pageSize)
+            //    .Take(pageSize)
+            //    .ToListAsync();
+
+            return Ok(new UsersResponse()
+            {
+                Users = usersPage
+            });
         }
         //HTTP POST 
         [Authorize(Roles = "admin")]
