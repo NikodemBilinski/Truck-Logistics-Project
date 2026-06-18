@@ -372,6 +372,20 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     //Open Certain Sections
 
+    private async void Admin_Filter_Users_Open(object sender, EventArgs e)
+    {
+        if(!Admin_Users_Filter_Section.IsVisible)
+        {
+            Admin_Users_Filter_Section.IsEnabled = true;
+            Admin_Users_Filter_Section.IsVisible = true;
+        }
+        else
+        {
+            Admin_Users_Filter_Section.IsEnabled = false;
+            Admin_Users_Filter_Section.IsVisible = false;
+        }
+        
+    }
     private async void Admin_Show_Users_Trucks_Overview(object sender, EventArgs e)
     {
         await Get_Overview_Stats();
