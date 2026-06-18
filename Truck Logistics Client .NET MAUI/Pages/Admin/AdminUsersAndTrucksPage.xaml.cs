@@ -773,4 +773,13 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         await Shell.Current.GoToAsync("..");
     }
 
+    private async void Admin_Filtering_Users_Refresh(object sender, EventArgs e)
+    {
+
+    }
+    private async void Admin_Filtering_Users_Apply(object sender, EventArgs e)
+    {
+
+    }
+
 }

@@ -185,18 +185,17 @@
                                     <ImageButton Source="refresh.png"
                                                  WidthRequest="10"
                                                  HeightRequest="10"
-                                                 />
+                                                 Clicked="Admin_Filtering_Users_Refresh"/>
                                     <ImageButton Source="apply_filters.png"
                                                  WidthRequest="10"
                                                  HeightRequest="10"
-                                                 />
+                                                 Clicked="Admin_Filtering_Users_Apply"/>
 
-                                    <Label Text="Creation Date:" VerticalOptions="Center"/>
-                                    <Entry x:Name="Admin_Job_Filter_Status"
-                                           Placeholder="Filter by Status"
+                                    <Entry x:Name="Admin_Filter_Users_Username"
+                                           Placeholder="Filter by Username"
                                            WidthRequest="250"/>
-                                    <Entry x:Name="Admin_Job_Filter_Name"
-                                           Placeholder="Filter by Name"
+                                    <Entry x:Name="Admin_Filter_Users_Status"
+                                           Placeholder="Filter by Status"
                                            WidthRequest="250"/>
                                 </HorizontalStackLayout>
                             </HorizontalStackLayout>
