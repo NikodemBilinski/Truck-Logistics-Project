@@ -26,6 +26,10 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 	private HttpClient client = new HttpClient();
 
     private PaginationPage pages = new PaginationPage();
+
+    private string FilteringUsersUsername;
+
+    private string FilteringUsersStatus;
 	public AdminUsersAndTrucksPage()
 	{
 		InitializeComponent();
@@ -180,7 +184,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     private async Task<List<Users>> GetPageUsers()
     {
         
-        var response = await client.GetAsync(apiUrl + $"Users/Get_Users_Page/{pages.PageNumber}/{pages.PageSize}");
+        var response = await client.GetAsync(apiUrl + $"Users/Get_Users_Page/{pages.PageNumber}/{pages.PageSize}?username={FilteringUsersUsername}&status={FilteringUsersStatus}");
 
         Users_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
 
@@ -199,27 +203,6 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
         return new List<Users>();
     
-    }
-
-    private async Task<int> CountTotalPagesUsers()
-    {
-        var response = await client.GetAsync(apiUrl + "Users/Get_Users_Stats");
-
-        if(response.IsSuccessStatusCode)
-        {
-            var stats = await response.Content.ReadFromJsonAsync<UsersResponse>();
-
-            if (stats == null)
-            {
-                return 0;
-            }
-
-            var totalpages = (int)Math.Ceiling((double)stats.Users_Count / pages.PageSize);
-
-            return totalpages;
-        }
-
-        return 0;
     }
 
     private async void Right_PageUsers(object sender, EventArgs e)
@@ -782,6 +765,9 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     }
     private async void Admin_Filtering_Users_Apply(object sender, EventArgs e)
     {
+        FilteringUsersUsername = Admin_Filter_Users_Username.Text;
+        FilteringUsersStatus = Admin_Filter_Users_Status.Text;
+
 
     }
 
