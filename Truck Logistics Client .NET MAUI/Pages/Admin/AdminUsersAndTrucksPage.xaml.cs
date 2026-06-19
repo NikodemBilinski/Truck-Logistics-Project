@@ -761,7 +761,15 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     private async void Admin_Filtering_Users_Refresh(object sender, EventArgs e)
     {
+        FilteringUsersUsername = string.Empty;
+        FilteringUsersStatus = string.Empty;
 
+        Admin_Filter_Users_Status.Text = string.Empty;
+        Admin_Filter_Users_Username.Text = string.Empty;
+
+        var jobs = await GetPageUsers();
+
+        Get_All_Users_View.ItemsSource = jobs;
     }
     private async void Admin_Filtering_Users_Apply(object sender, EventArgs e)
     {
