@@ -86,7 +86,9 @@ namespace TrucksLogisticsServerAPI.Controllers
 
             if (!string.IsNullOrEmpty(status))
             {
-                if(status == "available")
+                status = status.ToLower();
+
+                if (status == "available")
                 {
                     query = query.Where(x => x.isBusy == false);
                 }
@@ -98,6 +100,8 @@ namespace TrucksLogisticsServerAPI.Controllers
 
             if(!string.IsNullOrEmpty(username))
             {
+                username = username.ToLower();
+
                 query = query.Where(x => x.Username.Contains(username));
             }
 
