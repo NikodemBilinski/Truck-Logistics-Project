@@ -27,9 +27,9 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     private PaginationPage pages = new PaginationPage();
 
-    private string FilteringUsersUsername;
+    private string FilteringUsersUsername = string.Empty;
 
-    private string FilteringUsersStatus;
+    private string FilteringUsersStatus = string.Empty;
 	public AdminUsersAndTrucksPage()
 	{
 		InitializeComponent();
@@ -768,6 +768,9 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         FilteringUsersUsername = Admin_Filter_Users_Username.Text;
         FilteringUsersStatus = Admin_Filter_Users_Status.Text;
 
+        var jobs = await GetPageUsers();
+
+        Get_All_Users_View.ItemsSource = jobs;
 
     }
 
