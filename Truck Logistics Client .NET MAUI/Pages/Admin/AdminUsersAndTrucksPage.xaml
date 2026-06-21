@@ -329,7 +329,7 @@
                                 <ImageButton Source="search.png"
                                              WidthRequest="5"
                                              HeightRequest="5"
-                                             Clicked="Admin_Filter_Users_Open"/>
+                                             Clicked="Admin_Filter_Trucks_Open"/>
                                 <HorizontalStackLayout x:Name="Admin_Trucks_Filter_Section" IsVisible="False" IsEnabled="False" Spacing="15">
                                     <ImageButton Source="refresh.png"
                                                  WidthRequest="10"

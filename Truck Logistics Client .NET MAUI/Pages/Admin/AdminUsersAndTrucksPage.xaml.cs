@@ -372,6 +372,21 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         }
         
     }
+
+    private async void Admin_Filter_Trucks_Open(object sender, EventArgs e)
+    {
+        if (!Admin_Trucks_Filter_Section.IsVisible)
+        {
+            Admin_Trucks_Filter_Section.IsEnabled = true;
+            Admin_Trucks_Filter_Section.IsVisible = true;
+        }
+        else
+        {
+            Admin_Trucks_Filter_Section.IsEnabled = false;
+            Admin_Trucks_Filter_Section.IsVisible = false;
+        }
+
+    }
     private async void Admin_Show_Users_Trucks_Overview(object sender, EventArgs e)
     {
         await Get_Overview_Stats();
