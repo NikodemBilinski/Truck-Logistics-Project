@@ -347,7 +347,7 @@
                                            Placeholder="Filter by Status"
                                            WidthRequest="250"/>
                                     <Entry x:Name="Admin_Filtering_Trucks_Brand"
-                                           Placeholder="Filter by Status"
+                                           Placeholder="Filter by Brand"
                                            WidthRequest="250"/>
                                 </HorizontalStackLayout>
                             </HorizontalStackLayout>
