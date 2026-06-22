@@ -774,17 +774,33 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         await Shell.Current.GoToAsync("..");
     }
 
-    private async void Admin_Filtering_Users_Refresh(object sender, EventArgs e)
+    private async void Admin_Filtering_Refresh(object sender, EventArgs e)
     {
-        FilteringUsersUsername = string.Empty;
-        FilteringUsersStatus = string.Empty;
+        if(Admin_Users_Filter_Section.IsVisible)
+        {
+            FilteringUsersUsername = string.Empty;
+            FilteringUsersStatus = string.Empty;
 
-        Admin_Filter_Users_Status.Text = string.Empty;
-        Admin_Filter_Users_Username.Text = string.Empty;
+            Admin_Filter_Users_Status.Text = string.Empty;
+            Admin_Filter_Users_Username.Text = string.Empty;
 
-        var jobs = await GetPageUsers();
+            var users = await GetPageUsers();
 
-        Get_All_Users_View.ItemsSource = jobs;
+            Get_All_Users_View.ItemsSource = users;
+        }
+        if(Admin_Trucks_Filter_Section.IsVisible)
+        {
+            //FilteringTrucksName = string.Empty;
+            //FilteringTrucksStatus = string.Empty;
+
+            Admin_Filtering_Trucks_Name.Text = string.Empty;
+            Admin_Filtering_Trucks_Status.Text = string.Empty;
+            Admin_Filtering_Trucks_Brand.Text = string.Empty;
+
+            var trucks = await GetPageTrucks();
+
+            Get_All_Trucks_View.ItemsSource = trucks;
+        }
     }
     private async void Admin_Filtering_Users_Apply(object sender, EventArgs e)
     {

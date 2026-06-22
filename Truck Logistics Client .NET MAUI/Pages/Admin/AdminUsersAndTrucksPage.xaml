@@ -185,7 +185,7 @@
                                     <ImageButton Source="refresh.png"
                                                  WidthRequest="10"
                                                  HeightRequest="10"
-                                                 Clicked="Admin_Filtering_Users_Refresh"/>
+                                                 Clicked="Admin_Filtering_Refresh"/>
                                     <ImageButton Source="apply_filters.png"
                                                  WidthRequest="10"
                                                  HeightRequest="10"
@@ -340,7 +340,7 @@
                                                  HeightRequest="10"
                                                  Clicked="Admin_Filtering_Users_Apply"/>
 
-                                    <Entry x:Name="Admin_Filtering_Trucks_Username"
+                                    <Entry x:Name="Admin_Filtering_Trucks_Name"
                                            Placeholder="Filter by Name"
                                            WidthRequest="250"/>
                                     <Entry x:Name="Admin_Filtering_Trucks_Status"
