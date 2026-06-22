@@ -358,32 +358,32 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     //Open Certain Sections
 
-    private async void Admin_Filter_Users_Open(object sender, EventArgs e)
+    private async void Admin_Filtering_Users_Open(object sender, EventArgs e)
     {
-        if(!Admin_Users_Filter_Section.IsVisible)
+        if(!Admin_Filtering_Users_Section.IsVisible)
         {
-            Admin_Users_Filter_Section.IsEnabled = true;
-            Admin_Users_Filter_Section.IsVisible = true;
+            Admin_Filtering_Users_Section.IsEnabled = true;
+            Admin_Filtering_Users_Section.IsVisible = true;
         }
         else
         {
-            Admin_Users_Filter_Section.IsEnabled = false;
-            Admin_Users_Filter_Section.IsVisible = false;
+            Admin_Filtering_Users_Section.IsEnabled = false;
+            Admin_Filtering_Users_Section.IsVisible = false;
         }
         
     }
 
-    private async void Admin_Filter_Trucks_Open(object sender, EventArgs e)
+    private async void Admin_Filtering_Trucks_Open(object sender, EventArgs e)
     {
-        if (!Admin_Trucks_Filter_Section.IsVisible)
+        if (!Admin_Filtering_Trucks_Section.IsVisible)
         {
-            Admin_Trucks_Filter_Section.IsEnabled = true;
-            Admin_Trucks_Filter_Section.IsVisible = true;
+            Admin_Filtering_Trucks_Section.IsEnabled = true;
+            Admin_Filtering_Trucks_Section.IsVisible = true;
         }
         else
         {
-            Admin_Trucks_Filter_Section.IsEnabled = false;
-            Admin_Trucks_Filter_Section.IsVisible = false;
+            Admin_Filtering_Trucks_Section.IsEnabled = false;
+            Admin_Filtering_Trucks_Section.IsVisible = false;
         }
 
     }
@@ -776,19 +776,19 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     private async void Admin_Filtering_Refresh(object sender, EventArgs e)
     {
-        if(Admin_Users_Filter_Section.IsVisible)
+        if(Admin_Filtering_Users_Section.IsVisible)
         {
             FilteringUsersUsername = string.Empty;
             FilteringUsersStatus = string.Empty;
 
-            Admin_Filter_Users_Status.Text = string.Empty;
-            Admin_Filter_Users_Username.Text = string.Empty;
+            Admin_Filtering_Users_Status.Text = string.Empty;
+            Admin_Filtering_Users_Username.Text = string.Empty;
 
             var users = await GetPageUsers();
 
             Get_All_Users_View.ItemsSource = users;
         }
-        if(Admin_Trucks_Filter_Section.IsVisible)
+        if(Admin_Filtering_Trucks_Section.IsVisible)
         {
             //FilteringTrucksName = string.Empty;
             //FilteringTrucksStatus = string.Empty;
@@ -804,8 +804,8 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     }
     private async void Admin_Filtering_Users_Apply(object sender, EventArgs e)
     {
-        FilteringUsersUsername = Admin_Filter_Users_Username.Text;
-        FilteringUsersStatus = Admin_Filter_Users_Status.Text;
+        FilteringUsersUsername = Admin_Filtering_Users_Username.Text;
+        FilteringUsersStatus = Admin_Filtering_Users_Status.Text;
 
         var jobs = await GetPageUsers();
 

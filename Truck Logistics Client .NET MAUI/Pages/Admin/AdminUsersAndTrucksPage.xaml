@@ -180,8 +180,8 @@
                                 <ImageButton Source="search.png"
                                              WidthRequest="5"
                                              HeightRequest="5"
-                                             Clicked="Admin_Filter_Users_Open"/>
-                                <HorizontalStackLayout x:Name="Admin_Users_Filter_Section" IsVisible="False" IsEnabled="False" Spacing="15">
+                                             Clicked="Admin_Filtering_Users_Open"/>
+                                <HorizontalStackLayout x:Name="Admin_Filtering_Users_Section" IsVisible="False" IsEnabled="False" Spacing="15">
                                     <ImageButton Source="refresh.png"
                                                  WidthRequest="10"
                                                  HeightRequest="10"
@@ -191,10 +191,10 @@
                                                  HeightRequest="10"
                                                  Clicked="Admin_Filtering_Users_Apply"/>
 
-                                    <Entry x:Name="Admin_Filter_Users_Username"
+                                    <Entry x:Name="Admin_Filtering_Users_Username"
                                            Placeholder="Filter by Username"
                                            WidthRequest="250"/>
-                                    <Entry x:Name="Admin_Filter_Users_Status"
+                                    <Entry x:Name="Admin_Filtering_Users_Status"
                                            Placeholder="Filter by Status"
                                            WidthRequest="250"/>
                                 </HorizontalStackLayout>
@@ -329,8 +329,8 @@
                                 <ImageButton Source="search.png"
                                              WidthRequest="5"
                                              HeightRequest="5"
-                                             Clicked="Admin_Filter_Trucks_Open"/>
-                                <HorizontalStackLayout x:Name="Admin_Trucks_Filter_Section" IsVisible="False" IsEnabled="False" Spacing="15">
+                                             Clicked="Admin_Filtering_Trucks_Open"/>
+                                <HorizontalStackLayout x:Name="Admin_Filtering_Trucks_Section" IsVisible="False" IsEnabled="False" Spacing="15">
                                     <ImageButton Source="refresh.png"
                                                  WidthRequest="10"
                                                  HeightRequest="10"
