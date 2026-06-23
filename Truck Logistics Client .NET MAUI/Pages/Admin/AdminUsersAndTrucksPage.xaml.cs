@@ -27,10 +27,18 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     private PaginationPage pages = new PaginationPage();
 
+    //users
     private string FilteringUsersUsername = string.Empty;
 
     private string FilteringUsersStatus = string.Empty;
-	public AdminUsersAndTrucksPage()
+
+    //trucks 
+    private string FilteringTrucksName = string.Empty;
+
+    private string FilteringTrucksStatus = string.Empty;
+
+    private string FilteringTrucksBrand = string.Empty;
+    public AdminUsersAndTrucksPage()
 	{
 		InitializeComponent();
 
@@ -168,7 +176,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks_Stats");
         if (response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<TrucksResponse>();
+            var stats = await response.Content.ReadFromJsonAsync<TruckStats>();
             if(stats != null)
             {
                 Total_Trucks_Count.Text = stats.Truck_Count.ToString();
@@ -242,18 +250,21 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     private async Task<List<Truck>> GetPageTrucks()
     {
 
-        var response = await client.GetAsync(apiUrl + $"Trucks/Get_Trucks_Page/{pages.PageNumber}/{pages.PageSize}");
+        var response = await client.GetAsync(apiUrl + $"Trucks/Get_Trucks_Page/{pages.PageNumber}/{pages.PageSize}?name={FilteringTrucksName}&status={FilteringTrucksStatus}&brand={FilteringTrucksBrand}");
 
         Trucks_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
 
         if (response.IsSuccessStatusCode)
         {
-            var truckslistpage = await response.Content.ReadFromJsonAsync<List<Truck>>();
-            if (truckslistpage.Count == 0)
+            var stats = await response.Content.ReadFromJsonAsync<TrucksResponse>();
+            if (stats != null)
             {
-                return new List<Truck>();
+                pages.TotalPages = (int)Math.Ceiling((double)stats.Truck_Count / pages.PageSize);
+
+                Trucks_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+                return stats.Trucks;
             }
-            return truckslistpage;
         }
         
         return new List<Truck>();
@@ -266,7 +277,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         var response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks_Stats");
         if (response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<TrucksResponse>();
+            var stats = await response.Content.ReadFromJsonAsync<TruckStats>();
             if (stats == null)
             {
                 return 0;
