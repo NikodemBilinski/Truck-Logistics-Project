@@ -33,14 +33,14 @@ namespace TrucksLogisticsServerAPI.Controllers
         [Authorize(Roles = "admin")]
         [HttpGet("Get_Trucks_Stats")]
         
-        public async Task<ActionResult<TruckStats>> GetTrucksStats()
+        public async Task<ActionResult<TrucksResponse>> GetTrucksStats()
         {
             var Truckcount = await _dataContext.Trucks.CountAsync();
             var AvailableTrucksCount = await _dataContext.Trucks.Where(x => x.IsBusy == false).CountAsync();
             var BusyTrucksCount = await _dataContext.Trucks.Where(x => x.IsBusy == true).CountAsync();
             var DiffrentBrandsCount = await _dataContext.Trucks.Select(x => x.brand).Distinct().CountAsync();
 
-            var TrucksStats = new TruckStats()
+            var TrucksStats = new TrucksResponse()
             {
                 Truck_Count = Truckcount,
                 AvaiableTrucks_Count = AvailableTrucksCount,
