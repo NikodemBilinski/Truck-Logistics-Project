@@ -353,7 +353,6 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
         try
         {
-            pages.TotalPages = await CountTotalPagesTrucks();
             pages.PageNumber = 1;
             var trucks = await GetPageTrucks();
             Get_All_Trucks_View.ItemsSource = trucks;
@@ -801,8 +800,9 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         }
         if(Admin_Filtering_Trucks_Section.IsVisible)
         {
-            //FilteringTrucksName = string.Empty;
-            //FilteringTrucksStatus = string.Empty;
+            FilteringTrucksName = string.Empty;
+            FilteringTrucksStatus = string.Empty;
+            FilteringTrucksBrand = string.Empty;
 
             Admin_Filtering_Trucks_Name.Text = string.Empty;
             Admin_Filtering_Trucks_Status.Text = string.Empty;
@@ -826,8 +826,10 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     private async void Admin_Filtering_Trucks_Apply(object sender, EventArgs e)
     {
-        //FilteringTrucksName = Admin_Filtering_Trucks_Name.Text;
-        //FilteringTrucksStatus = Admin_Filtering_Trucks_Status.Text;
+        FilteringTrucksName = Admin_Filtering_Trucks_Name.Text;
+        FilteringTrucksStatus = Admin_Filtering_Trucks_Status.Text;
+        FilteringTrucksBrand = Admin_Filtering_Trucks_Brand.Text;
+
         var trucks = await GetPageTrucks();
         Get_All_Trucks_View.ItemsSource = trucks;
     }
