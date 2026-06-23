@@ -168,7 +168,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks_Stats");
         if (response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<TruckStats>();
+            var stats = await response.Content.ReadFromJsonAsync<TrucksResponse>();
             if(stats != null)
             {
                 Total_Trucks_Count.Text = stats.Truck_Count.ToString();
@@ -266,7 +266,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         var response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks_Stats");
         if (response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<TruckStats>();
+            var stats = await response.Content.ReadFromJsonAsync<TrucksResponse>();
             if (stats == null)
             {
                 return 0;

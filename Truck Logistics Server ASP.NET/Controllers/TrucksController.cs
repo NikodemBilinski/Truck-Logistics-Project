@@ -53,19 +53,48 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpGet("Get_Trucks_Page/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<List<Truck>>> GetTrucksPage(int pageNumber, int pageSize)
+        public async Task<ActionResult<TrucksResponse>> GetTrucksPage(int pageNumber, int pageSize, string name = null, string status = null, string brand = null)
         {
             if (pageNumber < 1 || pageSize < 1)
             {
                 return BadRequest("Error: Page number and page size must be greater than 0.");
             }
 
-            var truckspage = await _dataContext.Trucks.Include(x => x.AssignedUsers)
+            var query = _dataContext.Trucks.AsQueryable();
+
+            if(string.IsNullOrEmpty(name))
+            {
+                query = query.Where(x => x.Name.Contains(name));
+            }
+            if (string.IsNullOrEmpty(status))
+            {
+                status.ToLower();
+                if (status == "busy")
+                {
+                    query = query.Where(x => x.IsBusy == true);
+                }
+                if (status == "available")
+                {
+                    query = query.Where(x => x.IsBusy == false);
+                }
+            }
+            if(string.IsNullOrEmpty(brand))
+            {
+                query = query.Where(x => x.brand.Contains(brand));
+            }
+            
+            int truckscount = await query.CountAsync();
+
+            var truckspage = await query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            return Ok(truckspage);
+            return Ok(new TrucksResponse()
+            {
+                Trucks = truckspage,
+                Truck_Count = truckscount
+            };
         }
           
 
