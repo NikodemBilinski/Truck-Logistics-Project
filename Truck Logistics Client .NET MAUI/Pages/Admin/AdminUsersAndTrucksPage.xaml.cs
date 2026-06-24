@@ -176,7 +176,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks_Stats");
         if (response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<TruckStats>();
+            var stats = await response.Content.ReadFromJsonAsync<TrucksResponse>();
             if(stats != null)
             {
                 Total_Trucks_Count.Text = stats.Truck_Count.ToString();
@@ -270,22 +270,6 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         return new List<Truck>();
 
 
-    }
-
-    private async Task<int> CountTotalPagesTrucks()
-    {
-        var response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks_Stats");
-        if (response.IsSuccessStatusCode)
-        {
-            var stats = await response.Content.ReadFromJsonAsync<TruckStats>();
-            if (stats == null)
-            {
-                return 0;
-            }
-            var totalpages = (int)Math.Ceiling((double)stats.Truck_Count / pages.PageSize);
-            return totalpages;
-        }
-        return 0;
     }
 
     private async void Right_PageTrucks(object sender, EventArgs e)
