@@ -62,11 +62,11 @@ namespace TrucksLogisticsServerAPI.Controllers
 
             var query = _dataContext.Trucks.AsQueryable();
 
-            if(string.IsNullOrEmpty(name))
+            if(!string.IsNullOrEmpty(name))
             {
                 query = query.Where(x => x.Name.Contains(name));
             }
-            if (string.IsNullOrEmpty(status))
+            if (!string.IsNullOrEmpty(status))
             {
                 status.ToLower();
                 if (status == "busy")
@@ -78,7 +78,7 @@ namespace TrucksLogisticsServerAPI.Controllers
                     query = query.Where(x => x.IsBusy == false);
                 }
             }
-            if(string.IsNullOrEmpty(brand))
+            if(!string.IsNullOrEmpty(brand))
             {
                 query = query.Where(x => x.brand.Contains(brand));
             }
@@ -90,11 +90,11 @@ namespace TrucksLogisticsServerAPI.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            return Ok(new TrucksResponse()
+            return Ok(new TrucksResponse
             {
                 Trucks = truckspage,
                 Truck_Count = truckscount
-            };
+            });
         }
           
 
