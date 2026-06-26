@@ -60,11 +60,11 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpGet("Get_Clients_Stats")]
-        public async Task<ActionResult<ClientsStats>> GetClientsStats()
+        public async Task<ActionResult<ClientsResponse>> GetClientsStats()
         {
             var clientcount = await _dataContext.Clients.CountAsync();
 
-            return Ok(new ClientsStats()
+            return Ok(new ClientsResponse()
             {
                 TotalClients = clientcount
             });
