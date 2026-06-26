@@ -24,6 +24,14 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private PaginationPage pages = new PaginationPage();
 
+    //filtering 
+
+    //clients
+
+    private string FilteringClientsName;
+    private string FilteringClientsNIP;
+    private string FilteringClientsCountry;
+
     public AdminInvoicesAndClientsPage()
 	{
 		InitializeComponent();
@@ -760,7 +768,18 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async void Admin_Filtering_Refresh(object sender, EventArgs e)
     {
+        if(Admin_Filtering_Clients_Section.IsVisible)
+        {
+            FilteringClientsName = string.Empty;
+            FilteringClientsNIP = string.Empty;
+            FilteringClientsCountry = string.Empty;
 
+            Admin_Filtering_Clients_Name.Text = string.Empty;
+            Admin_Filtering_Clients_NIP.Text = string.Empty;
+            Admin_Filtering_Clients_Country.Text = string.Empty;
+        }
+        
+        
     }
 
     private async void Admin_Filtering_Clients_Apply(object sender, EventArgs e)
