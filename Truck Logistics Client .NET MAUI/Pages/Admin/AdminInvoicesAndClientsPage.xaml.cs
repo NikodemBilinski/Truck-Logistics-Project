@@ -1,4 +1,5 @@
 using CommunityToolkit.Maui.Storage;
+using Microsoft.Maui.Layouts;
 using System.Diagnostics;
 using System.Net.Http.Json;
 using TrucksLogisticsClient.Models;
@@ -281,7 +282,16 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async void Admin_Filtering_Clients_Open(object sender, EventArgs e)
     {
-
+        if(Admin_Filtering_Clients_Section.IsVisible)
+        {
+            Admin_Filtering_Clients_Section.IsVisible = false;
+            Admin_Filtering_Clients_Section.IsEnabled = false;
+        }
+        else
+        {
+            Admin_Filtering_Clients_Section.IsVisible = true;
+            Admin_Filtering_Clients_Section.IsEnabled = true;
+        }
     }
 
     private async void Admin_Show_Clients_Invoices_Overview(object sender, EventArgs e)
