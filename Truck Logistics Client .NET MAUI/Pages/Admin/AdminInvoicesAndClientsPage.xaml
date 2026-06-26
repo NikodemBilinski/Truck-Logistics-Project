@@ -28,8 +28,34 @@
                                     StrokeThickness="0"
                                     Grid.Row="0">
                             <VerticalStackLayout>
-                                
-                                <Label Text="Clients" FontSize="25" FontAttributes="Bold"/>
+                                <!--Filtering-->
+                                    <Grid RowDefinitions="*,*" Padding="30">
+                                        <HorizontalStackLayout HorizontalOptions="End" Spacing="20">
+                                            <ImageButton Source="search.png"
+                                                         WidthRequest="5"
+                                                         HeightRequest="5"
+                                                         Clicked="Admin_Filtering_Clients_Open"/>
+                                            <HorizontalStackLayout x:Name="Admin_Filtering_Clients_Section" IsVisible="False" IsEnabled="False" Spacing="15">
+                                                <ImageButton Source="refresh.png"
+                                                             WidthRequest="10"
+                                                             HeightRequest="10"
+                                                             Clicked="Admin_Filtering_Refresh"/>
+                                                <ImageButton Source="apply_filters.png"
+                                                             WidthRequest="10"
+                                                             HeightRequest="10"
+                                                             Clicked="Admin_Filtering_Clients_Apply"/>
+
+                                                <Entry x:Name="Admin_Filtering_Clients_Username"
+                                                       Placeholder="Filter by Username"
+                                                       WidthRequest="250"/>
+                                                <Entry x:Name="Admin_Filtering_Clients_NIP"
+                                                       Placeholder="Filter by NIP"
+                                                       WidthRequest="250"/>
+                                            </HorizontalStackLayout>
+                                        </HorizontalStackLayout>
+                                    </Grid>
+
+                                    <Label Text="Clients" FontSize="25" FontAttributes="Bold"/>
                                 <HorizontalStackLayout Grid.Row="0"
                                                    HorizontalOptions="Center"
                                                    Spacing="10">

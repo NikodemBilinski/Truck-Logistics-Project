@@ -279,6 +279,11 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     #endregion
     // open sections
 
+    private async void Admin_Filtering_Clients_Open(object sender, EventArgs e)
+    {
+
+    }
+
     private async void Admin_Show_Clients_Invoices_Overview(object sender, EventArgs e)
     {
         await HideEverything();
@@ -740,6 +745,16 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
             }
         }
+
+    }
+
+    private async void Admin_Filtering_Clients_Refresh(object sender, EventArgs e)
+    {
+
+    }
+
+    private async void Admin_Filtering_Clients_Apply(object sender, EventArgs e)
+    {
 
     }
 
