@@ -748,7 +748,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     }
 
-    private async void Admin_Filtering_Clients_Refresh(object sender, EventArgs e)
+    private async void Admin_Filtering_Refresh(object sender, EventArgs e)
     {
 
     }
