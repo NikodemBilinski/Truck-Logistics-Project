@@ -33,14 +33,14 @@ namespace TrucksLogisticsServerAPI.Controllers
         [Authorize(Roles = "admin")]
         [HttpGet("Get_Trucks_Stats")]
         
-        public async Task<ActionResult<TruckStats>> GetTrucksStats()
+        public async Task<ActionResult<TrucksResponse>> GetTrucksStats()
         {
             var Truckcount = await _dataContext.Trucks.CountAsync();
             var AvailableTrucksCount = await _dataContext.Trucks.Where(x => x.IsBusy == false).CountAsync();
             var BusyTrucksCount = await _dataContext.Trucks.Where(x => x.IsBusy == true).CountAsync();
             var DiffrentBrandsCount = await _dataContext.Trucks.Select(x => x.brand).Distinct().CountAsync();
 
-            var TrucksStats = new TruckStats()
+            var TrucksStats = new TrucksResponse()
             {
                 Truck_Count = Truckcount,
                 AvaiableTrucks_Count = AvailableTrucksCount,
@@ -53,19 +53,48 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpGet("Get_Trucks_Page/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<List<Truck>>> GetTrucksPage(int pageNumber, int pageSize)
+        public async Task<ActionResult<TrucksResponse>> GetTrucksPage(int pageNumber, int pageSize, string name = null, string status = null, string brand = null)
         {
             if (pageNumber < 1 || pageSize < 1)
             {
                 return BadRequest("Error: Page number and page size must be greater than 0.");
             }
 
-            var truckspage = await _dataContext.Trucks.Include(x => x.AssignedUsers)
+            var query = _dataContext.Trucks.AsQueryable();
+
+            if(!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(x => x.Name.Contains(name));
+            }
+            if (!string.IsNullOrEmpty(status))
+            {
+                status.ToLower();
+                if (status == "busy")
+                {
+                    query = query.Where(x => x.IsBusy == true);
+                }
+                if (status == "available")
+                {
+                    query = query.Where(x => x.IsBusy == false);
+                }
+            }
+            if(!string.IsNullOrEmpty(brand))
+            {
+                query = query.Where(x => x.brand.Contains(brand));
+            }
+            
+            int truckscount = await query.CountAsync();
+
+            var truckspage = await query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            return Ok(truckspage);
+            return Ok(new TrucksResponse
+            {
+                Trucks = truckspage,
+                Truck_Count = truckscount
+            });
         }
           
 

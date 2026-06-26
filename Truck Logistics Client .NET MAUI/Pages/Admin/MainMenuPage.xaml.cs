@@ -107,7 +107,7 @@ public partial class MainMenuPage : ContentPage
 
         if(response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<UsersStats>();
+            var stats = await response.Content.ReadFromJsonAsync<UsersResponse>();
             if (stats != null)
             {
                 Users_Count.Text = stats.Users_Count.ToString();
@@ -121,7 +121,7 @@ public partial class MainMenuPage : ContentPage
 
         if (response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<TruckStats>();
+            var stats = await response.Content.ReadFromJsonAsync<TrucksResponse>();
             if (stats != null)
             {
                 Trucks_Count.Text = stats.Truck_Count.ToString();

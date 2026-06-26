@@ -26,7 +26,19 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 	private HttpClient client = new HttpClient();
 
     private PaginationPage pages = new PaginationPage();
-	public AdminUsersAndTrucksPage()
+
+    //users
+    private string FilteringUsersUsername = string.Empty;
+
+    private string FilteringUsersStatus = string.Empty;
+
+    //trucks 
+    private string FilteringTrucksName = string.Empty;
+
+    private string FilteringTrucksStatus = string.Empty;
+
+    private string FilteringTrucksBrand = string.Empty;
+    public AdminUsersAndTrucksPage()
 	{
 		InitializeComponent();
 
@@ -150,7 +162,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
         if(response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<UsersStats>();
+            var stats = await response.Content.ReadFromJsonAsync<UsersResponse>();
             if (stats != null)
             {
                 Total_Users_Count.Text = stats.Users_Count.ToString();
@@ -164,7 +176,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks_Stats");
         if (response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<TruckStats>();
+            var stats = await response.Content.ReadFromJsonAsync<TrucksResponse>();
             if(stats != null)
             {
                 Total_Trucks_Count.Text = stats.Truck_Count.ToString();
@@ -180,43 +192,25 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     private async Task<List<Users>> GetPageUsers()
     {
         
-        var response = await client.GetAsync(apiUrl + $"Users/Get_Users_Page/{pages.PageNumber}/{pages.PageSize}");
+        var response = await client.GetAsync(apiUrl + $"Users/Get_Users_Page/{pages.PageNumber}/{pages.PageSize}?username={FilteringUsersUsername}&status={FilteringUsersStatus}");
 
         Users_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
 
         if (response.IsSuccessStatusCode)
         {
-            var userslistpage = await response.Content.ReadFromJsonAsync<List<Users>>();
-            if (userslistpage.Count == 0)
+            var stats = response.Content.ReadFromJsonAsync<UsersResponse>();
+            if(stats != null)
             {
-                return new List<Users>();
+                pages.TotalPages = (int)Math.Ceiling((double)stats.Result.Users_Count / pages.PageSize);
+
+                Users_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+                return stats.Result.Users;
             }
-            return userslistpage;
         }
 
         return new List<Users>();
     
-    }
-
-    private async Task<int> CountTotalPagesUsers()
-    {
-        var response = await client.GetAsync(apiUrl + "Users/Get_Users_Stats");
-
-        if(response.IsSuccessStatusCode)
-        {
-            var stats = await response.Content.ReadFromJsonAsync<UsersStats>();
-
-            if (stats == null)
-            {
-                return 0;
-            }
-
-            var totalpages = (int)Math.Ceiling((double)stats.Users_Count / pages.PageSize);
-
-            return totalpages;
-        }
-
-        return 0;
     }
 
     private async void Right_PageUsers(object sender, EventArgs e)
@@ -256,39 +250,26 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     private async Task<List<Truck>> GetPageTrucks()
     {
 
-        var response = await client.GetAsync(apiUrl + $"Trucks/Get_Trucks_Page/{pages.PageNumber}/{pages.PageSize}");
+        var response = await client.GetAsync(apiUrl + $"Trucks/Get_Trucks_Page/{pages.PageNumber}/{pages.PageSize}?name={FilteringTrucksName}&status={FilteringTrucksStatus}&brand={FilteringTrucksBrand}");
 
         Trucks_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
 
         if (response.IsSuccessStatusCode)
         {
-            var truckslistpage = await response.Content.ReadFromJsonAsync<List<Truck>>();
-            if (truckslistpage.Count == 0)
+            var stats = await response.Content.ReadFromJsonAsync<TrucksResponse>();
+            if (stats != null)
             {
-                return new List<Truck>();
+                pages.TotalPages = (int)Math.Ceiling((double)stats.Truck_Count / pages.PageSize);
+
+                Trucks_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+                return stats.Trucks;
             }
-            return truckslistpage;
         }
         
         return new List<Truck>();
 
 
-    }
-
-    private async Task<int> CountTotalPagesTrucks()
-    {
-        var response = await client.GetAsync(apiUrl + "Trucks/Get_Trucks_Stats");
-        if (response.IsSuccessStatusCode)
-        {
-            var stats = await response.Content.ReadFromJsonAsync<TruckStats>();
-            if (stats == null)
-            {
-                return 0;
-            }
-            var totalpages = (int)Math.Ceiling((double)stats.Truck_Count / pages.PageSize);
-            return totalpages;
-        }
-        return 0;
     }
 
     private async void Right_PageTrucks(object sender, EventArgs e)
@@ -334,7 +315,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         await Hide_Everything();
         try
         {
-            pages.TotalPages = await CountTotalPagesUsers();
+            //pages.TotalPages = await CountTotalPagesUsers();
             pages.PageNumber = 1;
             var users = await GetPageUsers();
             Get_All_Users_View.ItemsSource = users;
@@ -356,7 +337,6 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
         try
         {
-            pages.TotalPages = await CountTotalPagesTrucks();
             pages.PageNumber = 1;
             var trucks = await GetPageTrucks();
             Get_All_Trucks_View.ItemsSource = trucks;
@@ -372,6 +352,35 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
     //Open Certain Sections
 
+    private async void Admin_Filtering_Users_Open(object sender, EventArgs e)
+    {
+        if(!Admin_Filtering_Users_Section.IsVisible)
+        {
+            Admin_Filtering_Users_Section.IsEnabled = true;
+            Admin_Filtering_Users_Section.IsVisible = true;
+        }
+        else
+        {
+            Admin_Filtering_Users_Section.IsEnabled = false;
+            Admin_Filtering_Users_Section.IsVisible = false;
+        }
+        
+    }
+
+    private async void Admin_Filtering_Trucks_Open(object sender, EventArgs e)
+    {
+        if (!Admin_Filtering_Trucks_Section.IsVisible)
+        {
+            Admin_Filtering_Trucks_Section.IsEnabled = true;
+            Admin_Filtering_Trucks_Section.IsVisible = true;
+        }
+        else
+        {
+            Admin_Filtering_Trucks_Section.IsEnabled = false;
+            Admin_Filtering_Trucks_Section.IsVisible = false;
+        }
+
+    }
     private async void Admin_Show_Users_Trucks_Overview(object sender, EventArgs e)
     {
         await Get_Overview_Stats();
@@ -757,6 +766,56 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     private async void Admin_Go_Back(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync("..");
+    }
+
+    private async void Admin_Filtering_Refresh(object sender, EventArgs e)
+    {
+        if(Admin_Filtering_Users_Section.IsVisible)
+        {
+            FilteringUsersUsername = string.Empty;
+            FilteringUsersStatus = string.Empty;
+
+            Admin_Filtering_Users_Status.Text = string.Empty;
+            Admin_Filtering_Users_Username.Text = string.Empty;
+
+            var users = await GetPageUsers();
+
+            Get_All_Users_View.ItemsSource = users;
+        }
+        if(Admin_Filtering_Trucks_Section.IsVisible)
+        {
+            FilteringTrucksName = string.Empty;
+            FilteringTrucksStatus = string.Empty;
+            FilteringTrucksBrand = string.Empty;
+
+            Admin_Filtering_Trucks_Name.Text = string.Empty;
+            Admin_Filtering_Trucks_Status.Text = string.Empty;
+            Admin_Filtering_Trucks_Brand.Text = string.Empty;
+
+            var trucks = await GetPageTrucks();
+
+            Get_All_Trucks_View.ItemsSource = trucks;
+        }
+    }
+    private async void Admin_Filtering_Users_Apply(object sender, EventArgs e)
+    {
+        FilteringUsersUsername = Admin_Filtering_Users_Username.Text;
+        FilteringUsersStatus = Admin_Filtering_Users_Status.Text;
+
+        var jobs = await GetPageUsers();
+
+        Get_All_Users_View.ItemsSource = jobs;
+
+    }
+
+    private async void Admin_Filtering_Trucks_Apply(object sender, EventArgs e)
+    {
+        FilteringTrucksName = Admin_Filtering_Trucks_Name.Text;
+        FilteringTrucksStatus = Admin_Filtering_Trucks_Status.Text;
+        FilteringTrucksBrand = Admin_Filtering_Trucks_Brand.Text;
+
+        var trucks = await GetPageTrucks();
+        Get_All_Trucks_View.ItemsSource = trucks;
     }
 
 }
