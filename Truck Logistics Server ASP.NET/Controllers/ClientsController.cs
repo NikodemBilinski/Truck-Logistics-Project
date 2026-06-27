@@ -74,9 +74,6 @@ namespace TrucksLogisticsServerAPI.Controllers
                 .Take(pageSize)
                 .ToListAsync();
 
-            
-
-
             return Ok(new ClientsResponse
             {
                 Clients = clients,

@@ -218,19 +218,13 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     //clients 
     private async Task<List<Client>> GetPageClients()
     {
-        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Page/{pages.PageNumber}/{pages.PageSize}");
+        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Page/{pages.PageNumber}/{pages.PageSize}?nip={FilteringClientsNIP}&name={FilteringClientsName}&country={FilteringClientsCountry}");
 
         Clients_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
 
         if (response.IsSuccessStatusCode)
         {
-            var clientslist = await response.Content.ReadFromJsonAsync<List<Client>>();
-
-            if(clientslist.Count == 0)
-            {
-                return new List<Client>();
-            }
-            return clientslist;
+            var stats = response.Content.ReadFromJsonAsync<ClientsResponse>();
         }
         return new List<Client>();
     }
@@ -241,7 +235,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         if (response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<ClientsStats>();
+            var stats = await response.Content.ReadFromJsonAsync<ClientsResponse>();
 
             if(stats != null)
             {
