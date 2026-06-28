@@ -225,6 +225,11 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         if (response.IsSuccessStatusCode)
         {
             var stats = response.Content.ReadFromJsonAsync<ClientsResponse>();
+            if(stats != null)
+            {
+                pages.TotalPages = (int)Math.Ceiling((double)stats.Result.TotalClients / pages.PageSize);
+                return stats.Result.Clients;
+            }
         }
         return new List<Client>();
     }
