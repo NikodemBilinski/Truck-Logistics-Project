@@ -122,7 +122,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         if(repsonse.IsSuccessStatusCode) 
         {
-            var stats = await repsonse.Content.ReadFromJsonAsync<ClientsStats>();
+            var stats = await repsonse.Content.ReadFromJsonAsync<ClientsResponse>();
             if(stats != null)
             {
                 Total_Clients_Count.Text = stats.TotalClients.ToString();
