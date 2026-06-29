@@ -783,7 +783,13 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async void Admin_Filtering_Clients_Apply(object sender, EventArgs e)
     {
+        FilteringClientsName = Admin_Filtering_Clients_Name.Text;
+        FilteringClientsNIP = Admin_Filtering_Clients_NIP.Text;
+        FilteringClientsCountry = Admin_Filtering_Clients_Country.Text;
 
+        var jobs = await GetPageClients();
+
+        All_Clients_View.ItemsSource = jobs;
     }
 
 

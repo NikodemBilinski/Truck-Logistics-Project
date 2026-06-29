@@ -47,7 +47,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpGet("Get_Clients_Page/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<List<Client>>> GetClientsPage(int pageNumber, int pageSize, string nip = null, string name = null, string country = null)
+        public async Task<ActionResult<ClientsResponse>> GetClientsPage(int pageNumber, int pageSize, string nip = null, string name = null, string country = null)
         {
             var query = _dataContext.Clients
                 .Include(x => x.Invoices)
@@ -56,15 +56,15 @@ namespace TrucksLogisticsServerAPI.Controllers
 
             if(!string.IsNullOrEmpty(nip))
             {
-                query.Where(x => x.NIP.Contains(nip));
+                query = query.Where(x => x.NIP.Contains(nip));
             }
             if(!string.IsNullOrEmpty(name))
             {
-                query.Where(x => x.Name.Contains(name));
+                query = query.Where(x => x.Name.Contains(name));
             }
             if(!string.IsNullOrEmpty(country))
             {
-                query.Where(x => x.Country.Contains(country));
+                query = query.Where(x => x.Country.Contains(country));
             }
 
             int clientscount = await query.CountAsync();
