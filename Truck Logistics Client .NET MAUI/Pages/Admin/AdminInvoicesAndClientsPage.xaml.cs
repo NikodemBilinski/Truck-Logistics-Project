@@ -220,37 +220,23 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     {
         var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Page/{pages.PageNumber}/{pages.PageSize}?nip={FilteringClientsNIP}&name={FilteringClientsName}&country={FilteringClientsCountry}");
 
-        Clients_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+        
 
         if (response.IsSuccessStatusCode)
         {
-            var stats = response.Content.ReadFromJsonAsync<ClientsResponse>();
+            var stats = await response.Content.ReadFromJsonAsync<ClientsResponse>();
             if(stats != null)
             {
-                pages.TotalPages = (int)Math.Ceiling((double)stats.Result.TotalClients / pages.PageSize);
-                return stats.Result.Clients;
+                pages.TotalPages = (int)Math.Ceiling((double)stats.TotalClients / pages.PageSize);
+
+                Clients_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+                return stats.Clients;
             }
         }
         return new List<Client>();
     }
     
-    private async Task<int> CountTotalPagesClients()
-    {
-        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Stats");
-
-        if (response.IsSuccessStatusCode)
-        {
-            var stats = await response.Content.ReadFromJsonAsync<ClientsResponse>();
-
-            if(stats != null)
-            {
-                return (int)Math.Ceiling((double)stats.TotalClients / pages.PageSize);
-            }
-            return 1;
-        }
-        return 1;
-    }
-
     private async void Right_PageClients(object sender, EventArgs e)
     {
         if (pages.PageNumber >= pages.TotalPages)
@@ -320,7 +306,6 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         try
         {
-            pages.TotalPages = await CountTotalPagesClients();
             pages.PageNumber = 1;
             var clients = await GetPageClients();
             All_Clients_View.ItemsSource = clients;
