@@ -761,6 +761,10 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             Admin_Filtering_Clients_Name.Text = string.Empty;
             Admin_Filtering_Clients_NIP.Text = string.Empty;
             Admin_Filtering_Clients_Country.Text = string.Empty;
+
+            var jobs = await GetPageClients();
+
+            All_Clients_View.ItemsSource = jobs;
         }
         
         
