@@ -139,7 +139,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         var response = await client.GetAsync(apiUrl + "Invoices/Get_Invoices_Stats");
         if (response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<InvoicesStats>();
+            var stats = await response.Content.ReadFromJsonAsync<InvoicesResponse>();
             if (stats != null)
             {
                 
@@ -177,7 +177,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Stats");
         if(response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<InvoicesStats>();
+            var stats = await response.Content.ReadFromJsonAsync<InvoicesResponse>();
 
             if(stats != null)
             {
