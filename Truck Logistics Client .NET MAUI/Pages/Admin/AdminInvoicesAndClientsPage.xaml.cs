@@ -156,18 +156,19 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     {
         var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Page/{pages.PageNumber}/{pages.PageSize}");
 
-        Invoices_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+        
 
         if(response.IsSuccessStatusCode)
         {
-            var invoiceslistpage = await response.Content.ReadFromJsonAsync<List<Invoice>>();
-
-            if(invoiceslistpage.Count == 0)
+            var stats = await response.Content.ReadFromJsonAsync<InvoicesResponse>();
+            if(stats != null)
             {
-                return new List<Invoice>();
-            }
+                pages.TotalPages = (int)Math.Ceiling((double)stats.Invoices_Count / pages.PageSize);
 
-            return invoiceslistpage;
+                Invoices_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+                return stats.Invoices;
+            }
         }
         return new List<Invoice>();
     }
@@ -227,9 +228,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     {
         var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Page/{pages.PageNumber}/{pages.PageSize}?nip={FilteringClientsNIP}&name={FilteringClientsName}&country={FilteringClientsCountry}");
 
-        
-
-        if (response.IsSuccessStatusCode)
+        if(response.IsSuccessStatusCode)
         {
             var stats = await response.Content.ReadFromJsonAsync<ClientsResponse>();
             if(stats != null)
