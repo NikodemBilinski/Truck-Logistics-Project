@@ -255,11 +255,13 @@
                                             <HorizontalStackLayout Spacing="15">
                                                 <Label Text="Issue Date:" VerticalOptions="Center"/>
                                                 <CheckBox x:Name="Admin_Filtering_Invoices_IssueDate_Checkbox"
+                                                          CheckedChanged="Admin_Job_Filter_CheckBoxChange"
                                                           HorizontalOptions="End"/>
                                                 <DatePicker x:Name="Admin_Filtering_Invoices_IssueDate"
                                                             IsEnabled="False"/>
                                                 <Label Text="Issue Date:" VerticalOptions="Center"/>
                                                 <CheckBox x:Name="Admin_Filtering_Invoices_DueDate_Checkbox"
+                                                          CheckedChanged="Admin_Job_Filter_CheckBoxChange"
                                                           HorizontalOptions="End"/>
                                                 <DatePicker x:Name="Admin_Filtering_Invoices_DueDate"
                                                             IsEnabled="False"/>

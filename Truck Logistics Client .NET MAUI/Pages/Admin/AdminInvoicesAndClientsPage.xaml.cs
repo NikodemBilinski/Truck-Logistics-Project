@@ -801,25 +801,25 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async void Admin_Job_Filter_CheckBoxChange(object sender, EventArgs e)
     {
-        if(Admin_Filtering_Invoices_DueDate_Checkbox.IsChecked)
+        if(Admin_Filtering_Invoices_DueDate_Checkbox.IsChecked == true)
         {
             Admin_Filtering_Invoices_DueDate.IsEnabled = true;
             FilteringInvoicesDueDate = Admin_Filtering_Invoices_DueDate.Date;
         }
-        if(!Admin_Filtering_Invoices_DueDate_Checkbox.IsChecked)
+        if(Admin_Filtering_Invoices_DueDate_Checkbox.IsChecked == false)
         {
-            Admin_Filtering_Invoices_DueDate.IsEnabled = true;
+            Admin_Filtering_Invoices_DueDate.IsEnabled = false;
             FilteringInvoicesDueDate = null;
         }
 
-        if(Admin_Filtering_Invoices_IssueDate_Checkbox.IsChecked)
+        if(Admin_Filtering_Invoices_IssueDate_Checkbox.IsChecked == true)
         {
             Admin_Filtering_Invoices_IssueDate.IsEnabled = true;
             FilteringInvoicesIssueDate = Admin_Filtering_Invoices_IssueDate.Date;
         }
-        if (!Admin_Filtering_Invoices_IssueDate_Checkbox.IsChecked)
+        if (Admin_Filtering_Invoices_IssueDate_Checkbox.IsChecked == false)
         {
-            Admin_Filtering_Invoices_IssueDate.IsEnabled = true;
+            Admin_Filtering_Invoices_IssueDate.IsEnabled = false;
             FilteringInvoicesIssueDate = null;
         }
     }
