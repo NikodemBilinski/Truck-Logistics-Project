@@ -241,26 +241,36 @@
                                                      WidthRequest="5"
                                                      HeightRequest="5"
                                                      Clicked="Admin_Filtering_Open"/>
-                                        <HorizontalStackLayout x:Name="Admin_Filtering_Invoices_Section" IsVisible="False" IsEnabled="False" Spacing="15">
-                                            <ImageButton Source="refresh.png"
-                                                         WidthRequest="10"
-                                                         HeightRequest="10"
-                                                         Clicked="Admin_Filtering_Refresh"/>
-                                            <ImageButton Source="apply_filters.png"
-                                                         WidthRequest="10"
-                                                         HeightRequest="10"
-                                                         Clicked="Admin_Filtering_Clients_Apply"/>
-
-                                            <Entry x:Name="Admin_Filtering_Invoices_Name"
-                                                   Placeholder="Filter by Client Name"
-                                                   WidthRequest="250"/>
-                                            <Entry x:Name="Admin_Filtering_Invoices_NIP"
-                                                   Placeholder="Filter by Job Name"
-                                                   WidthRequest="250"/>
-                                            <Label Text="Filter by Issue Date"/>
-                                            <CheckBox/>
-                                            <Label Text="Filter by Due Date"/>
-                                        </HorizontalStackLayout>
+                                        <VerticalStackLayout x:Name="Admin_Filtering_Invoices_Section" IsVisible="False" IsEnabled="False" Spacing="15">
+                                            <HorizontalStackLayout Spacing="15" HorizontalOptions="Center">
+                                                <ImageButton Source="refresh.png"
+                                                             WidthRequest="10"
+                                                             HeightRequest="10"
+                                                             Clicked="Admin_Filtering_Refresh"/>
+                                                <ImageButton Source="apply_filters.png"
+                                                             WidthRequest="10"
+                                                             HeightRequest="10"
+                                                             Clicked="Admin_Filtering_Clients_Apply"/>
+                                            </HorizontalStackLayout>
+                                            <HorizontalStackLayout Spacing="15">
+                                                <Label Text="Issue Date:" VerticalOptions="Center"/>
+                                                <CheckBox x:Name="Admin_Filtering_Invoices_IssueDate_Checkbox"
+                                                          HorizontalOptions="End"/>
+                                                <DatePicker x:Name="Admin_Filtering_Invoices_IssueDate"
+                                                            IsEnabled="False"/>
+                                                <Label Text="Issue Date:" VerticalOptions="Center"/>
+                                                <CheckBox x:Name="Admin_Filtering_Invoices_DueDate_Checkbox"
+                                                          HorizontalOptions="End"/>
+                                                <DatePicker x:Name="Admin_Filtering_Invoices_DueDate"
+                                                            IsEnabled="False"/>
+                                                <Entry x:Name="Admin_Filtering_Invoices_ClientName"
+                                                       Placeholder="Filter by Client Name"
+                                                       WidthRequest="225"/>
+                                                <Entry x:Name="Admin_Filtering_Invoices_JobName"
+                                                       Placeholder="Filter by Job Name"
+                                                       WidthRequest="225"/>
+                                            </HorizontalStackLayout>
+                                        </VerticalStackLayout>
                                     </HorizontalStackLayout>
                                 </Grid>
                                 <Grid RowDefinitions="*,*">
