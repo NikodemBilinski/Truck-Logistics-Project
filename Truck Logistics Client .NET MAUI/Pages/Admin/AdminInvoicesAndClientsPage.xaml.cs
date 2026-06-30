@@ -273,7 +273,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     #endregion
     // open sections
 
-    private async void Admin_Filtering_Clients_Open(object sender, EventArgs e)
+    private async void Admin_Filtering_Open(object sender, EventArgs e)
     {
         if(Admin_Filtering_Clients_Section.IsVisible)
         {
@@ -284,6 +284,17 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         {
             Admin_Filtering_Clients_Section.IsVisible = true;
             Admin_Filtering_Clients_Section.IsEnabled = true;
+        }
+
+        if(Admin_Filtering_Invoices_Section.IsVisible)
+        {
+            Admin_Filtering_Invoices_Section.IsVisible = false;
+            Admin_Filtering_Invoices_Section.IsEnabled = false;
+        }
+        else
+        {
+            Admin_Filtering_Invoices_Section.IsVisible = true;
+            Admin_Filtering_Invoices_Section.IsEnabled = true;
         }
     }
 

@@ -114,7 +114,7 @@
                                         <ImageButton Source="search.png"
                                                      WidthRequest="5"
                                                      HeightRequest="5"
-                                                     Clicked="Admin_Filtering_Clients_Open"/>
+                                                     Clicked="Admin_Filtering_Open"/>
                                         <HorizontalStackLayout x:Name="Admin_Filtering_Clients_Section" IsVisible="False" IsEnabled="False" Spacing="15">
                                             <ImageButton Source="refresh.png"
                                                          WidthRequest="10"
@@ -240,7 +240,7 @@
                                         <ImageButton Source="search.png"
                                                      WidthRequest="5"
                                                      HeightRequest="5"
-                                                     Clicked="Admin_Filtering_Clients_Open"/>
+                                                     Clicked="Admin_Filtering_Open"/>
                                         <HorizontalStackLayout x:Name="Admin_Filtering_Invoices_Section" IsVisible="False" IsEnabled="False" Spacing="15">
                                             <ImageButton Source="refresh.png"
                                                          WidthRequest="10"
