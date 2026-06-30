@@ -784,7 +784,18 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
             All_Clients_View.ItemsSource = jobs;
         }
-        
+        if(Admin_Filtering_Invoices_Section.IsVisible)
+        {
+            FilteringInvoicesIssueDate = null;
+            FilteringInvoicesDueDate = null;
+            FilteringInvoicesJobName = null;
+            FilteringInvoicesClientName = null;
+
+            Admin_Filtering_Invoices_ClientName.Text = string.Empty;
+            Admin_Filtering_Invoices_JobName.Text = string.Empty;
+            Admin_Filtering_Invoices_DueDate.Date = DateTime.Now;
+            Admin_Filtering_Invoices_IssueDate.Date = DateTime.Now;
+        }
         
     }
 
