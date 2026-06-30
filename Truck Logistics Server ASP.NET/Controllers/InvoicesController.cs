@@ -23,13 +23,13 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpGet("Get_Invoices_Stats")]
-        public async Task<ActionResult<InvoicesStats>> GetInvoicesStats()
+        public async Task<ActionResult<InvoicesResponse>> GetInvoicesStats()
         {
             var invoicescount = await _datacontext.Invoices.CountAsync();
             var unpaidCount = await _datacontext.Invoices.Where(x => x.Status != "paid").CountAsync();
             var overdueCount = await _datacontext.Invoices.Where(x => x.DueDate < DateTime.Now && x.Status != "paid").CountAsync();
 
-            var stats = new InvoicesStats
+            var stats = new InvoicesResponse
             {
                 Invoices_Count = invoicescount,
                 Unpaid_Count = unpaidCount,
