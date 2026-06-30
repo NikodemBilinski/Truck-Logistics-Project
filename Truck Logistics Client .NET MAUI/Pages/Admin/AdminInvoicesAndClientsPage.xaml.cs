@@ -28,9 +28,16 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     //clients
 
-    private string FilteringClientsName;
-    private string FilteringClientsNIP;
-    private string FilteringClientsCountry;
+    private string? FilteringClientsName;
+    private string? FilteringClientsNIP;
+    private string? FilteringClientsCountry;
+
+    //invoices
+
+    private string? FilteringInvoicesClientName;
+    private string? FilteringInvoicesJobName;
+    private DateTime? FilteringInvoicesIssueDate;
+    private DateTime? FilteringInvoicesDueDate;
 
     public AdminInvoicesAndClientsPage()
 	{
@@ -790,6 +797,31 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         var jobs = await GetPageClients();
 
         All_Clients_View.ItemsSource = jobs;
+    }
+
+    private async void Admin_Job_Filter_CheckBoxChange(object sender, EventArgs e)
+    {
+        if(Admin_Filtering_Invoices_DueDate_Checkbox.IsChecked)
+        {
+            Admin_Filtering_Invoices_DueDate.IsEnabled = true;
+            FilteringInvoicesDueDate = Admin_Filtering_Invoices_DueDate.Date;
+        }
+        if(!Admin_Filtering_Invoices_DueDate_Checkbox.IsChecked)
+        {
+            Admin_Filtering_Invoices_DueDate.IsEnabled = true;
+            FilteringInvoicesDueDate = null;
+        }
+
+        if(Admin_Filtering_Invoices_IssueDate_Checkbox.IsChecked)
+        {
+            Admin_Filtering_Invoices_IssueDate.IsEnabled = true;
+            FilteringInvoicesIssueDate = Admin_Filtering_Invoices_IssueDate.Date;
+        }
+        if (!Admin_Filtering_Invoices_IssueDate_Checkbox.IsChecked)
+        {
+            Admin_Filtering_Invoices_IssueDate.IsEnabled = true;
+            FilteringInvoicesIssueDate = null;
+        }
     }
 
 
