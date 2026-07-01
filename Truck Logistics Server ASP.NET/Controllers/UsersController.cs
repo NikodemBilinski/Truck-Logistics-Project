@@ -253,7 +253,25 @@ namespace TrucksLogisticsServerAPI.Controllers
                 return NotFound("Error: User with the specified ID not found.");
             }
 
-            //skidibi toilet lepszy sposub
+            #region validation
+            if(string.IsNullOrEmpty(updatedUser.FirstName))
+            {
+                return BadRequest("First Name is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedUser.LastName))
+            {
+                return BadRequest("Last Name is empty!");
+            }
+            if(updatedUser.Age <= 0 || updatedUser.Age > 120)
+            {
+                return BadRequest("Age should be real");
+            }
+            if(string.IsNullOrEmpty(updatedUser.Username))
+            {
+                return BadRequest("Username is empty!");
+            }
+
+            //checking if username is avaiable
             bool ismatching = await _dataContext.Users.AnyAsync(x => x.Username == updatedUser.Username && x.ID != updatedUser.ID);
 
             if (ismatching)
@@ -261,10 +279,12 @@ namespace TrucksLogisticsServerAPI.Controllers
                 Console.WriteLine("UpdateUser: Error, There is already user with that Username.");
                 return BadRequest("Error: There is already user with that Username.");
             }
-            if(user.Password != updatedUser.Password)
+            if (user.Password != updatedUser.Password)
             {
                 user.Password = BCrypt.Net.BCrypt.HashPassword(updatedUser.Password);
             }
+
+            #endregion
 
             // Update user properties
             user.Username = updatedUser.Username;
