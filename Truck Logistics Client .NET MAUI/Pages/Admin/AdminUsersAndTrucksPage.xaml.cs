@@ -84,7 +84,6 @@ public partial class AdminUsersAndTrucksPage : ContentPage
                     CurrentUser = result;
                     isUserDataFetched = true;
 
-                    //Welcome_User_Label.Text = CurrentUser.Username;
                 }
             }
             this.BindingContext = CurrentUser;
@@ -315,7 +314,6 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         await Hide_Everything();
         try
         {
-            //pages.TotalPages = await CountTotalPagesUsers();
             pages.PageNumber = 1;
             var users = await GetPageUsers();
             Get_All_Users_View.ItemsSource = users;
@@ -381,6 +379,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         }
 
     }
+
     private async void Admin_Show_Users_Trucks_Overview(object sender, EventArgs e)
     {
         await Get_Overview_Stats();

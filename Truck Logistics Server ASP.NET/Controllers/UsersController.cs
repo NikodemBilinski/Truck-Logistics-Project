@@ -125,17 +125,44 @@ namespace TrucksLogisticsServerAPI.Controllers
         public async Task<ActionResult<Users>> AddUser(Users UserToAdd)
         {
             Console.WriteLine("AddUser: Requested To Add User: " + UserToAdd.Username + ".");
-            var userslist = await _dataContext.Users.ToListAsync();
 
-            UserToAdd.Role.ToLower();
-
-            if (UserToAdd.Role == string.Empty || (UserToAdd.Role != "admin" && UserToAdd.Role != "user"))
+            // validation
+            if(UserToAdd.Role == string.Empty)
             {
                 UserToAdd.Role = "user";
             }
 
+            UserToAdd.Role = UserToAdd.Role.ToLower();
+
+            if ( (UserToAdd.Role != "admin" && UserToAdd.Role != "user"))
+            {
+                UserToAdd.Role = "user";
+            }
+            if(string.IsNullOrEmpty(UserToAdd.FirstName))
+            {
+                return BadRequest("First Name is Empty!");
+            }
+            if(string.IsNullOrEmpty(UserToAdd.LastName))
+            {
+                return BadRequest("Last Name is Empty!");
+            }
+            if(UserToAdd.Age <= 0 || UserToAdd.Age > 120)
+            {
+                return BadRequest("Age is either empty or not realistic!");
+            }
+            if(string.IsNullOrEmpty(UserToAdd.Username))
+            {
+                return BadRequest("Username is Empty!");
+            }
+            if(string.IsNullOrEmpty(UserToAdd.Password) || UserToAdd.Password.Length <= 6)
+            {
+                return BadRequest("Password is Empty or too short (at least 6 characters).");
+            }
+
             // check if the username already exist
-            if (userslist.Any(x => x.Username == UserToAdd.Username))
+            bool usernameExists = await _dataContext.Users.AnyAsync(x => x.Username == UserToAdd.Username);
+
+            if (usernameExists)
             {
                 Console.WriteLine("AddUser: Error, Username Already Taken.");
                 return BadRequest("Error: Username already taken.");
