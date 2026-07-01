@@ -123,7 +123,7 @@
                                             <ImageButton Source="apply_filters.png"
                                                          WidthRequest="10"
                                                          HeightRequest="10"
-                                                         Clicked="Admin_Filtering_Clients_Apply"/>
+                                                         Clicked="Admin_Filtering_Apply"/>
 
                                             <Entry x:Name="Admin_Filtering_Clients_Name"
                                                    Placeholder="Filter by Name"
@@ -250,7 +250,7 @@
                                                 <ImageButton Source="apply_filters.png"
                                                              WidthRequest="10"
                                                              HeightRequest="10"
-                                                             Clicked="Admin_Filtering_Clients_Apply"/>
+                                                             Clicked="Admin_Filtering_Apply"/>
                                             </HorizontalStackLayout>
                                             <HorizontalStackLayout Spacing="15">
                                                 <Label Text="Issue Date:" VerticalOptions="Center"/>

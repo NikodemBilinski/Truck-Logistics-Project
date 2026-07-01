@@ -154,7 +154,8 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async Task<List<Invoice>> GetPageInvoices()
     {
-        var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Page/{pages.PageNumber}/{pages.PageSize}");
+        var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Page/{pages.PageNumber}/{pages.PageSize}" +
+            $"?clientname={FilteringInvoicesClientName}&jobname={FilteringInvoicesJobName}&issuedate={FilteringInvoicesIssueDate}&duedate={FilteringInvoicesDueDate}");
 
         if(response.IsSuccessStatusCode)
         {
@@ -758,9 +759,9 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             Admin_Filtering_Clients_NIP.Text = string.Empty;
             Admin_Filtering_Clients_Country.Text = string.Empty;
 
-            var jobs = await GetPageClients();
+            var clients = await GetPageClients();
 
-            All_Clients_View.ItemsSource = jobs;
+            All_Clients_View.ItemsSource = clients;
         }
         if(Admin_Filtering_Invoices_Section.IsVisible)
         {
@@ -773,19 +774,38 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             Admin_Filtering_Invoices_JobName.Text = string.Empty;
             Admin_Filtering_Invoices_DueDate.Date = DateTime.Now;
             Admin_Filtering_Invoices_IssueDate.Date = DateTime.Now;
+
+            var invoices = await GetPageInvoices();
+
+            All_Invoices_View.ItemsSource = invoices;
         }
         
     }
 
-    private async void Admin_Filtering_Clients_Apply(object sender, EventArgs e)
+    private async void Admin_Filtering_Apply(object sender, EventArgs e)
     {
-        FilteringClientsName = Admin_Filtering_Clients_Name.Text;
-        FilteringClientsNIP = Admin_Filtering_Clients_NIP.Text;
-        FilteringClientsCountry = Admin_Filtering_Clients_Country.Text;
+        if(Client_View.IsVisible)
+        {
+            FilteringClientsName = Admin_Filtering_Clients_Name.Text;
+            FilteringClientsNIP = Admin_Filtering_Clients_NIP.Text;
+            FilteringClientsCountry = Admin_Filtering_Clients_Country.Text;
 
-        var jobs = await GetPageClients();
+            var clients = await GetPageClients();
 
-        All_Clients_View.ItemsSource = jobs;
+            All_Clients_View.ItemsSource = clients;
+        }
+        else if(Invoice_View.IsVisible)
+        {
+            FilteringInvoicesClientName = Admin_Filtering_Invoices_ClientName.Text;
+            FilteringInvoicesJobName = Admin_Filtering_Invoices_JobName.Text;
+            FilteringInvoicesIssueDate = Admin_Filtering_Invoices_IssueDate.Date;
+            FilteringInvoicesDueDate = Admin_Filtering_Invoices_DueDate.Date;
+
+            var invoices = await GetPageInvoices();
+
+            All_Invoices_View.ItemsSource = invoices;
+        }
+        
     }
 
     private async void Admin_Job_Filter_CheckBoxChange(object sender, EventArgs e)
