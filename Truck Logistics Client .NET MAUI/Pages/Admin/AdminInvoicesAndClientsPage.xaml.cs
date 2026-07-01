@@ -156,8 +156,6 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     {
         var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Page/{pages.PageNumber}/{pages.PageSize}");
 
-        
-
         if(response.IsSuccessStatusCode)
         {
             var stats = await response.Content.ReadFromJsonAsync<InvoicesResponse>();
@@ -620,6 +618,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         if(Add_Invoice_ClientsView.SelectedItem == null || Add_Invoice_JobsView.SelectedItem == null)
         {
             Add_Invoice_Error_Label.Text = "Choose Client and job.";
+            return;
         }
 
         var SelectedClient = Add_Invoice_ClientsView.SelectedItem as Client;

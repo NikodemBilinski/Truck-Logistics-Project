@@ -72,16 +72,42 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpGet("Get_Invoices_Page/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<List<Invoice>>> GetInvoicesPage(int pageNumber, int pageSize)
+        public async Task<ActionResult<InvoicesResponse>> GetInvoicesPage(int pageNumber, int pageSize, string companyname = null, string jobname = null, DateTime? duedate = null, DateTime? issuedate = null)
         {
-            var invoices = await _datacontext.Invoices
-                .Include(x => x.Client)
+            var query = _datacontext.Invoices
+                .Include(i => i.Client)
                 .Include(x => x.Job)
+                .AsQueryable();
+
+            if(!string.IsNullOrEmpty(companyname))
+            {
+                query = query.Where(i => i.Client.Name.Contains(companyname));
+            }
+            if(!string.IsNullOrEmpty(jobname))
+            {
+                query = query.Where(i => i.Job.Name.Contains(jobname));
+            }
+            if (duedate != null)
+            {
+                query = query.Where(i => i.DueDate.Date == duedate.Value.Date);
+            }
+            if (issuedate != null)
+            {
+                query = query.Where(i => i.IssueDate.Date == issuedate.Value.Date);
+            }
+
+            int invoicescount = await query.CountAsync();
+
+            List<Invoice> invoices = await query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
-
-            return Ok(invoices);
+            
+            return Ok(new InvoicesResponse
+            {
+                Invoices = invoices,
+                Invoices_Count = invoicescount
+            });
         }
 
         [HttpPost("Add_Invoice")]
