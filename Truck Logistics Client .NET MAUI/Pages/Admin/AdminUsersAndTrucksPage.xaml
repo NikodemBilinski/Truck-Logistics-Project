@@ -550,12 +550,12 @@
                             <Label Text="New Password:"/>
                         </VerticalStackLayout>
                         <VerticalStackLayout Grid.Column="1" Spacing="15">
-                            <Entry Text="{Binding FirstName}" Placeholder="First Name" WidthRequest="175" HorizontalOptions="Start"/>
-                            <Entry Text="{Binding LastName}" Placeholder="Last Name" WidthRequest="175" HorizontalOptions="Start"/>
-                            <Entry Text="{Binding Age}" Placeholder="Age" WidthRequest="175" HorizontalOptions="Start"/>
-                            <Entry Text="{Binding Role}" Placeholder="Role" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Edit_User_FirstName" Text="{Binding FirstName}" Placeholder="First Name" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Edit_User_LastName" Text="{Binding LastName}" Placeholder="Last Name" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Edit_User_Age" Text="{Binding Age}" Placeholder="Age" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Edit_User_Role" Text="{Binding Role}" Placeholder="Role" WidthRequest="175" HorizontalOptions="Start"/>
                             <CheckBox IsChecked="{Binding isBusy}"/>
-                            <Entry Text="{Binding Username}" Placeholder="Username" WidthRequest="175" HorizontalOptions="Start"/>
+                            <Entry x:Name="Edit_User_Username" Text="{Binding Username}" Placeholder="Username" WidthRequest="175" HorizontalOptions="Start"/>
                             <Entry x:Name="Edit_User_New_Password"  Placeholder="leave empty to keep current" WidthRequest="200" HorizontalOptions="Start"/>
 
                         </VerticalStackLayout>

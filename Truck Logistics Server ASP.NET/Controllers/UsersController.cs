@@ -126,8 +126,8 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             Console.WriteLine("AddUser: Requested To Add User: " + UserToAdd.Username + ".");
 
-            // validation
-            if(UserToAdd.Role == string.Empty)
+            #region validation
+            if (UserToAdd.Role == string.Empty)
             {
                 UserToAdd.Role = "user";
             }
@@ -167,6 +167,8 @@ namespace TrucksLogisticsServerAPI.Controllers
                 Console.WriteLine("AddUser: Error, Username Already Taken.");
                 return BadRequest("Error: Username already taken.");
             }
+
+            #endregion
 
             UserToAdd.Password = BCrypt.Net.BCrypt.HashPassword(UserToAdd.Password);
 
