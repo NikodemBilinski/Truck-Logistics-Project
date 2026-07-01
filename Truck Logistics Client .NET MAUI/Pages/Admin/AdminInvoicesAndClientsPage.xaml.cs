@@ -171,23 +171,6 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         return new List<Invoice>();
     }
 
-    private async Task<int> CountTotalPagesInvoices()
-    {
-        var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Stats");
-        if(response.IsSuccessStatusCode)
-        {
-            var stats = await response.Content.ReadFromJsonAsync<InvoicesResponse>();
-
-            if(stats != null)
-            {
-                return (int)Math.Ceiling((double)stats.Invoices_Count / pages.PageSize);
-            }
-
-            return 1;
-        }
-        return 1;
-    }
-
     private async void Right_PageInvoices(object sender, EventArgs e)
     {
         if (pages.PageNumber >= pages.TotalPages)
@@ -338,11 +321,8 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Invoice_View.IsVisible = true;
         Invoice_View.IsEnabled = true;
 
-        pages.TotalPages = await CountTotalPagesInvoices();
-
         try
         {
-            pages.TotalPages = await CountTotalPagesInvoices();
             pages.PageNumber = 1;
             var invoices = await GetPageInvoices();
             All_Invoices_View.ItemsSource = invoices;
