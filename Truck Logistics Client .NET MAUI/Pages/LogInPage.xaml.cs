@@ -7,7 +7,6 @@ namespace TrucksLogisticsClient
 {
     public partial class MainPage : ContentPage
     {
-        int count = 0;
 
         private string apiUrl;
 
@@ -37,33 +36,30 @@ namespace TrucksLogisticsClient
                 if(string.IsNullOrEmpty(Login_entry.Text) || string.IsNullOrEmpty(Password_entry.Text))
                 {
                     LoginResultLabel.Text = "Please enter both username and password.";
-                    count++;
-                    if(count >= 10)
-                    {
-                        LoginResultLabel.Text = "stop spamming it you dumbass";
-                        count = 0;
-                    }
-                        return;
+                    
+                    return;
                 }
 
                 LoginResultLabel.Text = "Attempting to log in...";
 
-                var response = await client.PostAsJsonAsync(apiUrl + "Auth/Login", new { Username = Login_entry.Text.ToString(), Password = Password_entry.Text.ToString() });
+                var response = await client.PostAsJsonAsync(apiUrl + "Auth/Login", new { Username = Login_entry.Text, Password = Password_entry.Text });
 
                 if (response.IsSuccessStatusCode)
                 {
                     var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
 
+                    if(result == null)
+                    {
+                        LoginResultLabel.Text = "Error response from server";
+                        return;
+                    }
 
                     Users? user = result.User;
 
                     var token = result.Token;
 
                     await SecureStorage.SetAsync("auth_token", token);
-
-                    var storedToken = await SecureStorage.GetAsync("auth_token");
                     
-
                     if (user != null)
                     {
 
@@ -77,6 +73,10 @@ namespace TrucksLogisticsClient
                         else if(user.Role == "user")
                         {
                             await Shell.Current.GoToAsync($"{nameof(UserMainMenuPage)}?UserID={user.ID}");
+                        }
+                        else
+                        {
+                            LoginResultLabel.Text = "Unknown user role. Please Contact Administrator";
                         }
 
                     }
@@ -93,8 +93,6 @@ namespace TrucksLogisticsClient
                 ErrorButton.IsVisible = true;
                 ErrorButton.IsEnabled = true;
             }
-
-            //LoginResultLabel.Text = string.Empty;
 
         }
 

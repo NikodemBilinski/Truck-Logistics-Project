@@ -23,14 +23,13 @@ namespace TrucksLogisticsServerAPI.Controllers
 
 
         [HttpPost("Login")]
-        public IActionResult Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             Console.WriteLine("Login: Request To Login For User: " + model.Username + ".");
 
-            var userslist = _datacontext.Users.ToList();
             //look for matching username
 
-            var user = userslist.FirstOrDefault(u => u.Username == model.Username);
+            var user = _datacontext.Users.FirstOrDefault(u => u.Username == model.Username);
 
             if ((user == null) || (!BCrypt.Net.BCrypt.Verify(model.Password, user.Password)))
             {
@@ -65,8 +64,15 @@ namespace TrucksLogisticsServerAPI.Controllers
 
             Console.WriteLine("Login: Successfully Logged in " + model.Username + ".");
 
+            var userToReturn = new Users
+            {
+                ID = user.ID,
+                Username = user.Username,
+                Role = user.Role
+            };
+
             // wysylka w paczusce
-            return Ok(new { user, token = tokenstring });
+            return Ok(new { user = userToReturn, token = tokenstring });
         }
     }
 }
