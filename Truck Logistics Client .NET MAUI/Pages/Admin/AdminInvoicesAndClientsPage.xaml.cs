@@ -24,6 +24,21 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private PaginationPage pages = new PaginationPage();
 
+    //filtering 
+
+    //clients
+
+    private string? FilteringClientsName;
+    private string? FilteringClientsNIP;
+    private string? FilteringClientsCountry;
+
+    //invoices
+
+    private string? FilteringInvoicesClientName;
+    private string? FilteringInvoicesJobName;
+    private DateTime? FilteringInvoicesIssueDate = null;
+    private DateTime? FilteringInvoicesDueDate = null;
+
     public AdminInvoicesAndClientsPage()
 	{
 		InitializeComponent();
@@ -114,7 +129,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         if(repsonse.IsSuccessStatusCode) 
         {
-            var stats = await repsonse.Content.ReadFromJsonAsync<ClientsStats>();
+            var stats = await repsonse.Content.ReadFromJsonAsync<ClientsResponse>();
             if(stats != null)
             {
                 Total_Clients_Count.Text = stats.TotalClients.ToString();
@@ -124,7 +139,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         var response = await client.GetAsync(apiUrl + "Invoices/Get_Invoices_Stats");
         if (response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<InvoicesStats>();
+            var stats = await response.Content.ReadFromJsonAsync<InvoicesResponse>();
             if (stats != null)
             {
                 
@@ -139,39 +154,32 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async Task<List<Invoice>> GetPageInvoices()
     {
-        var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Page/{pages.PageNumber}/{pages.PageSize}");
-
-        Invoices_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
-
-        if(response.IsSuccessStatusCode)
+        string duedate = string.Empty;
+        string issuedate = string.Empty;
+        if(FilteringInvoicesDueDate.HasValue)
         {
-            var invoiceslistpage = await response.Content.ReadFromJsonAsync<List<Invoice>>();
-
-            if(invoiceslistpage.Count == 0)
-            {
-                return new List<Invoice>();
-            }
-
-            return invoiceslistpage;
+            duedate = FilteringInvoicesDueDate.Value.ToString("yyyy-MM-dd");
         }
-        return new List<Invoice>();
-    }
+        if(FilteringInvoicesIssueDate.HasValue) 
+        {
+            issuedate = FilteringInvoicesIssueDate.Value.ToString("yyyy-MM-dd");
+        }
+        var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Page/{pages.PageNumber}/{pages.PageSize}" +
+            $"?clientname={Uri.EscapeDataString(FilteringInvoicesClientName)}&jobname={Uri.EscapeDataString(FilteringInvoicesJobName)}&issuedate={issuedate}&duedate={duedate}");
 
-    private async Task<int> CountTotalPagesInvoices()
-    {
-        var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Stats");
         if(response.IsSuccessStatusCode)
         {
-            var stats = await response.Content.ReadFromJsonAsync<InvoicesStats>();
-
+            var stats = await response.Content.ReadFromJsonAsync<InvoicesResponse>();
             if(stats != null)
             {
-                return (int)Math.Ceiling((double)stats.Invoices_Count / pages.PageSize);
-            }
+                pages.TotalPages = (int)Math.Ceiling((double)stats.Invoices_Count / pages.PageSize);
 
-            return 1;
+                Invoices_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+                return stats.Invoices;
+            }
         }
-        return 1;
+        return new List<Invoice>();
     }
 
     private async void Right_PageInvoices(object sender, EventArgs e)
@@ -210,40 +218,23 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     //clients 
     private async Task<List<Client>> GetPageClients()
     {
-        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Page/{pages.PageNumber}/{pages.PageSize}");
+        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Page/{pages.PageNumber}/{pages.PageSize}?nip={FilteringClientsNIP}&name={FilteringClientsName}&country={FilteringClientsCountry}");
 
-        Clients_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
-
-        if (response.IsSuccessStatusCode)
+        if(response.IsSuccessStatusCode)
         {
-            var clientslist = await response.Content.ReadFromJsonAsync<List<Client>>();
-
-            if(clientslist.Count == 0)
+            var stats = await response.Content.ReadFromJsonAsync<ClientsResponse>();
+            if(stats != null)
             {
-                return new List<Client>();
+                pages.TotalPages = (int)Math.Ceiling((double)stats.TotalClients / pages.PageSize);
+
+                Clients_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
+
+                return stats.Clients;
             }
-            return clientslist;
         }
         return new List<Client>();
     }
     
-    private async Task<int> CountTotalPagesClients()
-    {
-        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Stats");
-
-        if (response.IsSuccessStatusCode)
-        {
-            var stats = await response.Content.ReadFromJsonAsync<ClientsStats>();
-
-            if(stats != null)
-            {
-                return (int)Math.Ceiling((double)stats.TotalClients / pages.PageSize);
-            }
-            return 1;
-        }
-        return 1;
-    }
-
     private async void Right_PageClients(object sender, EventArgs e)
     {
         if (pages.PageNumber >= pages.TotalPages)
@@ -280,7 +271,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     #endregion
     // open sections
 
-    private async void Admin_Filtering_Clients_Open(object sender, EventArgs e)
+    private async void Admin_Filtering_Open(object sender, EventArgs e)
     {
         if(Admin_Filtering_Clients_Section.IsVisible)
         {
@@ -291,6 +282,17 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         {
             Admin_Filtering_Clients_Section.IsVisible = true;
             Admin_Filtering_Clients_Section.IsEnabled = true;
+        }
+
+        if(Admin_Filtering_Invoices_Section.IsVisible)
+        {
+            Admin_Filtering_Invoices_Section.IsVisible = false;
+            Admin_Filtering_Invoices_Section.IsEnabled = false;
+        }
+        else
+        {
+            Admin_Filtering_Invoices_Section.IsVisible = true;
+            Admin_Filtering_Invoices_Section.IsEnabled = true;
         }
     }
 
@@ -313,7 +315,6 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         try
         {
-            pages.TotalPages = await CountTotalPagesClients();
             pages.PageNumber = 1;
             var clients = await GetPageClients();
             All_Clients_View.ItemsSource = clients;
@@ -331,11 +332,8 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         Invoice_View.IsVisible = true;
         Invoice_View.IsEnabled = true;
 
-        pages.TotalPages = await CountTotalPagesInvoices();
-
         try
         {
-            pages.TotalPages = await CountTotalPagesInvoices();
             pages.PageNumber = 1;
             var invoices = await GetPageInvoices();
             All_Invoices_View.ItemsSource = invoices;
@@ -611,6 +609,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         if(Add_Invoice_ClientsView.SelectedItem == null || Add_Invoice_JobsView.SelectedItem == null)
         {
             Add_Invoice_Error_Label.Text = "Choose Client and job.";
+            return;
         }
 
         var SelectedClient = Add_Invoice_ClientsView.SelectedItem as Client;
@@ -760,12 +759,96 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async void Admin_Filtering_Refresh(object sender, EventArgs e)
     {
+        if(Admin_Filtering_Clients_Section.IsVisible)
+        {
+            FilteringClientsName = string.Empty;
+            FilteringClientsNIP = string.Empty;
+            FilteringClientsCountry = string.Empty;
 
+            Admin_Filtering_Clients_Name.Text = string.Empty;
+            Admin_Filtering_Clients_NIP.Text = string.Empty;
+            Admin_Filtering_Clients_Country.Text = string.Empty;
+
+            var clients = await GetPageClients();
+
+            All_Clients_View.ItemsSource = clients;
+        }
+        if(Admin_Filtering_Invoices_Section.IsVisible)
+        {
+            FilteringInvoicesIssueDate = null;
+            FilteringInvoicesDueDate = null;
+            FilteringInvoicesJobName = null;
+            FilteringInvoicesClientName = null;
+
+            Admin_Filtering_Invoices_ClientName.Text = string.Empty;
+            Admin_Filtering_Invoices_JobName.Text = string.Empty;
+            Admin_Filtering_Invoices_DueDate.Date = DateTime.Now;
+            Admin_Filtering_Invoices_DueDate_Checkbox.IsChecked = false;
+            Admin_Filtering_Invoices_IssueDate.Date = DateTime.Now;
+            Admin_Filtering_Invoices_IssueDate_Checkbox.IsChecked = false;
+
+            var invoices = await GetPageInvoices();
+
+            All_Invoices_View.ItemsSource = invoices;
+        }
+        
     }
 
-    private async void Admin_Filtering_Clients_Apply(object sender, EventArgs e)
+    private async void Admin_Filtering_Apply(object sender, EventArgs e)
     {
+        if(Client_View.IsVisible)
+        {
+            FilteringClientsName = Admin_Filtering_Clients_Name.Text;
+            FilteringClientsNIP = Admin_Filtering_Clients_NIP.Text;
+            FilteringClientsCountry = Admin_Filtering_Clients_Country.Text;
 
+            var clients = await GetPageClients();
+
+            All_Clients_View.ItemsSource = clients;
+        }
+        else if(Invoice_View.IsVisible)
+        {
+            FilteringInvoicesClientName = Admin_Filtering_Invoices_ClientName.Text;
+            FilteringInvoicesJobName = Admin_Filtering_Invoices_JobName.Text;
+            if (Admin_Filtering_Invoices_DueDate_Checkbox.IsChecked)
+            {
+                FilteringInvoicesDueDate = Admin_Filtering_Invoices_DueDate.Date;
+            }
+            if (Admin_Filtering_Invoices_IssueDate_Checkbox.IsChecked)
+            {
+                FilteringInvoicesIssueDate = Admin_Filtering_Invoices_IssueDate.Date;
+            }
+
+            var invoices = await GetPageInvoices();
+
+            All_Invoices_View.ItemsSource = invoices;
+        }
+        
+    }
+
+    private async void Admin_Invoices_Filter_CheckBoxChange(object sender, EventArgs e)
+    {
+        if(Admin_Filtering_Invoices_DueDate_Checkbox.IsChecked == true)
+        {
+            Admin_Filtering_Invoices_DueDate.IsEnabled = true;
+            FilteringInvoicesDueDate = Admin_Filtering_Invoices_DueDate.Date;
+        }
+        if(Admin_Filtering_Invoices_DueDate_Checkbox.IsChecked == false)
+        {
+            Admin_Filtering_Invoices_DueDate.IsEnabled = false;
+            FilteringInvoicesDueDate = null;
+        }
+
+        if(Admin_Filtering_Invoices_IssueDate_Checkbox.IsChecked == true)
+        {
+            Admin_Filtering_Invoices_IssueDate.IsEnabled = true;
+            FilteringInvoicesIssueDate = Admin_Filtering_Invoices_IssueDate.Date;
+        }
+        if (Admin_Filtering_Invoices_IssueDate_Checkbox.IsChecked == false)
+        {
+            Admin_Filtering_Invoices_IssueDate.IsEnabled = false;
+            FilteringInvoicesIssueDate = null;
+        }
     }
 
 

@@ -47,24 +47,47 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpGet("Get_Clients_Page/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<List<Client>>> GetClientsPage(int pageNumber, int pageSize)
+        public async Task<ActionResult<ClientsResponse>> GetClientsPage(int pageNumber, int pageSize, string nip = null, string name = null, string country = null)
         {
-            var clients = await _dataContext.Clients
+            var query = _dataContext.Clients
                 .Include(x => x.Invoices)
                 .Include(x => x.Jobs)
+                .AsQueryable();
+
+            if(!string.IsNullOrEmpty(nip))
+            {
+                query = query.Where(x => x.NIP.Contains(nip));
+            }
+            if(!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(x => x.Name.Contains(name));
+            }
+            if(!string.IsNullOrEmpty(country))
+            {
+                query = query.Where(x => x.Country.Contains(country));
+            }
+
+            int clientscount = await query.CountAsync();
+
+            var clients = await query
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
 
-            return Ok(clients);
+            return Ok(new ClientsResponse
+            {
+                Clients = clients,
+                TotalClients = clientscount
+            });
+
         }
 
         [HttpGet("Get_Clients_Stats")]
-        public async Task<ActionResult<ClientsStats>> GetClientsStats()
+        public async Task<ActionResult<ClientsResponse>> GetClientsStats()
         {
             var clientcount = await _dataContext.Clients.CountAsync();
 
-            return Ok(new ClientsStats()
+            return Ok(new ClientsResponse()
             {
                 TotalClients = clientcount
             });

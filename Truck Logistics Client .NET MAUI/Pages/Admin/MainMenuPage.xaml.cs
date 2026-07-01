@@ -135,7 +135,7 @@ public partial class MainMenuPage : ContentPage
         if(response.IsSuccessStatusCode)
         {
 
-            var stats = await response.Content.ReadFromJsonAsync<InvoicesStats>();
+            var stats = await response.Content.ReadFromJsonAsync<InvoicesResponse>();
 
             if(stats != null)
             {
