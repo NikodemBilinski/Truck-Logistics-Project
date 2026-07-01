@@ -36,8 +36,8 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private string? FilteringInvoicesClientName;
     private string? FilteringInvoicesJobName;
-    private DateTime? FilteringInvoicesIssueDate;
-    private DateTime? FilteringInvoicesDueDate;
+    private DateTime? FilteringInvoicesIssueDate = null;
+    private DateTime? FilteringInvoicesDueDate = null;
 
     public AdminInvoicesAndClientsPage()
 	{
@@ -154,8 +154,18 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async Task<List<Invoice>> GetPageInvoices()
     {
+        string duedate = string.Empty;
+        string issuedate = string.Empty;
+        if(FilteringInvoicesDueDate.HasValue)
+        {
+            duedate = FilteringInvoicesDueDate.Value.ToString("yyyy-MM-dd");
+        }
+        if(FilteringInvoicesIssueDate.HasValue) 
+        {
+            issuedate = FilteringInvoicesIssueDate.Value.ToString("yyyy-MM-dd");
+        }
         var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Page/{pages.PageNumber}/{pages.PageSize}" +
-            $"?clientname={FilteringInvoicesClientName}&jobname={FilteringInvoicesJobName}&issuedate={FilteringInvoicesIssueDate}&duedate={FilteringInvoicesDueDate}");
+            $"?clientname={Uri.EscapeDataString(FilteringInvoicesClientName)}&jobname={Uri.EscapeDataString(FilteringInvoicesJobName)}&issuedate={issuedate}&duedate={duedate}");
 
         if(response.IsSuccessStatusCode)
         {
@@ -773,7 +783,9 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             Admin_Filtering_Invoices_ClientName.Text = string.Empty;
             Admin_Filtering_Invoices_JobName.Text = string.Empty;
             Admin_Filtering_Invoices_DueDate.Date = DateTime.Now;
+            Admin_Filtering_Invoices_DueDate_Checkbox.IsChecked = false;
             Admin_Filtering_Invoices_IssueDate.Date = DateTime.Now;
+            Admin_Filtering_Invoices_IssueDate_Checkbox.IsChecked = false;
 
             var invoices = await GetPageInvoices();
 
@@ -798,8 +810,14 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         {
             FilteringInvoicesClientName = Admin_Filtering_Invoices_ClientName.Text;
             FilteringInvoicesJobName = Admin_Filtering_Invoices_JobName.Text;
-            FilteringInvoicesIssueDate = Admin_Filtering_Invoices_IssueDate.Date;
-            FilteringInvoicesDueDate = Admin_Filtering_Invoices_DueDate.Date;
+            if (Admin_Filtering_Invoices_DueDate_Checkbox.IsChecked)
+            {
+                FilteringInvoicesDueDate = Admin_Filtering_Invoices_DueDate.Date;
+            }
+            if (Admin_Filtering_Invoices_IssueDate_Checkbox.IsChecked)
+            {
+                FilteringInvoicesIssueDate = Admin_Filtering_Invoices_IssueDate.Date;
+            }
 
             var invoices = await GetPageInvoices();
 
@@ -808,7 +826,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         
     }
 
-    private async void Admin_Job_Filter_CheckBoxChange(object sender, EventArgs e)
+    private async void Admin_Invoices_Filter_CheckBoxChange(object sender, EventArgs e)
     {
         if(Admin_Filtering_Invoices_DueDate_Checkbox.IsChecked == true)
         {

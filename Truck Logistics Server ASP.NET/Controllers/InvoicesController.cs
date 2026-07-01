@@ -72,26 +72,26 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         [HttpGet("Get_Invoices_Page/{pageNumber}/{pageSize}")]
-        public async Task<ActionResult<InvoicesResponse>> GetInvoicesPage(int pageNumber, int pageSize, string companyname = null, string jobname = null, DateTime? duedate = null, DateTime? issuedate = null)
+        public async Task<ActionResult<InvoicesResponse>> GetInvoicesPage(int pageNumber, int pageSize, string clientname = null, string jobname = null, DateTime? duedate = null, DateTime? issuedate = null)
         {
             var query = _datacontext.Invoices
                 .Include(i => i.Client)
                 .Include(x => x.Job)
                 .AsQueryable();
 
-            if(!string.IsNullOrEmpty(companyname))
+            if(!string.IsNullOrEmpty(clientname))
             {
-                query = query.Where(i => i.Client.Name.Contains(companyname));
+                query = query.Where(i => i.Client.Name.Contains(clientname));
             }
             if(!string.IsNullOrEmpty(jobname))
             {
                 query = query.Where(i => i.Job.Name.Contains(jobname));
             }
-            if (duedate != null)
+            if(duedate != null)
             {
                 query = query.Where(i => i.DueDate.Date == duedate.Value.Date);
             }
-            if (issuedate != null)
+            if(issuedate != null)
             {
                 query = query.Where(i => i.IssueDate.Date == issuedate.Value.Date);
             }
