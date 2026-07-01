@@ -48,16 +48,18 @@ namespace TrucksLogisticsClient
                 {
                     var result = await response.Content.ReadFromJsonAsync<LoginResponse>();
 
+                    if(result == null)
+                    {
+                        LoginResultLabel.Text = "Error response from server";
+                        return;
+                    }
 
                     Users? user = result.User;
 
                     var token = result.Token;
 
                     await SecureStorage.SetAsync("auth_token", token);
-
-                    var storedToken = await SecureStorage.GetAsync("auth_token");
                     
-
                     if (user != null)
                     {
 
@@ -71,6 +73,10 @@ namespace TrucksLogisticsClient
                         else if(user.Role == "user")
                         {
                             await Shell.Current.GoToAsync($"{nameof(UserMainMenuPage)}?UserID={user.ID}");
+                        }
+                        else
+                        {
+                            LoginResultLabel.Text = "Unknown user role. Please Contact Administrator";
                         }
 
                     }
