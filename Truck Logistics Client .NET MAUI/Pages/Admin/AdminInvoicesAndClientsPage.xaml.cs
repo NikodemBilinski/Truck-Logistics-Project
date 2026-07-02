@@ -165,7 +165,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             issuedate = FilteringInvoicesIssueDate.Value.ToString("yyyy-MM-dd");
         }
         var response = await client.GetAsync(apiUrl + $"Invoices/Get_Invoices_Page/{pages.PageNumber}/{pages.PageSize}" +
-            $"?clientname={Uri.EscapeDataString(FilteringInvoicesClientName)}&jobname={Uri.EscapeDataString(FilteringInvoicesJobName)}&issuedate={issuedate}&duedate={duedate}");
+            $"?clientname={Uri.EscapeDataString(FilteringInvoicesClientName ?? "")}&jobname={Uri.EscapeDataString(FilteringInvoicesJobName ?? "")}&issuedate={issuedate}&duedate={duedate}");
 
         if(response.IsSuccessStatusCode)
         {
