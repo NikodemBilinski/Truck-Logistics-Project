@@ -538,6 +538,43 @@ public partial class AdminJobsPage : ContentPage
                 selectedjob.AssignedUserId = null;
             }
 
+            #region validation
+            if(string.IsNullOrEmpty(selectedjob.Name))
+            {
+                Edit_Job_Error_Label.Text = "Job Name is empty!";
+                return;
+            }
+            if(string.IsNullOrEmpty(selectedjob.CompanyName))
+            {
+                Edit_Job_Error_Label.Text = "Job Company Name is empty!";
+                return;
+            }
+            if(string.IsNullOrEmpty(selectedjob.ClientContactNumber))
+            {
+                Edit_Job_Error_Label.Text = "Job Client Contact Number is empty!";
+                return;
+            }
+            if(selectedjob.DeadLine == DateTime.Now || selectedjob.DeadLine < DateTime.Now)
+            {
+                Edit_Job_Error_Label.Text = "Selected Deadline date is invalid.";
+                return;
+            }
+            if(string.IsNullOrEmpty(selectedjob.LocationFrom))
+            {
+                Edit_Job_Error_Label.Text = "Job Location From is empty!";
+                return;
+            }
+            if(string.IsNullOrEmpty(selectedjob.LocationTo))
+            {
+                Edit_Job_Error_Label.Text = "Job Location To is empty!";
+                return;
+            }
+            if(selectedjob.RequiredMinimumCapacity <= 0)
+            {
+                Edit_Job_Error_Label.Text = "Job Required Minimum Capacity is below zero";
+                return;
+            }
+            #endregion
 
             var response = await client.PutAsJsonAsync(apiUrl + "Jobs/Update_Job/" + selectedjob.ID, selectedjob);
 
