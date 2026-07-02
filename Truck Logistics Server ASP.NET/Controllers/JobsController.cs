@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Validation;
+using System.Runtime.CompilerServices;
 using TrucksLogisticsClient.Models.Helping_Models;
 using TrucksLogisticsServerAPI.Data;
 using TrucksLogisticsServerAPI.Models;
@@ -188,6 +189,42 @@ namespace TrucksLogisticsServerAPI.Controllers
             Console.WriteLine("AddJob: Requested To Add Job: " + JobToAdd.Name + ".");
             if (JobToAdd != null)
             {
+                #region validation
+                if(string.IsNullOrEmpty(JobToAdd.Name))
+                {
+                    return BadRequest("Job Name is empty!");
+                }
+                if(string.IsNullOrEmpty(JobToAdd.CompanyName))
+                {
+                    return BadRequest("Job Company Name is empty!");
+                }
+                if(string.IsNullOrEmpty(JobToAdd.ClientContactNumber))
+                {
+                    return BadRequest("Job Client Contact Number is empty!");
+                }
+
+                if(JobToAdd.DeadLine <= DateTime.Now)
+                {
+                    return BadRequest("Deadline date is invalid.");
+                }
+
+                if(string.IsNullOrEmpty(JobToAdd.LocationFrom))
+                {
+                    return BadRequest("Job Location From is empty!");
+                }
+                if(string.IsNullOrEmpty(JobToAdd.LocationTo))
+                {
+                    return BadRequest("Job Location To is empty!");
+                }
+                if(JobToAdd.RequiredMinimumCapacity <= 0)
+                {
+                    return BadRequest("Job Required Minimum Capacity is below 0!");
+                }
+                if(string.IsNullOrEmpty(JobToAdd.RequiredTruckBrand))
+                {
+                    JobToAdd.RequiredTruckBrand = "all";
+                }
+                #endregion
                 _dataContext.Jobs.Add(JobToAdd);
                 await _dataContext.SaveChangesAsync();
                 Console.WriteLine("AddJob: Added Job: " + JobToAdd.ID + ". " + JobToAdd.Name + ", To Database.");
