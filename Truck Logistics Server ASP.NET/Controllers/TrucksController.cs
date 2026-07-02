@@ -105,31 +105,38 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             Console.WriteLine("AddTruck: Requested To Add Truck.");
 
-            var trucklist = await _dataContext.Trucks.ToListAsync();
-
-            if (TruckToAdd != null)
+            #region validation
+            if (TruckToAdd == null)
             {
-                if (!trucklist.Any(x => x.Name == TruckToAdd.Name))
-                {
-                    _dataContext.Trucks.Add(TruckToAdd);
-
-                    await _dataContext.SaveChangesAsync();
-
-                    Console.WriteLine("AddTruck: Added Truck: " + TruckToAdd.Id + ". " + TruckToAdd.Name + ", To Database.");
-
-                    return Ok("Successfully added truck.");
-                }
-                else
-                {
-                    return BadRequest("Error: Name already taken.");
-                }
-
-            }
-            else
-            {
-                return BadRequest("Error: Truck cannot be null.");
+                return BadRequest("Truck to add is null");
             }
 
+            if (string.IsNullOrEmpty(TruckToAdd.Name))
+            {
+                return BadRequest("Truck Name is empty!");
+            }
+
+            bool ismatching = await _dataContext.Trucks.AnyAsync(x => x.Name == TruckToAdd.Name);
+
+            if(ismatching)
+            {
+                return BadRequest("Truck Name is already taken");
+            }
+            if(string.IsNullOrEmpty(TruckToAdd.brand))
+            {
+                return BadRequest("Truck Brand is empty!");
+            }
+            if(TruckToAdd.Capacity <= 0)
+            {
+                return BadRequest("Truck Capacity is below 0!");
+            }
+            #endregion
+
+            _dataContext.Trucks.Add(TruckToAdd);
+
+            await _dataContext.SaveChangesAsync();
+
+            return Ok("Truck successfully added to the database");
 
         }
 
