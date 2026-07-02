@@ -84,7 +84,6 @@ public partial class AdminUsersAndTrucksPage : ContentPage
                     CurrentUser = result;
                     isUserDataFetched = true;
 
-                    //Welcome_User_Label.Text = CurrentUser.Username;
                 }
             }
             this.BindingContext = CurrentUser;
@@ -198,14 +197,14 @@ public partial class AdminUsersAndTrucksPage : ContentPage
 
         if (response.IsSuccessStatusCode)
         {
-            var stats = response.Content.ReadFromJsonAsync<UsersResponse>();
+            var stats = await response.Content.ReadFromJsonAsync<UsersResponse>();
             if(stats != null)
             {
-                pages.TotalPages = (int)Math.Ceiling((double)stats.Result.Users_Count / pages.PageSize);
+                pages.TotalPages = (int)Math.Ceiling((double)stats.Users_Count / pages.PageSize);
 
                 Users_Page_Label.Text = $"{pages.PageNumber} / {pages.TotalPages}";
 
-                return stats.Result.Users;
+                return stats.Users;
             }
         }
 
@@ -315,7 +314,6 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         await Hide_Everything();
         try
         {
-            //pages.TotalPages = await CountTotalPagesUsers();
             pages.PageNumber = 1;
             var users = await GetPageUsers();
             Get_All_Users_View.ItemsSource = users;
@@ -381,6 +379,7 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         }
 
     }
+
     private async void Admin_Show_Users_Trucks_Overview(object sender, EventArgs e)
     {
         await Get_Overview_Stats();
@@ -401,6 +400,11 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         var allLanguages = await Get_Languages();
 
         var allTrucks = await client.GetFromJsonAsync<List<Truck>>(apiUrl + "Trucks/Get_Trucks");
+
+        if (selecteduser == null)
+        {
+            return;
+        }
 
         //clear selected languages and trucks lists if it was used before
         SelectedTrucks.Clear();
@@ -441,14 +445,13 @@ public partial class AdminUsersAndTrucksPage : ContentPage
             All_Languages_View.ItemsSource = allLanguages;
         }
 
-        if (selecteduser != null)
-        {
-            EditUserLabelHeader.Text = "Edit user " + selecteduser.Username;
-            Edit_User_Section.IsEnabled = true;
-            Edit_User_Section.IsVisible = true;
+        
+        EditUserLabelHeader.Text = "Edit user " + selecteduser.Username;
+        Edit_User_Section.IsEnabled = true;
+        Edit_User_Section.IsVisible = true;
 
-            Edit_User_Section.BindingContext = selecteduser;
-        }
+        Edit_User_Section.BindingContext = selecteduser;
+        
     }
 
     private async void Admin_Trucks_View_Selected(object sender, SelectionChangedEventArgs e)
@@ -598,11 +601,38 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         var selectedlanguages = SelectedLanguages;
         if (selecteduser != null)
         {
-
-            if(!string.IsNullOrEmpty(Edit_User_New_Password.Text))
+            #region validation
+            if (!string.IsNullOrEmpty(Edit_User_New_Password.Text))
             {
                 selecteduser.Password = Edit_User_New_Password.Text;
             }
+            if(string.IsNullOrEmpty(Edit_User_FirstName.Text))
+            {
+                EditUserLabelMain.Text = "First name is empty!";
+                return;
+            }
+            if(string.IsNullOrEmpty(Edit_User_LastName.Text))
+            {
+                EditUserLabelMain.Text = "Last name is empty!";
+                return;
+            }
+            if(string.IsNullOrEmpty(Edit_User_Age.Text) || !int.TryParse(Edit_User_Age.Text, out int age))
+            {
+                EditUserLabelMain.Text = "Age is empty or not a number!";
+                return;
+            }
+            if(string.IsNullOrEmpty(Edit_User_Role.Text) || (Edit_User_Role.Text.ToLower() != "user" && Edit_User_Role.Text.ToLower() != "admin"))
+            {
+                EditUserLabelMain.Text = "Role is empty or not either user or admin!";
+                return;
+            }
+            if(string.IsNullOrEmpty(Edit_User_Username.Text))
+            {
+                EditUserLabelMain.Text = "Username is empty!";
+                return;
+            }
+            #endregion
+
             var result = await client.PutAsJsonAsync(apiUrl + "Users/Update_User/" + selecteduser.ID, selecteduser);
 
             //http put update languages
@@ -615,9 +645,9 @@ public partial class AdminUsersAndTrucksPage : ContentPage
             }
             else
             {
-                Debug.WriteLine("Failed to update user. Status code: " + result.Content.ReadAsStringAsync());
-                Debug.WriteLine("Failed to update user. Status code: " + result2.Content.ReadAsStringAsync());
-                Debug.WriteLine("Failed to update user. Status code: " + result3.Content.ReadAsStringAsync());
+                Debug.WriteLine("Failed to update user. Status code: " + await result.Content.ReadAsStringAsync());
+                Debug.WriteLine("Failed to update user. Status code: " + await result2.Content.ReadAsStringAsync());
+                Debug.WriteLine("Failed to update user. Status code: " + await result3.Content.ReadAsStringAsync());
                 EditUserLabelMain.Text = await result.Content.ReadAsStringAsync() + "\n" + await result2.Content.ReadAsStringAsync()
                     + "\n" + await result3.Content.ReadAsStringAsync();
             }
@@ -640,8 +670,26 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     private async void Admin_Save_Truck_Edit(object sender, EventArgs e)
     {
         var selectedtruck = Edit_Truck_Section.BindingContext as Truck;
+
         if (selectedtruck != null)
         {
+            #region validation
+            if(string.IsNullOrEmpty(selectedtruck.Name))
+            {
+                EditTruckLabelMain.Text = "Truck Name is empty!";
+                return;
+            }
+            if(string.IsNullOrEmpty(selectedtruck.brand))
+            {
+                EditTruckLabelMain.Text = "Truck Brand is empty!";
+                return;
+            }
+            if(selectedtruck.Capacity <= 0)
+            {
+                EditTruckLabelMain.Text = "Truck Capacity cant be below 0!";
+                return;
+            }
+            #endregion
             var result = await client.PutAsJsonAsync(apiUrl + "Trucks/Update_Truck/" + selectedtruck.Id, selectedtruck);
             if (result.IsSuccessStatusCode)
             {
@@ -802,9 +850,9 @@ public partial class AdminUsersAndTrucksPage : ContentPage
         FilteringUsersUsername = Admin_Filtering_Users_Username.Text;
         FilteringUsersStatus = Admin_Filtering_Users_Status.Text;
 
-        var jobs = await GetPageUsers();
+        var users = await GetPageUsers();
 
-        Get_All_Users_View.ItemsSource = jobs;
+        Get_All_Users_View.ItemsSource = users;
 
     }
 

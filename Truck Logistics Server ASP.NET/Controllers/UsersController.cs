@@ -125,21 +125,50 @@ namespace TrucksLogisticsServerAPI.Controllers
         public async Task<ActionResult<Users>> AddUser(Users UserToAdd)
         {
             Console.WriteLine("AddUser: Requested To Add User: " + UserToAdd.Username + ".");
-            var userslist = await _dataContext.Users.ToListAsync();
 
-            UserToAdd.Role.ToLower();
-
-            if (UserToAdd.Role == string.Empty || (UserToAdd.Role != "admin" && UserToAdd.Role != "user"))
+            #region validation
+            if (UserToAdd.Role == string.Empty)
             {
                 UserToAdd.Role = "user";
             }
 
+            UserToAdd.Role = UserToAdd.Role.ToLower();
+
+            if ( (UserToAdd.Role != "admin" && UserToAdd.Role != "user"))
+            {
+                UserToAdd.Role = "user";
+            }
+            if(string.IsNullOrEmpty(UserToAdd.FirstName))
+            {
+                return BadRequest("First Name is Empty!");
+            }
+            if(string.IsNullOrEmpty(UserToAdd.LastName))
+            {
+                return BadRequest("Last Name is Empty!");
+            }
+            if(UserToAdd.Age <= 0 || UserToAdd.Age > 120)
+            {
+                return BadRequest("Age is either empty or not realistic!");
+            }
+            if(string.IsNullOrEmpty(UserToAdd.Username))
+            {
+                return BadRequest("Username is Empty!");
+            }
+            if(string.IsNullOrEmpty(UserToAdd.Password) || UserToAdd.Password.Length <= 6)
+            {
+                return BadRequest("Password is Empty or too short (at least 6 characters).");
+            }
+
             // check if the username already exist
-            if (userslist.Any(x => x.Username == UserToAdd.Username))
+            bool usernameExists = await _dataContext.Users.AnyAsync(x => x.Username == UserToAdd.Username);
+
+            if (usernameExists)
             {
                 Console.WriteLine("AddUser: Error, Username Already Taken.");
                 return BadRequest("Error: Username already taken.");
             }
+
+            #endregion
 
             UserToAdd.Password = BCrypt.Net.BCrypt.HashPassword(UserToAdd.Password);
 
@@ -224,7 +253,25 @@ namespace TrucksLogisticsServerAPI.Controllers
                 return NotFound("Error: User with the specified ID not found.");
             }
 
-            //skidibi toilet lepszy sposub
+            #region validation
+            if(string.IsNullOrEmpty(updatedUser.FirstName))
+            {
+                return BadRequest("First Name is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedUser.LastName))
+            {
+                return BadRequest("Last Name is empty!");
+            }
+            if(updatedUser.Age <= 0 || updatedUser.Age > 120)
+            {
+                return BadRequest("Age should be real");
+            }
+            if(string.IsNullOrEmpty(updatedUser.Username))
+            {
+                return BadRequest("Username is empty!");
+            }
+
+            //checking if username is avaiable
             bool ismatching = await _dataContext.Users.AnyAsync(x => x.Username == updatedUser.Username && x.ID != updatedUser.ID);
 
             if (ismatching)
@@ -232,10 +279,12 @@ namespace TrucksLogisticsServerAPI.Controllers
                 Console.WriteLine("UpdateUser: Error, There is already user with that Username.");
                 return BadRequest("Error: There is already user with that Username.");
             }
-            if(user.Password != updatedUser.Password)
+            if (user.Password != updatedUser.Password)
             {
                 user.Password = BCrypt.Net.BCrypt.HashPassword(updatedUser.Password);
             }
+
+            #endregion
 
             // Update user properties
             user.Username = updatedUser.Username;
