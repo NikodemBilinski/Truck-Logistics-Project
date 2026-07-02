@@ -670,8 +670,26 @@ public partial class AdminUsersAndTrucksPage : ContentPage
     private async void Admin_Save_Truck_Edit(object sender, EventArgs e)
     {
         var selectedtruck = Edit_Truck_Section.BindingContext as Truck;
+
         if (selectedtruck != null)
         {
+            #region validation
+            if(string.IsNullOrEmpty(selectedtruck.Name))
+            {
+                EditTruckLabelMain.Text = "Truck Name is empty!";
+                return;
+            }
+            if(string.IsNullOrEmpty(selectedtruck.brand))
+            {
+                EditTruckLabelMain.Text = "Truck Brand is empty!";
+                return;
+            }
+            if(selectedtruck.Capacity <= 0)
+            {
+                EditTruckLabelMain.Text = "Truck Capacity cant be below 0!";
+                return;
+            }
+            #endregion
             var result = await client.PutAsJsonAsync(apiUrl + "Trucks/Update_Truck/" + selectedtruck.Id, selectedtruck);
             if (result.IsSuccessStatusCode)
             {
