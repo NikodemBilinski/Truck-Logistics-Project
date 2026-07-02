@@ -428,6 +428,7 @@ public partial class AdminJobsPage : ContentPage
     {
         Job JobToAdd = new Job();
 
+        #region validation
         if (string.IsNullOrEmpty(Admin_Add_Job_Name.Text))
         {
             Add_Job_Error_Label.Text = "Job Name is empty!";
@@ -476,6 +477,7 @@ public partial class AdminJobsPage : ContentPage
             Add_Job_Error_Label.Text = "Choose client.";
             return;
         }
+        #endregion
         // get selected languages and convert to string separated by comma
 
         var selectedlanguagesstring = string.Join(",", SelectedLanguages.Select(x => x.Name));
@@ -543,7 +545,7 @@ public partial class AdminJobsPage : ContentPage
             if (response.IsSuccessStatusCode)
             {
                 Edit_Job_Error_Label.Text = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine("Truck updated successfully.");
+                Debug.WriteLine("Job updated successfully.");
             }
             else
             {
