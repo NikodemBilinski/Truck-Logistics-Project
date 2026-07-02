@@ -139,12 +139,32 @@ namespace TrucksLogisticsServerAPI.Controllers
         public async Task<ActionResult<Truck>> UpdateTruck(int id, Truck updatedTruck)
         {
             Console.WriteLine("UpdateTruck: Request to update truck with ID: " + id);
+
+            #region validation
             var truck = await _dataContext.Trucks.FindAsync(id);
             if (truck == null)
             {
                 Console.WriteLine("UpdateTruck: Error, Truck with the specified ID not found.");
                 return NotFound("Error: Truck with the specified ID not found.");
             }
+            if(updatedTruck == null)
+            {
+                return BadRequest("Truck to update is null");
+            }
+            if(string.IsNullOrEmpty(updatedTruck.Name))
+            {
+                return BadRequest("Truck Name is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedTruck.brand))
+            {
+                return BadRequest("Truck Brand is empty!");
+            }
+            if(updatedTruck.Capacity <= 0)
+            {
+                return BadRequest("Truck Capacity is below zero!");
+            }
+            #endregion
+
             // Update truck properties
             truck.Name = updatedTruck.Name;
             truck.brand = updatedTruck.brand;
