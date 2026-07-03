@@ -486,6 +486,11 @@ public partial class AdminJobsPage : ContentPage
             Add_Job_Error_Label.Text = "Choose client.";
             return;
         }
+        if (Admin_Add_Job_DeadLine.Date <= DateTime.Now || !Admin_Add_Job_DeadLine.Date.HasValue)
+        {
+            Edit_Job_Error_Label.Text = "Selected Deadline date is invalid.";
+            return;
+        }
         #endregion
         // get selected languages and convert to string separated by comma
 
@@ -496,7 +501,7 @@ public partial class AdminJobsPage : ContentPage
         JobToAdd.CompanyName = Admin_Add_Job_CompanyName.Text;
         JobToAdd.ClientContactNumber = Admin_Add_Job_ClientContact.Text;
         JobToAdd.Created = DateTime.Now;
-        JobToAdd.DeadLine = (DateTime)Admin_Add_Job_DeadLine.Date;
+        JobToAdd.DeadLine = Admin_Add_Job_DeadLine.Date.Value;
         JobToAdd.LocationFrom = Admin_Add_Job_LocationFrom.Text;
         JobToAdd.LocationTo = Admin_Add_Job_LocationTo.Text;
         JobToAdd.Status = "open";
