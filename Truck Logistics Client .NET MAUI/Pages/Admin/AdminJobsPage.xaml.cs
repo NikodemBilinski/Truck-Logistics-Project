@@ -96,7 +96,7 @@ public partial class AdminJobsPage : ContentPage
     private async Task Hide_Everything()
     {
         Overview_Section.IsVisible = false;
-        Overview_Section.IsVisible = false;
+        Overview_Section.IsEnabled = false;
 
         Jobs_View.IsVisible = false;
         Jobs_View.IsEnabled = false;
