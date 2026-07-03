@@ -246,7 +246,7 @@ public partial class AdminJobsPage : ContentPage
             Debug.WriteLine(date);
         }
 
-        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?searchname={jobSearchNameFilter}&status={jobStatusFilter}&creationdate={date}");
+        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?searchname={Uri.EscapeDataString(jobSearchNameFilter ?? "")}&status={jobStatusFilter}&creationdate={date}");
 
         if (response.IsSuccessStatusCode)
         {
@@ -362,13 +362,17 @@ public partial class AdminJobsPage : ContentPage
     {
         await Hide_Everything();
         var selectedJob = e.CurrentSelection.FirstOrDefault() as Job;
-        if (selectedJob != null)
+
+        if(selectedJob == null)
         {
-            Edit_Job_Section_Header.Text = "Edit job " + selectedJob.Name;
-            Edit_Job_Section.IsEnabled = true;
-            Edit_Job_Section.IsVisible = true;
-            Edit_Job_Section.BindingContext = selectedJob;
+            return;
         }
+         
+        Edit_Job_Section_Header.Text = "Edit job " + selectedJob.Name;
+        Edit_Job_Section.IsEnabled = true;
+        Edit_Job_Section.IsVisible = true;
+        Edit_Job_Section.BindingContext = selectedJob;
+        
 
         SelectedLanguages.Clear();
         var alllanguages = await Get_Languages();
@@ -397,6 +401,11 @@ public partial class AdminJobsPage : ContentPage
             if (response.IsSuccessStatusCode)
             {
                 var userslist = await response.Content.ReadFromJsonAsync<List<Users>>();
+
+                if(userslist == null)
+                {
+                    return;
+                }
 
                 Admin_Edit_Job_Users_View.ItemsSource = userslist;
 
@@ -475,11 +484,6 @@ public partial class AdminJobsPage : ContentPage
         if (Admin_Add_Job_Clients_View.SelectedItem == null)
         {
             Add_Job_Error_Label.Text = "Choose client.";
-            return;
-        }
-        if(string.IsNullOrEmpty(Admin_Add_Job_Description.Text))
-        {
-            Add_Job_Error_Label.Text = "Job Description is empty!";
             return;
         }
         #endregion
