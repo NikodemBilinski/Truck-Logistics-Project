@@ -449,7 +449,7 @@ public partial class AdminJobsPage : ContentPage
             Add_Job_Error_Label.Text = "Location From and Location To cannot be empty!";
             return;
         }
-        if (Admin_Add_Job_RequiredTruckBrand.Text == null)
+        if (string.IsNullOrEmpty(Admin_Add_Job_RequiredTruckBrand.Text))
         {
             JobToAdd.RequiredTruckBrand = "all";
         }
@@ -462,12 +462,12 @@ public partial class AdminJobsPage : ContentPage
             Add_Job_Error_Label.Text = "Select at least one required language!";
             return;
         }
-        if (Admin_Add_Job_ClientContact.Text == null)
+        if (string.IsNullOrEmpty(Admin_Add_Job_ClientContact.Text))
         {
             Add_Job_Error_Label.Text = "Add Client contact number!";
             return;
         }
-        if (Admin_Add_Job_CompanyName.Text == null)
+        if (string.IsNullOrEmpty(Admin_Add_Job_CompanyName.Text))
         {
             Add_Job_Error_Label.Text = "Add Client Company Name!";
             return;
