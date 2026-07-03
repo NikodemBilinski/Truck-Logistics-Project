@@ -224,6 +224,10 @@ namespace TrucksLogisticsServerAPI.Controllers
                 {
                     JobToAdd.RequiredTruckBrand = "all";
                 }
+                if(string.IsNullOrEmpty(JobToAdd.Description))
+                {
+                   return BadRequest("Job Description is empty!");
+                }
                 #endregion
                 _dataContext.Jobs.Add(JobToAdd);
                 await _dataContext.SaveChangesAsync();

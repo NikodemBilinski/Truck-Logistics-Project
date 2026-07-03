@@ -477,6 +477,11 @@ public partial class AdminJobsPage : ContentPage
             Add_Job_Error_Label.Text = "Choose client.";
             return;
         }
+        if(string.IsNullOrEmpty(Admin_Add_Job_Description.Text))
+        {
+            Add_Job_Error_Label.Text = "Job Description is empty!";
+            return;
+        }
         #endregion
         // get selected languages and convert to string separated by comma
 
@@ -572,6 +577,11 @@ public partial class AdminJobsPage : ContentPage
             if(selectedjob.RequiredMinimumCapacity <= 0)
             {
                 Edit_Job_Error_Label.Text = "Job Required Minimum Capacity is below zero";
+                return;
+            }
+            if(string.IsNullOrEmpty(selectedjob.Description))
+            {
+                Edit_Job_Error_Label.Text = "Job Description is empty!";
                 return;
             }
             #endregion
