@@ -248,11 +248,56 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             var job = await _dataContext.Jobs.FindAsync(id);
 
+            #region validation
             if (job == null)
             {
                 Console.WriteLine("UpdateJob: Error, Job with the specified ID not found.");
                 return BadRequest("Job with the specified ID not found.");
             }
+            if(updatedJob == null)
+            {
+                Console.WriteLine("UpdateJob: Error, Updated Job cannot be null.");
+                return BadRequest("Updated Job cannot be null.");
+            }
+
+            if(string.IsNullOrEmpty(updatedJob.Name))
+            {
+                return BadRequest("Job Name is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedJob.CompanyName))
+            {
+                return BadRequest("Job Company Name is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedJob.ClientContactNumber))
+            {
+                return BadRequest("Job Client Contact Number is empty!");
+            }
+            if(updatedJob.DeadLine <= DateTime.Now)
+            {
+                return BadRequest("Deadline date is invalid.");
+            }
+            if(string.IsNullOrEmpty(updatedJob.LocationFrom))
+            {
+                return BadRequest("Job Location From is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedJob.LocationTo))
+            {
+                return BadRequest("Job Location To is empty!");
+            }
+            if(updatedJob.RequiredMinimumCapacity <= 0)
+            {
+                return BadRequest("Job Required Minimum Capacity is below 0!");
+            }
+            if(string.IsNullOrEmpty(updatedJob.RequiredTruckBrand))
+            {
+                updatedJob.RequiredTruckBrand = "all";
+            }
+            if(string.IsNullOrEmpty(updatedJob.Description))
+            {
+                return BadRequest("Job Description is empty!");
+            }
+
+            #endregion
             job.Name = updatedJob.Name;
             job.CompanyName = updatedJob.CompanyName;
             job.ClientContactNumber = updatedJob.ClientContactNumber;
