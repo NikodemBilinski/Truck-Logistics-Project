@@ -96,7 +96,7 @@ public partial class AdminJobsPage : ContentPage
     private async Task Hide_Everything()
     {
         Overview_Section.IsVisible = false;
-        Overview_Section.IsVisible = false;
+        Overview_Section.IsEnabled = false;
 
         Jobs_View.IsVisible = false;
         Jobs_View.IsEnabled = false;
@@ -246,7 +246,7 @@ public partial class AdminJobsPage : ContentPage
             Debug.WriteLine(date);
         }
 
-        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?searchname={jobSearchNameFilter}&status={jobStatusFilter}&creationdate={date}");
+        var response = await client.GetAsync(apiUrl + $"Jobs/Get_Jobs_Page/{pages.PageNumber}/{pages.PageSize}?searchname={Uri.EscapeDataString(jobSearchNameFilter ?? "")}&status={jobStatusFilter}&creationdate={date}");
 
         if (response.IsSuccessStatusCode)
         {
@@ -362,13 +362,17 @@ public partial class AdminJobsPage : ContentPage
     {
         await Hide_Everything();
         var selectedJob = e.CurrentSelection.FirstOrDefault() as Job;
-        if (selectedJob != null)
+
+        if(selectedJob == null)
         {
-            Edit_Job_Section_Header.Text = "Edit job " + selectedJob.Name;
-            Edit_Job_Section.IsEnabled = true;
-            Edit_Job_Section.IsVisible = true;
-            Edit_Job_Section.BindingContext = selectedJob;
+            return;
         }
+         
+        Edit_Job_Section_Header.Text = "Edit job " + selectedJob.Name;
+        Edit_Job_Section.IsEnabled = true;
+        Edit_Job_Section.IsVisible = true;
+        Edit_Job_Section.BindingContext = selectedJob;
+        
 
         SelectedLanguages.Clear();
         var alllanguages = await Get_Languages();
@@ -397,6 +401,11 @@ public partial class AdminJobsPage : ContentPage
             if (response.IsSuccessStatusCode)
             {
                 var userslist = await response.Content.ReadFromJsonAsync<List<Users>>();
+
+                if(userslist == null)
+                {
+                    return;
+                }
 
                 Admin_Edit_Job_Users_View.ItemsSource = userslist;
 
@@ -428,6 +437,7 @@ public partial class AdminJobsPage : ContentPage
     {
         Job JobToAdd = new Job();
 
+        #region validation
         if (string.IsNullOrEmpty(Admin_Add_Job_Name.Text))
         {
             Add_Job_Error_Label.Text = "Job Name is empty!";
@@ -448,7 +458,7 @@ public partial class AdminJobsPage : ContentPage
             Add_Job_Error_Label.Text = "Location From and Location To cannot be empty!";
             return;
         }
-        if (Admin_Add_Job_RequiredTruckBrand.Text == null)
+        if (string.IsNullOrEmpty(Admin_Add_Job_RequiredTruckBrand.Text))
         {
             JobToAdd.RequiredTruckBrand = "all";
         }
@@ -461,12 +471,12 @@ public partial class AdminJobsPage : ContentPage
             Add_Job_Error_Label.Text = "Select at least one required language!";
             return;
         }
-        if (Admin_Add_Job_ClientContact.Text == null)
+        if (string.IsNullOrEmpty(Admin_Add_Job_ClientContact.Text))
         {
             Add_Job_Error_Label.Text = "Add Client contact number!";
             return;
         }
-        if (Admin_Add_Job_CompanyName.Text == null)
+        if (string.IsNullOrEmpty(Admin_Add_Job_CompanyName.Text))
         {
             Add_Job_Error_Label.Text = "Add Client Company Name!";
             return;
@@ -476,6 +486,12 @@ public partial class AdminJobsPage : ContentPage
             Add_Job_Error_Label.Text = "Choose client.";
             return;
         }
+        if (Admin_Add_Job_DeadLine.Date <= DateTime.Now || !Admin_Add_Job_DeadLine.Date.HasValue)
+        {
+            Edit_Job_Error_Label.Text = "Selected Deadline date is invalid.";
+            return;
+        }
+        #endregion
         // get selected languages and convert to string separated by comma
 
         var selectedlanguagesstring = string.Join(",", SelectedLanguages.Select(x => x.Name));
@@ -485,7 +501,7 @@ public partial class AdminJobsPage : ContentPage
         JobToAdd.CompanyName = Admin_Add_Job_CompanyName.Text;
         JobToAdd.ClientContactNumber = Admin_Add_Job_ClientContact.Text;
         JobToAdd.Created = DateTime.Now;
-        JobToAdd.DeadLine = (DateTime)Admin_Add_Job_DeadLine.Date;
+        JobToAdd.DeadLine = Admin_Add_Job_DeadLine.Date.Value;
         JobToAdd.LocationFrom = Admin_Add_Job_LocationFrom.Text;
         JobToAdd.LocationTo = Admin_Add_Job_LocationTo.Text;
         JobToAdd.Status = "open";
@@ -536,6 +552,48 @@ public partial class AdminJobsPage : ContentPage
                 selectedjob.AssignedUserId = null;
             }
 
+            #region validation
+            if(string.IsNullOrEmpty(selectedjob.Name))
+            {
+                Edit_Job_Error_Label.Text = "Job Name is empty!";
+                return;
+            }
+            if(string.IsNullOrEmpty(selectedjob.CompanyName))
+            {
+                Edit_Job_Error_Label.Text = "Job Company Name is empty!";
+                return;
+            }
+            if(string.IsNullOrEmpty(selectedjob.ClientContactNumber))
+            {
+                Edit_Job_Error_Label.Text = "Job Client Contact Number is empty!";
+                return;
+            }
+            if(selectedjob.DeadLine == DateTime.Now || selectedjob.DeadLine < DateTime.Now)
+            {
+                Edit_Job_Error_Label.Text = "Selected Deadline date is invalid.";
+                return;
+            }
+            if(string.IsNullOrEmpty(selectedjob.LocationFrom))
+            {
+                Edit_Job_Error_Label.Text = "Job Location From is empty!";
+                return;
+            }
+            if(string.IsNullOrEmpty(selectedjob.LocationTo))
+            {
+                Edit_Job_Error_Label.Text = "Job Location To is empty!";
+                return;
+            }
+            if(selectedjob.RequiredMinimumCapacity <= 0)
+            {
+                Edit_Job_Error_Label.Text = "Job Required Minimum Capacity is below zero";
+                return;
+            }
+            if(string.IsNullOrEmpty(selectedjob.Description))
+            {
+                Edit_Job_Error_Label.Text = "Job Description is empty!";
+                return;
+            }
+            #endregion
 
             var response = await client.PutAsJsonAsync(apiUrl + "Jobs/Update_Job/" + selectedjob.ID, selectedjob);
 
@@ -543,7 +601,7 @@ public partial class AdminJobsPage : ContentPage
             if (response.IsSuccessStatusCode)
             {
                 Edit_Job_Error_Label.Text = await response.Content.ReadAsStringAsync();
-                Debug.WriteLine("Truck updated successfully.");
+                Debug.WriteLine("Job updated successfully.");
             }
             else
             {
