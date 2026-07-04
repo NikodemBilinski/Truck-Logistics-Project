@@ -510,6 +510,11 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         if (InvoiceToChange != null)
         {
+            if(string.IsNullOrEmpty(InvoiceToChange.Status))
+            {
+                EditInvoiceLabelMain.Text = "Status is empty!";
+                return;
+            }
             InvoiceToChange.Status = Admin_Edit_Invoice_Status.Text.ToLower();
             if (InvoiceToChange.Status != "paid" && InvoiceToChange.Status != "unpaid" && InvoiceToChange.Status != "overdue")
             {
