@@ -273,27 +273,34 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async void Admin_Filtering_Open(object sender, EventArgs e)
     {
-        if(Admin_Filtering_Clients_Section.IsVisible)
+        if(Client_View.IsVisible)
         {
-            Admin_Filtering_Clients_Section.IsVisible = false;
-            Admin_Filtering_Clients_Section.IsEnabled = false;
+            if (Admin_Filtering_Clients_Section.IsVisible)
+            {
+                Admin_Filtering_Clients_Section.IsVisible = false;
+                Admin_Filtering_Clients_Section.IsEnabled = false;
+            }
+            else
+            {
+                Admin_Filtering_Clients_Section.IsVisible = true;
+                Admin_Filtering_Clients_Section.IsEnabled = true;
+            }
         }
-        else
+        
+        if(Invoice_View.IsVisible)
         {
-            Admin_Filtering_Clients_Section.IsVisible = true;
-            Admin_Filtering_Clients_Section.IsEnabled = true;
+            if (Admin_Filtering_Invoices_Section.IsVisible)
+            {
+                Admin_Filtering_Invoices_Section.IsVisible = false;
+                Admin_Filtering_Invoices_Section.IsEnabled = false;
+            }
+            else
+            {
+                Admin_Filtering_Invoices_Section.IsVisible = true;
+                Admin_Filtering_Invoices_Section.IsEnabled = true;
+            }
         }
-
-        if(Admin_Filtering_Invoices_Section.IsVisible)
-        {
-            Admin_Filtering_Invoices_Section.IsVisible = false;
-            Admin_Filtering_Invoices_Section.IsEnabled = false;
-        }
-        else
-        {
-            Admin_Filtering_Invoices_Section.IsVisible = true;
-            Admin_Filtering_Invoices_Section.IsEnabled = true;
-        }
+        
     }
 
     private async void Admin_Show_Clients_Invoices_Overview(object sender, EventArgs e)
