@@ -157,11 +157,22 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             var invoice = await _datacontext.Invoices.FirstAsync(x => x.ID == id);
 
+            #region validation
+            
             if(invoice == null)
             {
                 return NotFound("Invoice not found.");
             }
+            if(string.IsNullOrEmpty(InvoiceToUpdate.Status))
+            {
+                return BadRequest("Inovice status is empty!");
+            }
+            if(InvoiceToUpdate.Status.ToLower() != "open" || InvoiceToUpdate.Status.ToLower() != "overdue" || InvoiceToUpdate.Status.ToLower() != "unpaid")
+            {
+                return BadRequest("Invoice status is invalid");
+            }
 
+            #endregion
             invoice.Status = InvoiceToUpdate.Status;
 
             _datacontext.Invoices.Update(invoice);
