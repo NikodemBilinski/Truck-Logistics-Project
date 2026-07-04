@@ -218,7 +218,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     //clients 
     private async Task<List<Client>> GetPageClients()
     {
-        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Page/{pages.PageNumber}/{pages.PageSize}?nip={FilteringClientsNIP}&name={FilteringClientsName}&country={FilteringClientsCountry}");
+        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Page/{pages.PageNumber}/{pages.PageSize}?nip={FilteringClientsNIP}&name={Uri.EscapeDataString(FilteringClientsName ?? "")}&country={FilteringClientsCountry}");
 
         if(response.IsSuccessStatusCode)
         {
