@@ -100,18 +100,51 @@ namespace TrucksLogisticsServerAPI.Controllers
         [HttpPost("Add_Client")]
         public async Task<ActionResult<Client>> AddClient(Client ClientToAdd)
         {
-            if (ClientToAdd != null)
+            #region validation
+            if(ClientToAdd == null)
             {
-                _dataContext.Clients.Add(ClientToAdd);
-                await _dataContext.SaveChangesAsync();
-                Console.WriteLine("AddClient: Added Client: " + ClientToAdd.ID + ". " + ClientToAdd.Name + ", To Database.");
-                return Ok("Successfully added new client: " + ClientToAdd.Name);
-            }
-            else
-            {
-                Console.WriteLine("AddClient: Error Adding Client.");
                 return BadRequest("Error: Client cannot be null");
             }
+            if (string.IsNullOrEmpty(ClientToAdd.Name))
+            {
+                return BadRequest("Client Name is empty!");
+            }
+            if (string.IsNullOrEmpty(ClientToAdd.NIP))
+            {
+                return BadRequest("Client NIP is empty!");
+            }
+            if(string.IsNullOrEmpty(ClientToAdd.Country))
+            {
+                return BadRequest("Client Country is empty!");
+            }
+            if(string.IsNullOrEmpty(ClientToAdd.City))
+            {
+                return BadRequest("Client City is empty!");
+            }
+            if(string.IsNullOrEmpty(ClientToAdd.Address))
+            {
+                return BadRequest("Client Address is empty!");
+            }
+            if(string.IsNullOrEmpty(ClientToAdd.PostalCode))
+            {
+                return BadRequest("Client Postal Code is empty!");
+            }
+            if(string.IsNullOrEmpty(ClientToAdd.Phone))
+            {
+                return BadRequest("Client Phone is empty!");
+            }
+            if(string.IsNullOrEmpty(ClientToAdd.Email))
+            {
+                return BadRequest("Client Email is empty!");
+            }
+            #endregion
+
+            
+            _dataContext.Clients.Add(ClientToAdd);
+            await _dataContext.SaveChangesAsync();
+            Console.WriteLine("AddClient: Added Client: " + ClientToAdd.ID + ". " + ClientToAdd.Name + ", To Database.");
+            return Ok("Successfully added new client: " + ClientToAdd.Name);
+            
 
         }
 

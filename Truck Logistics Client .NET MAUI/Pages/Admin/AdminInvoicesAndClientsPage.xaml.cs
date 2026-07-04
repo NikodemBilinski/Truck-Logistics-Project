@@ -534,7 +534,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     {
         Client ClientToAdd = new Client();
 
-        #region check if ok section
+        #region validation
 
         if(string.IsNullOrEmpty(Admin_Add_Client_Name.Text))
         {
@@ -578,8 +578,6 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         }
         #endregion
 
-
-
         ClientToAdd.Name = Admin_Add_Client_Name.Text;
         ClientToAdd.NIP = Admin_Add_Client_NIP.Text;
         ClientToAdd.Country = Admin_Add_Client_Country.Text;
@@ -618,7 +616,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         Invoice InvoiceToAdd = new Invoice();
 
-        #region check if ok section
+        #region validation
 
         if (SelectedClient == null || SelectedJob == null)
         {
