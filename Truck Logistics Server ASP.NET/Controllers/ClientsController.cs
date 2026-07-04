@@ -154,6 +154,8 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         public async Task<ActionResult<Job>> UpdateClient(int id, Client updatedClient)
         {
+            #region validation
+
             if (updatedClient == null)
             {
                 Console.WriteLine("UpdateClient: Error, Updated Client is null.");
@@ -168,6 +170,39 @@ namespace TrucksLogisticsServerAPI.Controllers
                 return NotFound("Error: Client with the specified ID not found.");
             }
 
+            if(string.IsNullOrEmpty(updatedClient.Name))
+            {
+                return BadRequest("Updated Client Name is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedClient.NIP))
+            {
+                return BadRequest("Updated Client NIP is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedClient.Country))
+            {
+                return BadRequest("Updated Client Country is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedClient.City))
+            {
+                return BadRequest("Updated Client City is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedClient.Address))
+            {
+                return BadRequest("Updated Client Address is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedClient.PostalCode))
+            {
+                return BadRequest("Updated Client Postal Code is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedClient.Phone))
+            {
+                return BadRequest("Updated Client Phone is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedClient.Email))
+            {
+                return BadRequest("Updated Client Email is empty!");
+            }
+            #endregion
             client.Name = updatedClient.Name;
             client.NIP = updatedClient.NIP;
             client.Address = updatedClient.Address;
