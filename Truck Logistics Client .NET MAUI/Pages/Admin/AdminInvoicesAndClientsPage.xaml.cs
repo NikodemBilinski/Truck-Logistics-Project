@@ -632,9 +632,19 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             Add_Invoice_Error_Label.Text = "Issue Date cant be null.";
             return;
         }
-        if(Admin_Add_Invoice_DueDate.Date < Admin_Add_Invoice_IssueDate.Date || Admin_Add_Invoice_DueDate.Date == null)
+        if(Admin_Add_Invoice_DueDate.Date == null)
         {
-            Add_Invoice_Error_Label.Text = "Due Date cant be null or earlier than Issue Date.";
+            Add_Invoice_Error_Label.Text = "Due date cant be null.";
+            return;
+        }
+        if(Admin_Add_Invoice_IssueDate.Date > Admin_Add_Invoice_DueDate.Date)
+        {
+            Add_Invoice_Error_Label.Text = "Issue date is invalid.";
+            return;
+        }
+        if(Admin_Add_Invoice_DueDate.Date <= DateTime.Now || Admin_Add_Invoice_DueDate.Date < Admin_Add_Invoice_IssueDate.Date)
+        {
+            Add_Invoice_Error_Label.Text = "Due date is invalid";
             return;
         }
         if(Admin_Add_Invoice_NetAmount.Text == null || !decimal.TryParse(Admin_Add_Invoice_NetAmount.Text, out var amount))
