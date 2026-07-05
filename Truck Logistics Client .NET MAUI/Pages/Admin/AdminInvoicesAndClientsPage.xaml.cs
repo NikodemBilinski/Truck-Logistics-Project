@@ -125,28 +125,35 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async Task Get_Overview_Stats()
     {
-        var repsonse = await client.GetAsync(apiUrl + "Clients/Get_Clients_Stats");
-
-        if(repsonse.IsSuccessStatusCode) 
+        try
         {
-            var stats = await repsonse.Content.ReadFromJsonAsync<ClientsResponse>();
-            if(stats != null)
+            var response1 = await client.GetAsync(apiUrl + "Clients/Get_Clients_Stats");
+
+            if (response1.IsSuccessStatusCode)
             {
-                Total_Clients_Count.Text = stats.TotalClients.ToString();
+                var stats = await response1.Content.ReadFromJsonAsync<ClientsResponse>();
+                if (stats != null)
+                {
+                    Total_Clients_Count.Text = stats.TotalClients.ToString();
+                }
+            }
+
+            var response2 = await client.GetAsync(apiUrl + "Invoices/Get_Invoices_Stats");
+            if (response2.IsSuccessStatusCode)
+            {
+                var stats = await response2.Content.ReadFromJsonAsync<InvoicesResponse>();
+                if (stats != null)
+                {
+
+                    Total_Invoices_Count.Text = stats.Invoices_Count.ToString();
+                    Unpaid_Invoices_Count.Text = stats.Unpaid_Count.ToString();
+                    Overdue_Invoices_Count.Text = stats.Overdue_Count.ToString();
+                }
             }
         }
-
-        var response = await client.GetAsync(apiUrl + "Invoices/Get_Invoices_Stats");
-        if (response.IsSuccessStatusCode)
+        catch (Exception ex)
         {
-            var stats = await response.Content.ReadFromJsonAsync<InvoicesResponse>();
-            if (stats != null)
-            {
-                
-                Total_Invoices_Count.Text = stats.Invoices_Count.ToString();
-                Unpaid_Invoices_Count.Text = stats.Unpaid_Count.ToString();
-                Overdue_Invoices_Count.Text = stats.Overdue_Count.ToString();
-            }
+            Debug.WriteLine("Error fetching overview stats: " + ex.Message);
         }
     }
 
@@ -218,7 +225,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     //clients 
     private async Task<List<Client>> GetPageClients()
     {
-        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Page/{pages.PageNumber}/{pages.PageSize}?nip={FilteringClientsNIP}&name={FilteringClientsName}&country={FilteringClientsCountry}");
+        var response = await client.GetAsync(apiUrl + $"Clients/Get_Clients_Page/{pages.PageNumber}/{pages.PageSize}?nip={FilteringClientsNIP}&name={Uri.EscapeDataString(FilteringClientsName ?? "")}&country={FilteringClientsCountry}");
 
         if(response.IsSuccessStatusCode)
         {
@@ -273,27 +280,34 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async void Admin_Filtering_Open(object sender, EventArgs e)
     {
-        if(Admin_Filtering_Clients_Section.IsVisible)
+        if(Client_View.IsVisible)
         {
-            Admin_Filtering_Clients_Section.IsVisible = false;
-            Admin_Filtering_Clients_Section.IsEnabled = false;
+            if (Admin_Filtering_Clients_Section.IsVisible)
+            {
+                Admin_Filtering_Clients_Section.IsVisible = false;
+                Admin_Filtering_Clients_Section.IsEnabled = false;
+            }
+            else
+            {
+                Admin_Filtering_Clients_Section.IsVisible = true;
+                Admin_Filtering_Clients_Section.IsEnabled = true;
+            }
         }
-        else
+        
+        if(Invoice_View.IsVisible)
         {
-            Admin_Filtering_Clients_Section.IsVisible = true;
-            Admin_Filtering_Clients_Section.IsEnabled = true;
+            if (Admin_Filtering_Invoices_Section.IsVisible)
+            {
+                Admin_Filtering_Invoices_Section.IsVisible = false;
+                Admin_Filtering_Invoices_Section.IsEnabled = false;
+            }
+            else
+            {
+                Admin_Filtering_Invoices_Section.IsVisible = true;
+                Admin_Filtering_Invoices_Section.IsEnabled = true;
+            }
         }
-
-        if(Admin_Filtering_Invoices_Section.IsVisible)
-        {
-            Admin_Filtering_Invoices_Section.IsVisible = false;
-            Admin_Filtering_Invoices_Section.IsEnabled = false;
-        }
-        else
-        {
-            Admin_Filtering_Invoices_Section.IsVisible = true;
-            Admin_Filtering_Invoices_Section.IsEnabled = true;
-        }
+        
     }
 
     private async void Admin_Show_Clients_Invoices_Overview(object sender, EventArgs e)
@@ -510,6 +524,11 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         if (InvoiceToChange != null)
         {
+            if(string.IsNullOrEmpty(InvoiceToChange.Status))
+            {
+                EditInvoiceLabelMain.Text = "Status is empty!";
+                return;
+            }
             InvoiceToChange.Status = Admin_Edit_Invoice_Status.Text.ToLower();
             if (InvoiceToChange.Status != "paid" && InvoiceToChange.Status != "unpaid" && InvoiceToChange.Status != "overdue")
             {
@@ -534,7 +553,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
     {
         Client ClientToAdd = new Client();
 
-        #region check if ok section
+        #region validation
 
         if(string.IsNullOrEmpty(Admin_Add_Client_Name.Text))
         {
@@ -578,8 +597,6 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
         }
         #endregion
 
-
-
         ClientToAdd.Name = Admin_Add_Client_Name.Text;
         ClientToAdd.NIP = Admin_Add_Client_NIP.Text;
         ClientToAdd.Country = Admin_Add_Client_Country.Text;
@@ -618,7 +635,7 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
         Invoice InvoiceToAdd = new Invoice();
 
-        #region check if ok section
+        #region validation
 
         if (SelectedClient == null || SelectedJob == null)
         {
@@ -629,9 +646,19 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
             Add_Invoice_Error_Label.Text = "Issue Date cant be null.";
             return;
         }
-        if(Admin_Add_Invoice_DueDate.Date < Admin_Add_Invoice_IssueDate.Date || Admin_Add_Invoice_DueDate.Date == null)
+        if(Admin_Add_Invoice_DueDate.Date == null)
         {
-            Add_Invoice_Error_Label.Text = "Due Date cant be null or earlier than Issue Date.";
+            Add_Invoice_Error_Label.Text = "Due date cant be null.";
+            return;
+        }
+        if(Admin_Add_Invoice_IssueDate.Date > Admin_Add_Invoice_DueDate.Date)
+        {
+            Add_Invoice_Error_Label.Text = "Issue date is invalid.";
+            return;
+        }
+        if(Admin_Add_Invoice_DueDate.Date <= DateTime.Now || Admin_Add_Invoice_DueDate.Date < Admin_Add_Invoice_IssueDate.Date)
+        {
+            Add_Invoice_Error_Label.Text = "Due date is invalid";
             return;
         }
         if(Admin_Add_Invoice_NetAmount.Text == null || !decimal.TryParse(Admin_Add_Invoice_NetAmount.Text, out var amount))

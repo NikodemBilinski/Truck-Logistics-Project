@@ -100,18 +100,51 @@ namespace TrucksLogisticsServerAPI.Controllers
         [HttpPost("Add_Client")]
         public async Task<ActionResult<Client>> AddClient(Client ClientToAdd)
         {
-            if (ClientToAdd != null)
+            #region validation
+            if(ClientToAdd == null)
             {
-                _dataContext.Clients.Add(ClientToAdd);
-                await _dataContext.SaveChangesAsync();
-                Console.WriteLine("AddClient: Added Client: " + ClientToAdd.ID + ". " + ClientToAdd.Name + ", To Database.");
-                return Ok("Successfully added new client: " + ClientToAdd.Name);
-            }
-            else
-            {
-                Console.WriteLine("AddClient: Error Adding Client.");
                 return BadRequest("Error: Client cannot be null");
             }
+            if (string.IsNullOrEmpty(ClientToAdd.Name))
+            {
+                return BadRequest("Client Name is empty!");
+            }
+            if (string.IsNullOrEmpty(ClientToAdd.NIP))
+            {
+                return BadRequest("Client NIP is empty!");
+            }
+            if(string.IsNullOrEmpty(ClientToAdd.Country))
+            {
+                return BadRequest("Client Country is empty!");
+            }
+            if(string.IsNullOrEmpty(ClientToAdd.City))
+            {
+                return BadRequest("Client City is empty!");
+            }
+            if(string.IsNullOrEmpty(ClientToAdd.Address))
+            {
+                return BadRequest("Client Address is empty!");
+            }
+            if(string.IsNullOrEmpty(ClientToAdd.PostalCode))
+            {
+                return BadRequest("Client Postal Code is empty!");
+            }
+            if(string.IsNullOrEmpty(ClientToAdd.Phone))
+            {
+                return BadRequest("Client Phone is empty!");
+            }
+            if(string.IsNullOrEmpty(ClientToAdd.Email))
+            {
+                return BadRequest("Client Email is empty!");
+            }
+            #endregion
+
+            
+            _dataContext.Clients.Add(ClientToAdd);
+            await _dataContext.SaveChangesAsync();
+            Console.WriteLine("AddClient: Added Client: " + ClientToAdd.ID + ". " + ClientToAdd.Name + ", To Database.");
+            return Ok("Successfully added new client: " + ClientToAdd.Name);
+            
 
         }
 
@@ -121,6 +154,8 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         public async Task<ActionResult<Job>> UpdateClient(int id, Client updatedClient)
         {
+            #region validation
+
             if (updatedClient == null)
             {
                 Console.WriteLine("UpdateClient: Error, Updated Client is null.");
@@ -135,6 +170,39 @@ namespace TrucksLogisticsServerAPI.Controllers
                 return NotFound("Error: Client with the specified ID not found.");
             }
 
+            if(string.IsNullOrEmpty(updatedClient.Name))
+            {
+                return BadRequest("Updated Client Name is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedClient.NIP))
+            {
+                return BadRequest("Updated Client NIP is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedClient.Country))
+            {
+                return BadRequest("Updated Client Country is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedClient.City))
+            {
+                return BadRequest("Updated Client City is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedClient.Address))
+            {
+                return BadRequest("Updated Client Address is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedClient.PostalCode))
+            {
+                return BadRequest("Updated Client Postal Code is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedClient.Phone))
+            {
+                return BadRequest("Updated Client Phone is empty!");
+            }
+            if(string.IsNullOrEmpty(updatedClient.Email))
+            {
+                return BadRequest("Updated Client Email is empty!");
+            }
+            #endregion
             client.Name = updatedClient.Name;
             client.NIP = updatedClient.NIP;
             client.Address = updatedClient.Address;
