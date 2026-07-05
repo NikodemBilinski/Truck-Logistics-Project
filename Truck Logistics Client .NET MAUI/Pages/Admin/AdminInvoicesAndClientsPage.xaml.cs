@@ -125,28 +125,35 @@ public partial class AdminInvoicesAndClientsPage : ContentPage
 
     private async Task Get_Overview_Stats()
     {
-        var repsonse = await client.GetAsync(apiUrl + "Clients/Get_Clients_Stats");
-
-        if(repsonse.IsSuccessStatusCode) 
+        try
         {
-            var stats = await repsonse.Content.ReadFromJsonAsync<ClientsResponse>();
-            if(stats != null)
+            var response1 = await client.GetAsync(apiUrl + "Clients/Get_Clients_Stats");
+
+            if (response1.IsSuccessStatusCode)
             {
-                Total_Clients_Count.Text = stats.TotalClients.ToString();
+                var stats = await response1.Content.ReadFromJsonAsync<ClientsResponse>();
+                if (stats != null)
+                {
+                    Total_Clients_Count.Text = stats.TotalClients.ToString();
+                }
+            }
+
+            var response2 = await client.GetAsync(apiUrl + "Invoices/Get_Invoices_Stats");
+            if (response2.IsSuccessStatusCode)
+            {
+                var stats = await response2.Content.ReadFromJsonAsync<InvoicesResponse>();
+                if (stats != null)
+                {
+
+                    Total_Invoices_Count.Text = stats.Invoices_Count.ToString();
+                    Unpaid_Invoices_Count.Text = stats.Unpaid_Count.ToString();
+                    Overdue_Invoices_Count.Text = stats.Overdue_Count.ToString();
+                }
             }
         }
-
-        var response = await client.GetAsync(apiUrl + "Invoices/Get_Invoices_Stats");
-        if (response.IsSuccessStatusCode)
+        catch (Exception ex)
         {
-            var stats = await response.Content.ReadFromJsonAsync<InvoicesResponse>();
-            if (stats != null)
-            {
-                
-                Total_Invoices_Count.Text = stats.Invoices_Count.ToString();
-                Unpaid_Invoices_Count.Text = stats.Unpaid_Count.ToString();
-                Overdue_Invoices_Count.Text = stats.Overdue_Count.ToString();
-            }
+            Debug.WriteLine("Error fetching overview stats: " + ex.Message);
         }
     }
 
