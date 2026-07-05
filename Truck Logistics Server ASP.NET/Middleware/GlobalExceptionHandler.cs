@@ -1,11 +1,11 @@
 ﻿namespace TrucksLogisticsServerAPI.Middleware
 {
-    public class RequestLoginMiddleware
+    public class GlobalExceptionHandler
     {
         private readonly RequestDelegate _next;
         
 
-        public RequestLoginMiddleware(RequestDelegate next)
+        public GlobalExceptionHandler(RequestDelegate next)
         {
             _next = next;
         }
