@@ -9,6 +9,7 @@ using TrucksLogisticsServerAPI.Models;
 
 namespace TrucksLogisticsServerAPI.Controllers
 {
+    [Authorize(Roles = "admin,user")]
     [Route("api/[controller]")]
     [ApiController]
     public class TrucksController : Controller
@@ -51,7 +52,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok(TrucksStats);
 
         }
-
+        [Authorize(Roles = "admin")]
         [HttpGet("Get_Trucks_Page/{pageNumber}/{pageSize}")]
         public async Task<ActionResult<TrucksResponse>> GetTrucksPage(int pageNumber, int pageSize, string name = null, string status = null, string brand = null)
         {

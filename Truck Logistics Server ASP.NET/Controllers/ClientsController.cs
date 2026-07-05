@@ -21,7 +21,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP GETS 
-
+        [Authorize(Roles = "admin")]
         [HttpGet("Get_Clients")]
         public async Task<ActionResult<List<Client>>> GetClients()
         {
@@ -34,6 +34,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             return BadRequest("Error: No clients found in database.");
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("Get_Client_By_ID/{ID}")]
         public async Task<ActionResult<Client>> GetClientByID(int id)
         {
@@ -46,6 +47,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             return BadRequest("Error: No client with that id was found");
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("Get_Clients_Page/{pageNumber}/{pageSize}")]
         public async Task<ActionResult<ClientsResponse>> GetClientsPage(int pageNumber, int pageSize, string nip = null, string name = null, string country = null)
         {
@@ -82,6 +84,8 @@ namespace TrucksLogisticsServerAPI.Controllers
 
         }
 
+
+        [Authorize(Roles = "admin")]
         [HttpGet("Get_Clients_Stats")]
         public async Task<ActionResult<ClientsResponse>> GetClientsStats()
         {
@@ -96,7 +100,7 @@ namespace TrucksLogisticsServerAPI.Controllers
 
 
         //HTTP POSTS
-
+        [Authorize(Roles = "admin")]
         [HttpPost("Add_Client")]
         public async Task<ActionResult<Client>> AddClient(Client ClientToAdd)
         {
@@ -116,7 +120,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP PUTS
-
+        [Authorize(Roles = "admin")]
         [HttpPut("Update_Client/{ID}")]
 
         public async Task<ActionResult<Job>> UpdateClient(int id, Client updatedClient)
@@ -150,7 +154,7 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP DELETES
-
+        [Authorize(Roles = "admin")]
         [HttpDelete("Delete_Client/{ID}")]
 
         public async Task<ActionResult<Client>> DeleteClient(int id)

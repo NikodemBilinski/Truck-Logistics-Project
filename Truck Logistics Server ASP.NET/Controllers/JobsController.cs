@@ -10,6 +10,7 @@ using TrucksLogisticsServerAPI.Models.Helping_Models;
 
 namespace TrucksLogisticsServerAPI.Controllers
 {
+    [Authorize(Roles = "admin,user")]
     [Route("api/[controller]")]
     [ApiController]
     public class JobsController : Controller
@@ -22,7 +23,6 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP GETS
-        //[Authorize(Roles = "admin,user")]
         [HttpGet("Get_All_Jobs")]
 
         public async Task<ActionResult<List<Job>>> GetAllJobs()
@@ -73,7 +73,6 @@ namespace TrucksLogisticsServerAPI.Controllers
             });
         }
 
-        [Authorize(Roles ="admin")]
         [HttpGet("Get_Jobs_Stats")]
         public async Task<ActionResult<JobResponse>> GetJobsStats()
         {
@@ -167,7 +166,6 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok(assignedjobs);
         }
 
-        [Authorize(Roles = "admin")]
         [HttpGet("Get_Jobs_By_Client_ID/{id}")]
 
         public async Task<ActionResult<List<Job>>> GetJobsByClientID(int id)
@@ -182,7 +180,6 @@ namespace TrucksLogisticsServerAPI.Controllers
         }
 
         //HTTP POSTS
-        [Authorize(Roles = "admin")]
         [HttpPost("Add_Job")]
         public async Task<ActionResult<Job>> AddJob(Job JobToAdd)
         {

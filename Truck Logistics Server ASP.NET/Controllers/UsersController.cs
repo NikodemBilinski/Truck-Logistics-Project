@@ -9,6 +9,7 @@ using TrucksLogisticsServerAPI.Models.Helping_Models;
 
 namespace TrucksLogisticsServerAPI.Controllers
 {
+    [Authorize(Roles = "admin, user")]
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : Controller
@@ -71,6 +72,7 @@ namespace TrucksLogisticsServerAPI.Controllers
             return Ok(usersstats);
         }
 
+        [Authorize(Roles = "admin")]
         [HttpGet("Get_Users_Page/{pageNumber}/{pageSize}")]
         public async Task<ActionResult<UsersResponse>> GetUsersPage(int pageNumber = 1, int pageSize = 10, string status = null, string username = null)
         {
