@@ -113,16 +113,43 @@ namespace TrucksLogisticsServerAPI.Controllers
         [HttpPost("Add_Invoice")]
         public async Task<ActionResult<Invoice>> Add_Invoice(Invoice InvoiceToAdd)
         {
-            if (InvoiceToAdd != null)
+            #region validation
+            
+            if(InvoiceToAdd == null)
             {
-                _datacontext.Invoices.Add(InvoiceToAdd);
-                await _datacontext.SaveChangesAsync();
-                return Ok("Successfully added new Invoice.");
+                return BadRequest("Invoice to add is null!");
             }
-            else
+            if(InvoiceToAdd.IssueDate > InvoiceToAdd.DueDate)
             {
-                return BadRequest("Invoice to add is null.");
+                return BadRequest("Invoice issue date is invalid");
             }
+            if(InvoiceToAdd.DueDate <= DateTime.Now || InvoiceToAdd.DueDate < InvoiceToAdd.IssueDate)
+            {
+                return BadRequest("Inovice due date is invalid");
+            }
+            if(InvoiceToAdd.NetAmount <= 0)
+            {
+                return BadRequest("Invoice net amount is invalid");
+            }
+            if(InvoiceToAdd.VatRate <= 0 || InvoiceToAdd.VatRate > 100)
+            {
+                return BadRequest("Invoice vat rate is invalid");
+            }
+            if(InvoiceToAdd.Client == null)
+            {
+                return BadRequest("Invoice Client is null");
+            }
+            if(InvoiceToAdd.Job == null)
+            {
+                return BadRequest("Invoice Job is null");
+            }
+            #endregion
+            
+            _datacontext.Invoices.Add(InvoiceToAdd);
+            await _datacontext.SaveChangesAsync();
+            return Ok("Successfully added new Invoice.");
+
+            
         }
 
         [HttpPut("Update_Invoice/{id}")]
@@ -130,11 +157,22 @@ namespace TrucksLogisticsServerAPI.Controllers
         {
             var invoice = await _datacontext.Invoices.FirstAsync(x => x.ID == id);
 
+            #region validation
+            
             if(invoice == null)
             {
                 return NotFound("Invoice not found.");
             }
+            if(string.IsNullOrEmpty(InvoiceToUpdate.Status))
+            {
+                return BadRequest("Inovice status is empty!");
+            }
+            if(InvoiceToUpdate.Status.ToLower() != "open" || InvoiceToUpdate.Status.ToLower() != "overdue" || InvoiceToUpdate.Status.ToLower() != "unpaid")
+            {
+                return BadRequest("Invoice status is invalid");
+            }
 
+            #endregion
             invoice.Status = InvoiceToUpdate.Status;
 
             _datacontext.Invoices.Update(invoice);
