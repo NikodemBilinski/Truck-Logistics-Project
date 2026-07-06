@@ -38,6 +38,7 @@ var app = builder.Build();
 
 //global middleware
 app.UseMiddleware<GlobalExceptionHandler>();
+
 app.UseMiddleware<RequestLoginMiddleware>();
 
 // Configure the HTTP request pipeline.
