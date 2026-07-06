@@ -26,9 +26,9 @@
                 
                 var username = context.User.Identity.Name ?? "No_Username";
 
-                var role = context.User.FindFirst("role")?.Value ?? "No_Role";
+                var role = context.User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value ?? "No_Role";
 
-                var lastname = context.User.FindFirst("surname")?.Value ?? "No_LastName";
+                var lastname = context.User.FindFirst(System.Security.Claims.ClaimTypes.Surname)?.Value ?? "No_LastName";
 
                 var ipaddress = context.Connection.RemoteIpAddress?.ToString() ?? "No_IP_Address";
 
