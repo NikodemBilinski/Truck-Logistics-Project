@@ -20,7 +20,7 @@
             {
                 context.Response.StatusCode = 500;
                 context.Response.ContentType = "application/json";
-                await context.Response.WriteAsync("An Unexpected error occured");
+                await context.Response.WriteAsync($"An Unexpected error occured: {ex.Message}");
             }
         }
     }
