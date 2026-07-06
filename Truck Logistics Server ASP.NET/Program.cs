@@ -52,6 +52,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseAuthentication();
+app.UseMiddleware<GlobalRequestHandlerMiddleware>();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
