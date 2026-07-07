@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TrucksLogisticsServerAPI.Data;
+using TrucksLogisticsServerAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -34,6 +36,11 @@ var jwtkey = builder.Configuration["Jwt:Key"];
 
 var app = builder.Build();
 
+//global middleware
+app.UseMiddleware<GlobalExceptionHandler>();
+
+app.UseMiddleware<RequestLoginMiddleware>();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -42,12 +49,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
 app.UseHttpsRedirection();
-
-
 app.UseAuthentication();
+app.UseMiddleware<GlobalRequestHandlerMiddleware>();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

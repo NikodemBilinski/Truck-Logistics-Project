@@ -53,7 +53,8 @@ namespace TrucksLogisticsServerAPI.Controllers
                 claims: new[]
                 {
                     new Claim(ClaimTypes.Name, user.Username),
-                    new Claim(ClaimTypes.Role, user.Role)
+                    new Claim(ClaimTypes.Role, user.Role),
+                    new Claim(ClaimTypes.Surname, user.LastName)
                 },
                 expires: DateTime.UtcNow.AddHours(24),
                 signingCredentials: creds
